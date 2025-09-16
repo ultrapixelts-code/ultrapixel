@@ -591,53 +591,7 @@ footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rg
 @media (max-width: 560px) {
   .chip { height: 34px; font-size: 12.5px; padding: 0 14px; }
 }
-/* ===== CHIPS PREMIUM MODERNE ===== */
-.floating-badges {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-  position: relative;
-  z-index: 2;
-}
 
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 40px;
-  padding: 0 18px;
-  border-radius: 999px;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: .2px;
-  color: #fff;
-  text-decoration: none;
-  
-  /* effetto vetro + bordo sottile */
-  backdrop-filter: blur(12px) saturate(160%);
-  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-  border: 1px solid rgba(255,255,255,.15);
-
-  /* animazione */
-  transition: transform .25s ease, background .25s ease, border-color .25s ease;
-}
-
-.chip:hover {
-  transform: translateY(-2px) scale(1.04);
-  background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.06));
-  border-color: rgba(255,255,255,.35);
-}
-
-@media (max-width: 560px) {
-  .chip {
-    flex: 1 1 calc(50% - 10px); /* 2 per riga su mobile */
-    justify-content: center;
-    font-size: 13px;
-    padding: 0 12px;
-  }
-}
 
 </style>
 
@@ -1148,5 +1102,3 @@ ${data.get('messaggio')||''}`;
   </script>
 </body>
 </html>
-
-
