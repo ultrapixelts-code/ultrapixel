@@ -789,6 +789,50 @@ header.nav{
 
 /* opzionale: comportamento più morbido */
 html{ scroll-behavior: smooth; }
+/* --- WRAP SU MOBILE (invece di scorrere) --- */
+@media (max-width: 720px){
+
+  /* Menu in due righe se serve */
+  header.nav{
+    height: auto !important;                  /* lascia crescere l'header */
+    padding-top: calc(env(safe-area-inset-top) + 6px) !important;
+    padding-bottom: 8px;                      /* un filo di respiro sotto */
+    align-items: flex-start;
+  }
+  header.nav nav ul{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    overflow: visible;
+  }
+
+  /* Badges/chip/cta: vanno a capo */
+  .badges-row.top,
+  .badges-grid,
+  .chips,
+  .s-buttons{
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    justify-content: center;
+  }
+
+  /* 2 per riga per chip “griglia” (se vuoi) */
+  .badges-grid .chip{ flex: 1 1 calc(50% - 10px); }
+
+  /* permetti agli elementi di stringere (niente max-content) */
+  .chip, .badge, .s-btn{
+    min-width: 0 !important;
+    white-space: normal !important;
+  }
+}
+
+/* Evita che qualcosa sporga orizzontalmente */
+img, video{ max-width:100%; height:auto; }
+html, body{ overflow-x:hidden; }
 
 </style>
 
@@ -1317,7 +1361,34 @@ ${data.get('messaggio')||''}`;
     history.replaceState(null, "", "#" + id);
   });
 })();
+(function(){
+  const docEl = document.documentElement;
+  const hdr = document.querySelector('header.nav');
 
+  function setHeaderVar(){
+    if(!hdr) return;
+    const h = hdr.offsetHeight || 64;
+    docEl.style.setProperty('--header-h', h + 'px');
+  }
+
+  // iniziale + on resize + se l'header cambia altezza (wrap)
+  setHeaderVar();
+  window.addEventListener('resize', setHeaderVar, {passive:true});
+  if('ResizeObserver' in window){
+    new ResizeObserver(setHeaderVar).observe(hdr);
+  }
+
+  // usa l'offset per gli anchor (se non l'hai già fatto)
+  const css = `
+    html{ scroll-padding-top: calc(var(--header-h) + 16px); scroll-behavior:smooth; }
+    section[id], .testimonials, .contact, .social-cta{ scroll-margin-top: calc(var(--header-h) + 16px); position:relative; }
+    section[id]::before, .testimonials::before, .contact::before, .social-cta::before{
+      content:""; display:block; height:calc(var(--header-h) + 16px);
+      margin-top:calc(-1 * (var(--header-h) + 16px)); visibility:hidden; pointer-events:none;
+    }
+  `;
+  const s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+})();
   </script>
 </body>
 </html>
