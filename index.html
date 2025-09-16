@@ -19,6 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+
 <style>
 /* =========================
    0) VARIABILI & BASE
@@ -590,73 +591,53 @@ footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rg
 @media (max-width: 560px) {
   .chip { height: 34px; font-size: 12.5px; padding: 0 14px; }
 }
-
-/* Porta il FAB sopra tutto e assicurati che sia cliccabile */
-.fab-contact{
-  z-index: 1000 !important;
-  pointer-events: auto !important;
-}
-
-/* Anche il bottom sheet sopra a tutto */
-.mobile-sheet{
-  z-index: 1100 !important;
-  pointer-events: auto !important;
-}
-
-/* Prevenzione: nessun overlay deve bloccare il tap nell'area del FAB */
-@media (max-width: 768px){
-  .sticky-cta{ display:none !important; }
-}
-
-/* ==== Bottom sheet mobile: layout sicuro su iOS ==== */
-.mobile-sheet{
-  z-index: 1100 !important;
-  bottom: -100%;
-  left: 0; right: 0;
-  border-top-left-radius: 18px; border-top-right-radius: 18px;
-  background: linear-gradient(180deg,#0f0f12,#0a0a0a);
-  border-top: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 -30px 80px rgba(0,0,0,.6);
-  max-height: 100svh;            /* usa viewport “small view” affidabile */
-}
-.mobile-sheet.open{ bottom: 0; }
-
-.mobile-sheet .inner{
-  /* spazio per notch e toolbar */
-  padding: calc(8px + env(safe-area-inset-top)) 16px
-           calc(24px + env(safe-area-inset-bottom) + 70px);
-  max-height: calc(100svh - 24px);
-  overflow: auto;                 /* scroll interno */
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Form a UNA colonna nel sheet */
-#mobileContactForm{
-  display: grid !important;
-  grid-template-columns: 1fr !important;
-  gap: 14px !important;
-}
-#mobileContactForm .field{ width:100% !important; }
-#mobileContactForm label{ display:block; margin-bottom:6px; font-size:13px; }
-
-/* Azioni sempre visibili: sticky footer dentro il sheet */
-.mobile-sheet .actions{
-  position: sticky;
-  bottom: 0;
+/* ===== CHIPS PREMIUM MODERNE ===== */
+.floating-badges {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
-  justify-content: space-between;
-  padding: 10px 0 calc(env(safe-area-inset-bottom) + 6px);
-  background: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,0));
-}
-.mobile-sheet .actions .btn{
-  flex: 1; text-align:center;
+  margin-top: 20px;
+  position: relative;
+  z-index: 2;
 }
 
-/* Evita che qualcosa copra il FAB o il sheet */
-.fab-contact{ z-index: 1200 !important; }
-.sticky-cta{ display:none !important; }  /* su mobile non serve e può coprire */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .2px;
+  color: #fff;
+  text-decoration: none;
+  
+  /* effetto vetro + bordo sottile */
+  backdrop-filter: blur(12px) saturate(160%);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  border: 1px solid rgba(255,255,255,.15);
 
+  /* animazione */
+  transition: transform .25s ease, background .25s ease, border-color .25s ease;
+}
+
+.chip:hover {
+  transform: translateY(-2px) scale(1.04);
+  background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.06));
+  border-color: rgba(255,255,255,.35);
+}
+
+@media (max-width: 560px) {
+  .chip {
+    flex: 1 1 calc(50% - 10px); /* 2 per riga su mobile */
+    justify-content: center;
+    font-size: 13px;
+    padding: 0 12px;
+  }
+}
 
 </style>
 
@@ -969,43 +950,32 @@ ${data.get('messaggio')||''}`;
     });
   })();
 
- /* FAB mobile: apertura/chiusura bottom sheet + invio — versione robusta */
-(function(){
-  var fab   = document.getElementById('fabContact');
-  var sheet = document.getElementById('mobileSheet');
-  if(!fab || !sheet) return;
+  // FAB mobile: apertura/chiusura bottom sheet + invio
+  (function(){
+    const fab = document.getElementById('fabContact');
+    const sheet = document.getElementById('mobileSheet');
+    const closeBtn = document.getElementById('closeSheet');
+    const form = document.getElementById('mobileContactForm');
+    if(!fab || !sheet || !closeBtn || !form) return;
+    const open = ()=>{ sheet.classList.add('open'); sheet.setAttribute('aria-hidden','false'); fab.setAttribute('aria-expanded','true'); }
+    const close = ()=>{ sheet.classList.remove('open'); sheet.setAttribute('aria-hidden','true'); fab.setAttribute('aria-expanded','false'); }
+    fab.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    sheet.addEventListener('click', (e)=>{ if(e.target === sheet) close(); });
 
-  var closeBtn = document.getElementById('closeSheet');
-  var form     = document.getElementById('mobileContactForm');
-
-  function openSheet(){
-    sheet.classList.add('open');
-    sheet.setAttribute('aria-hidden','false');
-    fab.setAttribute('aria-expanded','true');
-  }
-  function closeSheet(){
-    sheet.classList.remove('open');
-    sheet.setAttribute('aria-hidden','true');
-    fab.setAttribute('aria-expanded','false');
-  }
-
-  fab.addEventListener('click', openSheet);
-  if (closeBtn) closeBtn.addEventListener('click', closeSheet);
-  sheet.addEventListener('click', function(e){
-    if(e.target === sheet) closeSheet(); // chiudi toccando il backdrop
-  });
-
-  if (form){
-    form.addEventListener('submit', function(e){
+    form.addEventListener('submit', (e)=>{
       e.preventDefault();
-      var data = new FormData(form);
-      var body = "Nome: " + data.get('nome') + "\nEmail: " + data.get('email') + "\n\nMessaggio:\n" + (data.get('messaggio')||'');
-      var mail = "mailto:info@ultrapixel.fr.example?subject=" + encodeURIComponent("Richiesta etichette (mobile)") + "&&body=" + encodeURIComponent(body);
+      const data = new FormData(form);
+      const body = `Nome: ${data.get('nome')}
+Email: ${data.get('email')}
+
+Messaggio:
+${data.get('messaggio')||''}`;
+      const mail = `mailto:info@ultrapixel.fr.example?subject=${encodeURIComponent('Richiesta etichette (mobile)')}&&body=${encodeURIComponent(body)}`;
       window.location.href = mail;
-      closeSheet();
+      close();
     });
-  }
-})();
+  })();
 
   // Sticky CTA actions
   (function(){
@@ -1178,3 +1148,4 @@ ${data.get('messaggio')||''}`;
   </script>
 </body>
 </html>
+
