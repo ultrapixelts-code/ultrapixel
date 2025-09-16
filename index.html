@@ -591,7 +591,56 @@ footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rg
 @media (max-width: 560px) {
   .chip { height: 34px; font-size: 12.5px; padding: 0 14px; }
 }
+/* Stack verticale centrato nell'hero */
+.badges-stack{
+  position:absolute; left:50%; bottom:9%;
+  transform:translateX(-50%);
+  display:flex; flex-direction:column; gap:12px;
+  z-index:2; width:min(92vw, 900px);
+}
 
+/* Riga con le due "pills" (più corpose) */
+.badges-row.top{
+  display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
+}
+.badge{
+  display:inline-flex; align-items:center; gap:10px;
+  height:40px; padding:0 16px; border-radius:999px;
+  font-weight:700; font-size:13.5px; color:#fff; text-decoration:none;
+  backdrop-filter: blur(10px) saturate(140%);
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.18);
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+.badge:hover{ transform:translateY(-2px); border-color:rgba(255,255,255,.35); background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.06)); }
+
+/* Riga con le chips (griglia responsive 2x su mobile) */
+.badges-row.chips{
+  display:grid; grid-template-columns: repeat(4, auto);
+  gap:10px; justify-content:center;
+}
+@media (max-width: 720px){
+  .badges-row.chips{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+/* Stile chip premium coerente */
+.chip{
+  display:inline-flex; align-items:center; justify-content:center;
+  height:38px; padding:0 16px; border-radius:999px; font-size:13.5px;
+  color:#fff; text-decoration:none; font-weight:600; letter-spacing:.2px;
+  backdrop-filter: blur(10px) saturate(140%);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.15);
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+.chip:hover{ transform:translateY(-2px) scale(1.03); border-color:rgba(255,255,255,.32); background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05)); }
+
+/* Mobile: un filo più compatto */
+@media (max-width:560px){
+  .badge{ height:36px; padding:0 14px; font-size:12.8px; }
+  .chip{ height:34px; padding:0 12px; font-size:12.6px; }
+  .badges-stack{ bottom:8%; gap:10px; }
+}
 
 </style>
 
@@ -620,18 +669,20 @@ footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rg
     </div>
     <h1>Les meilleures étiquettes de vin<br>au monde</h1><br><br>
     <p class="sub">Conçues et produites entre l’Italie et la France. Détail extrême, reliefs tactiles, délais de livraison rapides.</p>
-   
-    <div class="floating-badges">
-        <a class="chip" role="listitem">🇫🇷 Made in Rhône-Alpes</a>
-      <a class="chip" role="listitem">🚚 Consegne rapide</a>
+   <br>
+  <div class="badges-stack">
+  <div class="badges-row top">
+    <a class="badge">🇫🇷 Made in Rhône-Alpes</a>
+    <a class="badge">🚚 Consegne rapide</a>
+  </div>
+
+  <div class="badges-row chips">
+    <a class="chip" href="#finiture">Hot foil multiplo</a>
+    <a class="chip" href="#finiture">Rilievo 3D</a>
+    <a class="chip" href="#finiture">Fustella laser</a>
+    <a class="chip" href="#contatti">Tirature flessibili</a>
+  </div>
 </div>
-    <br><br>
-    <div class="floating-badges">
-      <a class="chip" role="listitem" href="#finiture">Hot foil multiplo</a>
-      <a class="chip" role="listitem" href="#finiture">Rilievo 3D</a>
-      <a class="chip" role="listitem" href="#finiture">Fustella laser</a>
-      <a class="chip" role="listitem" href="#contatti">Tirature flessibili</a>
-    </div>
   </section>
 
   <!-- STICKY ZOOM -->
