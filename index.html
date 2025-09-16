@@ -755,6 +755,41 @@ section[id], .testimonials, .contact{
   html{ scroll-padding-top: calc(var(--header-h) + 20px); }
   section[id], .testimonials, .contact{ scroll-margin-top: calc(var(--header-h) + 20px); }
 }
+
+/* === Anti-taglio ancora sotto header fisso (compat iOS) === */
+:root{
+  --header-h: calc(64px + env(safe-area-inset-top));
+}
+
+/* fallback universale quando si usa #hash */
+section[id], .testimonials, .contact, .social-cta{
+  position: relative; /* per lo shim ::before */
+  scroll-margin-top: calc(var(--header-h) + 16px); /* per browser moderni */
+}
+
+/* shim per i browser che ignorano scroll-margin con #hash */
+section[id]::before,
+.testimonials::before,
+.contact::before,
+.social-cta::before{
+  content: "";
+  display: block;
+  height: calc(var(--header-h) + 16px);
+  margin-top: calc(-1 * (var(--header-h) + 16px));
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* header realmente alto quanto --header-h */
+header.nav{
+  height: var(--header-h) !important;
+  padding-top: calc(env(safe-area-inset-top) + 6px) !important;
+  overflow: visible !important;
+}
+
+/* opzionale: comportamento più morbido */
+html{ scroll-behavior: smooth; }
+
 </style>
 
 </head>
@@ -1261,7 +1296,27 @@ ${data.get('messaggio')||''}`;
     });
   }
 })();
+(function(){
+  const HEADER_H = parseFloat(getComputedStyle(document.documentElement)
+                    .getPropertyValue('--header-h')) || 80;
 
+  // intercetta i click nel menu
+  document.querySelector('header.nav nav')?.addEventListener('click', (e)=>{
+    const a = e.target.closest('a[href^="#"]');
+    if(!a) return;
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if(!target) return;
+
+    e.preventDefault();
+    const rect = target.getBoundingClientRect();
+    const y = window.scrollY + rect.top - (HEADER_H + 16);
+    window.scrollTo({ top: y, behavior: 'smooth' });
+
+    // aggiorna l'hash senza jump brusco
+    history.replaceState(null, "", "#" + id);
+  });
+})();
 
   </script>
 </body>
