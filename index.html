@@ -712,7 +712,6 @@ footer {
   font-size: 12.5px;
   box-shadow: 0 8px 24px rgba(0,0,0,.4);
   cursor: pointer;
-  transition: transform .2s ease;
 }
 
 .fab-contact:active {
@@ -749,33 +748,6 @@ footer {
 
 .mobile-sheet .inner {
   padding: 16px 12px 20px;
-  position: relative;
-}
-
-.mobile-sheet .close-btn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 28px;
-  height: 28px;
-  background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background .2s ease;
-}
-
-.mobile-sheet .close-btn:hover {
-  background: rgba(255,255,255,.2);
-}
-
-.mobile-sheet .close-btn svg {
-  width: 16px;
-  height: 16px;
-  stroke: var(--text);
 }
 
 .mobile-sheet h3 {
@@ -1538,58 +1510,33 @@ Messaggio: ${data.get('messaggio') || ''}`;
   const fab = document.getElementById('fabContact');
   const sheet = document.getElementById('mobileSheet');
   const form = document.getElementById('contactForm');
-  const closeBtn = document.querySelector('.mobile-sheet .close-btn');
-
-  // Debug: Log elements to ensure they exist
-  if (!fab || !sheet || !form || !closeBtn) {
-    console.error('Missing elements:', { fab, sheet, form, closeBtn });
-    return;
-  }
+  if (!fab || !sheet || !form) return;
 
   const open = () => {
     sheet.classList.add('open');
     sheet.setAttribute('aria-hidden', 'false');
     fab.setAttribute('aria-expanded', 'true');
-    console.log('Bottom sheet opened'); // Debug
   };
-
   const close = () => {
     sheet.classList.remove('open');
     sheet.setAttribute('aria-hidden', 'true');
     fab.setAttribute('aria-expanded', 'false');
-    console.log('Bottom sheet closed'); // Debug
   };
 
-  // Ensure FAB click opens the sheet
-  fab.addEventListener('click', (e) => {
-    e.preventDefault(); // Prevent any default behavior
-    open();
-  });
-
-  // Close on clicking outside the sheet
+  fab.addEventListener('click', open);
   sheet.addEventListener('click', (e) => {
-    if (e.target === sheet) {
-      close();
-    }
+    if (e.target === sheet) close();
   });
 
-  // Close on clicking the close button
-  closeBtn.addEventListener('click', (e) => {
-    e.preventDefault(); // Prevent any default behavior
-    close();
-  });
-
-  // Form submission
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const data = new FormData(form);
     const body = `Nome: ${data.get('nome') || ''}
 Email: ${data.get('email') || ''}
 Messaggio: ${data.get('messaggio') || ''}`;
-    const mail = `mailto:info@ultrapixel.fr.example?subject=${encodeURIComponent('Richiesta etichette (mobile)')}&body=${encodeURIComponent(body)}`;
+    const mail = `mailto:info@ultrapixel.fr?subject=${encodeURIComponent('Richiesta etichette (mobile)')}&body=${encodeURIComponent(body)}`;
     window.location.href = mail;
     close();
-    console.log('Form submitted:', body); // Debug
   });
 
   // Close sheet on resize to desktop
@@ -1598,11 +1545,6 @@ Messaggio: ${data.get('messaggio') || ''}`;
       close();
     }
   }, { passive: true });
-
-  // Initialize: Ensure sheet is closed on load
-  if (window.matchMedia('(max-width: 560px)').matches) {
-    close();
-  }
 })();
 
   // Sticky CTA actions
