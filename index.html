@@ -37,6 +37,32 @@
   --hero-src:url('0.png');
   --zoom-src:url('gd.png');
 }
+:root{
+  --header-h: calc(64px + env(safe-area-inset-top));
+}
+
+html{
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  scroll-behavior: smooth;
+}
+
+section[id], .testimonials, .contact{
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+
+@media (max-width: 560px){
+  html{ scroll-padding-top: calc(var(--header-h) + 20px); }
+  section[id], .testimonials, .contact{
+    scroll-margin-top: calc(var(--header-h) + 20px);
+  }
+}
+
+/* allinea davvero l'header alla var */
+header.nav{
+  height: var(--header-h);
+  padding-top: calc(env(safe-area-inset-top) + 6px);
+  overflow: visible !important;
+}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
@@ -874,7 +900,7 @@ section[id], .testimonials, .contact{
   </section>
 
 <!-- SOCIAL CTA: segui & scrivici -->
-<section class="social-cta" aria-label="Seguici e contattaci">
+<section id="contatti" class="social-cta" aria-label="Seguici e contattaci">
   <div class="wrap">
     <div>
       <h2>Suivez-nous pour voir nos coulisses, nos tests et nos finitions en direct !</h2>
