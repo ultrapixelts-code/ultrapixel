@@ -42,7 +42,7 @@
 }
 
 html{
-  scroll-padding-top: calc(var(--header-h) + 16px);
+  scroll-padding-top: calc(var(--header-h) + 5px);
   scroll-behavior: smooth;
 }
 
@@ -850,7 +850,9 @@ html, body{ overflow-x:hidden; }
 }
 
 /* Offset sotto l'header fisso */
-body{ padding-top: var(--header-h); }
+.hero{
+  padding-top: var(--header-h) !important;
+}
 
 /* L'hero ha un pelo di margine extra per sicurezza */
 .hero{ padding-top: calc(var(--header-h) + 8px); }
