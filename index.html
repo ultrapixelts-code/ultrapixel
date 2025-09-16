@@ -676,7 +676,37 @@ footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rg
 
 /* Se esiste ancora il vecchio contenitore .chips dentro l'hero, spegnilo per evitare conflitti */
 .hero > .chips { display: none !important; }
+/* 1) Non tagliare i bottoni nell'hero */
+.hero{ overflow: visible !important; }
 
+/* Se usi ancora questi contenitori, assicurati che non taglino */
+.floating-badges,
+.badges-stack,
+.badges-grid{
+  overflow: visible !important;
+}
+
+/* 2) Pill/Chip: garantisci che l'elemento non clipperi i suoi pseudo (se presenti) */
+.chip, .badge{
+  overflow: visible !important;
+  border-radius: 999px;          /* assicura l'arrotondamento pieno */
+}
+
+/* 3) FAB "Contattaci": rispetta la safe-area di iPhone così non viene tagliato a dx/basso */
+.fab-contact{
+  right: calc(16px + env(safe-area-inset-right));
+  bottom: calc(86px + env(safe-area-inset-bottom));
+}
+
+/* 4) (opzionale) se hai messo un bordo gradiente con ::before, evita maschere aggressive su iOS */
+.badge::before,
+.chip::before{
+  border-radius: inherit;
+  /* se noti ancora micro-tagli, disattiva la maschera:
+  -webkit-mask: none !important;
+  mask: none !important;
+  */
+}
 </style>
 
 </head>
