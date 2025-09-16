@@ -707,6 +707,25 @@ footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rg
   mask: none !important;
   */
 }
+
+
+/* Più spazio sotto la status bar + niente clipping */
+header.nav{
+  /* aggiunge spazio per la safe-area (iPhone) */
+  padding-top: calc(env(safe-area-inset-top) + 6px) !important;
+  height: calc(64px + env(safe-area-inset-top)) !important;
+
+  overflow: visible !important;   /* evita che tagli le pillole */
+}
+
+/* assicura che la lista non clipperi */
+header.nav nav ul{ overflow: visible !important; align-items:center; }
+
+/* le pillole del menu non devono farsi tagliare */
+header.nav nav a{
+  overflow: visible !important;
+  border-radius: 999px;
+}
 </style>
 
 </head>
@@ -1218,3 +1237,4 @@ ${data.get('messaggio')||''}`;
   </script>
 </body>
 </html>
+
