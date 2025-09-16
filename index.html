@@ -25,41 +25,63 @@
    0) VARIABILI & BASE
    ========================= */
 :root{
-  --bg:#000; --bg-2:#0f0f11; --text:#f5f5f7; --muted:#a1a1aa; --accent:#009dff;
-  --glass:rgba(255,255,255,.06); --grid:#1b1b1f; --card:#111115;
-  --stroke:rgba(255,255,255,.12);
-  --hero-src:url('0.png'); --zoom-src:url('gd.png');
-  --header-h: calc(64px + env(safe-area-inset-top)); /* altezza header + notch */
+  --bg:#000;
+  --bg-2:#0f0f11;
+  --text:#f5f5f7;
+  --muted:#a1a1aa;
+  --accent:#009dff;
+  --glass:rgba(255,255,255,.06);
+  --grid:#1b1b1f;
+  --card:#111115;
+  --stroke:rgba(255,255,255,.12);   /* <— usata in vari componenti */
+  --hero-src:url('0.png');
+  --zoom-src:url('gd.png');
+}
+:root{
+  --header-h: calc(64px + env(safe-area-inset-top));
 }
 
+html{
+  scroll-padding-top: calc(var(--header-h) + 5px);
+  scroll-behavior: smooth;
+}
+
+section[id], .testimonials, .contact{
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+
+@media (max-width: 560px){
+  html{ scroll-padding-top: calc(var(--header-h) + 20px); }
+  section[id], .testimonials, .contact{
+    scroll-margin-top: calc(var(--header-h) + 20px);
+  }
+}
+
+/* allinea davvero l'header alla var */
+header.nav{
+  height: var(--header-h);
+  padding-top: calc(env(safe-area-inset-top) + 6px);
+  overflow: visible !important;
+}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
   font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Helvetica,Arial;
-  background:var(--bg); color:var(--text); overflow-x:hidden;
+  background:var(--bg); color:var(--text);
+  overflow-x:hidden;
 }
-img,video{max-width:100%;height:auto}
-html{scroll-behavior:smooth; scroll-padding-top: calc(var(--header-h) + 16px)}
-section[id], .testimonials, .contact, .social-cta{scroll-margin-top: calc(var(--header-h) + 16px)}
-@media (max-width:560px){
-  html{scroll-padding-top: calc(var(--header-h) + 20px)}
-  section[id], .testimonials, .contact, .social-cta{scroll-margin-top: calc(var(--header-h) + 20px)}
-}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* =========================
    1) NAV
    ========================= */
 header.nav{
-  position:fixed; inset-inline:0; top:0; z-index:50;
-  height:var(--header-h);
+  position:fixed; inset-inline:0; top:0; height:64px;
   display:flex; align-items:center; justify-content:space-between;
-  padding: calc(env(safe-area-inset-top) + 6px) 16px 0;
+  padding:0 16px; z-index:50;
   backdrop-filter:saturate(140%) blur(10px);
   background:linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,0));
   border-bottom:1px solid rgba(255,255,255,.06);
-  overflow:visible;
 }
 .brand{display:flex; gap:10px; align-items:center; font-weight:800; letter-spacing:.2px}
 .brand .logo{
@@ -67,8 +89,8 @@ header.nav{
   background:conic-gradient(from 180deg at 50% 50%, #009fe3, #e6007e, #ffed00, #000000);
   animation:spin 8s linear infinite;
 }
-@keyframes spin{to{transform:rotate(360deg)}}
-nav ul{display:flex; gap:10px; margin:0; padding:0; list-style:none}
+@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+nav ul{display:flex; gap:14px; margin:0; padding:0; list-style:none}
 nav a{
   display:inline-flex; align-items:center; height:36px; padding:0 12px;
   border-radius:999px; border:1px solid rgba(255,255,255,.12);
@@ -76,62 +98,37 @@ nav a{
 }
 nav a:hover{background:var(--accent); color:#fff}
 
-@media (max-width:720px){
-  header.nav{height:auto; align-items:flex-start; padding-bottom:8px}
-  nav ul{flex-wrap:wrap; gap:8px 10px}
-}
-
 /* =========================
    2) HERO
    ========================= */
 .hero{
-  position:relative; isolation:isolate; text-align:center;
-  min-height:120svh;
-  padding-top: calc(var(--header-h) + 10px); /* spazio sotto header */
-  overflow:visible; /* evita tagli dei badge */
+  min-height:120svh; display:grid; place-items:center; position:relative;
+  overflow:hidden; isolation:isolate; text-align:center;
 }
 .hero::before{
   content:""; position:absolute; inset:-10%;
   background:var(--hero-src) center/cover no-repeat;
   filter:saturate(115%) contrast(110%) brightness(.95);
-  transform:scale(1.3);
+  transform:scale(1.30);
+  transition:transform 1s ease;
   animation:kenburns 30s infinite alternate ease-in-out;
   will-change:transform;
 }
-.hero::after{content:""; position:absolute; inset:0; background:radial-gradient(80% 60% at 50% 30%, rgba(0,0,0,.2), rgba(0,0,0,.75))}
-@keyframes kenburns{0%{transform:scale(1.5)}100%{transform:scale(1.2) translate(-2%,-2%)}}
-
-.hero h1{font-size:clamp(42px, 8vw, 120px); line-height:.9; margin:0; font-weight:900; position:relative; z-index:2}
-.sub{margin-top:18px; font-size:clamp(16px, 2vw, 20px); color:var(--muted); position:relative; z-index:2}
-
-/* Chips / Badges (unica versione) */
-.chips{
-  display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
-  margin-top:26px; position:relative; z-index:2;
-}
-.chip, .badge{
-  display:inline-flex; align-items:center; justify-content:center; gap:8px;
-  height:38px; padding:0 16px; border-radius:999px;
-  font-size:13px; font-weight:700; letter-spacing:.2px; color:#fff; text-decoration:none;
-  backdrop-filter: blur(10px) saturate(140%);
-  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
-  border:1px solid rgba(255,255,255,.15);
-  transition: transform .2s ease, border-color .2s ease, background .2s ease;
-  overflow:visible;
-}
-.chip:hover, .badge:hover{ transform:translateY(-2px) scale(1.03); border-color:rgba(255,255,255,.32); background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05)) }
-@media (max-width:560px){ .chip, .badge{height:34px; padding:0 12px; font-size:12.6px} }
-
-/* Badge flottanti (opzionali nell'hero) */
-.floating-badges{
-  position:absolute; left:50%; bottom:9%; transform:translateX(-50%);
-  display:flex; gap:12px; z-index:2; animation:floaty 6s ease-in-out infinite alternate;
-  overflow:visible;
-}
+.hero::after{content:""; position:absolute; inset:0; background:radial-gradient(80% 60% at 50% 30%, rgba(0,0,0,.2), rgba(0,0,0,.75));}
+@keyframes kenburns{0%{transform:scale(1.50) translate(0,0)} 100%{transform:scale(1.2) translate(-2%,-2%)}}
+.hero h1{font-size:clamp(42px, 8vw, 120px); line-height:.9; margin:0; font-weight:900; position:relative; animation:fadeInUp 1.4s ease; z-index:2}
+.sub{margin-top:18px; font-size:clamp(16px, 2vw, 20px); color:var(--muted); position:relative; animation:fadeIn 1.2s ease .2s both; z-index:2}
+@keyframes fadeInUp{from{opacity:0; transform:translateY(40px)} to{opacity:1; transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.chips{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:26px; position:relative; z-index:2}
+.chip{border:1px solid rgba(255,255,255,.12); background:var(--glass); padding:8px 12px; border-radius:999px; font-size:13px; transition:.20s}
+.chip:hover{background:var(--accent); color:#fff; transform:scale(1.08)}
+.floating-badges{position:absolute; bottom:10%; left:50%; transform:translateX(-50%); display:flex; gap:12px; z-index:2; animation:floaty 6s ease-in-out infinite alternate}
 @keyframes floaty{from{transform:translate(-50%,0)}to{transform:translate(-50%,-10px)}}
+.floating-badges span{background:var(--glass); border:1px solid rgba(255,255,255,.1); padding:6px 10px; border-radius:999px; font-size:12px}
 
 /* =========================
-   3) ORBIT 3D (hero)
+   3) ORBIT 3D (sezione hero)
    ========================= */
 .orbit{position:absolute; inset:0; display:grid; place-items:center; perspective:1400px; z-index:1}
 .orbit-ring{position:relative; width:min(90vw,1100px); height:min(90vw,1100px); transform-style:preserve-3d}
@@ -141,22 +138,41 @@ nav a:hover{background:var(--accent); color:#fff}
   border:1px solid rgba(255,255,255,.1); background:#0f0f12; opacity:.30;
   filter:saturate(.80) brightness(.85);
   transition:opacity .25s ease, filter .25s ease, transform .25s ease, box-shadow .25s ease;
-  backface-visibility:hidden; z-index:1;
+  backface-visibility:hidden; z-index:1
 }
+
+
 .label-card img{width:100%; height:100%; object-fit:cover; display:block}
 .label-card.is-front{
-  opacity:1; filter:saturate(1.35) brightness(1.15) drop-shadow(0 28px 90px rgba(0,0,0,.65));
+  opacity:1; filter:saturate(1.35) brightness(1.150) drop-shadow(0 28px 90px rgba(0,0,0,.65));
   z-index:3; box-shadow:0 30px 100px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.12) inset, 0 0 22px rgba(155,135,245,.35)
 }
-/* Shine disattivato per performance */
+.label-card.is-front::after{
+  content:""; position:absolute; inset:-25%;
+  background:linear-gradient(75deg, transparent 44%, rgba(255,255,255,.92) 50%, transparent 56%);
+  transform:translateX(-120%) rotate(8deg); mix-blend-mode:screen; animation:foilSweep 2.8s linear infinite; pointer-events:none
+}
+.label-card.is-front::before{
+  content:""; position:absolute; inset:-6%;
+  background:radial-gradient(120% 120% at 20% 0%, rgba(255,255,255,.25), transparent 55%),
+             conic-gradient(from 0deg, rgba(255,220,100,.18), rgba(255,120,120,.12), rgba(120,220,255,.16), rgba(180,140,255,.18), rgba(255,220,100,.18));
+  mix-blend-mode:color-dodge; opacity:.; filter:blur(.4px); border-radius:18px; animation:foilIridescence 9s linear infinite; pointer-events:none
+}
+
+/* Disattiva lo shine senza rompere il layout */
 .label-card.is-front::before,
-.label-card.is-front::after{content:none !important}
+.label-card.is-front::after{
+  content: none !important;
+  animation: none !important;
+}
+@keyframes foilSweep{to{ transform:translateX(120%) rotate(8deg); }}
+@keyframes foilIridescence{to{ transform:rotate(360deg); }}
 
 /* =========================
-   4) STICKY ZOOM
+   4) STICKY ZOOM (etichetta)
    ========================= */
-.sticky-section{position:relative; min-height:220svh; z-index:0}
-.sticky{position:sticky; top:0; height:100svh; display:grid; place-items:center; overflow:hidden; pointer-events:none}
+.sticky-section{position:relative; min-height:220svh;}
+.sticky{position:sticky; top:0; height:100svh; display:grid; place-items:center; overflow:hidden;}
 .zoom-stage{
   position:relative; width:min(1000px, 92vw); height:min(1000px, 92vw); border-radius:28px;
   background:radial-gradient(120% 120% at 30% 10%, rgba(255,255,255,.08), rgba(255,255,255,.02) 40%, transparent 70%), linear-gradient(180deg, var(--bg-2), #060607);
@@ -165,7 +181,7 @@ nav a:hover{background:var(--accent); color:#fff}
 .zoom-label{
   position:absolute; inset:10% 12% 28%; border-radius:24px;
   background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
-  border:1px solid rgba(255,255,255,.10); overflow:hidden; pointer-events:auto;
+  border:1px solid rgba(255,255,255,.10); overflow:hidden;
 }
 .zoom-art{
   position:absolute; inset:0; background:var(--zoom-src) center/cover no-repeat;
@@ -174,7 +190,7 @@ nav a:hover{background:var(--accent); color:#fff}
 .zoom-callout{
   position:absolute; right:3%; top:3%;
   background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.12); padding:10px 12px;
-  border-radius:12px; font-size:12px; color:var(--muted); pointer-events:auto;
+  border-radius:12px; font-size:12px; color:var(--muted)
 }
 .gloss{
   position:absolute; inset:-30% -30%;
@@ -214,15 +230,6 @@ nav a:hover{background:var(--accent); color:#fff}
 .stars{font-size:14px; letter-spacing:2px; color:#ffd166}
 .t-body{color:var(--muted); font-size:15px; line-height:1.6}
 
-/* Mobile: testimonianze 1 col + no overflow */
-@media (max-width:599px){
-  .t-row{grid-template-columns:1fr; gap:12px}
-  .t-card{width:100%; overflow:hidden; border-radius:14px; padding:14px}
-  .t-head{align-items:flex-start; gap:10px}
-  .t-card *{min-width:0; overflow-wrap:anywhere; word-break:break-word}
-  .stars{font-size:12px; letter-spacing:1.5px}
-}
-
 /* =========================
    8) MINI HERO (foil)
    ========================= */
@@ -237,7 +244,7 @@ nav a:hover{background:var(--accent); color:#fff}
   background:linear-gradient(120deg,#fff 20%, #bfa8ff 30%, #fff 40%, #9b87f5 60%, #fff 70%);
   -webkit-background-clip:text; background-clip:text; color:transparent; animation:shine 6s linear infinite
 }
-@keyframes shine{to{background-position:200% 50%}}
+@keyframes shine{0%{background-position:0% 50%}100%{background-position:200% 50%}}
 .foil-sub{color:var(--muted); margin-top:10px}
 
 /* =========================
@@ -263,13 +270,61 @@ nav a:hover{background:var(--accent); color:#fff}
 .btn.primary{background:var(--accent); color:#fff}
 .btn.primary:hover{filter:brightness(1.1)}
 .btn.ghost{background:transparent; color:var(--text)}
-@media (max-width:560px){
-  .contact form{grid-template-columns:1fr}
-  .actions{justify-content:center}
-}
 
 /* =========================
-   10) SOCIAL CTA
+   10) FOOTER & UTILITIES
+   ========================= */
+footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rgba(255,255,255,.06)}
+.reveal{opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease}
+.reveal.visible{opacity:1; transform:none}
+@media (prefers-reduced-motion: reduce){*{animation:none!important; transition:none!important}}
+
+/* =========================
+   11) FAB & STICKY CTA (mobile)
+   ========================= */
+.fab-contact{
+  position:fixed; right:16px; bottom:86px; z-index:60; display:none;
+  align-items:center; gap:8px; padding:12px 16px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.18); background:var(--accent); color:#fff; font-weight:800;
+  box-shadow:0 10px 30px rgba(0,0,0,.4)
+}
+.fab-contact:active{transform:translateY(1px)}
+.mobile-sheet{
+  position:fixed; left:0; right:0; bottom:-100%; z-index:70;
+  background:linear-gradient(180deg,#0f0f12,#0a0a0a); border-top:1px solid rgba(255,255,255,.12);
+  box-shadow:0 -30px 80px rgba(0,0,0,.6); border-top-left-radius:18px; border-top-right-radius:18px; transition:bottom .35s ease
+}
+.mobile-sheet.open{bottom:0}
+.mobile-sheet .grab{width:46px; height:5px; border-radius:999px; background:#555; margin:10px auto}
+.mobile-sheet .inner{padding:18px 16px 24px}
+.mobile-sheet h3{text-align:center; margin:4px 0 14px}
+.mobile-sheet form{display:grid; grid-template-columns:1fr; gap:12px}
+.mobile-sheet .actions{display:flex; gap:10px; justify-content:flex-end}
+
+.sticky-cta{
+  position:fixed; left:0; right:0; bottom:0; z-index:65; display:none;
+  background:rgba(10,10,10,.9); border-top:1px solid rgba(255,255,255,.12);
+  box-shadow:0 -8px 24px rgba(0,0,0,.5); padding:10px 14px
+}
+.sticky-cta .row{max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:10px}
+.sticky-cta .txt{font-size:14px; color:var(--muted)}
+.sticky-cta .btn{padding:10px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.2); font-weight:800}
+.sticky-cta .btn.primary{background:var(--accent); color:#fff}
+@media(max-width:768px){.fab-contact,.sticky-cta{display:inline-flex}}
+
+/* =========================
+   12) PARALLAX LAYERS (hero)
+   ========================= */
+.parallax-hero{position:absolute; inset:0; pointer-events:none; z-index:1; perspective:1000px}
+.p-layer{position:absolute; inset:-12%; transform:translate3d(var(--tx,0), var(--ty,0), 0) scale(var(--s,1)); will-change: transform; filter:saturate(110%) contrast(105%)}
+/* --- REMOVE VIOLET BACKGROUND ---
+.p-glow{background:radial-gradient(60% 60% at 50% 30%, rgba(155,135,245,.18), transparent 60%); mix-blend-mode:screen}
+
+.p-grain{background:radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,.04), transparent 70%), repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 2px, transparent 2px 6px); opacity:.5}
+.p-shine{background:linear-gradient(120deg, transparent 35%, rgba(255,255,255,.14) 50%, transparent 65%); mix-blend-mode:soft-light; opacity:.55}
+--- FINE DISABILITATO --- */
+/* =========================
+   13) SOCIAL CTA (base)
    ========================= */
 .social-cta{position:relative; padding:110px 24px; overflow:hidden}
 .social-cta .wrap{
@@ -312,46 +367,31 @@ nav a:hover{background:var(--accent); color:#fff}
 .s-btn[aria-label="WhatsApp"]{background:#25D366; color:#fff; border:none!important}
 .s-btn[aria-label="WhatsApp"]:hover{filter:brightness(1.1)}
 
-@media (max-width:960px){ .social-cta .wrap{grid-template-columns:1fr} }
-@media (max-width:599px){
-  .social-cta .wrap{gap:16px; padding:0 16px}
-  .s-buttons{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px}
-  .s-buttons .s-btn{width:100%; min-width:0; justify-content:center; padding:14px 12px; border-radius:14px; font-size:14px; white-space:normal}
-  .s-buttons .s-btn svg{width:16px; height:16px; flex:0 0 16px}
-  .social-card{margin-top:14px; padding:18px 14px; border-radius:16px}
-  .social-card .s-btn{width:100%; justify-content:center; padding:14px 12px; border-radius:999px; font-size:15px}
-}
-
 /* =========================
-   11) FAB & STICKY CTA
+   14) ZOOM ETICHETTA (responsive, opzionale extra blocco)
    ========================= */
-.fab-contact{
-  position:fixed; right: calc(16px + env(safe-area-inset-right)); bottom: calc(86px + env(safe-area-inset-bottom));
-  z-index:60; display:none; align-items:center; gap:8px; padding:12px 16px; border-radius:999px;
-  border:1px solid rgba(255,255,255,.18); background:var(--accent); color:#fff; font-weight:800;
-  box-shadow:0 10px 30px rgba(0,0,0,.4)
+.z-section{display:block; position:relative; min-height:150svh; padding:0}
+.z-sticky{position:sticky; top:0; height:100svh; display:grid; place-items:center; overflow:hidden}
+.z-stage{
+  position:relative; width:min(620px, 96vw); height:min(620px, 96vw); border-radius:22px;
+  background:radial-gradient(120% 120% at 30% 10%, rgba(255,255,255,.06), rgba(255,255,255,.02) 40%, transparent 70%),
+             linear-gradient(180deg, var(--bg-2), #08090b);
+  border:1px solid var(--stroke); box-shadow:0 20px 80px rgba(0,0,0,.5) inset, 0 0 1px rgba(255,255,255,.12) inset;
 }
-.fab-contact:active{transform:translateY(1px)}
-.sticky-cta{
-  position:fixed; left:0; right:0; bottom:0; z-index:65; display:none;
-  background:rgba(10,10,10,.9); border-top:1px solid rgba(255,255,255,.12);
-  box-shadow:0 -8px 24px rgba(0,0,0,.5); padding:10px 14px
+.z-label{position:absolute; inset:12% 8% 30%; border-radius:18px; overflow:hidden; background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)); border:1px solid var(--stroke)}
+.z-art{position:absolute; inset:0; background:var(--src, url('2.png')) center/cover no-repeat; filter:contrast(110%) saturate(110%); transform:scale(var(--z,1)); transition:transform .12s ease-out; will-change:transform}
+.z-badge{position:absolute; right:3%; top:3%; background:rgba(0,0,0,.45); border:1px solid var(--stroke); padding:7px 9px; border-radius:11px; font-size:11px; color:var(--muted)}
+.z-gloss{position:absolute; inset:-30% -30%; background:radial-gradient(closest-side at var(--mx,50%) var(--my,50%), rgba(255,255,255,.18), rgba(255,255,255,0) 60%); mix-blend-mode:screen; pointer-events:none; opacity:.7}
+@media(min-width:900px){
+  .z-section{min-height:200svh}
+  .z-stage{width:min(1000px, 86vw); height:min(1000px, 86vw); border-radius:26px; box-shadow:0 30px 120px rgba(0,0,0,.55) inset, 0 0 1px rgba(255,255,255,.15) inset}
+  .z-label{inset:10% 12% 26%; border-radius:22px}
+  .z-badge{font-size:12px; padding:8px 10px}
+  .z-art{transition:transform .15s ease-out}
 }
-.sticky-cta .row{max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:10px}
-.sticky-cta .txt{font-size:14px; color:var(--muted)}
-.sticky-cta .btn{padding:10px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.2); font-weight:800}
-.sticky-cta .btn.primary{background:var(--accent); color:#fff}
-@media(max-width:768px){.fab-contact,.sticky-cta{display:inline-flex}}
 
 /* =========================
-   12) FOOTER & UTIL
-   ========================= */
-footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rgba(255,255,255,.06)}
-.reveal{opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease}
-.reveal.visible{opacity:1; transform:none}
-
-/* =========================
-   13) RESPONSIVE TWEAKS GLOBALI
+   15) RESPONSIVE TWEAKS GLOBALI
    ========================= */
 @media (max-width:900px){
   .split{grid-template-columns:1fr}
@@ -359,13 +399,527 @@ footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rg
   .g-item.large{grid-column: span 12}
 }
 @media (max-width:560px){
+  .contact form{grid-template-columns:1fr;}
+  .actions{justify-content:center}
   .g-item{grid-column: span 12}
 }
 
-/* =========================
-   14) ANCORE iOS: shim solo dove serve
-   (evita sullo sticky #zoom per non alterare misure)
-   ========================= */
+/* ---- Fix mobile testimonials (una colonna + no overflow) ---- */
+@media (max-width:599px){
+  #testimonianze{overflow-x:hidden}
+  #testimonianze .container{max-width:100%; padding-left:16px; padding-right:16px}
+  #testimonianze .t-row{display:grid; grid-template-columns:minmax(0,1fr); gap:12px; margin-left:auto; margin-right:auto; max-width:100%}
+  #testimonianze .t-card{width:100%; max-width:100%; overflow:hidden; border-radius:14px; padding:14px}
+  #testimonianze .t-head{align-items:flex-start; gap:10px}
+  #testimonianze .t-card *{min-width:0; overflow-wrap:anywhere; word-break:break-word}
+  #testimonianze .stars{font-size:12px; letter-spacing:1.5px}
+}
+
+/* ---- Social CTA mobile: 1 col + bottoni 2x + WA full width ---- */
+@media (max-width:960px){
+  .social-cta .wrap{grid-template-columns:1fr}
+}
+@media (max-width:599px){
+  .social-cta .wrap{gap:16px; padding:0 16px}
+  .social-cta .s-buttons{display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:10px}
+  .social-cta .s-buttons .s-btn{width:100%; min-width:0; justify-content:center; padding:14px 12px; border-radius:14px; font-size:14px; white-space:normal}
+  .social-cta .s-buttons .s-btn svg{width:16px; height:16px; flex:0 0 16px}
+  .social-cta .s-buttons .s-btn:nth-last-child(1):nth-child(odd){grid-column:1 / -1} /* ultimo full-row se dispari */
+  .social-cta .social-card{margin-top:14px; padding:18px 14px; border-radius:16px; max-width:100%; box-sizing:border-box}
+  .social-cta .social-card .s-btn{width:100%; justify-content:center; padding:14px 12px; border-radius:999px; font-size:15px}
+  /* evita overlap con barra sticky su mobile piccolo */
+  .sticky-cta{display:none !important}
+  html,body{overflow-x:hidden}
+}
+
+/* ====== MOBILE HARD OVERRIDE (fix definitivo) ====== */
+@media screen and (max-width: 768px){
+
+  /* prevenzione overflow generico */
+  html, body{ overflow-x:hidden !important; -webkit-text-size-adjust:100% !important; }
+  .social-cta, .social-cta *{ max-width:100% !important; box-sizing:border-box !important; }
+  #testimonianze, #testimonianze *{ max-width:100% !important; box-sizing:border-box !important; }
+
+  /* --- TESTIMONIANZE: 1 colonna e niente trabordo --- */
+  #testimonianze .t-row{
+    display:grid !important;
+    grid-template-columns: 1fr !important;
+    gap:12px !important;
+    margin:0 !important;
+  }
+  #testimonianze .t-card{
+    width:100% !important;
+    overflow:hidden !important;
+    border-radius:14px !important;
+    padding:14px !important;
+  }
+  #testimonianze .t-card *{
+    min-width:0 !important;
+    overflow-wrap:anywhere !important;
+    word-break:break-word !important;
+  }
+
+  /* --- SOCIAL CTA: layout super-semplice e robusto --- */
+  .social-cta .wrap{
+    display:block !important;
+    padding-left:16px !important; padding-right:16px !important;
+  }
+
+  /* bottoni: UNO PER RIGA (full-width) per eliminare ogni sforamento */
+  .social-cta .s-buttons{
+    display:block !important;
+    margin-top:14px !important;
+  }
+  .social-cta .s-buttons .s-btn{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    padding:14px 12px !important;
+    border-radius:14px !important;
+    margin:0 0 10px 0 !important;
+    white-space:normal !important;
+    text-align:center !important;
+    justify-content:center !important;
+  }
+  .social-cta .s-buttons .s-btn svg{
+    width:16px !important; height:16px !important; flex:0 0 16px !important;
+  }
+
+  /* card WhatsApp contenuta + bottone full width */
+  .social-cta .social-card{
+    padding:18px 14px !important;
+    border-radius:16px !important;
+    margin-top:14px !important;
+  }
+  .social-cta .social-card .s-btn{
+    width:100% !important;
+    padding:14px 12px !important;
+    border-radius:999px !important;
+    justify-content:center !important;
+  }
+
+  /* la sticky bar che copre i bottoni: spenta su mobile */
+  .sticky-cta{ display:none !important; }
+}
+/* Pills moderne sotto al titolo */
+.floating-badges{
+  position:absolute; bottom:10%;
+  left:50%; transform:translateX(-50%);
+  display:flex; gap:12px; z-index:2;
+  animation:floaty 6s ease-in-out infinite alternate;
+}
+
+.floating-badges .badge{
+  position:relative;
+  display:inline-flex; align-items:center; gap:10px;
+  height:38px; padding:0 16px;
+  border-radius:999px;
+  text-decoration:none; color:#fff; font-weight:700; font-size:13px; letter-spacing:.2px;
+
+  /* glass */
+  backdrop-filter: blur(10px) saturate(140%);
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+
+  /* bordo gradiente “holo” */
+  border:1px solid transparent;
+  --g: linear-gradient(120deg, #9b87f5, #00d1ff, #9b87f5);
+}
+.floating-badges .badge::before{
+  content:""; position:absolute; inset:0; border-radius:inherit; padding:1px;
+  background: var(--g);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; opacity:.7;
+  transition: opacity .25s ease, filter .25s ease, background-position .6s ease;
+  background-size: 200% 200%;
+}
+.floating-badges .badge:hover{
+  transform: translateY(-2px) scale(1.02);
+}
+.floating-badges .badge:hover::before{
+  opacity:1; background-position: 100% 0;
+}
+.floating-badges .badge:focus-visible{
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(0,157,255,.35);
+}
+
+.floating-badges .emoji{ font-size:15px; filter: saturate(110%); }
+
+/* Mobile: impila e centra */
+@media (max-width: 560px){
+  .floating-badges{ flex-direction:column; gap:8px; bottom:8%; }
+  .floating-badges .badge{ height:36px; padding:0 14px; font-size:12.5px; }
+}
+
+/* ===== CHIP MODERNE ===== */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 26px;
+  position: relative;
+  z-index: 2;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .2px;
+  color: #fff;
+  text-decoration: none;
+
+  /* glass effect */
+  backdrop-filter: blur(10px) saturate(140%);
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+
+  /* bordo gradiente */
+  border: 1px solid transparent;
+  --g: linear-gradient(120deg, #9b87f5, #00d1ff, #9b87f5);
+  position: relative;
+  overflow: hidden;
+  transition: transform .25s ease, background .25s ease;
+}
+
+.chip::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  padding:1px;
+  background:var(--g);
+  background-size:200% 200%;
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  opacity:.7;
+  transition:opacity .3s ease, background-position .6s ease;
+}
+
+.chip:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+.chip:hover::before {
+  opacity:1;
+  background-position:100% 0;
+}
+.chip:focus-visible {
+  outline:0;
+  box-shadow:0 0 0 3px rgba(0,157,255,.35);
+}
+
+/* Mobile */
+@media (max-width: 560px) {
+  .chip { height: 34px; font-size: 12.5px; padding: 0 14px; }
+}
+/* Stack verticale centrato nell'hero */
+.badges-stack{
+  position:absolute; left:50%; bottom:9%;
+  transform:translateX(-50%);
+  display:flex; flex-direction:column; gap:12px;
+  z-index:2; width:min(92vw, 900px);
+}
+
+/* Riga con le due "pills" (più corpose) */
+.badges-row.top{
+  display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
+}
+.badge{
+  display:inline-flex; align-items:center; gap:10px;
+  height:40px; padding:0 16px; border-radius:999px;
+  font-weight:700; font-size:13.5px; color:#fff; text-decoration:none;
+  backdrop-filter: blur(10px) saturate(140%);
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.18);
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+.badge:hover{ transform:translateY(-2px); border-color:rgba(255,255,255,.35); background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.06)); }
+
+/* Riga con le chips (griglia responsive 2x su mobile) */
+.badges-row.chips{
+  display:grid; grid-template-columns: repeat(4, auto);
+  gap:10px; justify-content:center;
+}
+@media (max-width: 720px){
+  .badges-row.chips{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+/* Stile chip premium coerente */
+.chip{
+  display:inline-flex; align-items:center; justify-content:center;
+  height:38px; padding:0 16px; border-radius:999px; font-size:13.5px;
+  color:#fff; text-decoration:none; font-weight:600; letter-spacing:.2px;
+  backdrop-filter: blur(10px) saturate(140%);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.15);
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+.chip:hover{ transform:translateY(-2px) scale(1.03); border-color:rgba(255,255,255,.32); background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05)); }
+
+/* Mobile: un filo più compatto */
+@media (max-width:560px){
+  .badge{ height:36px; padding:0 14px; font-size:12.8px; }
+  .chip{ height:34px; padding:0 12px; font-size:12.6px; }
+  .badges-stack{ bottom:8%; gap:10px; }
+}
+/* Griglia robusta: va in riga, poi si adatta (2x su mobile) */
+.badges-grid{
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, max-content));
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Garanzia: le chip NON diventano blocchi a tutta larghezza */
+.badges-grid .chip{
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+/* Mobile: 2 per riga */
+@media (max-width: 720px){
+  .badges-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .badges-grid .chip{
+    width: 100%;
+    padding: 0 12px;
+    height: 34px;
+  }
+}
+
+/* Se esiste ancora il vecchio contenitore .chips dentro l'hero, spegnilo per evitare conflitti */
+.hero > .chips { display: none !important; }
+/* 1) Non tagliare i bottoni nell'hero */
+.hero{ overflow: visible !important; }
+
+/* Se usi ancora questi contenitori, assicurati che non taglino */
+.floating-badges,
+.badges-stack,
+.badges-grid{
+  overflow: visible !important;
+}
+
+/* 2) Pill/Chip: garantisci che l'elemento non clipperi i suoi pseudo (se presenti) */
+.chip, .badge{
+  overflow: visible !important;
+  border-radius: 999px;          /* assicura l'arrotondamento pieno */
+}
+
+/* 3) FAB "Contattaci": rispetta la safe-area di iPhone così non viene tagliato a dx/basso */
+.fab-contact{
+  right: calc(16px + env(safe-area-inset-right));
+  bottom: calc(86px + env(safe-area-inset-bottom));
+}
+
+/* 4) (opzionale) se hai messo un bordo gradiente con ::before, evita maschere aggressive su iOS */
+.badge::before,
+.chip::before{
+  border-radius: inherit;
+  /* se noti ancora micro-tagli, disattiva la maschera:
+  -webkit-mask: none !important;
+  mask: none !important;
+  */
+}
+
+:root{
+  /* ...le tue var... */
+  --header-h: calc(64px + env(safe-area-inset-top)); /* altezza header + notch */
+}
+
+/* fai sì che gli anchor (#qualita, #finiture, ecc.) tengano conto dell’header */
+html{
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  scroll-behavior: smooth; /* opzionale ma gradevole */
+}
+
+/* sicurezza extra: sezione colpita da #hash non viene tagliata */
+section[id], .testimonials, .contact{
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+
+/* su mobile lo spazio è un filo maggiore */
+@media (max-width: 560px){
+  html{ scroll-padding-top: calc(var(--header-h) + 20px); }
+  section[id], .testimonials, .contact{ scroll-margin-top: calc(var(--header-h) + 20px); }
+}
+
+/* === Anti-taglio ancora sotto header fisso (compat iOS) === */
+:root{
+  --header-h: calc(64px + env(safe-area-inset-top));
+}
+
+/* fallback universale quando si usa #hash */
+section[id], .testimonials, .contact, .social-cta{
+  position: relative; /* per lo shim ::before */
+  scroll-margin-top: calc(var(--header-h) + 16px); /* per browser moderni */
+}
+
+/* shim per i browser che ignorano scroll-margin con #hash */
+section[id]::before,
+.testimonials::before,
+.contact::before,
+.social-cta::before{
+  content: "";
+  display: block;
+  height: calc(var(--header-h) + 16px);
+  margin-top: calc(-1 * (var(--header-h) + 16px));
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* header realmente alto quanto --header-h */
+header.nav{
+  height: var(--header-h) !important;
+  padding-top: calc(env(safe-area-inset-top) + 6px) !important;
+  overflow: visible !important;
+}
+
+/* opzionale: comportamento più morbido */
+html{ scroll-behavior: smooth; }
+/* --- WRAP SU MOBILE (invece di scorrere) --- */
+@media (max-width: 720px){
+
+  /* Menu in due righe se serve */
+  header.nav{
+    height: auto !important;                  /* lascia crescere l'header */
+    padding-top: calc(env(safe-area-inset-top) + 6px) !important;
+    padding-bottom: 8px;                      /* un filo di respiro sotto */
+    align-items: flex-start;
+  }
+  header.nav nav ul{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    overflow: visible;
+  }
+
+  /* Badges/chip/cta: vanno a capo */
+  .badges-row.top,
+  .badges-grid,
+  .chips,
+  .s-buttons{
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    justify-content: center;
+  }
+
+  /* 2 per riga per chip “griglia” (se vuoi) */
+  .badges-grid .chip{ flex: 1 1 calc(50% - 10px); }
+
+  /* permetti agli elementi di stringere (niente max-content) */
+  .chip, .badge, .s-btn{
+    min-width: 0 !important;
+    white-space: normal !important;
+  }
+}
+
+/* Evita che qualcosa sporga orizzontalmente */
+img, video{ max-width:100%; height:auto; }
+html, body{ overflow-x:hidden; }
+/* Altezza header letta da JS (fallback 64px) */
+:root{ --header-h: 64px; }
+
+/* L'header su mobile cresce in altezza quando il menu va a capo */
+@media (max-width: 720px){
+  header.nav{
+    height: auto !important;
+    padding-top: calc(env(safe-area-inset-top) + 6px) !important;
+    padding-bottom: 8px !important;
+    align-items: flex-start;
+  }
+  header.nav nav ul{
+    display:flex; flex-wrap:wrap; gap:8px 10px; margin:0; padding:0;
+  }
+}
+
+/* Offset sotto l'header fisso */
+.hero{
+  padding-top: var(--header-h) !important;
+}
+
+/* L'hero ha un pelo di margine extra per sicurezza */
+.hero{ padding-top: calc(var(--header-h) + 10px); }
+@media (max-width:720px){
+  .hero{ padding-top: calc(var(--header-h) + 10px); }
+}
+/* ——— Spingi giù l’hero quando l’header cresce ——— */
+@media (max-width: 720px){
+  /* più spazio sopra al contenuto dell’hero */
+  .hero{
+    padding-top: calc(var(--header-h) + 10px) !important;
+    min-height: 130svh; /* un filo più alto per non comprimere l’immagine */
+  }
+
+  /* titolo un po’ più compatto per evitare overlap visivo */
+  .hero h1{
+    font-size: clamp(34px, 7.2vw, 54px) !important;
+    line-height: 0.95;
+    margin-top: 8px;  /* separazione dal bordo alto dell’hero */
+  }
+
+  /* sottotitolo con respiro */
+  .sub{
+    font-size: 15.5px;
+    margin-top: 5px;
+  }
+
+  /* abbassa lievemente l’oggetto “bottiglia/orbit” */
+  .orbit{ transform: translateY(5px); }
+}
+/* ---- HEADER DINAMICO + WRAP MENU ---- */
+:root{ --header-h: 64px; }  /* verrà aggiornato via JS */
+
+header.nav{
+  position: fixed; inset-inline:0; top:0; z-index:50;
+  height: var(--header-h);
+  padding-top: calc(env(safe-area-inset-top) + 6px);
+  backdrop-filter: saturate(140%) blur(10px);
+  background: linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,0));
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  overflow: visible;
+}
+header.nav nav ul{ display:flex; gap:10px; margin:0; padding:0; list-style:none; }
+
+@media (max-width: 720px){
+  header.nav{ height:auto; align-items:flex-start; padding-bottom:8px; }
+  header.nav nav ul{ flex-wrap:wrap; gap:8px 10px; }
+}
+
+/* ---- HERO: spazio proporzionale all’header ---- */
+.hero{
+  /* distanza = altezza header + un piccolo margine proporzionale allo schermo */
+  padding-top: calc(var(--header-h) + 5vh) !important;
+  min-height: 120svh;
+}
+@media (max-width:720px){
+  .hero{ padding-top: calc(var(--header-h) + 3.5vh) !important; }
+  .hero h1{ font-size: clamp(34px, 7vw, 58px); line-height:.95; margin:0; }
+  .sub{ font-size: 15.5px; margin-top: 12px; }
+}
+
+/* ---- ANCORE: niente tagli sotto header fisso (compat iOS) ---- */
+html{ scroll-behavior:smooth; }
+section[id], .testimonials, .contact, .social-cta{
+  position: relative;
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
 section[id]::before,
 .testimonials::before,
 .contact::before,
@@ -375,10 +929,55 @@ section[id]::before,
   margin-top: calc(-1 * (var(--header-h) + 5px));
   visibility:hidden; pointer-events:none;
 }
-#zoom::before{display:none !important}
-#zoom{scroll-margin-top: calc(var(--header-h) + 16px) !important}
-</style>
 
+/* ---- ROBUSTEZZA MOBILE ---- */
+img, video{ max-width:100%; height:auto; }
+html, body{ overflow-x:hidden; }
+/* ---- HERO: titolo più in alto, responsive ---- */
+.hero{
+  /* solo quanto basta per evitare che il menu lo copra */
+  padding-top: calc(var(--header-h) - 0vh) !important;
+  min-height: 120svh; /* leggermente più basso di prima */
+}
+
+@media (max-width: 720px){
+  .hero{
+    /* su mobile ancora meno spazio */
+    padding-top: calc(var(--header-h) + 2vh) !important;
+    min-height: 120svh;
+  }
+
+  /* titolo un po’ più grande ma vicino all’immagine */
+  .hero h1{
+    font-size: clamp(34px, 7.2vw, 56px);
+    margin-top: 0;
+    line-height: 0.95;
+  }
+
+  .sub{
+    margin-top: 10px;
+    font-size: 15px;
+  }
+}
+
+
+/* Non mettere lo shim anti-ancora sulla sezione sticky: altera le misure */
+#zoom::before{ display:none !important; }
+#zoom{ scroll-margin-top: calc(var(--header-h) + 16px) !important; }
+
+/* Lo sticky non deve stare sopra alle sezioni successive */
+.sticky-section{ position:relative; z-index:0; }
+.sticky{ position:sticky; top:0; z-index:0; }
+
+/* Le sezioni dopo lo zoom possono essere cliccate senza overlay */
+.section, .testimonials, .foil-hero, .social-cta, .contact, footer{
+  position:relative; z-index:1;
+}
+
+/* Evita che il layer sticky intercetti click fuori dalla label */
+.sticky{ pointer-events:none; }
+.zoom-label, .zoom-callout{ pointer-events:auto; }
+</style>
 
 </head>
 <body>
