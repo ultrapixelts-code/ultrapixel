@@ -656,43 +656,7 @@ footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rg
 /* Evita che qualcosa copra il FAB o il sheet */
 .fab-contact{ z-index: 1200 !important; }
 .sticky-cta{ display:none !important; }  /* su mobile non serve e può coprire */
-/* === OPTIMIZZAZIONE MOBILE SHEET COMPATTA === */
-@media (max-width: 600px) {
-  .mobile-sheet .inner {
-    max-width: 94%;           /* restringe leggermente il form */
-    margin: 0 auto;           /* centra tutto */
-    padding-left: 8px;
-    padding-right: 8px;
-  }
 
-  /* Campi più piccoli e arrotondati */
-  #mobileContactForm input,
-  #mobileContactForm textarea {
-    font-size: 15px;
-    padding: 10px 12px;
-    border-radius: 10px;
-  }
-
-  /* Titolo un po' più piccolo */
-  .mobile-sheet h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-
-  /* Pulsanti più comodi ma non enormi */
-  .mobile-sheet .actions {
-    gap: 8px;
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .mobile-sheet .actions .btn {
-    font-size: 15px;
-    padding: 12px 0;
-    border-radius: 14px;
-  }
-}
 
 </style>
 
@@ -721,12 +685,18 @@ footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rg
     </div>
     <h1>Les meilleures étiquettes de vin<br>au monde</h1><br><br>
     <p class="sub">Conçues et produites entre l’Italie et la France. Détail extrême, reliefs tactiles, délais de livraison rapides.</p>
-   <br>
+   
     <div class="floating-badges">
         <a class="chip" role="listitem">🇫🇷 Made in Rhône-Alpes</a>
       <a class="chip" role="listitem">🚚 Consegne rapide</a>
 </div>
-
+    <br><br>
+    <div class="floating-badges">
+      <a class="chip" role="listitem" href="#finiture">Hot foil multiplo</a>
+      <a class="chip" role="listitem" href="#finiture">Rilievo 3D</a>
+      <a class="chip" role="listitem" href="#finiture">Fustella laser</a>
+      <a class="chip" role="listitem" href="#contatti">Tirature flessibili</a>
+    </div>
   </section>
 
   <!-- STICKY ZOOM -->
@@ -887,23 +857,30 @@ Envoyez-nous un DM, on répond vite !</p>
   </footer>
 
   <!-- FAB + Bottom Sheet per contatto mobile -->
-<button class="fab-contact" id="fabContact">Contattaci</button>
-
-<aside class="mobile-sheet" id="mobileSheet" aria-hidden="true">
-  <div class="grab" aria-hidden="true"></div>
-  <div class="inner">
-    <h3>Scrivici</h3>
-    <form id="mobileContactForm">
-      <div class="field"><label for="m_nome">Nome</label><input id="m_nome" name="nome" required></div>
-      <div class="field"><label for="m_email">Email</label><input id="m_email" type="email" name="email" required></div>
-      <div class="field"><label for="m_msg">Messaggio</label><textarea id="m_msg" name="messaggio" rows="4" required></textarea></div>
-      <div class="actions">
-        <button type="button" class="btn ghost" id="closeSheet">Chiudi</button>
-        <button type="submit" class="btn primary">Invia</button>
-      </div>
-    </form>
+  <button class="fab-contact" id="fabContact" aria-controls="mobileSheet" aria-expanded="false">Contattaci</button>
+  <aside class="mobile-sheet" id="mobileSheet" aria-hidden="true">
+    <div class="grab" aria-hidden="true"></div>
+    <div class="inner">
+      <h3>Scrivici</h3>
+    <form id="contactForm">
+  <div class="field">
+    <label for="nome">Nome</label>
+    <input id="nome" name="nome" required>
   </div>
-</aside>
+  <div class="field">
+    <label for="email">Email</label>
+    <input id="email" type="email" name="email" required>
+  </div>
+  <div class="field" style="grid-column:1 / -1">
+    <label for="messaggio">Messaggio</label>
+    <textarea id="messaggio" name="messaggio" rows="4" required></textarea>
+  </div>
+  <div class="actions">
+    <button type="submit" class="btn primary">Invia</button>
+  </div>
+</form>
+    </div>
+  </aside>
 
   <!-- Sticky CTA banner (mobile) -->
   <div class="sticky-cta" id="stickyCta" role="region" aria-label="Richiedi campioni">
@@ -987,7 +964,7 @@ Finiture: ${fin}
 
 Messaggio:
 ${data.get('messaggio')||''}`;
-      const mail = `mailto:info@eultrapixel.fr?subject=${encodeURIComponent('Richiesta etichette')}&&body=${encodeURIComponent(body)}`;
+      const mail = `mailto:info@eultrapixel.fr.example?subject=${encodeURIComponent('Richiesta etichette')}&&body=${encodeURIComponent(body)}`;
       window.location.href = mail;
     });
   })();
@@ -1023,7 +1000,7 @@ ${data.get('messaggio')||''}`;
       e.preventDefault();
       var data = new FormData(form);
       var body = "Nome: " + data.get('nome') + "\nEmail: " + data.get('email') + "\n\nMessaggio:\n" + (data.get('messaggio')||'');
-      var mail = "mailto:info@ultrapixel.fr?subject=" + encodeURIComponent("Richiesta etichette (mobile)") + "&&body=" + encodeURIComponent(body);
+      var mail = "mailto:info@ultrapixel.fr.example?subject=" + encodeURIComponent("Richiesta etichette (mobile)") + "&&body=" + encodeURIComponent(body);
       window.location.href = mail;
       closeSheet();
     });
