@@ -748,6 +748,33 @@ footer {
 
 .mobile-sheet .inner {
   padding: 16px 12px 20px;
+  position: relative;
+}
+
+.mobile-sheet .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.mobile-sheet .close-btn:hover {
+  background: rgba(255,255,255,.2);
+}
+
+.mobile-sheet .close-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--text);
 }
 
 .mobile-sheet h3 {
@@ -1510,7 +1537,8 @@ Messaggio: ${data.get('messaggio') || ''}`;
   const fab = document.getElementById('fabContact');
   const sheet = document.getElementById('mobileSheet');
   const form = document.getElementById('contactForm');
-  if (!fab || !sheet || !form) return;
+  const closeBtn = document.querySelector('.mobile-sheet .close-btn');
+  if (!fab || !sheet || !form || !closeBtn) return;
 
   const open = () => {
     sheet.classList.add('open');
@@ -1527,6 +1555,7 @@ Messaggio: ${data.get('messaggio') || ''}`;
   sheet.addEventListener('click', (e) => {
     if (e.target === sheet) close();
   });
+  closeBtn.addEventListener('click', close);
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -1538,6 +1567,14 @@ Messaggio: ${data.get('messaggio') || ''}`;
     window.location.href = mail;
     close();
   });
+
+  // Close sheet on resize to desktop
+  window.addEventListener('resize', () => {
+    if (window.matchMedia('(min-width: 561px)').matches) {
+      close();
+    }
+  }, { passive: true });
+})();
 
   // Close sheet on resize to desktop
   window.addEventListener('resize', () => {
