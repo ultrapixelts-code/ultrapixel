@@ -1527,7 +1527,7 @@ Telefono: ${data.get('telefono') || ''}
 Tiratura: ${data.get('tiratura') || ''}
 Finiture: ${fin}
 Messaggio: ${data.get('messaggio') || ''}`;
-      const mail = `mailto:info@ultrapixel.fr.example?subject=${encodeURIComponent('Richiesta etichette')}&body=${encodeURIComponent(body)}`;
+      const mail = `mailto:info@ultrapixel.fr?subject=${encodeURIComponent('Richiesta etichette')}&body=${encodeURIComponent(body)}`;
       window.location.href = mail;
     });
   })();
@@ -1563,7 +1563,7 @@ Messaggio: ${data.get('messaggio') || ''}`;
     const body = `Nome: ${data.get('nome') || ''}
 Email: ${data.get('email') || ''}
 Messaggio: ${data.get('messaggio') || ''}`;
-    const mail = `mailto:info@ultrapixel.fr.example?subject=${encodeURIComponent('Richiesta etichette (mobile)')}&body=${encodeURIComponent(body)}`;
+    const mail = `mailto:info@ultrapixel.fr?subject=${encodeURIComponent('Richiesta etichette (mobile)')}&body=${encodeURIComponent(body)}`;
     window.location.href = mail;
     close();
   });
