@@ -855,15 +855,15 @@ html, body{ overflow-x:hidden; }
 }
 
 /* L'hero ha un pelo di margine extra per sicurezza */
-.hero{ padding-top: calc(var(--header-h) + 0px); }
+.hero{ padding-top: calc(var(--header-h) + 10px); }
 @media (max-width:720px){
-  .hero{ padding-top: calc(var(--header-h) + 0px); }
+  .hero{ padding-top: calc(var(--header-h) + 10px); }
 }
 /* ——— Spingi giù l’hero quando l’header cresce ——— */
 @media (max-width: 720px){
   /* più spazio sopra al contenuto dell’hero */
   .hero{
-    padding-top: calc(var(--header-h) + 28px) !important;
+    padding-top: calc(var(--header-h) + 10px) !important;
     min-height: 130svh; /* un filo più alto per non comprimere l’immagine */
   }
 
@@ -877,11 +877,11 @@ html, body{ overflow-x:hidden; }
   /* sottotitolo con respiro */
   .sub{
     font-size: 15.5px;
-    margin-top: 14px;
+    margin-top: 5px;
   }
 
   /* abbassa lievemente l’oggetto “bottiglia/orbit” */
-  .orbit{ transform: translateY(18px); }
+  .orbit{ transform: translateY(5px); }
 }
 /* ---- HEADER DINAMICO + WRAP MENU ---- */
 :root{ --header-h: 64px; }  /* verrà aggiornato via JS */
@@ -925,8 +925,8 @@ section[id]::before,
 .contact::before,
 .social-cta::before{
   content:""; display:block;
-  height: calc(var(--header-h) + 16px);
-  margin-top: calc(-1 * (var(--header-h) + 16px));
+  height: calc(var(--header-h) + 5px);
+  margin-top: calc(-1 * (var(--header-h) + 5px));
   visibility:hidden; pointer-events:none;
 }
 
@@ -936,15 +936,15 @@ html, body{ overflow-x:hidden; }
 /* ---- HERO: titolo più in alto, responsive ---- */
 .hero{
   /* solo quanto basta per evitare che il menu lo copra */
-  padding-top: calc(var(--header-h) + 1.5vh) !important;
-  min-height: 118svh; /* leggermente più basso di prima */
+  padding-top: calc(var(--header-h) - 10vh) !important;
+  min-height: 100svh; /* leggermente più basso di prima */
 }
 
 @media (max-width: 720px){
   .hero{
     /* su mobile ancora meno spazio */
-    padding-top: calc(var(--header-h) + 1vh) !important;
-    min-height: 115svh;
+    padding-top: calc(var(--header-h) - 10vh) !important;
+    min-height: 100svh;
   }
 
   /* titolo un po’ più grande ma vicino all’immagine */
