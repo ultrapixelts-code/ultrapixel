@@ -641,6 +641,41 @@ footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rg
   .chip{ height:34px; padding:0 12px; font-size:12.6px; }
   .badges-stack{ bottom:8%; gap:10px; }
 }
+/* Griglia robusta: va in riga, poi si adatta (2x su mobile) */
+.badges-grid{
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, max-content));
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Garanzia: le chip NON diventano blocchi a tutta larghezza */
+.badges-grid .chip{
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+/* Mobile: 2 per riga */
+@media (max-width: 720px){
+  .badges-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .badges-grid .chip{
+    width: 100%;
+    padding: 0 12px;
+    height: 34px;
+  }
+}
+
+/* Se esiste ancora il vecchio contenitore .chips dentro l'hero, spegnilo per evitare conflitti */
+.hero > .chips { display: none !important; }
 
 </style>
 
@@ -676,12 +711,12 @@ footer{padding:40px 24px; color:#9a9aa0; font-size:13px; border-top:1px solid rg
     <a class="badge">🚚 Consegne rapide</a>
   </div>
 
-  <div class="badges-row chips">
-    <a class="chip" href="#finiture">Hot foil multiplo</a>
-    <a class="chip" href="#finiture">Rilievo 3D</a>
-    <a class="chip" href="#finiture">Fustella laser</a>
-    <a class="chip" href="#contatti">Tirature flessibili</a>
-  </div>
+  <div class="badges-grid">
+  <a class="chip" href="#finiture">Hot foil multiplo</a>
+  <a class="chip" href="#finiture">Rilievo 3D</a>
+  <a class="chip" href="#finiture">Fustella laser</a>
+  <a class="chip" href="#contatti">Tirature flessibili</a>
+</div>
 </div>
   </section>
 
