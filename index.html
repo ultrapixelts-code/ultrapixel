@@ -933,7 +933,32 @@ section[id]::before,
 /* ---- ROBUSTEZZA MOBILE ---- */
 img, video{ max-width:100%; height:auto; }
 html, body{ overflow-x:hidden; }
+/* ---- HERO: titolo più in alto, responsive ---- */
+.hero{
+  /* solo quanto basta per evitare che il menu lo copra */
+  padding-top: calc(var(--header-h) + 1.5vh) !important;
+  min-height: 118svh; /* leggermente più basso di prima */
+}
 
+@media (max-width: 720px){
+  .hero{
+    /* su mobile ancora meno spazio */
+    padding-top: calc(var(--header-h) + 1vh) !important;
+    min-height: 115svh;
+  }
+
+  /* titolo un po’ più grande ma vicino all’immagine */
+  .hero h1{
+    font-size: clamp(34px, 7.2vw, 56px);
+    margin-top: 0;
+    line-height: 0.95;
+  }
+
+  .sub{
+    margin-top: 10px;
+    font-size: 15px;
+  }
+}
 </style>
 
 </head>
