@@ -965,18 +965,7 @@ html, body{ overflow-x:hidden; }
 #zoom::before{ display:none !important; }
 #zoom{ scroll-margin-top: calc(var(--header-h) + 16px) !important; }
 
-/* Lo sticky non deve stare sopra alle sezioni successive */
-.sticky-section{ position:relative; z-index:0; }
-.sticky{ position:sticky; top:0; z-index:0; }
 
-/* Le sezioni dopo lo zoom possono essere cliccate senza overlay */
-.section, .testimonials, .foil-hero, .social-cta, .contact, footer{
-  position:relative; z-index:1;
-}
-
-/* Evita che il layer sticky intercetti click fuori dalla label */
-.sticky{ pointer-events:none; }
-.zoom-label, .zoom-callout{ pointer-events:auto; }
 </style>
 
 </head>
