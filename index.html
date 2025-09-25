@@ -1298,17 +1298,115 @@ footer {
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="section" style="display: flex; justify-content: center">
-    <div class="card" style="text-align: center; max-width: 900px">
-      <h3 style="font-size: clamp(28px, 4vw, 52px); margin: 0 0 10px">Parlons de votre vin</h3>
-      <p class="lead">Racontez-nous votre histoire. Nous vous enverrons des propositions et des échantillons sous quelques jours depuis la région lyonnaise.</p>
-      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap">
-        <a class="chip" href="#contatti" style="cursor: pointer">Discutons ensemble?</a>
-        <a class="chip" href="mailto:hello@etiquettes-ra.example?subject=Richiesta%20campioni">Demandez des échantillons</a>
+<!-- CTA (REPLACE THIS WHOLE SECTION) -->
+<section class="section" style="display:flex;justify-content:center">
+  <style>
+    .flow{
+      display:grid;
+      grid-template-columns: 1fr 52px 1fr;
+      gap:16px;
+      align-items:center;
+      margin:22px 0 8px;
+    }
+    .step{
+      position:relative;
+      background: var(--card);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:20px;
+      overflow:hidden;
+      min-height:240px;
+      box-shadow:0 18px 60px rgba(0,0,0,.45);
+    }
+    .step img{
+      position:absolute; inset:0; width:100%; height:100%;
+      object-fit:cover; filter:contrast(105%);
+      transition: transform .5s ease;
+    }
+    .step:hover img{ transform: scale(1.04); }
+    .step .tag{
+      position:absolute; left:12px; top:12px;
+      font-size:12px; font-weight:800; letter-spacing:.2px;
+      padding:6px 10px; border-radius:999px;
+      background:rgba(0,0,0,.55); border:1px solid rgba(255,255,255,.16);
+    }
+    .step .bar{
+      position:absolute; right:12px; bottom:12px;
+      padding:6px 10px; border-radius:10px; font-size:12px;
+      background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.12);
+    }
+    .arrow{
+      display:grid; place-items:center; height:100%;
+      color:#fff; opacity:.7;
+    }
+    .arrow svg{ width:42px; height:42px; }
+    .cta-row{
+      display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:16px;
+    }
+    .cta-kicker{
+      display:inline-block; margin-bottom:10px; font-size:12px; letter-spacing:.25px;
+      padding:6px 10px; border-radius:999px; background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.18);
+    }
+    @media (max-width:720px){
+      .flow{ grid-template-columns:1fr; }
+      .arrow{ height:52px; transform: rotate(90deg); }
+      .step{ min-height:200px; }
+    }
+  </style>
+
+  <div class="card" style="text-align:center; max-width:1100px; width:100%">
+    <span class="cta-kicker">Transformation express depuis la région lyonnaise</span>
+    <h3 style="font-size:clamp(28px,4vw,52px); margin:0 0 8px">
+      Parlons de votre vin — et transformons votre étiquette
+    </h3>
+    <p class="lead" style="margin:0 auto; max-width:800px">
+      Si votre étiquette actuelle est <em>banale</em> (ou franchement ratée), on la refait de A à Z : concept, papiers, <strong>reliefs 3D</strong>, <strong>dorure à chaud</strong>, vernis, découpe laser.
+      Vous recevez des <strong>propositions + échantillons</strong> en quelques jours.
+    </p>
+
+    <!-- BEFORE ➜ CONSULT ➜ AFTER -->
+    <div class="flow" aria-label="Avant / Conseil / Après">
+      <!-- BEFORE -->
+      <figure class="step" role="img" aria-label="Avant : étiquette pauvre et peu lisible">
+        <img src="avant.png" alt="Avant : étiquette banale, peu lisible, sans finitions">
+        <figcaption class="tag">Avant</figcaption>
+        <div class="bar">Étiquette « bof », couleurs plates, zéro impact.</div>
+      </figure>
+
+      <!-- ARROW -->
+      <div class="arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 12h11.6l-3.8-3.8 1.4-1.4L21 12l-6.8 5.2-1.4-1.4 3.8-3.8H5z"/></svg>
       </div>
+
+      <!-- AFTER -->
+      <figure class="step" role="img" aria-label="Après : étiquette premium avec finitions">
+        <img src="apres.png" alt="Après : étiquette premium con rilievo, foil, vernici selettive">
+        <figcaption class="tag" style="background:var(--accent); color:#fff; border:none">Après</figcaption>
+        <div class="bar">Relief 3D + Foil multiplo + Vernis — effet WOW.</div>
+      </figure>
     </div>
-  </section>
+
+    <p class="lead" style="margin:8px auto 0; max-width:760px">
+      Un consultant dédié vous conseille, puis on vous envoie des maquettes et des échantillons réels à valider.
+    </p>
+
+    <!-- ULTRA-CTA -->
+    <div class="cta-row">
+      <a class="chip" style="cursor:pointer; background:var(--accent); color:#fff; border:none"
+         href="https://wa.me/+393316436117?text=Bonjour%20UltraPixel%2C%20aidez-moi%20%C3%A0%20am%C3%A9liorer%20mon%20%C3%A9tiquette%20vin">
+        ⚡ Transformer mon étiquette maintenant
+      </a>
+      <a class="chip" href="#contatti">Parler à un consultant</a>
+      <a class="chip" href="mailto:info@ultrapixel.fr?subject=Demande%20d%E2%80%99%C3%A9chantillons&body=Bonjour%2C%20voici%20mon%20domaine%20et%20mon%20vin%3A%20...%0AJe%20souhaite%20recevoir%20des%20%C3%A9chantillons%20avec%20relief%2C%20dorure%2C%20vernis%20et%20d%C3%A9coupe.">
+        Demander des échantillons
+      </a>
+    </div>
+
+    <p style="color:var(--muted); font-size:12.5px; margin-top:10px">
+      Astuce : envoyez-nous une photo de votre étiquette actuelle — on vous renvoie une version « après » avec finitions.
+    </p>
+  </div>
+</section>
 
   <!-- SOCIAL CTA -->
   <section id="contatti" class="social-cta" aria-label="Seguici e contattaci">
@@ -1338,7 +1436,7 @@ footer {
       <div>
         <div class="social-card">
           <strong>Vous préférez WhatsApp ?</strong>
-          <p class="lead" style="margin: 8px 0 16px">Envoyez-nous une photo de votre étiquette ou de votre vin, nous vous répondrons avec une proposition.</p>
+          <p class="lead" style="margin: 8px 0 16px">Envoyez-nous une photo de votre étiquette actuelle, et votre consultant dédié vous proposera une transformation premium.</p>
           <a class="s-btn" href="https://wa.me/+393316436117?text=Ciao%20UltraPixel%2C%20vorrei%20informazioni%20su%20etichette%20vino" target="_blank" rel="noopener" aria-label="WhatsApp">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.5 3.5A11 11 0 0 0 2 18.6L1 23l4.6-1.2A11 11 0 1 0 20.5 3.5Zm-8.7 2a9 9 0 0 1 7.8 13.5l-.3.5-.8.2a9 9 0 0 1-8-1.3l-.5-.3-2.8.7.7-2.7-.3-.6a9 9 0 0 1 3.5-11Z"/></svg>
             WhatsApp
@@ -1355,7 +1453,8 @@ footer {
   </section>
 
   <footer>
-    © <span id="year"></span> Étiquettes Rhônalpines • Rhône-Alpes, FR • Vicino a Lione — Tutti i diritti riservati.
+    © <span id="year"></span> UltraPixel France, 11 rue Pouteau - 69001 Lyon, France
+
   </footer>
 
   <!-- FAB + Bottom Sheet -->
