@@ -10,7 +10,7 @@ const sheet=$("sheet"),Lp=$("Lpaper"),Lpr=$("Lprint"),Lg=$("Lgold"),Ls=$("Lscree
 const seps=[...Lpr.querySelectorAll('.sp')], stns=inks.map(c=>{const e=document.createElement('div');e.className='stn';e.style.background=c;$('stations').appendChild(e);return e});
 const zs=[sheet,Lpr,Lg,Ls,Lf], mats=["Natural paper","PP white","PET clear","Metallised","Natural paper"];
 
-let lx=.35, queued=false;
+let lx=.35, ly=.4, queued=false;
 function frame(){
   queued=false;
   const film=$("film"), vw=innerWidth, vh=$("stage").clientHeight, r=film.getBoundingClientRect();
@@ -19,11 +19,12 @@ function frame(){
   const c=Math.round(t); panels.forEach(p=>p.classList.toggle("on",+p.dataset.c===c));
 
   /* camera */
-  const z=ease(seg(t,.1,.95))*(1-ease(seg(t,7.6,8.5)));
-  const s0=Math.min(vh*(wide?.84:vw<380?.38:.44)/1026,vw*.6/387), s1=Math.min(vh*(wide?.68:.46)/375.5,vw*(wide?.4:.7)/300);
-  const s=mix(s0,s1,z), ax=wide?vw*mix(.66,.68,z):vw*.5, ay=wide?vh*.5:vh*mix(vw<380?.78:.74,.36,z);
-  $("rig").style.transform=`translate(${ax-193.5}px,${ay-643+130*s0*(1-z)}px) scale(${s})`;
-  const off=seg(t,.8,1.15)*(1-seg(t,7.7,8.2));
+  const zin=ease(seg(t,.1,.95)), zout=ease(seg(t,7.6,8.5)), end=t>4, z=zin*(1-zout);
+  const s0=Math.min(vh*(wide?.84:vw<380?.38:.44)/1026,vw*.6/387), s1=Math.min(vh*(wide?.68:.46)/375.5,vw*(wide?.4:.7)/300), sh=Math.min(vh*(wide?.6:.34)/375.5,vw*(wide?.34:.62)/300);
+  /* the label opens alone, suspended; the bottle only arrives with the result */
+  const s=end?mix(s1,s0,zout):mix(sh,s1,zin), ax=wide?vw*.68:vw*.5, ay=wide?vh*.5:vh*(end?mix(.36,vw<380?.78:.74,zout):mix(.77,.36,zin));
+  $("rig").style.transform=`translate(${ax-193.5}px,${ay-643+(end?130*s0*zout:0)}px) scale(${s})`;
+  const off=1-seg(t,7.7,8.2);
   $("bottle").style.opacity=1-off; $("curve").style.opacity=1-off;
 
   /* state: finished label at start and end; built pass by pass in between */
@@ -47,7 +48,9 @@ function frame(){
 
   /* side view: the passes pull apart, then the relief lands on top */
   const sv=ease(seg(t,4.4,4.8))*(1-ease(seg(t,5.4,5.8)));
-  $("label").style.transform=sv?`perspective(1300px) rotateY(${-56*sv}deg) rotateX(${7*sv}deg)`:"none";
+  const hk=1-seg(t,.15,.7);
+  $("label").style.transform=sv?`perspective(1300px) rotateY(${-56*sv}deg) rotateX(${7*sv}deg)`:hk>0?`perspective(1200px) rotateY(${(lx-.5)*18*hk}deg) rotateX(${-(ly-.5)*12*hk}deg)`:"none";
+  const rl=$("relit"); rl.style.opacity=build?0:.9; rl.style.setProperty("--lx",(lx*100).toFixed(1)+"%"); rl.style.setProperty("--ly",(ly*100).toFixed(1)+"%");
   zs.forEach((e,i)=>e.style.transform=sv?`translateZ(${i*26*sv}px)`:"none"); glint.style.transform=sv?`translateZ(${4*26*sv+1}px)`:"none";
   $("shadow").style.opacity=.3*off*(1-sv);
 
@@ -63,7 +66,7 @@ function frame(){
 }
 function ask(){if(!queued){queued=true;requestAnimationFrame(frame)}}
 addEventListener("scroll",ask,{passive:true}); addEventListener("resize",ask);
-addEventListener("pointermove",e=>{lx=e.clientX/innerWidth;ask()},{passive:true});
+addEventListener("pointermove",e=>{lx=e.clientX/innerWidth;ly=e.clientY/innerHeight;ask()},{passive:true});
 addEventListener("load",ask); frame();
 
 })();

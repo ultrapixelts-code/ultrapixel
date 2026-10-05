@@ -58,7 +58,11 @@
     "hero": {
       "h1": "We make labels impossible to ignore.",
       "sub": "Premium and technical labels engineered in Italy for brands across Europe.",
-      "sectors": "Wine & Spirits · Food · Cosmetics · Nutraceuticals · Pharma · Industrial & Chemical"
+      "sectors": "Wine & Spirits · Food · Cosmetics · Nutraceuticals · Pharma · Industrial & Chemical",
+      "tag": "Label / Material system 001",
+      "chain": "Substrate / Digital / Screen / Foil / Relief / Cut",
+      "h1a": "We make labels",
+      "h1b": "impossible to ignore."
     },
     "anatomy": {
       "eyebrow": "Anatomy of a label",
@@ -154,13 +158,16 @@
     "sectors": {
       "eyebrow": "Applications",
       "h2": "The same precision, on every kind of product.",
-      "p": "Premium decoration for the shelf. Technical performance for the production line."
+      "p": "Premium decoration for the shelf. Technical performance for the production line.",
+      "enter": "Enter sector"
     },
     "position": {
       "eyebrow": "From Trieste to Europe",
       "h2": "Made in Trieste. Delivered across Europe.",
       "p": "UltraPixel produces premium and technical self-adhesive labels for brands across Europe, combining digital printing, special finishing, colour control and flexible production.",
-      "tag": "One production partner. Europe-wide service."
+      "tag": "One production partner. Europe-wide service.",
+      "mega": "Trieste → Europe",
+      "chain": "Production / Logistics / Service"
     },
     "numbers": [
       [
@@ -195,7 +202,14 @@
       ],
       "ref": "Reference",
       "meas": "Measured",
-      "axis": "Wavelength, nm"
+      "axis": "Wavelength, nm",
+      "mega": "Colour is data.",
+      "flow": [
+        "Target colour",
+        "Spectral reading",
+        "Comparison",
+        "Production"
+      ]
     },
     "work": {
       "eyebrow": "Selected work",
@@ -220,6 +234,79 @@
     "partner": {
       "q": "Interested in representing UltraPixel?",
       "cta": "Become a commercial partner"
+    },
+    "rail": [
+      "Substrate",
+      "Digital",
+      "Metal",
+      "Screen",
+      "Relief",
+      "Cut",
+      "Measure",
+      "Result"
+    ],
+    "lab": {
+      "eyebrow": "UltraPixel Material Lab",
+      "macro": "Concept label macro",
+      "data": "Generated sample",
+      "groups": [
+        [
+          "Digital",
+          [
+            "digital-printing",
+            "reverse-printing"
+          ],
+          "m-digital.webp"
+        ],
+        [
+          "Foil",
+          [
+            "hot-foil"
+          ],
+          "m-foil.webp"
+        ],
+        [
+          "Screen",
+          [
+            "screen-printing",
+            "tactile",
+            "lamination"
+          ],
+          "m-screen.webp"
+        ],
+        [
+          "Relief",
+          [
+            "embossing",
+            "debossing"
+          ],
+          "m-relief.webp"
+        ],
+        [
+          "Texture",
+          [
+            "microtextures"
+          ],
+          "m-texture.webp"
+        ],
+        [
+          "Cut",
+          [
+            "die-cutting",
+            "multilayer"
+          ],
+          "m-cut.webp"
+        ],
+        [
+          "Data",
+          [
+            "variable-data",
+            "numbering",
+            "colour-control"
+          ],
+          ""
+        ]
+      ]
     }
   },
   "sectors": [
@@ -246,7 +333,8 @@
       "meta": {
         "title": "Wine and spirits labels | UltraPixel",
         "description": "Premium wine and spirits labels: textured papers, hot foil, embossing, tactile varnish and materials selected for ice buckets. Made in Italy, delivered across Europe."
-      }
+      },
+      "matter": "Paper fibre + foil"
     },
     {
       "slug": "food-labels",
@@ -270,7 +358,8 @@
       "meta": {
         "title": "Food labels | UltraPixel",
         "description": "Self-adhesive food labels for industrial production and automatic application, with materials selected for cold, humidity and oils. Made in Italy."
-      }
+      },
+      "matter": "Film + precision"
     },
     {
       "slug": "cosmetics-nutraceuticals",
@@ -294,7 +383,8 @@
       "meta": {
         "title": "Cosmetics and nutraceutical labels | UltraPixel",
         "description": "Cosmetics and nutraceutical labels on clear and premium materials, with opaque white, foil and tactile effects, also in small batches."
-      }
+      },
+      "matter": "Transparency + opaque white"
     },
     {
       "slug": "pharma-labels",
@@ -318,7 +408,8 @@
       "meta": {
         "title": "Pharma labels | UltraPixel",
         "description": "Self-adhesive pharma labels printed for precision and readability, with variable data, traceability and colour control."
-      }
+      },
+      "matter": "Grid + microtext + data"
     },
     {
       "slug": "industrial-chemical",
@@ -342,7 +433,8 @@
       "meta": {
         "title": "Industrial and chemical labels | UltraPixel",
         "description": "Industrial and chemical labels on technical materials, with adhesives selected for difficult surfaces, variable data, QR codes and traceability."
-      }
+      },
+      "matter": "Structure + adhesion + codes"
     }
   ],
   "technologies": {
@@ -657,7 +749,11 @@
       "h1": "Wine and spirits labels made to be picked up.",
       "lead": "Textured papers, hot foil, embossing and tactile varnish, printed and finished in Italy for wineries, distilleries and their partners across Europe.",
       "cta1": "Request wine label samples",
-      "cta2": "Request a quote"
+      "cta2": "Request a quote",
+      "xl": "Wine & Spirits",
+      "subh": "labels made to be picked up.",
+      "sector": "Sector / 01",
+      "system": "Premium label systems"
     },
     "for": {
       "eyebrow": "Who we work with",
@@ -684,32 +780,44 @@
         {
           "shot": "W-02",
           "title": "Natural and textured papers",
-          "text": "Uncoated, laid and cotton-feel stocks that give a label its character before any ink is on it."
+          "text": "Uncoated, laid and cotton-feel stocks that give a label its character before any ink is on it.",
+          "fx": "",
+          "macro": "m-paper.webp"
         },
         {
           "shot": "W-03",
           "title": "Hot foil",
-          "text": "Gold, silver, holographic or custom, for logos, frames and fine lettering."
+          "text": "Gold, silver, holographic or custom, for logos, frames and fine lettering.",
+          "fx": "foil",
+          "macro": "m-foil.webp"
         },
         {
           "shot": "W-04",
           "title": "Embossing and debossing",
-          "text": "Relief raised from the paper or pressed into it, alone or in register with foil."
+          "text": "Relief raised from the paper or pressed into it, alone or in register with foil.",
+          "fx": "graze",
+          "macro": "m-relief.webp"
         },
         {
           "shot": "W-05",
           "title": "Screen printing and tactile varnish",
-          "text": "Dense opaque colour and thick varnish you can feel under a fingertip."
+          "text": "Dense opaque colour and thick varnish you can feel under a fingertip.",
+          "fx": "",
+          "macro": "m-screen.webp"
         },
         {
           "shot": "W-06",
           "title": "Shaped die-cutting",
-          "text": "Profiles that follow the design: points, curves and recesses."
+          "text": "Profiles that follow the design: points, curves and recesses.",
+          "fx": "cut",
+          "macro": ""
         },
         {
           "shot": "W-07",
           "title": "Everything in register",
-          "text": "Print, foil, varnish and relief landing in the same place, label after label."
+          "text": "Print, foil, varnish and relief landing in the same place, label after label.",
+          "fx": "",
+          "macro": "m-register.webp"
         }
       ]
     },
@@ -823,6 +931,7 @@
         ]
       ]
     },
-    "slot": "Photo to come"
+    "slot": "Photo to come",
+    "macroNote": "Concept macro"
   }
 }

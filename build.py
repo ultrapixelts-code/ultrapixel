@@ -359,5 +359,208 @@ def build():
     print(f"built {len(paths)} pages")
 
 
+# ================================================================ MATERIAL INTELLIGENCE (home + wine & spirits)
+def shell_ml(C, P, path, meta, body, extra_head="", extra_foot=""):
+    s, ui = C["site"], C["ui"]; url = s["url"].rstrip("/") + path
+    nav = "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
+    contact = "".join(f"<li>{x}</li>" for x in (
+        e(s["address"]), f'<a href="mailto:{e(s["email"])}">{e(s["email"])}</a>' if s["email"] else "", f'<a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a>' if s["phone"] else "",
+        f'<a href="{e(s["linkedin"])}" rel="noopener">LinkedIn</a>' if s["linkedin"] else "", f'<a href="{e(s["instagram"])}" rel="noopener">Instagram</a>' if s["instagram"] else "") if x)
+    secs = "".join(f'<li><a href="{P}{x["slug"]}/">{e(x["title"])}</a></li>' for x in C["sectors"])
+    return f'''<!doctype html>
+<html lang="{C["lang"]}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>{e(meta["title"])}</title>
+<meta name="description" content="{e(meta["description"])}">
+<link rel="canonical" href="{url}">
+{'<meta name="robots" content="noindex">' if s["noindex"] else ""}
+<meta property="og:type" content="website"><meta property="og:title" content="{e(meta["title"])}"><meta property="og:description" content="{e(meta["description"])}"><meta property="og:url" content="{url}"><meta property="og:image" content="{s["url"].rstrip("/")}/assets/macro-1.webp">
+<meta name="theme-color" content="#F4F4F0">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/ml.css">
+{extra_head}
+</head>
+<body>
+<header class="nav2" id="nav2">
+  <a class="logo" href="{P}">UltraPixel<sup>TS / IT</sup></a>
+  <nav id="nav">{nav}<a class="only-m" href="{P}samples/">{e(ui["requestSamples"])} ↗</a></nav>
+  <a class="cta" href="{P}samples/">{e(ui["requestSamples"])} ↗</a>
+  <button class="burger" id="burger" aria-expanded="false" aria-controls="nav">{e(ui["menu"])}</button>
+</header>
+<main>
+{body}
+</main>
+<hr class="spl">
+<div class="partner2"><p class="mi">{e(C["home"]["partner"]["q"])}</p><a class="cta" href="{P}partners/">{e(C["home"]["partner"]["cta"])} →</a></div>
+<hr class="spl">
+<footer class="ftr2">
+  <div class="cols">
+    <div><span class="mi">{e(s["name"])}</span><ul>{contact}</ul></div>
+    <div><span class="mi">{e(ui["sectors"])}</span><ul>{secs}</ul></div>
+    <div><span class="mi">Index</span><ul><li><a href="{P}technologies/">{e(ui["technologies"])}</a></li><li><a href="{P}work/">{e(ui["work"])}</a></li><li><a href="{P}about/">{e(ui["about"])}</a></li><li><a href="{P}contact/">{e(ui["contact"])}</a></li></ul></div>
+    <div><span class="mi">{e(ui["contact"])}</span><ul><li><a href="{P}samples/">{e(ui["requestSamples"])}</a></li><li><a href="{P}contact/?topic=quote">{e(ui["requestQuote"])}</a></li><li><a href="{P}partners/">{e(ui["partners"])}</a></li></ul></div>
+  </div>
+  <div class="wm" aria-hidden="true">UltraPixel</div>
+  <p class="mi dim legal">© UltraPixel / {e(s["address"])}</p>
+</footer>
+<script src="/assets/ml.js" defer></script>
+{extra_foot}
+</body>
+</html>
+'''
+
+
+def top(eyebrow, h2, p="", cls="h2"):
+    return f'<header class="top"><span class="mi">{e(eyebrow)}</span><h2 class="{cls} rv">{e(h2)}</h2>{f"<p class=lead>{e(p)}</p>" if p else ""}</header>'
+
+
+def talk_ml(C, P):
+    ui, h = C["ui"], C["home"]
+    return (f'<hr class="spl"><section class="sec talk"><h2 class="mega rv">{e(h["contact"]["h2a"])}<span>{e(h["contact"]["h2b"])}</span></h2>'
+            f'<div class="ctas" style="margin-top:clamp(28px,4vw,56px)"><a class="cta pill" href="{P}contact/?topic=quote">{e(ui["requestQuote"])} ↗</a><a class="cta pill ghost" href="{P}samples/">{e(ui["requestSamples"])} ↗</a>'
+            f'<a class="cta" href="{P}contact/?topic=specialist">{e(ui["talkSpecialist"])} →</a></div></section>')
+
+
+def viz(C, x):
+    ui = C["ui"]
+    if x["key"] == "wine":
+        inner = '<img class="flat" src="/assets/final.webp" alt="" loading="lazy" width="1120" height="1402" data-par>'; tag = ui["conceptLabel"]
+    else:
+        pos, svg = LABELS[x["key"]]; tag = ui["illustrative"]
+        inner = f'<div class="obj" data-par><img src="/assets/c-{x["key"]}.webp" alt="" loading="lazy" width="600" height="920"><div class="lb wrapc" style="{pos}">{svg}</div></div>'
+    return f'<div class="viz mat-{x["key"]}" data-light data-k="{x["key"]}">{inner}<span class="mi tagc">{e(tag)}</span><span class="mi code">{e(x["matter"])}</span></div>'
+
+
+def net_map(C):
+    import math
+    m = json.loads(rd("src/map-fine.json")); tx, ty = m["tx"], m["ty"]; out = ""
+    for i, (ang, L, bend) in enumerate(((178, 300, 22), (152, 330, -26), (124, 300, 20), (96, 250, -16), (62, 320, 24), (32, 300, -22), (-24, 260, 18), (-52, 210, -14), (206, 290, -20))):
+        a = math.radians(ang); x2, y2 = tx + L * math.cos(a), ty - L * math.sin(a)
+        cx, cy = (tx + x2) / 2 - bend * math.sin(a), (ty + y2) / 2 - bend * math.cos(a)
+        dd = f"M{tx} {ty}Q{cx:.1f} {cy:.1f} {x2:.1f} {y2:.1f}"
+        out += f'<path class="path" d="{dd}"/><path class="pulse" d="{dd}" style="animation-delay:{-i*0.47:.2f}s"/>'
+    return (f'<svg viewBox="0 0 {m["W"]} {m["H"]}" role="img" aria-label="Europe drawn in points, with Trieste as the node of origin">'
+            f'<defs><linearGradient id="specg" gradientUnits="userSpaceOnUse" x1="{tx-330}" x2="{tx+330}" y1="0" y2="0"><stop offset="0" stop-color="#22B8D6"/><stop offset=".4" stop-color="#6F5BE8"/><stop offset=".65" stop-color="#D9438F"/><stop offset="1" stop-color="#EBA43A"/></linearGradient></defs>'
+            f'<path class="dots" d="{m["d"]}"/>{out}<circle class="node" cx="{tx}" cy="{ty}" r="7"/><circle cx="{tx}" cy="{ty}" r="3.4" fill="#101214"/>'
+            f'<text x="{tx+12}" y="{ty+20}" font-family="DM Mono,monospace" font-size="11" letter-spacing="1.6" fill="#101214">TRIESTE</text></svg>')
+
+
+def home_ml(C, P):
+    h, ui = C["home"], C["ui"]; he = h["hero"]
+    hero = (f'<div class="panel hero on" data-c="0"><span class="mono">{e(he["tag"])}</span><h1>{e(he["h1a"])} <em>{e(he["h1b"])}</em></h1><p>{e(he["sub"])}</p>'
+            f'<div class="ctas"><a class="cta pill" href="{P}work/">{e(ui["exploreWork"])} ↗</a><a class="cta pill ghost" href="{P}samples/">{e(ui["requestSamples"])} ↗</a><a class="cta" href="{P}contact/">{e(ui["talkToUs"])} →</a></div>'
+            f'<div class="sys"><span class="mi">{e(he["chain"])}</span><span class="mi dim">{e(he["sectors"])}</span></div></div>')
+    rail = '<div class="rail" id="rail">' + "".join(f'<span data-c="{i+1}">{i+1:02d} {e(n.upper())}</span>' for i, n in enumerate(h["rail"])) + '</div><span class="mi tag-sys">UP / SEQ 01–08</span>'
+    film = rd("src/film.html").replace("{{HERO}}", hero).replace("{{RAIL}}", rail)
+    an = h["anatomy"]
+    pins = "".join(f'<span class="pin" data-i="{i}" style="left:{x}%;top:{y}%">{i+1}</span>' for i, (_, _, x, y) in enumerate(an["items"]))
+    lis = "".join(f'<li data-i="{i}"><b>{i+1:02d}</b><strong>{e(a)}</strong><span>{e(b)}</span></li>' for i, (a, b, _, _) in enumerate(an["items"]))
+    scenes = "".join(
+        f'<a class="scene" href="{P}{x["slug"]}/">{viz(C, x)}<div class="say"><span class="mi">{i+1:02d}</span><h3 class="rv">{e(x["title"])}</h3><p>{e(x["copy"])}</p><span class="cta">{e(h["sectors"]["enter"])} →</span></div></a>'
+        for i, x in enumerate(C["sectors"]))
+    def num(a):
+        d = "".join(ch for ch in a if ch.isdigit())
+        return f'<b data-count="{d}" data-suf="{e(a[len(d):])}">{e(a)}</b>' if a[:1].isdigit() else f"<b>{e(a)}</b>"
+    nums = "".join(f'<div>{num(a)}<span class="mi">{e(b)}</span></div>' for a, b in h["numbers"])
+    tech = {t["id"]: t for t in C["technologies"]["items"]}; lab = h["lab"]; r = random.Random(4)
+    datam = "".join(f'<b>N° {i:04d}</b> / LOT 000000 / SN {r.randrange(16**4):04X}-{r.randrange(16**4):04X} / ' for i in range(1, 90))
+    tabs = "".join(f'<button role="tab" data-t="{i}" data-cap="LAB / {i+1:02d} — {e(g[0].upper())}" aria-selected="{"true" if i == 0 else "false"}">{e(g[0])}<i>{len(g[1]):02d}</i></button>' for i, g in enumerate(lab["groups"]))
+    macros = "".join((f'<img data-t="{i}" class="{"on" if i == 0 else ""}" src="/assets/{g[2]}" alt="{e(g[0])} macro" loading="lazy" width="1400" height="1050">' if g[2] else f'<div data-t="{i}" class="datam">{datam}</div>') for i, g in enumerate(lab["groups"]))
+    lists = "".join(f'<div data-t="{i}" class="{"on" if i == 0 else ""}">' + "".join(f'<div class="row" id="{k}"><strong>{e(tech[k]["title"])}</strong><span>{e(tech[k]["text"])}</span></div>' for k in g[1]) + "</div>" for i, g in enumerate(lab["groups"]))
+    c = h["colour"]
+    flow = "".join(f'<span class="mi">{e(x)}</span>' + ('<span class="mi">→</span>' if i < len(c["flow"]) - 1 else "") for i, x in enumerate(c["flow"]))
+    curve = ('<svg class="curve" viewBox="0 0 1200 300" role="img" aria-label="A measured spectral curve drawn over its reference">'
+             '<defs><linearGradient id="specc" gradientUnits="userSpaceOnUse" x1="40" x2="1160" y1="0" y2="0"><stop offset="0" stop-color="#6F5BE8"/><stop offset=".3" stop-color="#22B8D6"/><stop offset=".62" stop-color="#EBA43A"/><stop offset="1" stop-color="#D9438F"/></linearGradient></defs>'
+             '<path class="ref" d="M40 250C200 246 300 236 420 200S600 70 760 52S1000 44 1160 40"/><path class="mea" pathLength="1" d="M40 252C200 247 300 239 420 204S600 74 760 55S1000 46 1160 43"/>'
+             + "".join(f'<text x="{40+i*373.3:.0f}" y="290" text-anchor="{"start" if i == 0 else "end" if i == 3 else "middle"}">{400+i*100} NM</text>' for i in range(4)) + "</svg>")
+    show = "".join(
+        f'<figure class="rv"><div class="im" data-light><img src="/assets/{e(w["image"])}" alt="{e(w["title"])}" loading="lazy" width="720" height="900" data-par></div>'
+        f'<figcaption><span class="mi">UP / {i+1:03d}</span><span class="t">{e(w["title"])}</span><span class="mi c">{e(" + ".join(w["finishes"]))}{" · " + e(w["badge"]) if w.get("badge") else ""}</span></figcaption></figure>'
+        for i, w in enumerate(C["work"]["items"]))
+    soc = "".join(f'<figure><img src="/assets/{e(t["image"])}" alt="" loading="lazy" width="720" height="900"><figcaption><span class="mi">{e(t["caption"])}</span><span class="mi dim">{e(t.get("badge", ""))}</span></figcaption></figure>' for t in C["social"])
+    po = h["position"]
+    body = f'''{film}
+<hr class="spl">
+<section class="sec w">{top(an["eyebrow"], an["h2"], an["p"])}
+ <div class="anat" id="anat"><figure><img src="/assets/final.webp" alt="UltraPixel concept label with numbered callouts" loading="lazy" width="1120" height="1402">{pins}</figure><ol>{lis}</ol></div>
+</section>
+<hr class="spl">
+<section class="sec" id="sectors">{top(h["sectors"]["eyebrow"], h["sectors"]["h2"], h["sectors"]["p"])}{scenes}</section>
+<hr class="spl">
+<section class="sec w"><div class="net"><h2 class="mega rv">{e(po["mega"])}</h2>
+ <div class="txt"><span class="mi">{e(po["chain"])}</span><p class="lead" style="color:var(--ink)">{e(po["h2"])}</p><p class="lead">{e(po["p"])}</p><span class="mi dim">{e(po["tag"])}</span></div>{net_map(C)}</div></section>
+<hr class="spl">
+<section class="sec t"><div class="nums">{nums}</div></section>
+<hr class="spl">
+<section class="sec w">{top(lab["eyebrow"], h["tech"]["h2"])}
+ <div class="lab"><div class="tabs" role="tablist">{tabs}</div><div class="stage2" data-light>{macros}</div>
+ <div class="cap"><span class="mi">LAB / 01 — {e(lab["groups"][0][0].upper())}</span><span class="mi dim">{e(lab["macro"])}</span></div><div class="list">{lists}</div></div>
+ <p style="margin-top:clamp(28px,4vw,56px)"><a class="cta" href="{P}technologies/">{e(ui["allTechnologies"])} →</a></p>
+</section>
+<hr class="spl">
+<section class="sec"><span class="mi">{e(c["eyebrow"])}</span><h2 class="mega rv" style="margin-top:18px">{e(c["mega"])}</h2><p class="lead" style="margin-top:18px;color:var(--ink)">{e(c["h2"])}</p>
+ <div class="flow">{flow}</div>{curve}<ul class="pts">{"".join(f'<li class="mi">{e(x)}</li>' for x in c["points"])}</ul></section>
+<hr class="spl">
+<section class="sec w">{top(h["work"]["eyebrow"], h["work"]["h2"])}<div class="show">{show}</div>
+ <p style="margin-top:clamp(40px,6vw,90px)"><a class="cta" href="{P}work/">{e(ui["allWork"])} →</a></p></section>
+<hr class="spl">
+<section class="sec callx"><h2 class="mega rv">{e(h["samples"]["h2"])}</h2><p class="lead">{e(h["samples"]["p"])}</p><div><a class="cta pill" href="{P}samples/">{e(ui["requestSamples"])} ↗</a></div></section>
+{talk_ml(C, P)}
+<hr class="spl">
+<section class="sec w about"><span class="mi" style="display:block;margin-bottom:26px">{e(h["about"]["eyebrow"])}</span><p class="rv">{e(h["about"]["p1"])}</p><p class="rv">{e(h["about"]["p2"])}</p><p style="margin-top:30px"><a class="cta" href="{P}about/">{e(ui["discover"])} →</a></p></section>
+<hr class="spl">
+<section class="sec t"><span class="mi" style="display:block;margin-bottom:26px">{e(h["social"]["eyebrow"])}</span><div class="soc">{soc}</div></section>'''
+    return shell_ml(C, P, P, h["meta"], body,
+                    extra_head='<link rel="stylesheet" href="/assets/film.css"><link rel="preload" as="image" href="/assets/final.webp">',
+                    extra_foot='<script src="/assets/film.js" defer></script>')
+
+
+def frame(C, code, caption, image=""):
+    if image:
+        return f'<figure class="frame has"><img src="/assets/{e(image)}" alt="{e(caption)}" loading="lazy"></figure>'
+    return f'<figure class="frame"><b>{e(code)}</b><span>{e(caption)}</span><span class="mi dim">{e(C["wine"]["slot"])}</span></figure>'
+
+
+def wine_ml(C, P, x):
+    w, ui = C["wine"], C["ui"]; he = w["hero"]
+    sq = x["title"].replace("&", "%26").replace(" ", "+")
+    hero = (f'<section class="whero"><div class="float" id="float"><div class="tilt"><img src="/assets/final.webp" alt="UltraPixel concept wine label" width="1120" height="1402"><div class="gl"></div></div></div>'
+            f'<div class="say"><span class="mi">{e(he["sector"])}</span><h1><span class="xl">{e(he["xl"])}</span><span class="sub">{e(he["subh"])}</span></h1><p class="lead">{e(he["lead"])}</p>'
+            f'<div class="ctas"><a class="cta pill" href="{P}samples/?sector={sq}">{e(he["cta1"])} ↗</a><a class="cta pill ghost" href="{P}contact/?topic=quote&sector={sq}">{e(he["cta2"])} ↗</a></div></div>'
+            f'<div class="meta"><span class="mi">{e(he["system"])}</span><span class="mi dim">{e(ui["conceptLabel"])}</span></div></section>')
+    who = "".join(f'<div><h3 class="rv">{e(a)}</h3><p>{e(b)}</p></div>' for a, b in w["for"]["items"])
+    scenes = ""
+    for i, it in enumerate(w["finish"]["items"]):
+        real = it.get("image", ""); note = "" if real else f'<span class="mi">{e(w["macroNote"])} · {e(w["slot"])}</span>'
+        codes = f'<div class="codes"><span class="mi">{e(it["shot"])}</span>{note}</div>'
+        ov = f'<div class="ov"><span class="mi">Material {i+1:02d} / {len(w["finish"]["items"]):02d}</span><h2 class="rv">{e(it["title"])}</h2><p>{e(it["text"])}</p></div>'
+        if it["fx"] == "cut" and not real:
+            scenes += (f'<section class="ms cut">{codes}<div class="dieb"><img src="/assets/final.webp" alt="" loading="lazy"><svg viewBox="0 0 1120 1402" aria-hidden="true"><defs><linearGradient id="specd" gradientUnits="userSpaceOnUse" x1="0" x2="1120" y1="0" y2="1402"><stop offset="0" stop-color="#22B8D6"/><stop offset=".4" stop-color="#6F5BE8"/><stop offset=".7" stop-color="#D9438F"/><stop offset="1" stop-color="#EBA43A"/></linearGradient></defs>'
+                       f'<path pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" d="{rd("src/die.txt")}"/></svg></div>{ov}</section>')
+        else:
+            scenes += f'<section class="ms {it["fx"]}" data-light>{codes}<img class="bgi" src="/assets/{e(real or it["macro"])}" alt="{e(it["title"])}" loading="lazy">{ov}</section>'
+    m, r, pr, g, fq = w["materials"], w["runs"], w["process"], w["gallery"], w["faq"]
+    body = (hero + '<hr class="spl">'
+            f'<section class="sec w">{top(w["for"]["eyebrow"], w["for"]["h2"])}<div class="trio">{who}</div></section><hr class="spl">'
+            f'<section class="sec">{top(w["finish"]["eyebrow"], w["finish"]["h2"])}</section>{scenes}'
+            f'<section class="sec"><div class="split"><div class="a"><span class="mi">{e(m["eyebrow"])}</span><h2 class="h2 rv" style="margin:18px 0 22px">{e(m["h2"])}</h2><p class="lead">{e(m["p"])}</p>'
+            f'<ul class="rows big" style="margin-top:34px">{"".join(f"<li>{e(i)}</li>" for i in m["items"])}</ul></div><div class="b">{frame(C, m["shot"], m["h2"], m.get("image", ""))}</div></div></section><hr class="spl">'
+            f'<section class="sec w"><div class="split r"><div class="a"><span class="mi">{e(r["eyebrow"])}</span><h2 class="h2 rv" style="margin:18px 0 30px">{e(r["h2"])}</h2><div class="rows">{"".join(f"<div><h3>{e(a)}</h3><p>{e(b)}</p></div>" for a, b in r["items"])}</div></div>'
+            f'<div class="b">{frame(C, r["shot"], r["h2"], r.get("image", ""))}</div></div></section><hr class="spl">'
+            f'<section class="sec">{top(pr["eyebrow"], pr["h2"])}<ol class="steps">{"".join(f"<li><h3>{e(a)}</h3><p>{e(b)}</p></li>" for a, b in pr["steps"])}</ol></section><hr class="spl">'
+            f'<section class="sec w">{top(g["eyebrow"], g["h2"])}<div class="hang">{"".join(frame(C, s[0], s[1], s[2] if len(s) > 2 else "") for s in g["shots"])}</div></section><hr class="spl">'
+            f'<section class="sec callx"><h2 class="mega rv">{e(w["kit"]["h2"])}</h2><p class="lead">{e(w["kit"]["p"])}</p><div><a class="cta pill" href="{P}samples/?sector={sq}">{e(w["kit"]["cta"])} ↗</a></div></section><hr class="spl">'
+            f'<section class="sec w">{top(fq["eyebrow"], fq["h2"])}<div class="faq">{"".join(f"<details><summary>{e(a)}</summary><p>{e(b)}</p></details>" for a, b in fq["items"])}</div></section>'
+            + talk_ml(C, P))
+    ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": a, "acceptedAnswer": {"@type": "Answer", "text": b}} for a, b in fq["items"]]}, ensure_ascii=False)
+    return shell_ml(C, P, f'{P}{x["slug"]}/', w["meta"], body, extra_head=f'<script type="application/ld+json">{ld}</script><link rel="preload" as="image" href="/assets/final.webp">')
+
+
+# the master design system is applied to the homepage and Wine & Spirits first
+home, wine_page = home_ml, wine_ml
+
 if __name__ == "__main__":
     build()
