@@ -647,5 +647,182 @@
       },
       "h1": "About UltraPixel"
     }
+  },
+  "wine": {
+    "meta": {
+      "title": "Wine and spirits labels | Premium label printing | UltraPixel",
+      "description": "Premium wine and spirits labels printed and finished in Italy: textured papers, hot foil, embossing, tactile varnish and shaped die-cutting, delivered across Europe."
+    },
+    "hero": {
+      "h1": "Wine and spirits labels made to be picked up.",
+      "lead": "Textured papers, hot foil, embossing and tactile varnish, printed and finished in Italy for wineries, distilleries and their partners across Europe.",
+      "cta1": "Request wine label samples",
+      "cta2": "Request a quote"
+    },
+    "for": {
+      "eyebrow": "Who we work with",
+      "h2": "One production partner, three ways in.",
+      "items": [
+        [
+          "Wineries and distilleries",
+          "From a single limited edition to the full range, with one partner from material choice to finished rolls."
+        ],
+        [
+          "Designers and agencies",
+          "Tell us the effect you want on the bottle. We propose the materials and the finishing that get there."
+        ],
+        [
+          "Agents and distributors",
+          "A premium label manufacturer to represent, with samples to put in a buyer's hands."
+        ]
+      ]
+    },
+    "finish": {
+      "eyebrow": "On the label",
+      "h2": "What we can put on a wine label.",
+      "items": [
+        {
+          "shot": "W-02",
+          "title": "Natural and textured papers",
+          "text": "Uncoated, laid and cotton-feel stocks that give a label its character before any ink is on it."
+        },
+        {
+          "shot": "W-03",
+          "title": "Hot foil",
+          "text": "Gold, silver, holographic or custom, for logos, frames and fine lettering."
+        },
+        {
+          "shot": "W-04",
+          "title": "Embossing and debossing",
+          "text": "Relief raised from the paper or pressed into it, alone or in register with foil."
+        },
+        {
+          "shot": "W-05",
+          "title": "Screen printing and tactile varnish",
+          "text": "Dense opaque colour and thick varnish you can feel under a fingertip."
+        },
+        {
+          "shot": "W-06",
+          "title": "Shaped die-cutting",
+          "text": "Profiles that follow the design: points, curves and recesses."
+        },
+        {
+          "shot": "W-07",
+          "title": "Everything in register",
+          "text": "Print, foil, varnish and relief landing in the same place, label after label."
+        }
+      ]
+    },
+    "materials": {
+      "eyebrow": "Materials",
+      "h2": "Chosen for the cellar, the shelf and the ice bucket.",
+      "p": "Tell us how the bottle is stored and served. We suggest the options and send samples you can test on your own bottles.",
+      "items": [
+        "Natural, textured and cotton-feel papers",
+        "Materials and adhesives selected for ice buckets and chilled bottles",
+        "Transparent films for a no-label look",
+        "Metallised and special materials"
+      ],
+      "shot": "W-08"
+    },
+    "runs": {
+      "eyebrow": "Editions",
+      "h2": "From a numbered edition to the whole range.",
+      "items": [
+        [
+          "Limited editions",
+          "Short runs printed digitally, with numbering on every label."
+        ],
+        [
+          "Vintages and versions",
+          "Year, variety or language changed from one version to the next within the same job."
+        ],
+        [
+          "Full ranges",
+          "The same colour and finishing held across every label of the range."
+        ]
+      ],
+      "shot": "W-09"
+    },
+    "process": {
+      "eyebrow": "How it works",
+      "h2": "From idea to finished rolls.",
+      "steps": [
+        [
+          "Brief and samples",
+          "You tell us about the bottle and the effect you want. We send samples of materials and finishing."
+        ],
+        [
+          "Proposal and quote",
+          "We propose materials and technologies and send a quote."
+        ],
+        [
+          "Proof",
+          "You approve a proof before anything goes to press."
+        ],
+        [
+          "Production and delivery",
+          "Printed, finished and delivered in rolls, in Italy and across Europe."
+        ]
+      ]
+    },
+    "gallery": {
+      "eyebrow": "Wine and spirits work",
+      "h2": "Photographed the way a label is judged: in the light.",
+      "shots": [
+        [
+          "W-10",
+          "Black label, gold foil, raking light"
+        ],
+        [
+          "W-11",
+          "Blind emboss on white textured paper"
+        ],
+        [
+          "W-12",
+          "High-build varnish on a dark ground"
+        ],
+        [
+          "W-13",
+          "Shaped label on the bottle"
+        ],
+        [
+          "W-14",
+          "Spirits label with foil and screen"
+        ],
+        [
+          "W-15",
+          "Range of bottles, one family"
+        ]
+      ]
+    },
+    "kit": {
+      "h2": "See it. Touch it. Test it.",
+      "p": "Request wine label samples: papers, foil, embossing and tactile varnish on real labels.",
+      "cta": "Request wine label samples"
+    },
+    "faq": {
+      "eyebrow": "Questions",
+      "h2": "What buyers ask first.",
+      "items": [
+        [
+          "Which materials suit an ice bucket?",
+          "We propose materials and adhesives selected for wet and chilled conditions. Tell us how the bottle is served and we send samples to test on your own bottles."
+        ],
+        [
+          "Can you print small runs and limited editions?",
+          "Yes. Short runs are printed digitally, with variable data and numbering where needed."
+        ],
+        [
+          "Can foil and embossing be combined on the same detail?",
+          "Yes. Foil can be applied flat or raised, in register with the print and the die-cut."
+        ],
+        [
+          "Do you deliver outside Italy?",
+          "Yes. We produce in Trieste and deliver across Europe."
+        ]
+      ]
+    },
+    "slot": "Photo to come"
   }
 }

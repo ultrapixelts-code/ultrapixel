@@ -30,6 +30,8 @@
   d.querySelectorAll('form[data-form]').forEach(function(f){
     var q=new URLSearchParams(location.search).get('topic'), sel=f.querySelector('[name=topic]');
     if(q&&sel&&sel.querySelector('option[value="'+q+'"]'))sel.value=q;
+    var sq=new URLSearchParams(location.search).get('sector'), ss=f.querySelector('[name=sector]');
+    if(sq&&ss)[].forEach.call(ss.options,function(o){if(o.text===sq)ss.value=o.value});
     var msg=f.querySelector('.form-msg'), say=function(k){msg.textContent=f.dataset[k];msg.hidden=false};
     f.addEventListener('submit',function(e){
       e.preventDefault(); if(!f.reportValidity())return;

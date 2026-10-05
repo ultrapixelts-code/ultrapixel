@@ -269,6 +269,37 @@ def sector_page(C, P, x):
     return shell(C, P, f'{P}{x["slug"]}/', x["meta"], body)
 
 
+def slot(C, code, caption, image=""):
+    """A photo position. Set image to a file in /assets to fill it; the code matches the shot list."""
+    if image:
+        return f'<figure class="slot"><img src="/assets/{e(image)}" alt="{e(caption)}" loading="lazy"></figure>'
+    return f'<figure class="slot empty"><b>{e(code)}</b><span>{e(caption)}</span><em>{e(C["wine"]["slot"])}</em></figure>'
+
+
+def wine_page(C, P, x):
+    w, ui = C["wine"], C["ui"]
+    q = f'{P}samples/?sector={x["title"].replace("&", "%26").replace(" ", "+")}'
+    hero = (f'<section class="phero"><div><span class="eyebrow">{e(x["title"])}</span><h1>{e(w["hero"]["h1"])}</h1><p class="lead">{e(w["hero"]["lead"])}</p>'
+            f'<div class="cta-row" style="margin-top:28px"><a class="btn" href="{q}">{e(w["hero"]["cta1"])}</a><a class="btn line" href="{P}contact/?topic=quote&sector={x["title"].replace("&", "%26").replace(" ", "+")}">{e(w["hero"]["cta2"])}</a></div></div>'
+            f'{visual("wine", ui["conceptLabel"])}</section>')
+    who = "".join(f'<div class="rv"><h3>{e(a)}</h3><p>{e(b)}</p></div>' for a, b in w["for"]["items"])
+    fin = "".join(f'<article class="fin rv">{slot(C, i["shot"], i["title"], i.get("image", ""))}<h3>{e(i["title"])}</h3><p>{e(i["text"])}</p></article>' for i in w["finish"]["items"])
+    m, r, pr, g, fq = w["materials"], w["runs"], w["process"], w["gallery"], w["faq"]
+    body = (hero +
+            f'<section class="sec">{head(w["for"]["eyebrow"], w["for"]["h2"])}<div class="trio">{who}</div></section>'
+            f'<section class="sec deep">{head(w["finish"]["eyebrow"], w["finish"]["h2"])}<div class="fins">{fin}</div>'
+            f'<p class="more"><a class="tlink" href="{P}technologies/">{e(ui["allTechnologies"])} →</a></p></section>'
+            f'<section class="sec"><div class="two"><div>{head(m["eyebrow"], m["h2"], m["p"])}<ul class="plist">{"".join(f"<li>{e(i)}</li>" for i in m["items"])}</ul></div>{slot(C, m["shot"], m["h2"], m.get("image", ""))}</div></section>'
+            f'<section class="sec deep"><div class="two">{slot(C, r["shot"], r["h2"], r.get("image", ""))}<div>{head(r["eyebrow"], r["h2"])}<div class="rows">{"".join(f"<div><h3>{e(a)}</h3><p>{e(b)}</p></div>" for a, b in r["items"])}</div></div></div></section>'
+            f'<section class="sec">{head(pr["eyebrow"], pr["h2"])}<ol class="steps">{"".join(f"<li class=rv><h3>{e(a)}</h3><p>{e(b)}</p></li>" for a, b in pr["steps"])}</ol></section>'
+            f'<section class="sec deep">{head(g["eyebrow"], g["h2"])}<div class="gal">{"".join(slot(C, s[0], s[1], s[2] if len(s) > 2 else "") for s in g["shots"])}</div></section>'
+            f'<section class="sec call"><div class="bg" style="--img:url(/assets/macro-2.webp)"></div><div class="in rv"><h2>{e(w["kit"]["h2"])}</h2><p>{e(w["kit"]["p"])}</p><a class="btn" href="{q}">{e(w["kit"]["cta"])}</a></div></section>'
+            f'<section class="sec">{head(fq["eyebrow"], fq["h2"])}<div class="faq">{"".join(f"<details><summary>{e(a)}</summary><p>{e(b)}</p></details>" for a, b in fq["items"])}</div></section>'
+            + cta_band(C, P))
+    ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": a, "acceptedAnswer": {"@type": "Answer", "text": b}} for a, b in fq["items"]]}, ensure_ascii=False)
+    return shell(C, P, f'{P}{x["slug"]}/', w["meta"], body, extra_head=f'<script type="application/ld+json">{ld}</script>')
+
+
 def landing_page(C, P, x):
     ui = C["ui"]
     body = (phero(ui["technologies"], x["h1"], x["lead"]) +
@@ -316,7 +347,7 @@ def build():
         out = {P: home(C, P), f"{P}technologies/": tech_page(C, P), f"{P}work/": work_page(C, P), f"{P}about/": about_page(C, P),
                f"{P}samples/": form_page(C, P, "samples", "samples"), f"{P}contact/": form_page(C, P, "contact", "quote"), f"{P}partners/": form_page(C, P, "partners", "partner")}
         for x in C["sectors"]:
-            out[f'{P}{x["slug"]}/'] = sector_page(C, P, x)
+            out[f'{P}{x["slug"]}/'] = wine_page(C, P, x) if x["key"] == "wine" and "wine" in C else sector_page(C, P, x)
         for x in C["landings"]:
             out[f'{P}{x["slug"]}/'] = landing_page(C, P, x)
         for path, s in out.items():
