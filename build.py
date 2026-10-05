@@ -69,12 +69,13 @@ LABELS = {
 }
 
 
-def visual(key):
+def visual(key, badge=""):
+    badge = f'<span class="badge">{e(badge)}</span>' if badge else ""
     if key == "wine":
-        return ('<div class="vis"><div class="obj" style="--ar:387/1026"><img src="/assets/bottle.webp" alt="" loading="lazy" width="800" height="2120">'
+        return (f'<div class="vis">{badge}' + '<div class="obj" style="--ar:387/1026"><img src="/assets/bottle.webp" alt="" loading="lazy" width="800" height="2120">'
                 '<div class="lb" style="left:11.24%;top:44.37%;width:77.52%;height:36.6%"><img src="/assets/final.webp" alt="" loading="lazy"></div></div></div>')
     pos, svg = LABELS[key]
-    return (f'<div class="vis"><div class="obj"><img src="/assets/c-{key}.webp" alt="" loading="lazy" width="600" height="920">'
+    return (f'<div class="vis">{badge}<div class="obj"><img src="/assets/c-{key}.webp" alt="" loading="lazy" width="600" height="920">'
             f'<div class="lb wrapc" style="{pos}">{svg}</div></div></div>')
 
 
@@ -136,7 +137,7 @@ def shell(C, P, path, meta, body, home=False, extra_head="", extra_foot=""):
 <body>
 <header class="hdr{' light' if home else ''}" id="hdr">
   <a class="brand" href="{P}">Ultra<i>Pixel</i></a>
-  <nav id="nav">{nav}<a href="{P}partners/">{e(ui["partners"])}</a></nav>
+  <nav id="nav">{nav}<a href="{P}partners/">{e(ui["partners"])}</a><a class="only-m" href="{P}samples/">{e(ui["requestSamples"])} →</a></nav>
   <a class="btn sm" href="{P}samples/">{e(ui["requestSamples"])}</a>
   <button class="burger" id="burger" aria-expanded="false" aria-controls="nav">{e(ui["menu"])}</button>
 </header>
@@ -182,9 +183,13 @@ def tech_chips(C, P, names):
     return '<div class="chips">' + "".join(f'<a href="{P}technologies/#{ids[n]}">{e(n)}</a>' for n in names) + "</div>"
 
 
+def badge(x):
+    return f'<span class="badge">{e(x["badge"])}</span>' if x.get("badge") else ""
+
+
 def work_tiles(C, items):
     return '<div class="works">' + "".join(
-        f'<figure class="wk rv" data-light><img src="/assets/{e(w["image"])}" alt="{e(w["title"])}" loading="lazy" width="720" height="900">'
+        f'<figure class="wk rv" data-light>{badge(w)}<img src="/assets/{e(w["image"])}" alt="{e(w["title"])}" loading="lazy" width="720" height="900">'
         f'<figcaption><span>{e(w["sector"])}</span><strong>{e(w["title"])}</strong><em>{e(" · ".join(w["finishes"]))}</em></figcaption></figure>'
         for w in items) + "</div>"
 
@@ -215,18 +220,18 @@ def home(C, P):
     pins = "".join(f'<span class="pin" data-i="{i}" style="left:{x}%;top:{y}%">{i+1}</span>' for i, (_, _, x, y) in enumerate(an["items"]))
     lis = "".join(f'<li data-i="{i}"><b>{i+1:02d}</b><strong>{e(a)}</strong><span>{e(b)}</span></li>' for i, (a, b, _, _) in enumerate(an["items"]))
     cards = "".join(
-        f'<a class="card rv" href="{P}{x["slug"]}/" data-k="{x["key"]}">{visual(x["key"])}<div class="txt"><h3>{e(x["title"])}</h3><p>{e(x["copy"])}</p><span class="go">{e(ui["explore"])} →</span></div></a>'
+        f'<a class="card rv" href="{P}{x["slug"]}/" data-k="{x["key"]}">{visual(x["key"], ui["conceptLabel"] if x["key"] == "wine" else ui["illustrative"])}<div class="txt"><h3>{e(x["title"])}</h3><p>{e(x["copy"])}</p><span class="go">{e(ui["explore"])} →</span></div></a>'
         for x in C["sectors"])
     nums = "".join(f"<div><b>{e(a)}</b><span>{e(b)}</span></div>" for a, b in h["numbers"])
     social = "".join(
-        (f'<a href="{e(t["url"])}" rel="noopener">' if t["url"] else "<div>") + f'<img src="/assets/{e(t["image"])}" alt="" loading="lazy" width="720" height="900"><span>{e(t["caption"])}</span>' + ("</a>" if t["url"] else "</div>")
+        (f'<a href="{e(t["url"])}" rel="noopener">' if t["url"] else "<div>") + f'{badge(t)}<img src="/assets/{e(t["image"])}" alt="" loading="lazy" width="720" height="900"><span class="cap">{e(t["caption"])}</span>' + ("</a>" if t["url"] else "</div>")
         for t in C["social"])
     body = f'''{film}
 <section class="sec deep">{head(an["eyebrow"], an["h2"], an["p"])}
  <div class="anat" id="anat"><figure><img src="/assets/final.webp" alt="UltraPixel showcase label with numbered callouts" loading="lazy" width="1120" height="1402">{pins}</figure><ol>{lis}</ol></div>
 </section>
 <section class="sec" id="sectors">{head(h["sectors"]["eyebrow"], h["sectors"]["h2"], h["sectors"]["p"])}
- <div class="cards">{cards}</div><p class="note">{e(ui["illustrative"])}</p>
+ <div class="cards">{cards}</div>
 </section>
 <section class="sec deep"><div class="two">
  <div class="rv"><span class="eyebrow">{e(h["position"]["eyebrow"])}</span><h2 style="font-size:clamp(34px,4.6vw,62px);line-height:1.05;margin:16px 0 22px">{e(h["position"]["h2"])}</h2><p class="lead">{e(h["position"]["p"])}</p><p class="tagline">{e(h["position"]["tag"])}</p></div>
@@ -258,7 +263,7 @@ def phero(eyebrow, h1, lead, right=""):
 
 def sector_page(C, P, x):
     ui = C["ui"]
-    body = (phero(ui["sectors"], x["title"], x["copy"], visual(x["key"])) +
+    body = (phero(ui["sectors"], x["title"], x["copy"], visual(x["key"], ui["conceptLabel"] if x["key"] == "wine" else ui["illustrative"])) +
             f'<section class="sec"><ul class="plist">{"".join(f"<li class=rv>{e(p)}</li>" for p in x["points"])}</ul></section>'
             f'<section class="sec deep tight"><span class="eyebrow" style="margin-bottom:22px">{e(ui["technologies"])}</span>{tech_chips(C, P, x["tech"])}</section>' + cta_band(C, P))
     return shell(C, P, f'{P}{x["slug"]}/', x["meta"], body)
@@ -278,13 +283,16 @@ def tech_page(C, P):
 
 
 def work_page(C, P):
-    w = C["work"]; f = w["fields"]
+    w = C["work"]; f = w["caseFields"]; s = w["showcase"]
+    show = (f'<article class="case"><img src="/assets/{e(s["image"])}" alt="{e(s["title"])}" loading="lazy" width="720" height="900"><div><span class="eyebrow">{e(s["tag"])}</span><h3>{e(s["title"])}</h3><dl>'
+            + "".join(f"<dt>{e(a)}</dt><dd>{e(b)}</dd>" for a, b in s["rows"]) + "</dl></div></article>")
     cases = "".join(
-        f'<article class="case"><img src="/assets/{e(c["image"])}" alt="{e(c["title"])}" loading="lazy" width="720" height="900"><div><span class="eyebrow">{e(c.get("tag", ""))}</span><h3>{e(c["title"])}</h3><dl>'
+        f'<article class="case"><img src="/assets/{e(c["image"])}" alt="{e(c["title"])}" loading="lazy" width="720" height="900"><div><h3>{e(c["title"])}</h3><dl>'
         + "".join(f"<dt>{e(f[k])}</dt><dd>{e(c[k])}</dd>" for k in ("challenge", "solution", "materials", "technologies", "result")) + "</dl></div></article>"
-        for c in w["cases"])
+        for c in w["cases"]) or f'<p class="empty">{e(w["caseEmpty"])}</p>'
     body = (phero(C["ui"]["work"], w["h1"], w["lead"]) + f'<section class="sec">{work_tiles(C, w["items"])}</section>'
-            f'<section class="sec deep" id="case-studies"><header class="shead"><h2>{e(w["caseH2"])}</h2></header>{cases}</section>' + cta_band(C, P))
+            f'<section class="sec deep" id="showcase"><header class="shead"><h2>{e(s["h2"])}</h2></header>{show}</section>'
+            f'<section class="sec" id="case-studies"><header class="shead"><h2>{e(w["caseH2"])}</h2></header>{cases}</section>' + cta_band(C, P))
     return shell(C, P, f"{P}work/", w["meta"], body)
 
 

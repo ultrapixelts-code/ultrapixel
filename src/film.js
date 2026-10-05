@@ -20,8 +20,8 @@ function frame(){
 
   /* camera */
   const z=ease(seg(t,.1,.95))*(1-ease(seg(t,7.6,8.5)));
-  const s0=Math.min(vh*(wide?.84:.44)/1026,vw*.6/387), s1=Math.min(vh*(wide?.68:.46)/375.5,vw*(wide?.4:.7)/300);
-  const s=mix(s0,s1,z), ax=wide?vw*mix(.66,.68,z):vw*.5, ay=wide?vh*.5:vh*mix(.74,.36,z);
+  const s0=Math.min(vh*(wide?.84:vw<380?.38:.44)/1026,vw*.6/387), s1=Math.min(vh*(wide?.68:.46)/375.5,vw*(wide?.4:.7)/300);
+  const s=mix(s0,s1,z), ax=wide?vw*mix(.66,.68,z):vw*.5, ay=wide?vh*.5:vh*mix(vw<380?.78:.74,.36,z);
   $("rig").style.transform=`translate(${ax-193.5}px,${ay-643+130*s0*(1-z)}px) scale(${s})`;
   const off=seg(t,.8,1.15)*(1-seg(t,7.7,8.2));
   $("bottle").style.opacity=1-off; $("curve").style.opacity=1-off;

@@ -19,7 +19,7 @@
     "talkToUs": "Talk to us",
     "explore": "Explore",
     "allTechnologies": "All technologies",
-    "allWork": "All work and case studies",
+    "allWork": "All work",
     "discover": "Discover UltraPixel",
     "menu": "Menu",
     "sectors": "Sectors",
@@ -32,8 +32,8 @@
     "formNotConnected": "This form is not connected yet. Please contact us directly.",
     "formSent": "Thank you. Your request has been sent.",
     "formError": "Something went wrong. Please try again or contact us directly.",
-    "illustrative": "Illustrative renders",
-    "showcase": "Showcase concept"
+    "illustrative": "Illustrative concept",
+    "conceptLabel": "Concept label"
   },
   "form": {
     "name": "Name",
@@ -65,20 +65,90 @@
       "h2": "Fourteen details. One extraordinary label.",
       "p": "Print, foil, screen, relief and die, all landing in the same place.",
       "items": [
-        ["Multicolour digital printing", "Blacks, greys and all illustrated parts, including the fine landscape.", 17, 22],
-        ["Premium textured paper", "Ivory natural stock with visible fibre.", 30, 60],
-        ["Hot foil gold", "Logo, frames, flourishes, leaves, grapes and lettering.", 51, 18],
-        ["Foil and relief combined", "Gold that also rises from the surface.", 67, 23],
-        ["Embossing", "Raised flourishes, side elements and some lettering.", 90, 43],
-        ["Debossing", "Decorative areas pressed into the paper.", 9, 43],
-        ["Opaque screen printing", "Dense black and blue in the lower field and the medallion.", 23, 62],
-        ["High-build screen varnish", "Floral motifs with a strong tactile relief.", 80, 69],
-        ["Selective screen varnish", "Gloss against matt on the dark areas.", 86, 61],
-        ["Microtexture", "Very fine relief patterns in grounds and side panels.", 9, 76],
-        ["Raised tactile details", "Raised dots under “Cuvée Prestige”.", 52, 65],
-        ["Complex shaped die-cut", "A fully contoured, non-rectangular profile.", 51, 3],
-        ["Precision die-cutting", "Points, curves and recesses on the perimeter.", 53, 95],
-        ["Multi-process registration", "Foil, relief, screen and print landing together.", 50, 43]
+        [
+          "Multicolour digital printing",
+          "Blacks, greys and all illustrated parts, including the fine landscape.",
+          17,
+          22
+        ],
+        [
+          "Premium textured paper",
+          "Ivory natural stock with visible fibre.",
+          30,
+          60
+        ],
+        [
+          "Hot foil gold",
+          "Logo, frames, flourishes, leaves, grapes and lettering.",
+          51,
+          18
+        ],
+        [
+          "Foil and relief combined",
+          "Gold that also rises from the surface.",
+          67,
+          23
+        ],
+        [
+          "Embossing",
+          "Raised flourishes, side elements and some lettering.",
+          90,
+          43
+        ],
+        [
+          "Debossing",
+          "Decorative areas pressed into the paper.",
+          9,
+          43
+        ],
+        [
+          "Opaque screen printing",
+          "Dense black and blue in the lower field and the medallion.",
+          23,
+          62
+        ],
+        [
+          "High-build screen varnish",
+          "Floral motifs with a strong tactile relief.",
+          80,
+          69
+        ],
+        [
+          "Selective screen varnish",
+          "Gloss against matt on the dark areas.",
+          86,
+          61
+        ],
+        [
+          "Microtexture",
+          "Very fine relief patterns in grounds and side panels.",
+          9,
+          76
+        ],
+        [
+          "Raised tactile details",
+          "Raised dots under “Cuvée Prestige”.",
+          52,
+          65
+        ],
+        [
+          "Complex shaped die-cut",
+          "A fully contoured, non-rectangular profile.",
+          51,
+          3
+        ],
+        [
+          "Precision die-cutting",
+          "Points, curves and recesses on the perimeter.",
+          53,
+          95
+        ],
+        [
+          "Multi-process registration",
+          "Foil, relief, screen and print landing together.",
+          50,
+          43
+        ]
       ]
     },
     "sectors": {
@@ -93,10 +163,22 @@
       "tag": "One production partner. Europe-wide service."
     },
     "numbers": [
-      ["2013", "Founded"],
-      ["Up to 8 colours", "Digital colour workflow"],
-      ["5+", "Finishing technologies"],
-      ["Europe", "International delivery"]
+      [
+        "2013",
+        "Founded"
+      ],
+      [
+        "Up to 8 colours",
+        "Digital colour workflow"
+      ],
+      [
+        "5+",
+        "Finishing technologies"
+      ],
+      [
+        "Europe",
+        "International delivery"
+      ]
     ],
     "tech": {
       "eyebrow": "Technologies",
@@ -105,7 +187,12 @@
     "colour": {
       "eyebrow": "Colour control",
       "h2": "Measured. Not guessed.",
-      "points": ["Spectral colour measurement", "ΔE monitoring", "Repeatability between runs", "Production quality control"],
+      "points": [
+        "Spectral colour measurement",
+        "ΔE monitoring",
+        "Repeatability between runs",
+        "Production quality control"
+      ],
       "ref": "Reference",
       "meas": "Measured",
       "axis": "Wavelength, nm"
@@ -140,111 +227,425 @@
       "slug": "wine-spirits",
       "key": "wine",
       "title": "Wine & Spirits",
-      "copy": "Premium papers, foil, embossing, tactile effects, ice-bucket resistant materials and complex finishing.",
-      "points": ["Premium and textured papers", "Hot foil and embossing", "Tactile effects", "Ice-bucket resistant materials", "Complex finishing in register"],
-      "tech": ["Digital printing", "Hot foil", "Screen printing", "Embossing", "Debossing", "Die-cutting"],
-      "meta": {"title": "Wine and spirits labels | UltraPixel", "description": "Premium wine and spirits labels: textured papers, hot foil, embossing, tactile varnish and ice-bucket resistant materials. Made in Italy, delivered across Europe."}
+      "copy": "Premium papers, foil, embossing and tactile effects, with materials selected for ice buckets and complex finishing in register.",
+      "points": [
+        "Premium and textured papers",
+        "Hot foil and embossing",
+        "Tactile effects",
+        "Materials selected for ice buckets and chilled bottles",
+        "Complex finishing in register"
+      ],
+      "tech": [
+        "Digital printing",
+        "Hot foil",
+        "Screen printing",
+        "Embossing",
+        "Debossing",
+        "Die-cutting"
+      ],
+      "meta": {
+        "title": "Wine and spirits labels | UltraPixel",
+        "description": "Premium wine and spirits labels: textured papers, hot foil, embossing, tactile varnish and materials selected for ice buckets. Made in Italy, delivered across Europe."
+      }
     },
     {
       "slug": "food-labels",
       "key": "food",
       "title": "Food",
-      "copy": "High-performance labels for industrial production, automatic application, cold, humidity, oils and demanding environments.",
-      "points": ["Industrial production runs", "Automatic application", "Cold and humidity", "Contact with oils", "Demanding environments"],
-      "tech": ["Digital printing", "Variable data", "Lamination", "Die-cutting", "Colour measurement and control"],
-      "meta": {"title": "Food labels | UltraPixel", "description": "Self-adhesive food labels for industrial production and automatic application, built for cold, humidity and oils. Made in Italy, delivered across Europe."}
+      "copy": "Labels for industrial production and automatic application, with materials and adhesives selected for cold, humidity and contact with oils.",
+      "points": [
+        "Solutions for industrial production runs",
+        "Solutions for automatic application",
+        "Materials selected for cold and humidity",
+        "Materials selected for contact with oils",
+        "Options for demanding environments"
+      ],
+      "tech": [
+        "Digital printing",
+        "Variable data",
+        "Lamination",
+        "Die-cutting",
+        "Colour measurement and control"
+      ],
+      "meta": {
+        "title": "Food labels | UltraPixel",
+        "description": "Self-adhesive food labels for industrial production and automatic application, with materials selected for cold, humidity and oils. Made in Italy."
+      }
     },
     {
       "slug": "cosmetics-nutraceuticals",
       "key": "cosmetic",
       "title": "Cosmetics & Nutraceuticals",
-      "copy": "Premium decoration, transparent materials, opaque whites, tactile effects, small batches and high visual quality.",
-      "points": ["Premium decoration", "Transparent materials", "Opaque whites", "Tactile effects", "Small batches"],
-      "tech": ["Digital printing", "Hot foil", "Screen printing", "High-build tactile effects", "Reverse printing"],
-      "meta": {"title": "Cosmetics and nutraceutical labels | UltraPixel", "description": "Cosmetics and nutraceutical labels on clear and premium materials, with opaque white, foil and tactile effects, also in small batches."}
+      "copy": "Premium decoration on transparent and special materials, with opaque whites, tactile effects and small batches.",
+      "points": [
+        "Premium decoration",
+        "Transparent materials available",
+        "Opaque white options",
+        "Tactile effects",
+        "Small batches"
+      ],
+      "tech": [
+        "Digital printing",
+        "Hot foil",
+        "Screen printing",
+        "High-build tactile effects",
+        "Reverse printing"
+      ],
+      "meta": {
+        "title": "Cosmetics and nutraceutical labels | UltraPixel",
+        "description": "Cosmetics and nutraceutical labels on clear and premium materials, with opaque white, foil and tactile effects, also in small batches."
+      }
     },
     {
       "slug": "pharma-labels",
       "key": "pharma",
       "title": "Pharma",
-      "copy": "Precision, readability, variable data, traceability, consistency and quality control.",
-      "points": ["Precision and readability", "Variable data", "Traceability", "Consistency between runs", "Quality control"],
-      "tech": ["Digital printing", "Variable data", "Numbering", "Multilayer / booklet labels", "Colour measurement and control"],
-      "meta": {"title": "Pharma labels | UltraPixel", "description": "Self-adhesive pharma labels printed for precision and readability, with variable data, traceability and colour control."}
+      "copy": "Labels printed for precision and readability, with solutions for variable data, traceability and consistency between runs.",
+      "points": [
+        "Precision and readability",
+        "Solutions for variable data",
+        "Solutions for traceability",
+        "Consistency between runs",
+        "Colour and print quality control"
+      ],
+      "tech": [
+        "Digital printing",
+        "Variable data",
+        "Numbering",
+        "Multilayer / booklet labels",
+        "Colour measurement and control"
+      ],
+      "meta": {
+        "title": "Pharma labels | UltraPixel",
+        "description": "Self-adhesive pharma labels printed for precision and readability, with variable data, traceability and colour control."
+      }
     },
     {
       "slug": "industrial-chemical",
       "key": "industrial",
       "title": "Industrial & Chemical",
-      "copy": "Technical materials, strong adhesives, difficult surfaces, resistance, variable data, QR codes and traceability.",
-      "points": ["Technical materials", "Strong adhesives", "Difficult surfaces", "Resistance", "Variable data and QR codes", "Traceability"],
-      "tech": ["Digital printing", "Variable data", "Numbering", "Lamination", "Die-cutting"],
-      "meta": {"title": "Industrial and chemical labels | UltraPixel", "description": "Industrial and chemical labels on technical materials with strong adhesives for difficult surfaces, with variable data, QR codes and traceability."}
+      "copy": "Technical materials and adhesives selected for difficult surfaces and demanding conditions, with variable data, QR codes and traceability.",
+      "points": [
+        "Technical materials available",
+        "Adhesives selected for difficult surfaces",
+        "Materials selected for demanding conditions",
+        "Variable data and QR codes",
+        "Solutions for traceability"
+      ],
+      "tech": [
+        "Digital printing",
+        "Variable data",
+        "Numbering",
+        "Lamination",
+        "Die-cutting"
+      ],
+      "meta": {
+        "title": "Industrial and chemical labels | UltraPixel",
+        "description": "Industrial and chemical labels on technical materials, with adhesives selected for difficult surfaces, variable data, QR codes and traceability."
+      }
     }
   ],
   "technologies": {
-    "meta": {"title": "Label printing and finishing technologies | UltraPixel", "description": "Digital printing, hot foil, screen printing, embossing, debossing, tactile effects, die-cutting, variable data and colour control, combined on one label."},
+    "meta": {
+      "title": "Label printing and finishing technologies | UltraPixel",
+      "description": "Digital printing, hot foil, screen printing, embossing, debossing, tactile effects, die-cutting, variable data and colour control, combined on one label."
+    },
     "h1": "Technology behind every label.",
     "lead": "Each technology does one thing well. The value is in combining them on the same label, in register.",
     "items": [
-      {"id": "digital-printing", "title": "Digital printing", "text": "High-resolution digital colour, from short runs to industrial volumes."},
-      {"id": "hot-foil", "title": "Hot foil", "text": "Metallic foil applied with heat and pressure: gold, silver, holographic or custom."},
-      {"id": "screen-printing", "title": "Screen printing", "text": "Dense, opaque colour and thick varnish layers on top of the print."},
-      {"id": "embossing", "title": "Embossing", "text": "Relief raised from the paper, on its own or in register with foil."},
-      {"id": "debossing", "title": "Debossing", "text": "Details pressed into the surface for a quieter, engraved look."},
-      {"id": "tactile", "title": "High-build tactile effects", "text": "Thick varnish you can feel under a fingertip."},
-      {"id": "microtextures", "title": "Microtextures", "text": "Fine relief patterns that change how a surface catches the light."},
-      {"id": "die-cutting", "title": "Die-cutting", "text": "Shaped profiles with points, curves and recesses, cut in register."},
-      {"id": "reverse-printing", "title": "Reverse printing", "text": "Printing on the adhesive side, seen through the container or the product."},
-      {"id": "multilayer", "title": "Multilayer / booklet labels", "text": "More room for text without a bigger label."},
-      {"id": "variable-data", "title": "Variable data", "text": "Codes, names, batches and QR codes that change on every label."},
-      {"id": "numbering", "title": "Numbering", "text": "Sequential numbers for limited editions and traceability."},
-      {"id": "lamination", "title": "Lamination", "text": "A protective film over the print, gloss or matt."},
-      {"id": "colour-control", "title": "Colour measurement and control", "text": "Colour measured with a spectrophotometer and checked against the target."}
+      {
+        "id": "digital-printing",
+        "title": "Digital printing",
+        "text": "High-resolution digital colour, from short runs to industrial volumes."
+      },
+      {
+        "id": "hot-foil",
+        "title": "Hot foil",
+        "text": "Metallic foil applied with heat and pressure: gold, silver, holographic or custom."
+      },
+      {
+        "id": "screen-printing",
+        "title": "Screen printing",
+        "text": "Dense, opaque colour and thick varnish layers on top of the print."
+      },
+      {
+        "id": "embossing",
+        "title": "Embossing",
+        "text": "Relief raised from the paper, on its own or in register with foil."
+      },
+      {
+        "id": "debossing",
+        "title": "Debossing",
+        "text": "Details pressed into the surface for a quieter, engraved look."
+      },
+      {
+        "id": "tactile",
+        "title": "High-build tactile effects",
+        "text": "Thick varnish you can feel under a fingertip."
+      },
+      {
+        "id": "microtextures",
+        "title": "Microtextures",
+        "text": "Fine relief patterns that change how a surface catches the light."
+      },
+      {
+        "id": "die-cutting",
+        "title": "Die-cutting",
+        "text": "Shaped profiles with points, curves and recesses, cut in register."
+      },
+      {
+        "id": "reverse-printing",
+        "title": "Reverse printing",
+        "text": "Printing on the adhesive side, seen through the container or the product."
+      },
+      {
+        "id": "multilayer",
+        "title": "Multilayer / booklet labels",
+        "text": "More room for text without a bigger label."
+      },
+      {
+        "id": "variable-data",
+        "title": "Variable data",
+        "text": "Codes, names, batches and QR codes that change on every label."
+      },
+      {
+        "id": "numbering",
+        "title": "Numbering",
+        "text": "Sequential numbers for limited editions and traceability."
+      },
+      {
+        "id": "lamination",
+        "title": "Lamination",
+        "text": "A protective film over the print, gloss or matt."
+      },
+      {
+        "id": "colour-control",
+        "title": "Colour measurement and control",
+        "text": "Spectral colour measurement, checked against the target."
+      }
     ]
   },
   "landings": [
-    {"slug": "premium-labels", "h1": "Premium labels", "lead": "Labels where material, print and finishing are designed together, for products that have to be noticed on the shelf.", "tech": ["Digital printing", "Hot foil", "Screen printing", "Embossing", "Debossing", "Microtextures", "Die-cutting"], "meta": {"title": "Premium labels | UltraPixel", "description": "Premium self-adhesive labels combining textured papers, hot foil, screen printing, embossing and shaped die-cutting. Made in Italy for brands across Europe."}},
-    {"slug": "hot-foil-labels", "h1": "Hot foil labels", "lead": "Metallic foil in gold, silver, holographic or custom finishes, flat or combined with relief, in register with the print.", "tech": ["Hot foil", "Embossing", "Digital printing", "Die-cutting"], "meta": {"title": "Hot foil labels | UltraPixel", "description": "Hot foil labels in gold, silver, holographic and custom finishes, flat or embossed, in register with digital print."}},
-    {"slug": "screen-printed-labels", "h1": "Screen printed labels", "lead": "Dense opaque colour, high-build varnish with real relief, and selective gloss against matt.", "tech": ["Screen printing", "High-build tactile effects", "Digital printing"], "meta": {"title": "Screen printed labels | UltraPixel", "description": "Screen printed labels with opaque colour, high-build tactile varnish and selective gloss, combined with digital print and foil."}},
-    {"slug": "embossed-labels", "h1": "Embossed labels", "lead": "Raised and recessed relief on paper and foil, from fine microtexture to deep sculpted detail.", "tech": ["Embossing", "Debossing", "Microtextures", "Hot foil"], "meta": {"title": "Embossed labels | UltraPixel", "description": "Embossed and debossed labels with microtexture and foil in register, for premium wine, spirits, cosmetics and food."}}
+    {
+      "slug": "premium-labels",
+      "h1": "Premium labels",
+      "lead": "Labels where material, print and finishing are designed together, for products that have to be noticed on the shelf.",
+      "tech": [
+        "Digital printing",
+        "Hot foil",
+        "Screen printing",
+        "Embossing",
+        "Debossing",
+        "Microtextures",
+        "Die-cutting"
+      ],
+      "meta": {
+        "title": "Premium labels | UltraPixel",
+        "description": "Premium self-adhesive labels combining textured papers, hot foil, screen printing, embossing and shaped die-cutting. Made in Italy for brands across Europe."
+      }
+    },
+    {
+      "slug": "hot-foil-labels",
+      "h1": "Hot foil labels",
+      "lead": "Metallic foil in gold, silver, holographic or custom finishes, flat or combined with relief, in register with the print.",
+      "tech": [
+        "Hot foil",
+        "Embossing",
+        "Digital printing",
+        "Die-cutting"
+      ],
+      "meta": {
+        "title": "Hot foil labels | UltraPixel",
+        "description": "Hot foil labels in gold, silver, holographic and custom finishes, flat or embossed, in register with digital print."
+      }
+    },
+    {
+      "slug": "screen-printed-labels",
+      "h1": "Screen printed labels",
+      "lead": "Dense opaque colour, high-build varnish with real relief, and selective gloss against matt.",
+      "tech": [
+        "Screen printing",
+        "High-build tactile effects",
+        "Digital printing"
+      ],
+      "meta": {
+        "title": "Screen printed labels | UltraPixel",
+        "description": "Screen printed labels with opaque colour, high-build tactile varnish and selective gloss, combined with digital print and foil."
+      }
+    },
+    {
+      "slug": "embossed-labels",
+      "h1": "Embossed labels",
+      "lead": "Raised and recessed relief on paper and foil, from fine microtexture to deep sculpted detail.",
+      "tech": [
+        "Embossing",
+        "Debossing",
+        "Microtextures",
+        "Hot foil"
+      ],
+      "meta": {
+        "title": "Embossed labels | UltraPixel",
+        "description": "Embossed and debossed labels with microtexture and foil in register, for premium wine, spirits, cosmetics and food."
+      }
+    }
   ],
   "work": {
-    "meta": {"title": "Selected work and case studies | UltraPixel", "description": "Selected label work across wine, food, cosmetics, nutraceutical and industrial applications, with case studies on materials and technologies."},
+    "meta": {
+      "title": "Selected work | UltraPixel",
+      "description": "Selected label work across wine, food, cosmetics, nutraceutical and industrial applications."
+    },
     "h1": "Selected work",
     "lead": "Labels across sectors, photographed for what matters: how they take the light.",
     "caseH2": "Case studies",
     "items": [
-      {"image": "macro-1.webp", "sector": "Wine", "title": "Cuvée Prestige, monogram", "finishes": ["Hot foil", "Embossing", "Opaque screen"]},
-      {"image": "macro-2.webp", "sector": "Wine", "title": "Cuvée Prestige, wordmark", "finishes": ["Digital print", "Foil", "Tactile dots"]},
-      {"image": "work-food.webp", "sector": "Food", "title": "Jar label", "finishes": ["Digital print", "Lamination"]},
-      {"image": "work-cosmetic.webp", "sector": "Cosmetics", "title": "Clear label, opaque white", "finishes": ["Transparent film", "Opaque white"]},
-      {"image": "work-pharma.webp", "sector": "Nutraceutical", "title": "Container label", "finishes": ["Variable data", "Numbering"]},
-      {"image": "work-industrial.webp", "sector": "Industrial", "title": "Drum label", "finishes": ["Technical material", "QR code"]}
-    ],
-    "fields": {"challenge": "Challenge", "solution": "Solution", "materials": "Materials", "technologies": "Technologies", "result": "Result"},
-    "cases": [
       {
-        "title": "UltraPixel Cuvée Prestige",
-        "tag": "Showcase concept",
-        "image": "macro-3.webp",
-        "challenge": "Show the full range of UltraPixel finishing on a single label, with every technology in register.",
-        "solution": "A shaped label built in layers: digital print first, then foil, screen varnish and relief on top.",
-        "materials": "Natural textured ivory paper.",
-        "technologies": "Digital printing, hot foil, opaque and high-build screen printing, embossing, debossing, microtexture, shaped die-cutting.",
-        "result": "One label that lets a buyer judge print, foil, relief and die-cutting together."
+        "image": "macro-1.webp",
+        "sector": "Wine",
+        "title": "Cuvée Prestige, monogram",
+        "finishes": [
+          "Hot foil",
+          "Embossing",
+          "Opaque screen"
+        ],
+        "badge": "Concept label"
+      },
+      {
+        "image": "macro-2.webp",
+        "sector": "Wine",
+        "title": "Cuvée Prestige, wordmark",
+        "finishes": [
+          "Digital print",
+          "Foil",
+          "Tactile dots"
+        ],
+        "badge": "Concept label"
+      },
+      {
+        "image": "work-food.webp",
+        "sector": "Food",
+        "title": "Jar label",
+        "finishes": [
+          "Digital print",
+          "Lamination"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "work-cosmetic.webp",
+        "sector": "Cosmetics",
+        "title": "Clear label, opaque white",
+        "finishes": [
+          "Transparent film",
+          "Opaque white"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "work-pharma.webp",
+        "sector": "Nutraceutical",
+        "title": "Container label",
+        "finishes": [
+          "Variable data",
+          "Numbering"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "work-industrial.webp",
+        "sector": "Industrial",
+        "title": "Drum label",
+        "finishes": [
+          "Technical material",
+          "QR code"
+        ],
+        "badge": "Illustrative concept"
       }
-    ]
+    ],
+    "showcase": {
+      "h2": "Technology showcase",
+      "tag": "Concept label",
+      "title": "UltraPixel Cuvée Prestige",
+      "image": "macro-3.webp",
+      "rows": [
+        [
+          "Idea",
+          "Show the full range of UltraPixel finishing on a single label, with every technology in register."
+        ],
+        [
+          "Build",
+          "A shaped label built in layers: digital print first, then foil, screen varnish and relief on top."
+        ],
+        [
+          "Materials",
+          "Natural textured ivory paper."
+        ],
+        [
+          "Technologies",
+          "Digital printing, hot foil, opaque and high-build screen printing, embossing, debossing, microtexture, shaped die-cutting."
+        ]
+      ]
+    },
+    "caseEmpty": "Case studies from UltraPixel productions will be published here.",
+    "caseFields": {
+      "challenge": "Challenge",
+      "solution": "Solution",
+      "materials": "Materials",
+      "technologies": "Technologies",
+      "result": "Result"
+    },
+    "cases": []
   },
   "social": [
-    {"image": "macro-3.webp", "caption": "Foil and screen in register", "url": ""},
-    {"image": "macro-1.webp", "caption": "Embossed gold on textured paper", "url": ""},
-    {"image": "macro-2.webp", "caption": "Raised tactile details", "url": ""}
+    {
+      "image": "macro-3.webp",
+      "caption": "Foil and screen in register",
+      "url": "",
+      "badge": "Concept label"
+    },
+    {
+      "image": "macro-1.webp",
+      "caption": "Embossed gold on textured paper",
+      "url": "",
+      "badge": "Concept label"
+    },
+    {
+      "image": "macro-2.webp",
+      "caption": "Raised tactile details",
+      "url": "",
+      "badge": "Concept label"
+    }
   ],
   "pages": {
-    "samples": {"meta": {"title": "Request a label sample kit | UltraPixel", "description": "Request an UltraPixel sample kit: foil, screen varnish, embossing and special materials on real labels."}, "h1": "See it. Touch it. Test it.", "lead": "Request an UltraPixel sample kit and judge the materials and finishing in your own hands."},
-    "contact": {"meta": {"title": "Contact UltraPixel | Quotes, samples and label projects", "description": "Have a label project? Request a quote, ask for samples or talk to a label specialist at UltraPixel."}, "h1": "Have a label project? Let's talk.", "lead": "Tell us about the product, the material and the quantities. We will come back to you with the right person."},
-    "partners": {"meta": {"title": "Commercial partners | UltraPixel", "description": "UltraPixel is building a European commercial network. Agents and distributors can get in touch here."}, "h1": "Interested in representing UltraPixel?", "lead": "We are building a commercial network across Europe. If you are an agent or distributor working with brands that need premium or technical labels, we would like to hear from you."},
-    "about": {"meta": {"title": "About UltraPixel | Label manufacturer in Trieste, Italy", "description": "UltraPixel is a self-adhesive label manufacturer founded in Trieste in 2013, producing premium and technical labels for customers in Italy and across Europe."}, "h1": "About UltraPixel"}
+    "samples": {
+      "meta": {
+        "title": "Request a label sample kit | UltraPixel",
+        "description": "Request an UltraPixel sample kit: foil, screen varnish, embossing and special materials on real labels."
+      },
+      "h1": "See it. Touch it. Test it.",
+      "lead": "Request an UltraPixel sample kit and judge the materials and finishing in your own hands."
+    },
+    "contact": {
+      "meta": {
+        "title": "Contact UltraPixel | Quotes, samples and label projects",
+        "description": "Have a label project? Request a quote, ask for samples or talk to a label specialist at UltraPixel."
+      },
+      "h1": "Have a label project? Let's talk.",
+      "lead": "Tell us about the product, the material and the quantities. We will come back to you with the right person."
+    },
+    "partners": {
+      "meta": {
+        "title": "Commercial partners | UltraPixel",
+        "description": "UltraPixel is building a European commercial network. Agents and distributors can get in touch here."
+      },
+      "h1": "Interested in representing UltraPixel?",
+      "lead": "We are building a commercial network across Europe. If you are an agent or distributor working with brands that need premium or technical labels, we would like to hear from you."
+    },
+    "about": {
+      "meta": {
+        "title": "About UltraPixel | Label manufacturer in Trieste, Italy",
+        "description": "UltraPixel is a self-adhesive label manufacturer founded in Trieste in 2013, producing premium and technical labels for customers in Italy and across Europe."
+      },
+      "h1": "About UltraPixel"
+    }
   }
 }
