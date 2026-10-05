@@ -87,20 +87,20 @@ def europe_map(label="Trieste"):
         cx, cy = (tx + x2) / 2 - bend * math.sin(a), (ty + y2) / 2 - bend * math.cos(a)
         rays += f'<path class="ray" d="M{tx} {ty}Q{cx:.1f} {cy:.1f} {x2:.1f} {y2:.1f}"/>'
     return (f'<svg class="map" viewBox="0 0 {m["W"]} {m["H"]}" role="img" aria-label="Europe, with Trieste as the point of origin">'
-            f'<defs><radialGradient id="rayfade" gradientUnits="userSpaceOnUse" cx="{tx}" cy="{ty}" r="330"><stop offset="0" stop-color="#F3EFE7" stop-opacity=".85"/><stop offset=".7" stop-color="#F3EFE7" stop-opacity=".25"/><stop offset="1" stop-color="#F3EFE7" stop-opacity="0"/></radialGradient></defs>'
-            f'<path class="dots" d="{m["d"]}"/>{rays}<circle class="pulse" cx="{tx}" cy="{ty}" r="12"/><circle cx="{tx}" cy="{ty}" r="5" fill="#C8A24C"/>'
-            f'<text x="{tx+14}" y="{ty+22}" font-family="Bodoni Moda,Didot,serif" font-size="24" fill="#F3EFE7">{e(label)}</text></svg>')
+            f'<defs><radialGradient id="rayfade" gradientUnits="userSpaceOnUse" cx="{tx}" cy="{ty}" r="330"><stop offset="0" stop-color="#101418" stop-opacity=".8"/><stop offset=".7" stop-color="#101418" stop-opacity=".22"/><stop offset="1" stop-color="#101418" stop-opacity="0"/></radialGradient></defs>'
+            f'<path class="dots" d="{m["d"]}"/>{rays}<circle class="pulse" cx="{tx}" cy="{ty}" r="12"/><circle cx="{tx}" cy="{ty}" r="5" fill="#1B2FBF"/>'
+            f'<text x="{tx+14}" y="{ty+22}" font-family="Bodoni Moda,Didot,serif" font-size="24" fill="#101418">{e(label)}</text></svg>')
 
 
 def colour_chart(c):
     return (f'<svg viewBox="0 0 440 260" role="img" aria-label="Spectral curve of a measured colour against its reference">'
-            '<g stroke="#2F3439" stroke-width="1">' + "".join(f'<path d="M{60+i*110} 30V200"/>' for i in range(4)) + '<path d="M60 200H390"/></g>'
-            '<path d="M60 176C120 172 150 168 190 150S250 70 300 56S360 50 390 48" fill="none" stroke="#F3EFE7" stroke-width="2"/>'
-            '<path d="M60 178C120 173 150 170 190 153S250 73 300 58S360 51 390 50" fill="none" stroke="#C8A24C" stroke-width="1.5" stroke-dasharray="5 5"/>'
-            '<g font-family="IBM Plex Mono,monospace" font-size="10" fill="#A8A399">' + "".join(f'<text x="{60+i*110}" y="218" text-anchor="middle">{400+i*100}</text>' for i in range(4)) +
+            '<g stroke="#C5CBD0" stroke-width="1">' + "".join(f'<path d="M{60+i*110} 30V200"/>' for i in range(4)) + '<path d="M60 200H390"/></g>'
+            '<path d="M60 176C120 172 150 168 190 150S250 70 300 56S360 50 390 48" fill="none" stroke="#101418" stroke-width="2"/>'
+            '<path d="M60 178C120 173 150 170 190 153S250 73 300 58S360 51 390 50" fill="none" stroke="#1B2FBF" stroke-width="1.5" stroke-dasharray="5 5"/>'
+            '<g font-family="IBM Plex Mono,monospace" font-size="10" fill="#56606A">' + "".join(f'<text x="{60+i*110}" y="218" text-anchor="middle">{400+i*100}</text>' for i in range(4)) +
             f'<text x="225" y="242" text-anchor="middle">{e(c["axis"])}</text>'
-            f'<path d="M290 96H314" stroke="#F3EFE7" stroke-width="2"/><text x="322" y="100">{e(c["ref"])}</text>'
-            f'<path d="M290 114H314" stroke="#C8A24C" stroke-width="1.5" stroke-dasharray="5 5"/><text x="322" y="118">{e(c["meas"])}</text></g></svg>')
+            f'<path d="M290 96H314" stroke="#101418" stroke-width="2"/><text x="322" y="100">{e(c["ref"])}</text>'
+            f'<path d="M290 114H314" stroke="#1B2FBF" stroke-width="1.5" stroke-dasharray="5 5"/><text x="322" y="118">{e(c["meas"])}</text></g></svg>')
 
 
 # ---------------------------------------------------------------- chrome
@@ -127,7 +127,7 @@ def shell(C, P, path, meta, body, home=False, extra_head="", extra_foot=""):
 <link rel="canonical" href="{url}">
 {'<meta name="robots" content="noindex">' if s["noindex"] else ""}{alts}
 <meta property="og:type" content="website"><meta property="og:title" content="{e(meta["title"])}"><meta property="og:description" content="{e(meta["description"])}"><meta property="og:url" content="{url}"><meta property="og:image" content="{s["url"].rstrip("/")}/assets/macro-1.webp">
-<meta name="theme-color" content="#16191C">
+<meta name="theme-color" content="#ECEEEF">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="/assets/site.css">

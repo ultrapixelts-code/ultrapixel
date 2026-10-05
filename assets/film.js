@@ -3,8 +3,8 @@ const $=id=>document.getElementById(id), NS="http://www.w3.org/2000/svg";
 const el=(p,n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e};
 const cl=x=>Math.max(0,Math.min(1,x)), seg=(t,a,b)=>cl((t-a)/(b-a)), ease=x=>x*x*(3-2*x), mix=(a,b,k)=>a+(b-a)*k;
 
-const inks=["#00A0DC","#D6006F","#F5D800","#2a2a2e","#ffffff"], names=["C","M","Y","K","+1"];
-names.forEach((n,i)=>{const b=document.createElement("b");b.textContent=n;b.style.background=inks[i];if(i==2||i==4)b.style.color="#101418";$("chips").appendChild(b)});
+const inks=["#00A0DC","#D6006F","#F5D800","#2a2a2e","#F26B21","#2E9E5B","#5B3FA8","#ffffff"], names=["C","M","Y","K","5","6","7","8"];
+names.forEach((n,i)=>{const b=document.createElement("b");b.textContent=n;b.style.background=inks[i];if(i==2||i==7)b.style.color="#101418";$("chips").appendChild(b)});
 const chips=[...$("chips").children], panels=[...document.querySelectorAll(".panel")], qcs=[...document.querySelectorAll(".qc")];
 const sheet=$("sheet"),Lp=$("Lpaper"),Lpr=$("Lprint"),Lg=$("Lgold"),Ls=$("Lscreen"),Lf=$("Lfinal"),glint=$("glint");
 const seps=[...Lpr.querySelectorAll('.sp')], stns=inks.map(c=>{const e=document.createElement('div');e.className='stn';e.style.background=c;$('stations').appendChild(e);return e});
@@ -28,7 +28,7 @@ function frame(){
 
   /* state: finished label at start and end; built pass by pass in between */
   const build=t>=1.15&&t<6.25, strip=seg(t,.9,1.15);
-  const pP=seg(t,1.6,2.35), st=i=>cl(pP*2.2-i*.3), pF=seg(t,2.65,3.3), pS=seg(t,3.6,4.3), pE=seg(t,4.9,5.3);
+  const pP=seg(t,1.6,2.35), st=i=>cl(pP*3.1-i*.3), pF=seg(t,2.65,3.3), pS=seg(t,3.6,4.3), pE=seg(t,4.9,5.3);
   sheet.style.opacity=build?1:(t<1.15?seg(t,1,1.15):0);
   Lp.style.opacity=build?0:1;
   Lf.style.opacity=build?pE:(t<1.15?1-strip:1);
