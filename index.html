@@ -1,0 +1,343 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><style>body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>UltraPixel Homepage</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one pinned press-sheet stage where the label is built by scrolling; quiet indexed sections after it. Single light look by choice. */
+:root{
+  --sheet:#ECEEEF;      /* cool press-sheet white */
+  --sheet-2:#E1E4E6;
+  --ink:#101418;
+  --ink-soft:#56606A;
+  --rule:#C5CBD0;
+  --reflex:#1B2FBF;     /* Reflex Blue, the one UI accent */
+  --label:#121214;
+  --gold-a:#7A5A1C; --gold-b:#F6E3A1; --gold-c:#C99A2E;
+  --display:"Bodoni Moda","Didot","Bodoni MT",Georgia,serif;
+  --body:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --gut:clamp(20px,5vw,72px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{background:var(--sheet);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+
+/* ---------- film ---------- */
+#film{height:1000vh;position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:
+  radial-gradient(120% 80% at 62% 45%,#F7F8F8 0%,var(--sheet) 55%,var(--sheet-2) 100%)}
+.top{position:absolute;inset:0 0 auto 0;display:flex;justify-content:space-between;align-items:center;padding:calc(18px + env(safe-area-inset-top,0px)) var(--gut) 0;z-index:5}
+.brand{font-family:var(--display);font-size:22px;letter-spacing:.01em}
+.brand i{color:var(--reflex);font-style:normal}
+.top .mono{color:var(--ink-soft)}
+/* crop marks: the stage is a press sheet */
+.crop{position:absolute;width:22px;height:22px;border:0 solid var(--ink);opacity:.35}
+.crop.a{left:14px;bottom:14px;border-left-width:1px;border-bottom-width:1px}
+.crop.b{right:14px;bottom:14px;border-right-width:1px;border-bottom-width:1px}
+.bar{position:absolute;left:0;bottom:0;height:3px;background:var(--reflex);width:0;z-index:5}
+
+.rig{position:absolute;left:0;top:0;width:387px;height:1026px;transform-origin:193.5px 643px}
+.bottle{position:absolute;inset:0;width:100%;height:100%;display:block}
+.shadow{position:absolute;left:57.5px;top:471px;width:272px;height:346px;background:#0b1220;filter:blur(26px);opacity:0;transform:translate(14px,22px)}
+.label{position:absolute;left:43.5px;top:455.25px;width:300px;height:375.5px;transform-style:preserve-3d}
+.layer,.over{position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block}
+.sheet i{position:absolute;inset:0;display:block}
+#m0{background:url(sheet.jpg) center/100% 100%}
+#m1{background:linear-gradient(135deg,#fff,#EDF1F4)}
+#m2{background:linear-gradient(105deg,rgba(255,255,255,.5) 8%,rgba(159,196,220,.2) 30%,rgba(159,196,220,.26) 70%,rgba(255,255,255,.35));box-shadow:inset 0 0 0 1.5px #5f8196}
+#m3{background:linear-gradient(110deg,#8f979e,#f1f4f6 30%,#a9b1b8 50%,#eef1f3 72%,#868e95)}
+.glint{-webkit-mask:url(gold.webp) center/100% 100%;mask:url(gold.webp) center/100% 100%;background:linear-gradient(105deg,transparent 38%,rgba(255,248,214,.8) 50%,transparent 62%) 0 0/300% 100% no-repeat;pointer-events:none}
+.curve{-webkit-mask:url(final.webp) center/100% 100%;mask:url(final.webp) center/100% 100%;background:linear-gradient(90deg,rgba(0,0,0,.6),rgba(0,0,0,0) 24%,rgba(255,255,255,.08) 44%,rgba(0,0,0,0) 72%,rgba(0,0,0,.62));pointer-events:none}
+.head,.sq{position:absolute;top:-6%;height:112%;width:30px;left:0;background:linear-gradient(90deg,#2a3038,#59626d 45%,#20252b);border-radius:3px;box-shadow:0 8px 20px rgba(0,0,0,.3);opacity:0}
+.head::after{content:"";position:absolute;inset:8% 12px;background:repeating-linear-gradient(180deg,#00A0DC 0 6px,#D6006F 6px 12px,#F5D800 12px 18px,#111 18px 24px)}
+.seps{isolation:isolate}.seps i{position:absolute;inset:0;display:block;background-size:100% 100%}.seps .sp{mix-blend-mode:multiply}
+.stn{position:absolute;left:-7%;width:114%;height:7px;top:-3px;border-radius:2px;opacity:0;box-shadow:0 0 0 1px rgba(16,20,24,.35),0 5px 12px rgba(0,0,0,.25)}
+.sq{width:16px;background:linear-gradient(90deg,#0d1016,#232a3a 50%,#0d1016)}
+.ribbon{position:absolute;left:-12%;width:124%;height:74px;top:0;opacity:0;box-shadow:0 10px 22px rgba(0,0,0,.28)}
+.scan{position:absolute;left:-6%;width:112%;height:2px;top:0;background:var(--reflex);box-shadow:0 0 0 1px rgba(255,255,255,.5),0 0 22px 6px rgba(27,47,191,.55);opacity:0}
+.qc{position:absolute;display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:8px;color:#fff;opacity:0;transition:opacity .25s;white-space:nowrap}
+.qc::before{content:"";width:9px;height:9px;border:1px solid #fff;border-radius:50%;box-shadow:0 0 0 2px var(--reflex)}
+.qc span{background:var(--reflex);padding:2px 5px}
+
+.panel{position:absolute;left:var(--gut);right:var(--gut);bottom:9vh;opacity:0;transform:translateY(14px);transition:opacity .45s,transform .45s;pointer-events:none;z-index:4}
+.panel.on{opacity:1;transform:none;pointer-events:auto}
+.panel .mono{color:var(--reflex);display:block;margin-bottom:14px}
+.panel h2,.panel h1{font-family:var(--display);font-weight:400;margin:0;line-height:1.02;letter-spacing:-.01em;text-wrap:balance}
+.panel h1{font-size:clamp(38px,6.2vw,86px)}
+.panel h2{font-size:clamp(34px,5vw,68px)}
+.panel p{margin:16px 0 0;color:var(--ink-soft);max-width:34ch}
+.panel small{display:block;margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-soft)}
+.hero{top:84px;bottom:auto}
+.hint{position:absolute;left:var(--gut);bottom:26px;z-index:4;color:var(--ink-soft);transition:opacity .3s}
+.chips{display:flex;gap:6px;margin-top:18px;flex-wrap:wrap}
+.chips b{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:500 10px var(--mono);color:#fff;border:1px solid rgba(16,20,24,.25);opacity:.12;transition:opacity .3s}
+.chips b.on{opacity:1}
+.mat{display:inline-block;margin-top:16px;padding:6px 10px;border:1px solid var(--ink);font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+@media(min-width:900px){
+  .panel{right:auto;bottom:auto;top:50%;width:min(36vw,470px);transform:translateY(calc(-50% + 14px))}
+  .panel.on{transform:translateY(-50%)}
+  .hero{top:50%}
+}
+
+/* ---------- sections ---------- */
+section.s{padding:clamp(64px,10vw,130px) var(--gut);border-top:1px solid var(--rule)}
+.s>header{display:grid;gap:14px;margin-bottom:clamp(32px,5vw,60px);max-width:900px}
+.s h2{font-family:var(--display);font-weight:400;font-size:clamp(32px,4.6vw,62px);line-height:1.04;margin:0;text-wrap:balance}
+.s header p{margin:0;color:var(--ink-soft);max-width:60ch}
+.s header .mono{color:var(--reflex)}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);border:1px dashed var(--ink-soft);padding:3px 7px;display:inline-block}
+
+.anat{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(28px,5vw,80px);align-items:start}
+.anat>*{min-width:0}
+.anat figure{margin:0;position:relative;max-width:560px;justify-self:center;width:100%;filter:drop-shadow(0 30px 40px rgba(16,20,24,.28))}
+.anat figure img{display:block;width:100%;height:auto}
+.pin{position:absolute;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:var(--reflex);color:#fff;font:500 11px/24px var(--mono);text-align:center;box-shadow:0 0 0 2px #fff;transition:transform .2s}
+.pin.on{transform:scale(1.55);background:var(--ink)}
+.anat ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.anat li{display:grid;grid-template-columns:34px 1fr;gap:4px 8px;padding:13px 0;border-bottom:1px solid var(--rule);cursor:default}
+.anat li b{font:500 12px/1.9 var(--mono);color:var(--reflex)}
+.anat li strong{font-weight:600}
+.anat li span{grid-column:2;color:var(--ink-soft);font-size:15px}
+.anat li.on strong{color:var(--reflex)}
+.sectors{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));border-top:1px solid var(--ink)}
+.sector{padding:26px 22px 26px 0;border-bottom:1px solid var(--rule);display:grid;gap:10px;min-width:0}
+.sector h3{font-family:var(--display);font-weight:400;font-size:30px;margin:0;line-height:1.1}
+.sector p{margin:0;color:var(--ink-soft);font-size:15px}
+.sector code{font-family:var(--mono);font-size:12px;color:var(--reflex)}
+
+.mapwrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(24px,5vw,70px);align-items:center}
+.mapwrap>*{min-width:0}
+#map{width:100%;height:auto;max-width:620px;display:block}
+.routes{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.routes li{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:13px;letter-spacing:.06em}
+.routes li span:last-child{color:var(--ink-soft)}
+
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:34px 28px}
+.nums div{min-width:0;border-top:1px solid var(--ink);padding-top:14px}
+.nums b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(40px,5vw,66px);line-height:1;font-variant-numeric:lining-nums}
+.nums span{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+
+.light{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.tile{--mx:30%;--my:25%;position:relative;aspect-ratio:4/5;max-width:100%;background:var(--label);overflow:hidden;min-width:0}
+.tile figcaption{position:absolute;left:14px;bottom:12px;color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.tile i{position:absolute;inset:0;display:block}
+.t1 i{background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.16),transparent 55%),repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px)}
+.t2 i{display:grid;place-items:center;font:400 190px/1 var(--display);font-style:normal;color:transparent;-webkit-background-clip:text;background-clip:text;
+  background-image:linear-gradient(105deg,var(--gold-a) 0%,var(--gold-c) 22%,var(--gold-b) 38%,#fff8d8 44%,var(--gold-c) 58%,var(--gold-a) 80%,var(--gold-c) 100%);background-size:260% 100%;background-position:var(--mx) 0}
+.t3 i{background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.5),transparent 38%);
+  -webkit-mask:radial-gradient(circle at 50% 50%,#000 0 34%,transparent 36%) 0 0/34px 34px;mask:radial-gradient(circle at 50% 50%,#000 0 34%,transparent 36%) 0 0/34px 34px}
+.t3{background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.07) 0 34%,transparent 36%) 0 0/34px 34px,var(--label)}
+.t4 i{background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.34),transparent 50%);
+  -webkit-mask:repeating-radial-gradient(circle at 50% 46%,#000 0 2px,transparent 2px 13px);mask:repeating-radial-gradient(circle at 50% 46%,#000 0 2px,transparent 2px 13px)}
+.t4{background:repeating-radial-gradient(circle at 50.6% 46.8%,rgba(0,0,0,.9) 0 2px,transparent 2px 13px),#1b1b1e}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:14px}
+.shot{aspect-ratio:16/10;max-width:100%;border:1px dashed var(--ink-soft);display:grid;place-items:center;text-align:center;padding:16px;color:var(--ink-soft);font-family:var(--mono);font-size:12px;letter-spacing:.06em;min-width:0}
+
+.pages{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 28px;border-top:1px solid var(--ink)}
+.pages div{padding:13px 0;border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:13px;min-width:0;overflow-wrap:anywhere}
+.end{padding:clamp(70px,11vw,150px) var(--gut);background:var(--ink);color:var(--sheet)}
+.end h2{font-family:var(--display);font-weight:400;font-size:clamp(36px,6vw,84px);line-height:1.02;margin:0 0 20px;max-width:14ch;text-wrap:balance}
+.end p{margin:0;color:#AEB6BD;max-width:52ch}
+.end .mono{display:inline-block;margin-top:28px;border:1px solid var(--sheet);padding:12px 18px;color:var(--sheet)}
+</style>
+</head><body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <clipPath id="dieClip" clipPathUnits="objectBoundingBox"><path d="M0,.3 C0,.1 .22,0 .5,0 C.78,0 1,.1 1,.3 L1,.9 L.86,1 L.14,1 L0,.9 Z"/></clipPath>
+</defs></svg>
+
+<div id="film">
+ <div class="stage" id="stage">
+  <div class="top"><div class="brand">Ultra<i>Pixel</i></div><div class="mono">Labels engineered in Italy</div></div>
+  <span class="crop a"></span><span class="crop b"></span><div class="bar" id="bar"></div>
+
+  <div class="rig" id="rig">
+   <img class="bottle" id="bottle" src="bottle.webp" alt="">
+   <div class="shadow" id="shadow"></div>
+   <div class="label" id="label">
+    <div class="layer sheet" id="sheet" style="opacity:0"><i id="m0"></i><i id="m1"></i><i id="m2"></i><i id="m3"></i></div>
+    <img class="layer" id="Lpaper" src="paper.webp" alt="">
+    <div class="layer seps" id="Lprint" style="opacity:0"><i style="background-image:url(sheet.jpg)"></i><i class="sp" style="background-image:url(sepC.jpg)"></i><i class="sp" style="background-image:url(sepM.jpg)"></i><i class="sp" style="background-image:url(sepY.jpg)"></i><i class="sp" style="background-image:url(sepK.jpg)"></i></div>
+    <img class="layer" id="Lgold" src="gold.webp" alt="" style="opacity:0">
+    <img class="layer" id="Lscreen" src="screen.webp" alt="" style="opacity:0">
+    <img class="layer" id="Lfinal" src="final.webp" alt="UltraPixel Cuvée Prestige label">
+    <div class="over glint" id="glint"></div>
+    <div class="over curve" id="curve"></div>
+    <img class="over" id="matrix" src="matrix.webp" alt="" style="opacity:0">
+    <svg class="over" id="die" viewBox="0 0 1120 1402" style="overflow:visible;opacity:0"><path id="diep" pathLength="1" d="M556,46 L516,83 L493,91 L485,92 L471,103 L443,102 L414,107 L408,111 L398,111 L390,114 L373,126 L354,149 L338,152 L324,152 L319,155 L278,161 L260,167 L251,167 L236,173 L220,184 L201,204 L191,211 L175,216 L173,219 L166,219 L156,222 L153,226 L150,237 L140,245 L132,257 L115,273 L91,285 L84,286 L83,289 L64,291 L53,301 L51,305 L51,485 L54,491 L67,501 L71,508 L72,514 L72,696 L68,712 L60,721 L52,726 L49,733 L47,1060 L51,1068 L58,1075 L64,1078 L95,1083 L108,1088 L118,1095 L134,1111 L136,1117 L146,1130 L153,1147 L153,1154 L157,1161 L168,1169 L189,1172 L206,1182 L212,1188 L215,1195 L218,1196 L223,1207 L230,1216 L253,1235 L266,1240 L282,1243 L332,1245 L348,1251 L358,1259 L362,1259 L364,1263 L374,1269 L378,1269 L386,1273 L398,1274 L399,1277 L406,1279 L435,1281 L449,1285 L463,1295 L471,1297 L474,1301 L501,1311 L515,1325 L533,1336 L549,1350 L558,1355 L562,1355 L576,1346 L583,1338 L597,1331 L616,1313 L619,1313 L630,1306 L648,1301 L655,1297 L655,1295 L663,1289 L683,1281 L717,1279 L733,1274 L734,1272 L741,1272 L760,1263 L763,1258 L776,1250 L786,1247 L826,1244 L835,1241 L852,1241 L862,1238 L874,1231 L890,1217 L908,1186 L923,1176 L959,1165 L966,1157 L969,1142 L980,1120 L988,1108 L1000,1095 L1006,1093 L1014,1087 L1035,1082 L1036,1080 L1056,1078 L1064,1073 L1068,1068 L1072,1059 L1072,942 L1070,861 L1070,734 L1066,726 L1053,716 L1048,705 L1047,514 L1049,505 L1065,490 L1068,484 L1067,307 L1062,298 L1051,291 L1034,289 L1017,284 L1006,279 L997,271 L994,271 L977,249 L964,238 L962,228 L959,223 L951,220 L934,218 L924,214 L912,205 L902,193 L899,192 L886,179 L883,179 L880,176 L864,169 L843,163 L789,152 L769,150 L767,147 L762,146 L758,140 L752,136 L750,131 L744,128 L733,118 L704,106 L683,102 L652,104 L632,91 L619,86 L603,83 L600,78 L598,78 L563,46 Z" fill="none" stroke="#1B2FBF" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
+    <div id="stations"></div>
+    <div class="ribbon" id="ribbon" style="background:linear-gradient(100deg,#7A5A1C,#C99A2E 25%,#FFF3C4 48%,#C99A2E 62%,#7A5A1C)"></div>
+    <div class="sq" id="sq"></div>
+    <div class="scan" id="scan"></div>
+    <div class="qc" style="left:12%;top:24%" data-y=".24"><span>ΔE₀₀ 0.6</span></div>
+    <div class="qc" style="left:54%;top:53%" data-y=".53"><span>ΔE₀₀ 0.9</span></div>
+    <div class="qc" style="left:16%;top:72%" data-y=".72"><span>ΔE₀₀ 0.7</span></div>
+   </div>
+  </div>
+
+  <div class="panel hero on" data-c="0">
+   <h1>We make labels impossible to ignore.</h1>
+   <p>UltraPixel. Labels engineered in Italy.</p>
+  </div>
+  <div class="panel" data-c="1"><span class="mono">01 — Material</span><h2>It starts with the stock.</h2><p>Premium natural paper, ivory, with a fibre you can see and feel. Or PP, PET, clear, metallised and special materials.</p><span class="mat" id="mat">Natural paper</span></div>
+  <div class="panel" data-c="2"><span class="mono">02 — Digital printing</span><h2>8 colour digital printing.</h2><p>One pass, eight stations in line. Each lays a full separation over the whole label, in register: grounds, blacks, greys and every line of the landscape.</p><div class="chips" id="chips"></div><small>Variable data • short runs • industrial volumes</small></div>
+  <div class="panel" data-c="3"><span class="mono">03 — Foil</span><h2>Hot foil.</h2><p>Logo, frames, flourishes, leaves, grapes and lettering in metal.</p><small>Gold. Silver. Holographic. Custom.</small></div>
+  <div class="panel" data-c="4"><span class="mono">04 — Screen printing</span><h2>Screen printing.</h2><p>Dense opaque colour, high-build 3D varnish you can feel, and selective varnish to set gloss against matt.</p></div>
+  <div class="panel" data-c="5"><span class="mono">05 — Relief</span><h2>Embossing. Debossing. Texture.</h2><p>Foil that rises off the paper, panels pressed into it, microtexture in the grounds and raised tactile dots.</p></div>
+  <div class="panel" data-c="6"><span class="mono">06 — Die-cutting</span><h2>Any shape.</h2><p>Points, curves and notches, cut to a precise profile.</p></div>
+  <div class="panel" data-c="7"><span class="mono">07 — Quality control</span><h2>Measured. Not guessed.</h2><p>Spectral colour control<br>ΔE measurement<br>Multi-process registration<br>Production traceability</p></div>
+  <div class="panel" data-c="8"><span class="mono">The result</span><h2>Fourteen processes. One register.</h2><p>Print, foil, screen and relief, all landing in the same place.</p></div>
+  <div class="hint mono" id="hint">Scroll ↓</div>
+ </div>
+</div>
+
+<section class="s">
+ <header><span class="mono">Anatomy of a label</span><h2>Fourteen processes on one label.</h2><p>Each one is a separate pass. The hard part is making them all land in the same place.</p></header>
+ <div class="anat" id="anat"><figure><img src="final.webp" alt="UltraPixel label with numbered process callouts"><span class="pin" data-i="0" style="left:17%;top:22%">1</span><span class="pin" data-i="1" style="left:30%;top:60%">2</span><span class="pin" data-i="2" style="left:51%;top:18%">3</span><span class="pin" data-i="3" style="left:67%;top:23%">4</span><span class="pin" data-i="4" style="left:90%;top:43%">5</span><span class="pin" data-i="5" style="left:9%;top:43%">6</span><span class="pin" data-i="6" style="left:23%;top:62%">7</span><span class="pin" data-i="7" style="left:80%;top:69%">8</span><span class="pin" data-i="8" style="left:86%;top:61%">9</span><span class="pin" data-i="9" style="left:9%;top:76%">10</span><span class="pin" data-i="10" style="left:52%;top:65%">11</span><span class="pin" data-i="11" style="left:51%;top:3%">12</span><span class="pin" data-i="12" style="left:53%;top:95%">13</span><span class="pin" data-i="13" style="left:50%;top:43%">14</span></figure><ol><li data-i="0"><b>01</b><strong>Multicolour digital printing</strong><span>Blacks, greys and all illustrated parts, including the fine landscape.</span></li><li data-i="1"><b>02</b><strong>Premium textured paper</strong><span>Ivory natural stock with visible fibre.</span></li><li data-i="2"><b>03</b><strong>Hot foil gold</strong><span>Logo, frames, flourishes, leaves, grapes and lettering.</span></li><li data-i="3"><b>04</b><strong>Foil and relief combined</strong><span>Gold that also rises from the surface.</span></li><li data-i="4"><b>05</b><strong>Embossing</strong><span>Raised flourishes, side elements and some lettering.</span></li><li data-i="5"><b>06</b><strong>Debossing</strong><span>Decorative areas pressed into the paper.</span></li><li data-i="6"><b>07</b><strong>Opaque screen printing</strong><span>Dense black and blue in the lower field and the medallion.</span></li><li data-i="7"><b>08</b><strong>High-build screen varnish</strong><span>Floral motifs with a strong tactile relief.</span></li><li data-i="8"><b>09</b><strong>Selective screen varnish</strong><span>Gloss against matt on the dark areas.</span></li><li data-i="9"><b>10</b><strong>Microtexture</strong><span>Very fine relief patterns in grounds and side panels.</span></li><li data-i="10"><b>11</b><strong>Tactile raised dots</strong><span>Braille-style dots under “Cuvée Prestige”.</span></li><li data-i="11"><b>12</b><strong>Complex shaped die-cut</strong><span>A fully contoured, non-rectangular profile.</span></li><li data-i="12"><b>13</b><strong>Precision die-cutting</strong><span>Points, curves and recesses on the perimeter.</span></li><li data-i="13"><b>14</b><strong>Multi-process registration</strong><span>Foil, relief, screen and print landing together.</span></li></ol></div>
+</section>
+
+<section class="s">
+ <header><span class="mono">Applications</span><h2>Built for the shelf it has to win.</h2></header>
+ <div class="sectors">
+  <div class="sector"><h3>Wine &amp; Spirits</h3><p>Foil, relief and textured papers for bottles that sell on sight.</p><code>/wine-labels</code></div>
+  <div class="sector"><h3>Food</h3><p>Short runs, many variants, materials that survive the cold chain.</p><code>/food-labels</code></div>
+  <div class="sector"><h3>Cosmetics &amp; Nutraceuticals</h3><p>Clear films, fine type and consistent colour across a full range.</p><code>/cosmetic-labels</code></div>
+  <div class="sector"><h3>Industrial &amp; Chemical</h3><p>Durable stocks and adhesives for drums, canisters and harsh settings.</p><code>/industrial-labels</code></div>
+ </div>
+</section>
+
+<section class="s">
+ <header><span class="mono">European label production partner</span><h2>Made in Trieste. Delivered across Europe.</h2></header>
+ <div class="mapwrap">
+  <svg id="map" viewBox="0 0 620 606" role="img" aria-label="Routes from Trieste to France, Germany, Lithuania and Greece"></svg>
+  <div><ul class="routes" id="routes"></ul><p style="margin-top:16px"><span class="tag">Prototipo: destinazioni di esempio, da confermare</span></p></div>
+ </div>
+</section>
+
+<section class="s">
+ <header><span class="mono">In numbers</span><h2>A production partner, at a glance.</h2></header>
+ <div class="nums">
+  <div><b>2013</b><span>Founded</span></div>
+  <div><b>8</b><span>Colours, digital printing</span></div>
+  <div><b>5+</b><span>Finishing technologies</span></div>
+  <div><b>EU</b><span>Europe-wide delivery</span></div>
+  <div><b>1</b><span>Partner for complex labels</span></div>
+ </div>
+</section>
+
+<section class="s">
+ <header><span class="mono">Work</span><h2>Light is everything.</h2><p>Move the pointer, or your finger, across the samples. Black, then gold, then varnish, then relief.</p></header>
+ <div class="light" id="light">
+  <figure class="tile t1" style="margin:0"><i></i><figcaption>Matte black</figcaption></figure>
+  <figure class="tile t2" style="margin:0"><i>O</i><figcaption>Gold foil</figcaption></figure>
+  <figure class="tile t3" style="margin:0"><i></i><figcaption>Screen varnish</figcaption></figure>
+  <figure class="tile t4" style="margin:0"><i></i><figcaption>Emboss</figcaption></figure>
+ </div>
+ <div class="shots">
+  <div class="shot">Segnaposto<br>macro da studio, lavoro reale 1</div>
+  <div class="shot">Segnaposto<br>macro da studio, lavoro reale 2</div>
+  <div class="shot">Segnaposto<br>bottle shot finale</div>
+ </div>
+</section>
+
+<section class="s">
+ <header><span class="mono">Find it fast</span><h2>Everything else is one click away.</h2><p>Fast, plain, indexable pages for buyers, agents and search engines.</p></header>
+ <div class="pages"><div>/wine-labels</div><div>/food-labels</div><div>/cosmetic-labels</div><div>/pharma-nutraceutical-labels</div><div>/industrial-labels</div><div>/technologies</div><div>/case-studies</div><div>/samples</div><div>/contact</div></div>
+</section>
+
+<div class="end"><h2>Hold one in your hand.</h2><p>Ask for a sample kit: foil, screen varnish, emboss and special stocks on real labels.</p><span class="mono">/samples</span></div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id), NS="http://www.w3.org/2000/svg";
+const el=(p,n,a)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);p.appendChild(e);return e};
+const cl=x=>Math.max(0,Math.min(1,x)), seg=(t,a,b)=>cl((t-a)/(b-a)), ease=x=>x*x*(3-2*x), mix=(a,b,k)=>a+(b-a)*k;
+
+const inks=["#00A0DC","#D6006F","#F5D800","#2a2a2e","#F26B21","#2E9E5B","#5B3FA8","#ffffff"], names=["C","M","Y","K","5","6","7","8"];
+names.forEach((n,i)=>{const b=document.createElement("b");b.textContent=n;b.style.background=inks[i];if(i==2||i==7)b.style.color="#101418";$("chips").appendChild(b)});
+const chips=[...$("chips").children], panels=[...document.querySelectorAll(".panel")], qcs=[...document.querySelectorAll(".qc")];
+const sheet=$("sheet"),Lp=$("Lpaper"),Lpr=$("Lprint"),Lg=$("Lgold"),Ls=$("Lscreen"),Lf=$("Lfinal"),glint=$("glint");
+const seps=[...Lpr.querySelectorAll('.sp')], stns=inks.map(c=>{const e=document.createElement('div');e.className='stn';e.style.background=c;$('stations').appendChild(e);return e});
+const zs=[sheet,Lpr,Lg,Ls,Lf], mats=["Natural paper","PP white","PET clear","Metallised","Natural paper"];
+
+let lx=.35, queued=false;
+function frame(){
+  queued=false;
+  const film=$("film"), vw=innerWidth, vh=$("stage").clientHeight, r=film.getBoundingClientRect();
+  const t=cl(-r.top/(r.height-vh))*9, wide=vw>=900;
+  $("bar").style.width=(t/9*100)+"%"; $("hint").style.opacity=t<.25?1:0;
+  const c=Math.round(t); panels.forEach(p=>p.classList.toggle("on",+p.dataset.c===c));
+
+  /* camera */
+  const z=ease(seg(t,.1,.95))*(1-ease(seg(t,7.6,8.5)));
+  const s0=Math.min(vh*(wide?.84:.56)/1026,vw*.6/387), s1=Math.min(vh*(wide?.68:.46)/375.5,vw*(wide?.4:.7)/300);
+  const s=mix(s0,s1,z), ax=wide?vw*mix(.66,.68,z):vw*.5, ay=wide?vh*.5:vh*mix(.64,.36,z);
+  $("rig").style.transform=`translate(${ax-193.5}px,${ay-643+130*s0*(1-z)}px) scale(${s})`;
+  const off=seg(t,.8,1.15)*(1-seg(t,7.7,8.2));
+  $("bottle").style.opacity=1-off; $("curve").style.opacity=1-off;
+
+  /* state: finished label at start and end; built pass by pass in between */
+  const build=t>=1.15&&t<6.25, strip=seg(t,.9,1.15);
+  const pP=seg(t,1.6,2.35), st=i=>cl(pP*3.1-i*.3), pF=seg(t,2.65,3.3), pS=seg(t,3.6,4.3), pE=seg(t,4.9,5.3);
+  sheet.style.opacity=build?1:(t<1.15?seg(t,1,1.15):0);
+  Lp.style.opacity=build?0:1;
+  Lf.style.opacity=build?pE:(t<1.15?1-strip:1);
+  [Lpr,Lg,Ls].forEach(e=>e.style.opacity=build?1:0);
+  Lpr.style.opacity=build&&pP>0?1:0; seps.forEach((e,i)=>e.style.clipPath=`inset(0 0 ${100-st(i)*100}% 0)`); Lg.style.clipPath=`inset(0 0 ${100-pF*100}% 0)`; Ls.style.clipPath=`inset(0 0 0 ${100-pS*100}%)`;
+  const m=seg(t,1.05,1.6)*4, w=i=>Math.max(0,1-Math.abs(m-i));
+  $("m0").style.opacity=m>=4?1:Math.max(w(0),w(4)); $("m1").style.opacity=w(1); $("m2").style.opacity=w(2); $("m3").style.opacity=w(3);
+  $("mat").textContent=mats[Math.round(m)];
+  chips.forEach((b,i)=>b.classList.toggle("on",st(i)>0||t>2.35));
+  stns.forEach((e,i)=>{const q=st(i);e.style.opacity=build&&q>0&&q<1?1:0;e.style.transform=`translateY(${375.5*q}px)`});
+  glint.style.opacity=build?(pF>=1?1:0):+Lf.style.opacity;
+  glint.style.backgroundPosition=`${(110-((lx*90+t*55)%140)*1.1)}% 0`;
+
+    const rb=$("ribbon"); rb.style.opacity=build&&pF>0&&pF<1?1:0; rb.style.transform=`translateY(${375.5*pF-37}px)`;
+  const sq=$("sq"); sq.style.opacity=build&&pS>0&&pS<1?1:0; sq.style.transform=`translateX(${300*(1-pS)-8}px)`;
+
+  /* side view: the passes pull apart, then the relief lands on top */
+  const sv=ease(seg(t,4.4,4.8))*(1-ease(seg(t,5.4,5.8)));
+  $("label").style.transform=sv?`perspective(1300px) rotateY(${-56*sv}deg) rotateX(${7*sv}deg)`:"none";
+  zs.forEach((e,i)=>e.style.transform=sv?`translateZ(${i*26*sv}px)`:"none"); glint.style.transform=sv?`translateZ(${4*26*sv+1}px)`:"none";
+  $("shadow").style.opacity=.3*off*(1-sv);
+
+  /* die */
+  const pD=seg(t,5.75,6.25), fall=seg(t,6.25,6.65);
+  $("diep").setAttribute("stroke-dashoffset",1-pD); $("die").style.opacity=(t>5.7&&t<6.7)?1-seg(t,6.45,6.7):0;
+  const mx=$("matrix"); mx.style.opacity=t>=6.25&&fall<1?1-fall:0; mx.style.transform=`translate(${18*fall}px,${150*fall}px) rotate(${9*fall}deg)`;
+
+  /* scan */
+  const pQ=seg(t,6.75,7.4), sc=$("scan"); sc.style.opacity=pQ>0&&pQ<1?1:0; sc.style.transform=`translateY(${375.5*pQ}px)`;
+  qcs.forEach(q=>q.style.opacity=(pQ>+q.dataset.y&&t<7.65)?1:0);
+}
+function ask(){if(!queued){queued=true;requestAnimationFrame(frame)}}
+addEventListener("scroll",ask,{passive:true}); addEventListener("resize",ask);
+addEventListener("pointermove",e=>{lx=e.clientX/innerWidth;ask()},{passive:true});
+addEventListener("load",ask); frame();
+
+/* anatomy: list and pins highlight each other */
+(function(){const A=$("anat"),set=(i,on)=>A.querySelectorAll(`[data-i="${i}"]`).forEach(e=>e.classList.toggle("on",on));
+  A.querySelectorAll("[data-i]").forEach(e=>{e.addEventListener("pointerenter",()=>set(e.dataset.i,true));e.addEventListener("pointerleave",()=>set(e.dataset.i,false))})})();
+
+/* gallery light */
+document.querySelectorAll(".tile").forEach(tl=>tl.addEventListener("pointermove",e=>{const b=tl.getBoundingClientRect();
+  tl.style.setProperty("--mx",((e.clientX-b.left)/b.width*100).toFixed(1)+"%");tl.style.setProperty("--my",((e.clientY-b.top)/b.height*100).toFixed(1)+"%")},{passive:true}));
+
+/* map: equirectangular, lon -6..30, lat 34..58 */
+const map=$("map"), X=lon=>(lon+6)/36*620, Y=lat=>(58-lat)/24*606;
+for(let lon=-5;lon<=30;lon+=5){el(map,"line",{x1:X(lon),y1:0,x2:X(lon),y2:606,stroke:"#C5CBD0","stroke-width":1});
+  const tx=el(map,"text",{x:X(lon)+4,y:600,"font-family":"IBM Plex Mono,monospace","font-size":10,fill:"#56606A"});tx.textContent=(lon<0?-lon+"°W":lon+"°E")}
+for(let lat=35;lat<=55;lat+=5){el(map,"line",{x1:0,y1:Y(lat),x2:620,y2:Y(lat),stroke:"#C5CBD0","stroke-width":1});
+  const tx=el(map,"text",{x:4,y:Y(lat)-4,"font-family":"IBM Plex Mono,monospace","font-size":10,fill:"#56606A"});tx.textContent=lat+"°N"}
+const T=[13.77,45.65], dest=[["France","Paris",2.35,48.86],["Germany","Berlin",13.4,52.52],["Lithuania","Vilnius",25.28,54.69],["Greece","Athens",23.73,37.98]];
+dest.forEach(d=>{const x1=X(T[0]),y1=Y(T[1]),x2=X(d[2]),y2=Y(d[3]),cx=(x1+x2)/2+(y2-y1)*.18,cy=(y1+y2)/2-(x2-x1)*.18;
+  el(map,"path",{d:`M${x1},${y1} Q${cx},${cy} ${x2},${y2}`,fill:"none",stroke:"#1B2FBF","stroke-width":1.5});
+  el(map,"circle",{cx:x2,cy:y2,r:4.5,fill:"#ECEEEF",stroke:"#101418","stroke-width":1.5});
+  const tx=el(map,"text",{x:x2+(d[2]<10?10:-10),y:y2-10,"text-anchor":d[2]<10?"start":"end","font-family":"Hanken Grotesk,Arial,sans-serif","font-size":14,fill:"#101418"});tx.textContent=d[1];
+  const li=document.createElement("li");li.innerHTML=`<span>Trieste → ${d[0]}</span><span>${d[1]}</span>`;$("routes").appendChild(li)});
+el(map,"circle",{cx:X(T[0]),cy:Y(T[1]),r:7,fill:"#1B2FBF"});
+const tt=el(map,"text",{x:X(T[0])+12,y:Y(T[1])+18,"font-family":"Bodoni Moda,Didot,serif","font-size":22,fill:"#101418"});tt.textContent="Trieste";
+})();
+</script>
+</body></html>
