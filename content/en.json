@@ -9,7 +9,14 @@
     "phone": "",
     "linkedin": "",
     "instagram": "",
-    "formEndpoint": ""
+    "formEndpoint": "",
+    "legalName": "UltraPixel Srl",
+    "launchUrl": "",
+    "blockAiTraining": false,
+    "founded": "2013",
+    "locality": "Trieste",
+    "country": "IT",
+    "description": "UltraPixel is a manufacturer of premium and technical self-adhesive labels based in Trieste, Italy, serving brands across Europe."
   },
   "ui": {
     "requestSamples": "Request samples",
@@ -33,7 +40,10 @@
     "formSent": "Thank you. Your request has been sent.",
     "formError": "Something went wrong. Please try again or contact us directly.",
     "illustrative": "Illustrative concept",
-    "conceptLabel": "Concept label"
+    "conceptLabel": "Concept label",
+    "home": "Home",
+    "notFound": "This page does not exist.",
+    "backHome": "Back to the homepage"
   },
   "form": {
     "name": "Name",
@@ -737,7 +747,38 @@
         "title": "About UltraPixel | Label manufacturer in Trieste, Italy",
         "description": "UltraPixel is a self-adhesive label manufacturer founded in Trieste in 2013, producing premium and technical labels for customers in Italy and across Europe."
       },
-      "h1": "About UltraPixel"
+      "h1": "About UltraPixel",
+      "facts": [
+        [
+          "Company",
+          "UltraPixel Srl"
+        ],
+        [
+          "Location",
+          "Trieste, Italy"
+        ],
+        [
+          "Founded",
+          "2013"
+        ],
+        [
+          "Activity",
+          "Manufacturer of self-adhesive labels"
+        ],
+        [
+          "Sectors",
+          "Wine & Spirits, Food, Cosmetics & Nutraceuticals, Pharma, Industrial & Chemical"
+        ],
+        [
+          "Technologies",
+          "Digital printing, Hot foil, Screen printing, Embossing, Debossing, High-build tactile effects, Microtextures, Die-cutting, Reverse printing, Multilayer / booklet labels, Variable data, Numbering, Lamination, Colour measurement and control"
+        ],
+        [
+          "Markets",
+          "Italy and Europe"
+        ]
+      ],
+      "factsH2": "UltraPixel in facts"
     }
   },
   "wine": {

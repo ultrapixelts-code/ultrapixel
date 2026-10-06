@@ -264,3 +264,7 @@ html.js .rv.in{opacity:1;transform:none}
 .faq p{color:var(--mute);margin-top:12px;max-width:62ch}
 @media(max-width:900px){.fins,.gal{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.fins{grid-template-columns:1fr}}
+
+.facts{margin:0;max-width:900px;border-top:1px solid var(--line)}
+.facts dt{font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);padding-top:16px}
+.facts dd{margin:6px 0 0;padding-bottom:16px;border-bottom:1px solid var(--line)}

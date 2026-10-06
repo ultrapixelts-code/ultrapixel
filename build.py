@@ -105,10 +105,42 @@ def colour_chart(c):
 
 
 # ---------------------------------------------------------------- chrome
+def seo_extra(C, P, path, meta):
+    """hreflang alternates (once more than one language exists) and JSON-LD: Organization everywhere,
+    WebSite on the homepage, BreadcrumbList on inner pages, Service on sector and landing pages."""
+    s = C["site"]; base = s["url"].rstrip("/"); rel = path[len(P) - 1:]
+    alts = ""
+    if len(LANGS) > 1:
+        alts = "".join(f'<link rel="alternate" hreflang="{l}" href="{base}{"" if l == DEFAULT else "/" + l}{rel}">' for l in LANGS)
+        alts += f'<link rel="alternate" hreflang="x-default" href="{base}{rel}">'
+    org = {"@type": "Organization", "@id": base + "/#organization", "name": s["name"], "legalName": s["legalName"], "url": base + "/",
+           "description": s["description"], "foundingDate": s["founded"],
+           "address": {"@type": "PostalAddress", "addressLocality": s["locality"], "addressCountry": s["country"]},
+           "areaServed": "Europe", "knowsAbout": [t["title"] for t in C["technologies"]["items"]]}
+    if s["email"]: org["email"] = s["email"]
+    if s["phone"]: org["telephone"] = s["phone"]
+    same = [u for u in (s["linkedin"], s["instagram"]) if u]
+    if same: org["sameAs"] = same
+    graph = [org]
+    if rel == "/":
+        graph.append({"@type": "WebSite", "@id": base + "/#website", "url": base + "/", "name": s["name"], "inLanguage": C["lang"], "publisher": {"@id": org["@id"]}})
+    else:
+        name = meta["title"].split(" | ")[0]
+        graph.append({"@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": C["ui"]["home"], "item": base + P},
+            {"@type": "ListItem", "position": 2, "name": name, "item": base + path}]})
+        svc = {x["slug"]: (x["title"] + " labels", x["copy"]) for x in C["sectors"]}
+        svc.update({x["slug"]: (x["h1"], x["lead"]) for x in C["landings"]})
+        slug = rel.strip("/")
+        if slug in svc:
+            graph.append({"@type": "Service", "name": svc[slug][0], "description": svc[slug][1], "serviceType": "Self-adhesive label printing and finishing",
+                          "provider": {"@id": org["@id"]}, "areaServed": "Europe", "url": base + path})
+    return alts + '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False) + "</script>"
+
+
 def shell(C, P, path, meta, body, home=False, extra_head="", extra_foot=""):
     s, ui = C["site"], C["ui"]
     url = s["url"].rstrip("/") + path
-    alts = "".join(f'<link rel="alternate" hreflang="{l}" href="{s["url"].rstrip("/")}{"" if l == DEFAULT else "/" + l}{path[len(P)-1:] if P != "/" else path}">' for l in LANGS) if len(LANGS) > 1 else ""
     nav = "".join(f'<a href="{P}{h}">{e(ui[k])}</a>' for k, h in (("sectors", "#sectors" if home else "#sectors"), ("technologies", "technologies/"), ("work", "work/"), ("about", "about/"), ("contact", "contact/")))
     nav = nav.replace(f'href="{P}#sectors"', f'href="{"" if home else P}#sectors"')
     contact = "".join(f"<li>{x}</li>" for x in (
@@ -126,7 +158,8 @@ def shell(C, P, path, meta, body, home=False, extra_head="", extra_foot=""):
 <title>{e(meta["title"])}</title>
 <meta name="description" content="{e(meta["description"])}">
 <link rel="canonical" href="{url}">
-{'<meta name="robots" content="noindex">' if s["noindex"] else ""}{alts}
+{seo_extra(C, P, path, meta)}
+{'<meta name="robots" content="noindex">' if s["noindex"] else ""}
 <meta property="og:type" content="website"><meta property="og:title" content="{e(meta["title"])}"><meta property="og:description" content="{e(meta["description"])}"><meta property="og:url" content="{url}"><meta property="og:image" content="{s["url"].rstrip("/")}/assets/macro-1.webp">
 <meta name="theme-color" content="#ECEEEF">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -334,16 +367,25 @@ def form_page(C, P, key, topic):
 
 def about_page(C, P):
     p, h = C["pages"]["about"], C["home"]
+    facts = "".join(f"<dt>{e(a)}</dt><dd>{e(b)}</dd>" for a, b in p["facts"])
     body = (phero(C["ui"]["about"], p["h1"], "") + f'<section class="sec about"><p>{e(h["about"]["p1"])}</p><p>{e(h["about"]["p2"])}</p></section>'
+            f'<section class="sec tight"><header class="shead"><h2>{e(p["factsH2"])}</h2></header><dl class="facts">{facts}</dl></section>'
             f'<section class="sec deep"><div class="two"><div><h2 style="font-size:clamp(30px,4vw,54px);line-height:1.05;margin-bottom:20px">{e(h["position"]["h2"])}</h2><p class="lead">{e(h["position"]["p"])}</p></div>{europe_map()}</div></section>'
             f'<section class="sec tight"><div class="nums">{"".join(f"<div><b>{e(a)}</b><span>{e(b)}</span></div>" for a, b in h["numbers"])}</div></section>' + cta_band(C, P))
     return shell(C, P, f"{P}about/", p["meta"], body)
 
 
-def build():
+def build(launch=False):
+    """launch=True (python3 build.py --launch) removes noindex and switches every URL to site.launchUrl."""
     paths = []
     for lang in LANGS:
         C = json.loads(rd(f"content/{lang}.json")); P = "/" if lang == DEFAULT else f"/{lang}/"
+        if launch:
+            if not C["site"]["launchUrl"]:
+                raise SystemExit("Set site.launchUrl in content/en.json before a launch build.")
+            C["site"]["noindex"] = False; C["site"]["url"] = C["site"]["launchUrl"]
+        if lang == DEFAULT:
+            C0 = C
         out = {P: home(C, P), f"{P}technologies/": tech_page(C, P), f"{P}work/": work_page(C, P), f"{P}about/": about_page(C, P),
                f"{P}samples/": form_page(C, P, "samples", "samples"), f"{P}contact/": form_page(C, P, "contact", "quote"), f"{P}partners/": form_page(C, P, "partners", "partner")}
         for x in C["sectors"]:
@@ -355,7 +397,12 @@ def build():
         site = C["site"]["url"].rstrip("/")
     wr("assets/film.css", rd("src/film.css")); wr("assets/film.js", rd("src/film.js"))
     wr("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{site}{p}</loc></url>\n" for p in paths) + "</urlset>\n")
-    wr("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {site}/sitemap.xml\n")
+    bots = "User-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\n"
+    if C0["site"]["blockAiTraining"]:
+        bots += "User-agent: GPTBot\nDisallow: /\n\n"
+    wr("robots.txt", bots + f"User-agent: *\nAllow: /\n\nSitemap: {site}/sitemap.xml\n")
+    wr("404.html", shell(C0, "/", "/404.html", {"title": "Page not found | UltraPixel", "description": C0["ui"]["notFound"]},
+                         phero("404", C0["ui"]["notFound"], "") + f'<section class="sec"><a class="btn" href="/">{e(C0["ui"]["backHome"])}</a></section>'))
     print(f"built {len(paths)} pages")
 
 
@@ -375,6 +422,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot=""):
 <title>{e(meta["title"])}</title>
 <meta name="description" content="{e(meta["description"])}">
 <link rel="canonical" href="{url}">
+{seo_extra(C, P, path, meta)}
 {'<meta name="robots" content="noindex">' if s["noindex"] else ""}
 <meta property="og:type" content="website"><meta property="og:title" content="{e(meta["title"])}"><meta property="og:description" content="{e(meta["description"])}"><meta property="og:url" content="{url}"><meta property="og:image" content="{s["url"].rstrip("/")}/assets/macro-1.webp">
 <meta name="theme-color" content="#F4F4F0">
@@ -563,4 +611,5 @@ def wine_ml(C, P, x):
 home, wine_page = home_ml, wine_ml
 
 if __name__ == "__main__":
-    build()
+    import sys
+    build(launch="--launch" in sys.argv)

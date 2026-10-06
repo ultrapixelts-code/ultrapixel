@@ -1,3 +1,10 @@
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
 User-agent: *
 Allow: /
+
 Sitemap: https://ultrapixel-homepage.onrender.com/sitemap.xml
