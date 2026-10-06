@@ -8,7 +8,7 @@ names.forEach((n,i)=>{const b=document.createElement("b");b.textContent=n;b.styl
 const chips=[...$("chips").children], panels=[...document.querySelectorAll(".panel")], qcs=[...document.querySelectorAll(".qc")];
 const sheet=$("sheet"),Lp=$("Lpaper"),Lpr=$("Lprint"),Lg=$("Lgold"),Ls=$("Lscreen"),Lf=$("Lfinal"),glint=$("glint");
 const seps=[...Lpr.querySelectorAll('.sp')], stns=inks.map(c=>{const e=document.createElement('div');e.className='stn';e.style.background=c;$('stations').appendChild(e);return e});
-const zs=[sheet,Lpr,Lg,Ls,Lf], mats=["Natural paper","PP white","PET clear","Metallised","Natural paper"];
+const zs=[sheet,Lpr,Lg,Ls,Lf], mats=JSON.parse($("hint").dataset.mats);
 
 let lx=.35, ly=.4, queued=false;
 function frame(){

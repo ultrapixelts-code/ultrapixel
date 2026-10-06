@@ -12,7 +12,8 @@ The scroll sequence on the homepage lives in src/film.* and is not generated.
 import html, json, os, random
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-LANGS = ["en"]            # add "it", "fr", "de" once content/<lang>.json exists
+LANGS = ["en", "it", "fr", "de"]   # every language except English is content/i18n/<lang>.json: a map from the English string to its translation
+LANG_NAMES = {"en": "English", "it": "Italiano", "fr": "Français", "de": "Deutsch"}
 DEFAULT = "en"
 e = html.escape
 
@@ -125,8 +126,8 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
 <meta property="og:type" content="website"><meta property="og:title" content="{e(meta["title"])}"><meta property="og:description" content="{e(meta["description"])}"><meta property="og:url" content="{url}"><meta property="og:image" content="{s["url"].rstrip("/")}/assets/macro-1.webp">
 <meta name="theme-color" content="#F4F4F0">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=DM+Mono:wght@400;500&display=swap">
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Archivo-100-900-latin.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts.css">
 <link rel="stylesheet" href="/assets/ml.css">
 {extra_head}
 </head>
@@ -147,13 +148,14 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
   <div class="cols">
     <div><span class="mi">{e(s["name"])}</span><ul>{contact}</ul></div>
     <div><span class="mi">{e(ui["sectors"])}</span><ul>{secs}</ul></div>
-    <div><span class="mi">Index</span><ul><li><a href="{P}technologies/">{e(ui["technologies"])}</a></li><li><a href="{P}work/">{e(ui["work"])}</a></li><li><a href="{P}sustainability/">{e(C["sustainability"]["nav"])}</a></li><li><a href="{P}about/">{e(ui["about"])}</a></li><li><a href="{P}contact/">{e(ui["contact"])}</a></li></ul></div>
+    <div><span class="mi">{e(ui["index"])}</span><ul><li><a href="{P}technologies/">{e(ui["technologies"])}</a></li><li><a href="{P}work/">{e(ui["work"])}</a></li><li><a href="{P}sustainability/">{e(C["sustainability"]["nav"])}</a></li><li><a href="{P}about/">{e(ui["about"])}</a></li><li><a href="{P}contact/">{e(ui["contact"])}</a></li></ul></div>
     <div><span class="mi">{e(ui["contact"])}</span><ul><li><a href="{P}samples/">{e(ui["requestSamples"])}</a></li><li><a href="{P}contact/?topic=quote">{e(ui["requestQuote"])}</a></li><li><a href="{P}partners/">{e(ui["partners"])}</a></li></ul></div>
   </div>
   <img class="flogo" src="/assets/logo.png" alt="UltraPixel" width="370" height="133" loading="lazy">
-  <p class="mi dim legal">© UltraPixel / {e(s["address"])}</p>
+  <p class="mi dim legal">© {e(s["legalName"])} / {e(s["address"])} / VAT {e(s["vatID"])} / <a href="{P}privacy/">{e(ui["privacy"])}</a> / <a href="{P}cookies/">{e(ui["cookies"])}</a></p>
+  <p class="mi dim legal langs">{" / ".join(f"""<a href="{"/" if l == DEFAULT else "/" + l + "/"}{path[len(P):]}" hreflang="{l}"{' aria-current="true"' if l == C["lang"] else ""}>{LANG_NAMES[l]}</a>""" for l in LANGS)}</p>
 </footer>
-<script src="/assets/ml.js" defer></script><script src="/assets/lead.js" defer></script>
+<script src="/assets/ml.js" defer></script><script src="/assets/lead.js" defer></script><script src="/assets/analytics.js" defer data-endpoint="{e(s["analyticsEndpoint"])}" data-lang="{C["lang"]}"></script>
 {extra_foot}
 </body>
 </html>
@@ -204,7 +206,13 @@ def home_ml(C, P):
             f'<div class="ctas"><a class="cta pill" href="{P}work/">{e(ui["exploreWork"])} ↗</a><a class="cta pill ghost" href="{P}samples/">{e(ui["requestSamples"])} ↗</a><a class="cta" href="{P}contact/">{e(ui["talkToUs"])} →</a></div>'
             f'<div class="sys"><span class="mi">{e(he["chain"])}</span><span class="mi dim">{e(he["sectors"])}</span></div></div>')
     rail = '<div class="rail" id="rail">' + "".join(f'<span data-c="{i+1}">{i+1:02d} {e(n.upper())}</span>' for i, n in enumerate(h["rail"])) + '</div><span class="mi tag-sys">UP / SEQ 01–08</span>'
-    film = rd("src/film.html").replace("{{HERO}}", hero).replace("{{RAIL}}", rail)
+    fm = C["film"]; panels = ""
+    for i, (mono, h2, pp, small) in enumerate(fm["panels"]):
+        extra = (f'<span class="mat" id="mat">{e(fm["mats"][0])}</span>' if i == 0 else '<div class="chips" id="chips"></div>' if i == 1 else "")
+        text = "<br>".join(e(x) for x in fm["measure"]) if i == 6 else e(pp)
+        panels += f'<div class="panel" data-c="{i+1}"><span class="mono">{e(mono)}</span><h2>{e(h2)}</h2><p>{text}</p>{extra}{f"<small>{e(small)}</small>" if small else ""}</div>\n  '
+    film = (rd("src/film.html").replace("{{HERO}}", hero).replace("{{RAIL}}", rail).replace("{{PANELS}}", panels)
+            .replace("{{SCROLL}}", e(ui["scroll"])).replace("{{MATS}}", e(json.dumps(fm["mats"] + fm["mats"][:1], ensure_ascii=False))))
     an = h["anatomy"]
     pins = "".join(f'<span class="pin" data-i="{i}" style="left:{x}%;top:{y}%">{i+1}</span>' for i, (_, _, x, y) in enumerate(an["items"]))
     lis = "".join(f'<li data-i="{i}"><b>{i+1:02d}</b><strong>{e(a)}</strong><span>{e(b)}</span></li>' for i, (a, b, _, _) in enumerate(an["items"]))
@@ -291,7 +299,7 @@ def wine_ml(C, P, x):
     for i, it in enumerate(w["finish"]["items"]):
         real = it.get("image", ""); note = ""
         codes = f'<div class="codes"><span class="mi">{e(it["shot"])}</span>{note}</div>'
-        ov = f'<div class="ov"><span class="mi">Material {i+1:02d} / {len(w["finish"]["items"]):02d}</span><h2 class="rv">{e(it["title"])}</h2><p>{e(it["text"])}</p></div>'
+        ov = f'<div class="ov"><span class="mi">{e(ui["material"])} {i+1:02d} / {len(w["finish"]["items"]):02d}</span><h2 class="rv">{e(it["title"])}</h2><p>{e(it["text"])}</p></div>'
         if it["fx"] == "cut" and not real:
             scenes += (f'<section class="ms cut">{codes}<div class="dieb"><img src="/assets/final.webp" alt="" loading="lazy"><svg viewBox="0 0 1120 1402" aria-hidden="true"><defs><linearGradient id="specd" gradientUnits="userSpaceOnUse" x1="0" x2="1120" y1="0" y2="1402"><stop offset="0" stop-color="#22B8D6"/><stop offset=".4" stop-color="#6F5BE8"/><stop offset=".7" stop-color="#D9438F"/><stop offset="1" stop-color="#EBA43A"/></linearGradient></defs>'
                        f'<path pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" d="{rd("src/die.txt")}"/></svg></div>{ov}</section>')
@@ -426,8 +434,8 @@ def form_ml(C, P, key, topic):
     """Request form. Besides the visible fields it records timestamp, source page, landing page, referrer and UTM values (assets/lead.js)."""
     p, f, s, ui = C["pages"][key], C["form"], C["site"], C["ui"]
     opts = "".join(f'<option value="{k}"{" selected" if k == topic else ""}>{e(v)}</option>' for k, v in f["topics"].items())
-    secs = "".join(f"<option>{e(x['title'])}</option>" for x in C["sectors"]) + "<option>Other</option>"
-    hidden = "".join(f'<input type="hidden" name="{n}">' for n in ("timestamp", "source_page", "landing_page", "referrer", "utm_source", "utm_medium", "utm_campaign"))
+    secs = "".join(f"<option value=\"{x['key']}\">{e(x['title'])}</option>" for x in C["sectors"]) + f"<option value=\"other\">{e(ui['other'])}</option>"
+    hidden = "".join(f'<input type="hidden" name="{n}">' for n in ("website", "lang", "timestamp", "source_page", "landing_page", "referrer", "utm_source", "utm_medium", "utm_campaign"))
     form = (f'<form class="form" data-form data-endpoint="{e(s["formEndpoint"])}" data-email="{e(s["email"])}" data-none="{e(ui["formNotConnected"])}" data-sent="{e(ui["formSent"])}" data-error="{e(ui["formError"])}" data-mail="{e(ui["formMail"])}">'
             f'<label>{e(f["name"])}<input id="f-name" name="name" autocomplete="name" required></label><label>{e(f["company"])}<input id="f-company" name="company" autocomplete="organization" required></label>'
             f'<label>{e(f["country"])}<input id="f-country" name="country" autocomplete="country-name" required></label><label>{e(f["email"])}<input id="f-email" name="email" type="email" autocomplete="email" required></label>'
@@ -459,18 +467,40 @@ def sustain_ml(C, P):
     return shell_ml(C, P, f"{P}sustainability/", s["meta"], body)
 
 
+def legal_ml(C, P, key):
+    d = C["legal"][key]
+    body = (phead(C["site"]["privacyVersion"], d["h1"], mega=False) + '<hr class="spl"><section class="sec w"><div class="legal-text">'
+            + "".join(f"<h2>{e(a)}</h2><p>{e(b)}</p>" for a, b in d["sections"]) + "</div></section>")
+    return shell_ml(C, P, f"{P}{key}/", d["meta"], body)
+
+
+NO_TR = {"slug", "key", "image", "img", "id", "url", "lang", "macro", "fx", "shot", "heroImg", "launchUrl", "email", "phone", "linkedin", "instagram", "formEndpoint", "analyticsEndpoint",
+         "vatID", "street", "postalCode", "locality", "region", "country", "address", "name", "legalName", "founded"}
+
+
+def translate(o, T, k=None):
+    """Replace every English string that has an entry in the language map; anything missing stays in English."""
+    if isinstance(o, dict):
+        return {a: (b if a in NO_TR and not isinstance(b, (dict, list)) else translate(b, T, a)) for a, b in o.items()}
+    if isinstance(o, list):
+        return [translate(x, T, k) for x in o]
+    return T.get(o, o) if isinstance(o, str) else o
+
+
 def build(launch=False):
     """launch=True (python3 build.py --launch) removes noindex and switches every URL to site.launchUrl."""
     paths = []
     for lang in LANGS:
-        C = json.loads(rd(f"content/{lang}.json")); P = "/" if lang == DEFAULT else f"/{lang}/"
+        C = json.loads(rd(f"content/{DEFAULT}.json")); P = "/" if lang == DEFAULT else f"/{lang}/"
+        if lang != DEFAULT:
+            C = translate(C, json.loads(rd(f"content/i18n/{lang}.json"))); C["lang"] = lang
         if launch:
             if not C["site"]["launchUrl"]:
                 raise SystemExit("Set site.launchUrl in content/en.json before a launch build.")
             C["site"]["noindex"] = False; C["site"]["url"] = C["site"]["launchUrl"]
         if lang == DEFAULT:
             C0 = C
-        out = {P: home_ml(C, P), f"{P}technologies/": tech_ml(C, P), f"{P}work/": work_ml(C, P), f"{P}about/": about_ml(C, P), f"{P}sustainability/": sustain_ml(C, P),
+        out = {P: home_ml(C, P), f"{P}technologies/": tech_ml(C, P), f"{P}work/": work_ml(C, P), f"{P}about/": about_ml(C, P), f"{P}sustainability/": sustain_ml(C, P), f"{P}privacy/": legal_ml(C, P, "privacy"), f"{P}cookies/": legal_ml(C, P, "cookies"),
                f"{P}samples/": form_ml(C, P, "samples", "samples"), f"{P}contact/": form_ml(C, P, "contact", "quote"), f"{P}partners/": form_ml(C, P, "partners", "partner")}
         for n, x in enumerate(C["sectors"]):
             out[f'{P}{x["slug"]}/'] = wine_ml(C, P, x) if x["key"] == "wine" else sector_ml(C, P, x, n + 1)
@@ -480,7 +510,11 @@ def build(launch=False):
             wr(path.lstrip("/") + "index.html", s); paths.append(path)
         site = C["site"]["url"].rstrip("/")
     wr("assets/film.css", rd("src/film.css")); wr("assets/film.js", rd("src/film.js"))
-    wr("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"  <url><loc>{site}{p}</loc></url>\n" for p in paths) + "</urlset>\n")
+    rels = [p for p in paths if not any(p.startswith(f"/{l}/") for l in LANGS if l != DEFAULT)]
+    loc = lambda l, r: f'{site}{"" if l == DEFAULT else "/" + l}{r}'
+    wr("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "".join(
+        f"  <url><loc>{loc(l, r)}</loc>" + "".join(f'<xhtml:link rel="alternate" hreflang="{a}" href="{loc(a, r)}"/>' for a in LANGS) + f'<xhtml:link rel="alternate" hreflang="x-default" href="{loc(DEFAULT, r)}"/></url>\n'
+        for r in rels for l in LANGS) + "</urlset>\n")
     bots = "User-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\n"
     if C0["site"]["blockAiTraining"]:
         bots += "User-agent: GPTBot\nDisallow: /\n\n"

@@ -20,7 +20,9 @@
     "vatID": "IT01240410322",
     "street": "Via J. Ressel 3",
     "postalCode": "34018",
-    "region": "TS"
+    "region": "TS",
+    "analyticsEndpoint": "",
+    "privacyVersion": "Draft, 6 October 2026"
   },
   "ui": {
     "requestSamples": "Request samples",
@@ -63,7 +65,16 @@
     "concept": "",
     "photo": "Photo to come",
     "sector": "Sector",
-    "labtitle": "Material Lab"
+    "labtitle": "Material Lab",
+    "index": "Index",
+    "other": "Other",
+    "material": "Material",
+    "scroll": "Scroll",
+    "privacy": "Privacy policy",
+    "cookies": "Cookie policy",
+    "language": "Language",
+    "lab": "Lab",
+    "process": "Process"
   },
   "form": {
     "name": "Name",
@@ -3067,6 +3078,138 @@
       "h2": "Better labels start with better material decisions.",
       "p": "Material, construction and finishing are chosen with the whole pack and its end of life in mind, from the first conversation.",
       "cta": "Explore our approach"
+    }
+  },
+  "film": {
+    "panels": [
+      [
+        "01 / SUBSTRATE",
+        "It starts with the stock.",
+        "Premium natural paper, ivory, with a fibre you can see and feel. Or PP, PET, clear, metallised and special materials.",
+        ""
+      ],
+      [
+        "02 / DIGITAL",
+        "Up to 8 colours.",
+        "High-resolution digital printing, up to eight colours in register: grounds, blacks, greys and every line of the landscape.",
+        "Variable data • short runs • industrial volumes"
+      ],
+      [
+        "03 / METAL",
+        "Hot foil.",
+        "Logo, frames, flourishes, leaves, grapes and lettering in metal.",
+        "Gold. Silver. Holographic. Custom."
+      ],
+      [
+        "04 / SCREEN",
+        "Screen printing.",
+        "Dense opaque colour, high-build 3D varnish you can feel, and selective varnish to set gloss against matt.",
+        ""
+      ],
+      [
+        "05 / RELIEF",
+        "Embossing. Debossing. Texture.",
+        "Foil that rises off the paper, panels pressed into it, microtexture in the grounds and raised tactile details.",
+        ""
+      ],
+      [
+        "06 / CUT",
+        "Any shape.",
+        "Points, curves and notches, cut to a precise profile.",
+        ""
+      ],
+      [
+        "07 / MEASURE",
+        "Measured. Not guessed.",
+        "",
+        ""
+      ],
+      [
+        "08 / RESULT",
+        "One label. Multiple technologies. Perfectly aligned.",
+        "Keep scrolling to see where it goes.",
+        ""
+      ]
+    ],
+    "measure": [
+      "Spectral colour control",
+      "ΔE measurement",
+      "Repeatability",
+      "Quality control"
+    ],
+    "mats": [
+      "Natural paper",
+      "PP white",
+      "PET clear",
+      "Metallised"
+    ]
+  },
+  "legal": {
+    "privacy": {
+      "meta": {
+        "title": "Privacy policy | UltraPixel",
+        "description": "How UltraPixel Srl handles personal data collected through this website."
+      },
+      "h1": "Privacy policy",
+      "sections": [
+        [
+          "Who is responsible",
+          "The data controller is UltraPixel Srl, Via J. Ressel 3, 34018 San Dorligo della Valle (TS), Italy, VAT IT01240410322. You can write to us at info@ultrapixel.it for anything concerning your personal data."
+        ],
+        [
+          "Requests you send us",
+          "When you send a request for samples, a quote, a conversation or a partnership, we receive what you write in the form: name, company, country, email address, sector, type of request and message. Together with the request we record the date and time, the page of this site you came from, the first page you visited, the website that referred you to us and any campaign parameters in the link you followed."
+        ],
+        [
+          "Why we use this data",
+          "We use it to answer your request and to prepare quotes or samples, which are steps taken at your request before a contract (Art. 6(1)(b) GDPR). We use the information about where a request came from to understand which channels bring us enquiries, on the basis of our legitimate interest (Art. 6(1)(f) GDPR). We do not use your data for automated decisions or profiling, and we do not sell it."
+        ],
+        [
+          "Usage statistics",
+          "We count page views, clicks on the request buttons, forms started and sent, and the type of source a visit came from (for example a search engine, an AI assistant, a social network or a direct visit). These statistics are collected by our own system, without cookies and without identifiers that recognise you on a later visit or on other websites. IP addresses are not stored in the statistics."
+        ],
+        [
+          "Who receives the data",
+          "Your data is handled by UltraPixel staff and by the providers that host this website, store the requests and deliver email on our behalf, acting as data processors. Where data is processed outside the European Economic Area, this happens under the safeguards required by the GDPR, such as standard contractual clauses."
+        ],
+        [
+          "How long we keep it",
+          "We keep requests for as long as needed to handle them and for the commercial relationship that follows. If no relationship follows, we delete them within 24 months. Usage statistics are kept in aggregate form."
+        ],
+        [
+          "Your rights",
+          "You can ask us for access to your data, for its correction or deletion, for the restriction of its processing, and for a copy in a portable format; you can also object to processing based on legitimate interest. Write to info@ultrapixel.it. You have the right to lodge a complaint with the Italian data protection authority (Garante per la protezione dei dati personali) or with the authority of your country."
+        ]
+      ]
+    },
+    "cookies": {
+      "meta": {
+        "title": "Cookie policy | UltraPixel",
+        "description": "This website does not use cookies. What it stores in your browser during a visit, and why."
+      },
+      "h1": "Cookie policy",
+      "sections": [
+        [
+          "No cookies",
+          "This website does not set cookies, neither its own nor those of third parties, and it does not load advertising or social-network trackers. For this reason it does not show a cookie banner."
+        ],
+        [
+          "Session storage",
+          "During your visit the site keeps a few items in your browser's session storage: the first page you visited, the website that referred you, any campaign parameters in the link you followed and the previous page you viewed. They stay in your browser and are deleted when you close the tab. They are sent to us only if you send a request through a form, as part of that request."
+        ],
+        [
+          "Statistics",
+          "Page views and clicks on the request buttons are counted by our own system without cookies and without identifiers that persist between visits. Details are in the privacy policy."
+        ],
+        [
+          "Fonts and files",
+          "Fonts, images and scripts are served from this website. No files are loaded from third-party servers."
+        ],
+        [
+          "Changes",
+          "If we introduce cookies or third-party services in the future, this page will be updated first and, where required, you will be asked for consent."
+        ]
+      ]
     }
   }
 }

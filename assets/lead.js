@@ -13,9 +13,10 @@
   var prev=get('up_prev')||'';
   forms.forEach(function(f){
     var set=function(n,v){var i=f.querySelector('[name="'+n+'"]');if(i)i.value=v||''};
-    set('source_page',prev);set('landing_page',a.landing_page);set('referrer',a.referrer);set('utm_source',a.utm_source);set('utm_medium',a.utm_medium);set('utm_campaign',a.utm_campaign);
+    set('source_page',prev);set('lang',document.documentElement.lang);set('landing_page',a.landing_page);set('referrer',a.referrer);set('utm_source',a.utm_source);set('utm_medium',a.utm_medium);set('utm_campaign',a.utm_campaign);
     var t=q.get('topic'),sel=f.querySelector('[name=request_type]');if(t&&sel&&sel.querySelector('option[value="'+t+'"]'))sel.value=t;
-    var sq=q.get('sector'),sc=f.querySelector('[name=sector]');if(sq&&sc)[].forEach.call(sc.options,function(o){if(o.text===sq)sc.value=o.value});
+    var sq=q.get('sector'),sc=f.querySelector('[name=sector]');if(sq&&sc)[].forEach.call(sc.options,function(o){if(o.text===sq||o.value===sq)sc.value=o.value});
+    var started=false;f.addEventListener('input',function(){if(!started){started=true;window.upTrack&&upTrack('form_start',{form:location.pathname})}});
     var msg=f.querySelector('.form-msg'),say=function(k){msg.textContent=f.dataset[k];msg.hidden=false};
     f.addEventListener('submit',function(e){
       e.preventDefault();if(!f.reportValidity())return;
@@ -23,7 +24,7 @@
       var data={};new FormData(f).forEach(function(v,k){data[k]=v});
       if(f.dataset.endpoint){
         fetch(f.dataset.endpoint,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(data)})
-          .then(function(r){if(!r.ok)throw 0;f.reset();say('sent')}).catch(function(){say('error')});
+          .then(function(r){if(!r.ok)throw 0;f.reset();say('sent');window.upTrack&&upTrack('form_success',{request_type:data.request_type,sector:data.sector})}).catch(function(){say('error');window.upTrack&&upTrack('form_error',{request_type:data.request_type})});
       }else if(f.dataset.email){
         var body=Object.keys(data).map(function(k){return k+': '+data[k]}).join('\n');
         location.href='mailto:'+f.dataset.email+'?subject='+encodeURIComponent('UltraPixel website — '+data.request_type+' — '+data.company)+'&body='+encodeURIComponent(body);say('mail');
