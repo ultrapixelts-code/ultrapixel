@@ -12,9 +12,10 @@ The scroll sequence on the homepage lives in src/film.* and is not generated.
 import html, json, os, random
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-LANGS = ["en", "it", "fr", "de"]   # every language except English is content/i18n/<lang>.json: a map from the English string to its translation
+LANGS = ["it", "en", "fr", "de"]   # every language except English is content/i18n/<lang>.json: a map from the English string to its translation
 LANG_NAMES = {"en": "English", "it": "Italiano", "fr": "Français", "de": "Deutsch"}
-DEFAULT = "en"
+DEFAULT = "en"   # language the content is written in
+HOME = "it"      # language served at the site root; the others live under /<lang>/
 e = html.escape
 
 
@@ -70,13 +71,27 @@ LABELS = {
 }
 
 
+def lang_redirect(C):
+    """Root-language pages only: on a first visit from outside the site, send a browser set to another language to its own
+    version (unknown languages go to English). A language picked by hand is remembered and always respected; crawlers are left alone."""
+    if C["lang"] != HOME or len(LANGS) < 2:
+        return ""
+    others = [l for l in LANGS if l != HOME]
+    return ("<script>(function(){try{var L=" + json.dumps(others) + ",s=null;try{s=localStorage.getItem('up_lang')}catch(e){}"
+            "if(s||/bot|crawl|spider|slurp|preview|lighthouse|gpt|headless/i.test(navigator.userAgent))return;"
+            "var r=document.referrer;if(r&&r.indexOf(location.protocol+'//'+location.host+'/')===0)return;"
+            "var b=((navigator.languages&&navigator.languages[0])||navigator.language||'').slice(0,2).toLowerCase();"
+            "if(!b||b==='" + HOME + "')return;var t=L.indexOf(b)>-1?b:'" + DEFAULT + "';"
+            "try{if(r)sessionStorage.setItem('up_ref',r)}catch(e){}location.replace('/'+t+location.pathname+location.search+location.hash)}catch(e){}})()</script>\n")
+
+
 def seo_extra(C, P, path, meta):
     """hreflang alternates (once more than one language exists) and JSON-LD: Organization everywhere,
     WebSite on the homepage, BreadcrumbList on inner pages, Service on sector and landing pages."""
     s = C["site"]; base = s["url"].rstrip("/"); rel = path[len(P) - 1:]
     alts = ""
     if len(LANGS) > 1:
-        alts = "".join(f'<link rel="alternate" hreflang="{l}" href="{base}{"" if l == DEFAULT else "/" + l}{rel}">' for l in LANGS)
+        alts = "".join(f'<link rel="alternate" hreflang="{l}" href="{base}{"" if l == HOME else "/" + l}{rel}">' for l in LANGS)
         alts += f'<link rel="alternate" hreflang="x-default" href="{base}{rel}">'
     org = {"@type": "Organization", "@id": base + "/#organization", "name": s["name"], "legalName": s["legalName"], "url": base + "/",
            "description": s["description"], "foundingDate": s["founded"], "logo": base + "/assets/logo.png",
@@ -117,7 +132,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
 <html lang="{C["lang"]}">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+{lang_redirect(C)}<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{e(meta["title"])}</title>
 <meta name="description" content="{e(meta["description"])}">
 <link rel="canonical" href="{url}">
@@ -135,7 +150,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
 <header class="nav2" id="nav2">
   <a class="logo" href="{P}" aria-label="UltraPixel"><img src="/assets/logo.png" alt="UltraPixel" width="370" height="133"></a>
   <nav id="nav">{nav}<a class="only-m" href="{P}samples/">{e(ui["requestSamples"])} ↗</a></nav>
-  <div class="right"><div class="lsw" aria-label="{e(ui["language"])}">{"".join(f"""<a href="{"/" if l == DEFAULT else "/" + l + "/"}{path[len(P):]}" hreflang="{l}" lang="{l}"{' aria-current="true"' if l == C["lang"] else ""}>{l.upper()}</a>""" for l in LANGS)}</div>
+  <div class="right"><div class="lsw" aria-label="{e(ui["language"])}">{"".join(f"""<a href="{"/" if l == HOME else "/" + l + "/"}{path[len(P):]}" hreflang="{l}" lang="{l}"{' aria-current="true"' if l == C["lang"] else ""}>{l.upper()}</a>""" for l in LANGS)}</div>
   <a class="cta" href="{P}samples/">{e(ui["requestSamples"])} ↗</a></div>
   <button class="burger" id="burger" aria-expanded="false" aria-controls="nav">{e(ui["menu"])}</button>
 </header>
@@ -154,7 +169,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
   </div>
   <img class="flogo" src="/assets/logo.png" alt="UltraPixel" width="370" height="133" loading="lazy">
   <p class="mi dim legal">© {e(s["legalName"])} / {e(s["address"])} / <a href="{P}privacy/">{e(ui["privacy"])}</a> / <a href="{P}cookies/">{e(ui["cookies"])}</a></p>
-  <p class="mi dim legal langs">{" / ".join(f"""<a href="{"/" if l == DEFAULT else "/" + l + "/"}{path[len(P):]}" hreflang="{l}"{' aria-current="true"' if l == C["lang"] else ""}>{LANG_NAMES[l]}</a>""" for l in LANGS)}</p>
+  <p class="mi dim legal langs">{" / ".join(f"""<a href="{"/" if l == HOME else "/" + l + "/"}{path[len(P):]}" hreflang="{l}"{' aria-current="true"' if l == C["lang"] else ""}>{LANG_NAMES[l]}</a>""" for l in LANGS)}</p>
 </footer>
 <script src="/assets/ml.js" defer></script><script src="/assets/lead.js" defer></script><script src="/assets/analytics.js" defer data-endpoint="{e(s["analyticsEndpoint"])}" data-lang="{C["lang"]}"></script>
 {extra_foot}
@@ -492,14 +507,14 @@ def build(launch=False):
     """launch=True (python3 build.py --launch) removes noindex and switches every URL to site.launchUrl."""
     paths = []
     for lang in LANGS:
-        C = json.loads(rd(f"content/{DEFAULT}.json")); P = "/" if lang == DEFAULT else f"/{lang}/"
+        C = json.loads(rd(f"content/{DEFAULT}.json")); P = "/" if lang == HOME else f"/{lang}/"
         if lang != DEFAULT:
             C = translate(C, json.loads(rd(f"content/i18n/{lang}.json"))); C["lang"] = lang
         if launch:
             if not C["site"]["launchUrl"]:
                 raise SystemExit("Set site.launchUrl in content/en.json before a launch build.")
             C["site"]["noindex"] = False; C["site"]["url"] = C["site"]["launchUrl"]
-        if lang == DEFAULT:
+        if lang == HOME:
             C0 = C
         out = {P: home_ml(C, P), f"{P}technologies/": tech_ml(C, P), f"{P}work/": work_ml(C, P), f"{P}about/": about_ml(C, P), f"{P}sustainability/": sustain_ml(C, P), f"{P}privacy/": legal_ml(C, P, "privacy"), f"{P}cookies/": legal_ml(C, P, "cookies"),
                f"{P}samples/": form_ml(C, P, "samples", "samples"), f"{P}contact/": form_ml(C, P, "contact", "quote"), f"{P}partners/": form_ml(C, P, "partners", "partner")}
@@ -511,10 +526,10 @@ def build(launch=False):
             wr(path.lstrip("/") + "index.html", s); paths.append(path)
         site = C["site"]["url"].rstrip("/")
     wr("assets/film.css", rd("src/film.css")); wr("assets/film.js", rd("src/film.js"))
-    rels = [p for p in paths if not any(p.startswith(f"/{l}/") for l in LANGS if l != DEFAULT)]
-    loc = lambda l, r: f'{site}{"" if l == DEFAULT else "/" + l}{r}'
+    rels = [p for p in paths if not any(p.startswith(f"/{l}/") for l in LANGS if l != HOME)]
+    loc = lambda l, r: f'{site}{"" if l == HOME else "/" + l}{r}'
     wr("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "".join(
-        f"  <url><loc>{loc(l, r)}</loc>" + "".join(f'<xhtml:link rel="alternate" hreflang="{a}" href="{loc(a, r)}"/>' for a in LANGS) + f'<xhtml:link rel="alternate" hreflang="x-default" href="{loc(DEFAULT, r)}"/></url>\n'
+        f"  <url><loc>{loc(l, r)}</loc>" + "".join(f'<xhtml:link rel="alternate" hreflang="{a}" href="{loc(a, r)}"/>' for a in LANGS) + f'<xhtml:link rel="alternate" hreflang="x-default" href="{loc(HOME, r)}"/></url>\n'
         for r in rels for l in LANGS) + "</urlset>\n")
     bots = "User-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\n"
     if C0["site"]["blockAiTraining"]:

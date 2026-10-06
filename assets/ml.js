@@ -52,3 +52,6 @@
   if(A){var set=function(i,on){A.querySelectorAll('[data-i="'+i+'"]').forEach(function(e){e.classList.toggle('on',on)})};
     A.querySelectorAll('[data-i]').forEach(function(e){e.addEventListener('pointerenter',function(){set(e.dataset.i,true)});e.addEventListener('pointerleave',function(){set(e.dataset.i,false)})})}
 })();
+
+/* remember a language picked by hand, so the automatic language redirect never overrides it */
+document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a[hreflang]');if(a){try{localStorage.setItem('up_lang',a.getAttribute('hreflang'))}catch(e){}}});

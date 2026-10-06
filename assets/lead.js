@@ -6,7 +6,7 @@
   var K='up_attr',d=document,ss;try{ss=sessionStorage;ss.getItem(K)}catch(e){ss=null}
   var get=function(k){try{return ss?JSON.parse(ss.getItem(k)||'null'):null}catch(e){return null}},put=function(k,v){try{ss&&ss.setItem(k,JSON.stringify(v))}catch(e){}};
   var q=new URLSearchParams(location.search),a=get(K);
-  var ext=d.referrer&&d.referrer.indexOf(location.origin)!==0?d.referrer:'';
+  var ext=d.referrer&&d.referrer.indexOf(location.origin)!==0?d.referrer:'';if(!ext){try{ext=sessionStorage.getItem('up_ref')||''}catch(e){}}
   if(!a||q.get('utm_source')){a={landing_page:location.pathname,referrer:ext||(a&&a.referrer)||'',utm_source:q.get('utm_source')||'',utm_medium:q.get('utm_medium')||'',utm_campaign:q.get('utm_campaign')||''};put(K,a)}
   var forms=d.querySelectorAll('form[data-form]');
   if(!forms.length){put('up_prev',location.pathname);return}
