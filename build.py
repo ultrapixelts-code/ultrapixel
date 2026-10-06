@@ -110,7 +110,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
     ui = dict(ui, sustain=C["sustainability"]["nav"])
     nav = "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("sustain", f"{P}sustainability/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
     contact = "".join(f"<li>{x}</li>" for x in (
-        e(s["address"]), f'<a href="mailto:{e(s["email"])}">{e(s["email"])}</a>' if s["email"] else "", f'<a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a>' if s["phone"] else "",
+        e(s["address"]), f'{e(ui["vat"])} {e(s["vatID"][2:] if C["lang"] == "it" else s["vatID"])}', f'<a href="mailto:{e(s["email"])}">{e(s["email"])}</a>' if s["email"] else "", f'<a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a>' if s["phone"] else "",
         f'<a href="{e(s["linkedin"])}" rel="noopener">LinkedIn</a>' if s["linkedin"] else "", f'<a href="{e(s["instagram"])}" rel="noopener">Instagram</a>' if s["instagram"] else "") if x)
     secs = "".join(f'<li><a href="{P}{x["slug"]}/">{e(x["title"])}</a></li>' for x in C["sectors"])
     return f'''<!doctype html>
@@ -153,7 +153,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
     <div><span class="mi">{e(ui["contact"])}</span><ul><li><a href="{P}samples/">{e(ui["requestSamples"])}</a></li><li><a href="{P}contact/?topic=quote">{e(ui["requestQuote"])}</a></li><li><a href="{P}partners/">{e(ui["partners"])}</a></li></ul></div>
   </div>
   <img class="flogo" src="/assets/logo.png" alt="UltraPixel" width="370" height="133" loading="lazy">
-  <p class="mi dim legal">© {e(s["legalName"])} / {e(s["address"])} / VAT {e(s["vatID"])} / <a href="{P}privacy/">{e(ui["privacy"])}</a> / <a href="{P}cookies/">{e(ui["cookies"])}</a></p>
+  <p class="mi dim legal">© {e(s["legalName"])} / {e(s["address"])} / <a href="{P}privacy/">{e(ui["privacy"])}</a> / <a href="{P}cookies/">{e(ui["cookies"])}</a></p>
   <p class="mi dim legal langs">{" / ".join(f"""<a href="{"/" if l == DEFAULT else "/" + l + "/"}{path[len(P):]}" hreflang="{l}"{' aria-current="true"' if l == C["lang"] else ""}>{LANG_NAMES[l]}</a>""" for l in LANGS)}</p>
 </footer>
 <script src="/assets/ml.js" defer></script><script src="/assets/lead.js" defer></script><script src="/assets/analytics.js" defer data-endpoint="{e(s["analyticsEndpoint"])}" data-lang="{C["lang"]}"></script>

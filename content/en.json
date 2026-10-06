@@ -74,7 +74,8 @@
     "cookies": "Cookie policy",
     "language": "Language",
     "lab": "Lab",
-    "process": "Process"
+    "process": "Process",
+    "vat": "VAT"
   },
   "form": {
     "name": "Name",
