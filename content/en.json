@@ -286,7 +286,7 @@
             "digital-printing",
             "reverse-printing"
           ],
-          "m-digital.webp"
+          "c-press-line.webp"
         ],
         [
           "Foil",
@@ -334,7 +334,7 @@
             "numbering",
             "colour-control"
           ],
-          ""
+          "c-spectro.webp"
         ]
       ]
     },
@@ -623,7 +623,7 @@
         ]
       ],
       "cta": "samples",
-      "macro": "c-register.webp",
+      "macro": "c-tactile.webp",
       "meta": {
         "title": "Premium labels | UltraPixel",
         "description": "Premium self-adhesive labels combining textured papers, hot foil, screen printing, embossing and shaped die-cutting. Made in Italy for brands across Europe."
@@ -925,7 +925,7 @@
         ]
       ],
       "cta": "quote",
-      "macro": "c-paper.webp",
+      "macro": "c-roll-macro.webp",
       "meta": {
         "title": "Short-run and limited-edition wine labels | UltraPixel",
         "description": "Short-run premium wine labels printed digitally with numbering, versions, foil and embossing. Made in Italy, delivered across Europe."
@@ -1521,7 +1521,7 @@
         ]
       ],
       "cta": "quote",
-      "macro": "c-bottle-scene.webp",
+      "macro": "c-press-rolls.webp",
       "meta": {
         "title": "Self-adhesive label manufacturer in Italy | UltraPixel",
         "description": "UltraPixel is a manufacturer of premium and technical self-adhesive labels near Trieste, Italy, founded in 2013 and delivering across Europe."
@@ -1575,6 +1575,27 @@
           "Variable data",
           "QR code",
           "Serial number"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ph-vialbox.webp",
+        "sector": "Pharma",
+        "title": "Vial and carton",
+        "finishes": [
+          "Variable data",
+          "Fine text"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-tactile.webp",
+        "sector": "Wine",
+        "title": "Relief you can feel",
+        "finishes": [
+          "Embossing",
+          "Hot foil",
+          "Tactile varnish"
         ],
         "badge": "Illustrative concept"
       },
@@ -1765,16 +1786,6 @@
         "badge": "Illustrative concept"
       },
       {
-        "image": "work-pharma.webp",
-        "sector": "Nutraceutical",
-        "title": "Container label",
-        "finishes": [
-          "Variable data",
-          "Numbering"
-        ],
-        "badge": "Illustrative concept"
-      },
-      {
         "image": "c-food-oil.webp",
         "sector": "Food",
         "title": "Oil label with foil",
@@ -1850,6 +1861,104 @@
           "Batch data"
         ],
         "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-collage.webp",
+        "sector": "All sectors",
+        "title": "Labels across sectors",
+        "finishes": [
+          "Papers",
+          "Films",
+          "Foil",
+          "Relief"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ph-vial.webp",
+        "sector": "Pharma",
+        "title": "Fine text on a small container",
+        "finishes": [
+          "Digital print",
+          "Variable data"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ph-supplement.webp",
+        "sector": "Nutraceutical",
+        "title": "Supplement label, clean and technical",
+        "finishes": [
+          "Digital print"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ph-range.webp",
+        "sector": "Nutraceutical",
+        "title": "A coordinated range",
+        "finishes": [
+          "Digital print",
+          "Versions"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-rolls.webp",
+        "sector": "All sectors",
+        "title": "Finished rolls",
+        "finishes": [
+          "Shaped die-cut",
+          "Hot foil"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-roll-macro.webp",
+        "sector": "Food",
+        "title": "Foil on a black label, on the roll",
+        "finishes": [
+          "Hot foil",
+          "Embossing"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-press-rolls.webp",
+        "sector": "Production",
+        "title": "Labels on press",
+        "finishes": [
+          "Digital print",
+          "Hot foil"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-foil-unit.webp",
+        "sector": "Production",
+        "title": "Hot foil unit",
+        "finishes": [
+          "Hot foil"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-press-line.webp",
+        "sector": "Production",
+        "title": "Printed web",
+        "finishes": [
+          "Digital print"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-spectro.webp",
+        "sector": "Production",
+        "title": "Colour measurement",
+        "finishes": [
+          "Spectral measurement"
+        ],
+        "badge": "Illustrative concept"
       }
     ],
     "showcase": {
@@ -1888,20 +1997,20 @@
   },
   "social": [
     {
-      "image": "c-register.webp",
-      "caption": "Foil and emboss in register",
+      "image": "c-tactile.webp",
+      "caption": "Relief you can feel",
       "url": "",
       "badge": "Illustrative concept"
     },
     {
-      "image": "c-screen.webp",
-      "caption": "Gloss screen on a dark ground",
+      "image": "c-collage.webp",
+      "caption": "Labels across sectors",
       "url": "",
       "badge": "Illustrative concept"
     },
     {
-      "image": "c-texture.webp",
-      "caption": "Embossed microtexture",
+      "image": "c-roll-macro.webp",
+      "caption": "Foil on the roll",
       "url": "",
       "badge": "Illustrative concept"
     }
@@ -2409,7 +2518,9 @@
         ],
         [
           "F-06",
-          "Finished rolls, winding and core"
+          "Finished rolls",
+          "c-rolls.webp",
+          "Illustrative concept"
         ]
       ],
       "heroImg": "c-food-jar.webp"
@@ -2608,11 +2719,15 @@
       "shots": [
         [
           "P-01",
-          "Label on a small container, macro of fine text"
+          "Fine text on a small container",
+          "c-ph-vial.webp",
+          "Illustrative concept"
         ],
         [
           "P-02",
-          "Variable data and codes, macro"
+          "Variable data and codes",
+          "c-ph-vialbox.webp",
+          "Illustrative concept"
         ],
         [
           "P-03",
@@ -2620,17 +2735,24 @@
         ],
         [
           "P-04",
-          "Carton label"
+          "Container and carton, one range",
+          "c-ph-range.webp",
+          "Illustrative concept"
         ],
         [
           "P-05",
-          "Colour measurement on press"
+          "Colour measurement",
+          "c-spectro.webp",
+          "Illustrative concept"
         ],
         [
           "P-06",
-          "Finished rolls"
+          "Finished rolls",
+          "c-rolls.webp",
+          "Illustrative concept"
         ]
-      ]
+      ],
+      "heroImg": "c-ph-supplement.webp"
     }
   }
 }
