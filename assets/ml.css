@@ -52,7 +52,7 @@ h1,h2,h3{margin:0;font-family:var(--display);font-weight:560;font-stretch:82%;le
 .nav2 .cta{justify-self:end}
 .nav2 .burger{display:none;justify-self:end;background:none;border:0;color:inherit;font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:12px 0;cursor:pointer}
 .nav2 .only-m{display:none}
-@media(max-width:1240px){
+@media(max-width:1380px){
   .nav2{grid-template-columns:1fr auto}
   .nav2>.cta{display:none}.nav2 .burger{display:block}
   .nav2 nav{position:fixed;inset:52px 0 auto 0;display:none;flex-direction:column;gap:0;background:var(--cer);padding:6px var(--gut) 26px;border-bottom:1px solid var(--hair)}
@@ -401,7 +401,7 @@ ul.rows{list-style:none;margin:0;padding:0}
 .nav2 .logo{display:flex;align-items:center}
 .nav2 .logo img{height:40px;width:auto}
 .ftr2 .flogo{height:auto;width:min(270px,70%);margin-top:clamp(40px,6vw,80px)}
-@media(max-width:1240px){.nav2 .logo img{height:34px}}
+@media(max-width:1380px){.nav2 .logo img{height:34px}}
 
 .viz.photo{padding:0}.viz.photo .cover{position:absolute;inset:-3% 0;width:100%;height:106%;object-fit:cover}.viz.photo .tagc,.viz.photo .code{color:#fff;mix-blend-mode:difference}.viz.photo::before{display:none}
 
@@ -451,5 +451,5 @@ html[lang=de] .shero h1 .xl{font-size:clamp(34px,5.4vw,104px)}
 .lsw a{font:400 11px var(--mono);letter-spacing:.12em;text-decoration:none;color:var(--tg);padding:6px 0}
 .lsw a:hover{color:var(--ink)}
 .lsw a[aria-current]{color:var(--ink);border-bottom:1px solid var(--ink)}
-@media(max-width:1240px){.nav2{grid-template-columns:1fr auto auto;column-gap:16px}.nav2 .right .cta{display:none}.nav2>.cta{display:none}}
+@media(max-width:1380px){.nav2{grid-template-columns:1fr auto auto;column-gap:16px}.nav2 .right .cta{display:none}.nav2>.cta{display:none}}
 
