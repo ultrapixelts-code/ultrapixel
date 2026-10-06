@@ -4,19 +4,23 @@
     "name": "UltraPixel",
     "url": "https://ultrapixel-homepage.onrender.com",
     "noindex": true,
-    "address": "Trieste, Italy",
-    "email": "",
-    "phone": "",
+    "address": "Via J. Ressel 3, 34018 San Dorligo della Valle (TS), Italy",
+    "email": "info@ultrapixel.it",
+    "phone": "+39 040 817222",
     "linkedin": "",
     "instagram": "",
     "formEndpoint": "",
     "legalName": "UltraPixel Srl",
-    "launchUrl": "",
-    "blockAiTraining": false,
+    "launchUrl": "https://ultrapixel.it",
+    "blockAiTraining": true,
     "founded": "2013",
-    "locality": "Trieste",
+    "locality": "San Dorligo della Valle",
     "country": "IT",
-    "description": "UltraPixel is a manufacturer of premium and technical self-adhesive labels based in Trieste, Italy, serving brands across Europe."
+    "description": "UltraPixel is a manufacturer of premium and technical self-adhesive labels based in Trieste, Italy, serving brands across Europe.",
+    "vatID": "IT01240410322",
+    "street": "Via J. Ressel 3",
+    "postalCode": "34018",
+    "region": "TS"
   },
   "ui": {
     "requestSamples": "Request samples",
@@ -43,7 +47,23 @@
     "conceptLabel": "Concept label",
     "home": "Home",
     "notFound": "This page does not exist.",
-    "backHome": "Back to the homepage"
+    "backHome": "Back to the homepage",
+    "formMail": "Your mail app should open with the request ready to send. If it does not, write to us directly.",
+    "applications": "Applications",
+    "materials": "Materials",
+    "problems": "What we can help with",
+    "specify": "What to tell us",
+    "specifyH": "Six things that make a quote exact.",
+    "questions": "Questions",
+    "proof": "Work",
+    "proofH": "Photographed in the light.",
+    "capability": "What we do",
+    "related": "Related",
+    "answer": "In short",
+    "concept": "Concept macro",
+    "photo": "Photo to come",
+    "sector": "Sector",
+    "labtitle": "Material Lab"
   },
   "form": {
     "name": "Name",
@@ -530,8 +550,26 @@
   "landings": [
     {
       "slug": "premium-labels",
+      "sector": "wine",
       "h1": "Premium labels",
-      "lead": "Labels where material, print and finishing are designed together, for products that have to be noticed on the shelf.",
+      "lead": "UltraPixel makes premium self-adhesive labels where material, print and finishing are designed together, for products that have to be noticed on the shelf.",
+      "cap": [
+        "Textured and special materials",
+        "Foil, screen varnish and relief in register",
+        "Shaped die-cutting",
+        "Short runs and full ranges"
+      ],
+      "apps": [
+        "Wine and spirits",
+        "Cosmetics and fragrance",
+        "Speciality food",
+        "Gift and limited editions"
+      ],
+      "mats": [
+        "Natural and textured papers",
+        "Transparent and metallised films",
+        "Material proposed after seeing the product"
+      ],
       "tech": [
         "Digital printing",
         "Hot foil",
@@ -541,6 +579,50 @@
         "Microtextures",
         "Die-cutting"
       ],
+      "faq": [
+        [
+          "What makes a label premium?",
+          "The material and the finishing: textured stock, foil, relief and varnish that react to light and touch, all in register."
+        ],
+        [
+          "Can several finishes be combined on one label?",
+          "Yes. Print, foil, screen varnish and relief are applied in register on the same label."
+        ],
+        [
+          "Can I see samples first?",
+          "Yes. Request a sample kit."
+        ]
+      ],
+      "shots": [
+        [
+          "L-01",
+          "Premium label, foil and relief in raking light"
+        ],
+        [
+          "L-02",
+          "Textured paper, macro"
+        ]
+      ],
+      "links": [
+        [
+          "Wine & Spirits",
+          "wine-spirits/"
+        ],
+        [
+          "Hot foil labels",
+          "hot-foil-labels/"
+        ],
+        [
+          "Embossed labels",
+          "embossed-labels/"
+        ],
+        [
+          "Request samples",
+          "samples/"
+        ]
+      ],
+      "cta": "samples",
+      "macro": "m-register.webp",
       "meta": {
         "title": "Premium labels | UltraPixel",
         "description": "Premium self-adhesive labels combining textured papers, hot foil, screen printing, embossing and shaped die-cutting. Made in Italy for brands across Europe."
@@ -548,14 +630,75 @@
     },
     {
       "slug": "hot-foil-labels",
+      "sector": "wine",
       "h1": "Hot foil labels",
-      "lead": "Metallic foil in gold, silver, holographic or custom finishes, flat or combined with relief, in register with the print.",
+      "lead": "UltraPixel applies hot foil in gold, silver, holographic or custom finishes, flat or combined with relief, in register with the print.",
+      "cap": [
+        "Foil on logos, frames and fine lettering",
+        "Foil combined with embossing",
+        "Foil in register with digital print and die-cut"
+      ],
+      "apps": [
+        "Wine and spirits",
+        "Cosmetics",
+        "Premium food",
+        "Limited editions"
+      ],
+      "mats": [
+        "Natural and textured papers",
+        "Coated papers",
+        "Other materials confirmed with a sample"
+      ],
       "tech": [
         "Hot foil",
         "Embossing",
         "Digital printing",
         "Die-cutting"
       ],
+      "faq": [
+        [
+          "Which foil colours are available?",
+          "Gold, silver, holographic and custom finishes."
+        ],
+        [
+          "Can foil and embossing be combined on the same detail?",
+          "Yes. Foil can be applied flat or raised, in register with the print and the die-cut."
+        ],
+        [
+          "Is foil possible on short runs?",
+          "Yes. Tell us the quantity and we quote it."
+        ]
+      ],
+      "shots": [
+        [
+          "L-03",
+          "Gold foil on black, raking light"
+        ],
+        [
+          "L-04",
+          "Foil raised with emboss, macro"
+        ]
+      ],
+      "links": [
+        [
+          "Wine & Spirits",
+          "wine-spirits/"
+        ],
+        [
+          "Embossed labels",
+          "embossed-labels/"
+        ],
+        [
+          "Premium labels",
+          "premium-labels/"
+        ],
+        [
+          "Request samples",
+          "samples/"
+        ]
+      ],
+      "cta": "samples",
+      "macro": "m-foil.webp",
       "meta": {
         "title": "Hot foil labels | UltraPixel",
         "description": "Hot foil labels in gold, silver, holographic and custom finishes, flat or embossed, in register with digital print."
@@ -563,13 +706,72 @@
     },
     {
       "slug": "screen-printed-labels",
+      "sector": "wine",
       "h1": "Screen printed labels",
-      "lead": "Dense opaque colour, high-build varnish with real relief, and selective gloss against matt.",
+      "lead": "UltraPixel screen-prints dense opaque colour, high-build varnish with real relief, and selective gloss against matt, on top of digital print.",
+      "cap": [
+        "Opaque colour in dense solids",
+        "High-build tactile varnish",
+        "Selective gloss and matt"
+      ],
+      "apps": [
+        "Spirits and wine",
+        "Cosmetics",
+        "Premium food"
+      ],
+      "mats": [
+        "Papers and films",
+        "Material proposed after seeing the product"
+      ],
       "tech": [
         "Screen printing",
         "High-build tactile effects",
         "Digital printing"
       ],
+      "faq": [
+        [
+          "What is high-build varnish?",
+          "A thick layer of screen varnish that you can feel under a fingertip."
+        ],
+        [
+          "Can screen printing be combined with digital print and foil?",
+          "Yes. It is applied in register on top of the print."
+        ],
+        [
+          "Can I feel a sample?",
+          "Yes. Request a sample kit."
+        ]
+      ],
+      "shots": [
+        [
+          "L-05",
+          "High-build varnish on a dark ground, macro"
+        ],
+        [
+          "L-06",
+          "Gloss against matt"
+        ]
+      ],
+      "links": [
+        [
+          "Spirits labels",
+          "spirits-labels/"
+        ],
+        [
+          "Wine & Spirits",
+          "wine-spirits/"
+        ],
+        [
+          "Technologies",
+          "technologies/#screen-printing"
+        ],
+        [
+          "Request samples",
+          "samples/"
+        ]
+      ],
+      "cta": "samples",
+      "macro": "m-screen.webp",
       "meta": {
         "title": "Screen printed labels | UltraPixel",
         "description": "Screen printed labels with opaque colour, high-build tactile varnish and selective gloss, combined with digital print and foil."
@@ -577,17 +779,751 @@
     },
     {
       "slug": "embossed-labels",
+      "sector": "wine",
       "h1": "Embossed labels",
-      "lead": "Raised and recessed relief on paper and foil, from fine microtexture to deep sculpted detail.",
+      "lead": "UltraPixel embosses and debosses labels on paper and foil, from fine microtexture to deep sculpted detail, in register with the print.",
+      "cap": [
+        "Relief raised from the paper",
+        "Details pressed into the paper",
+        "Microtexture in grounds and panels",
+        "Relief in register with foil"
+      ],
+      "apps": [
+        "Wine and spirits",
+        "Cosmetics",
+        "Premium food"
+      ],
+      "mats": [
+        "Natural and textured papers",
+        "Material proposed after seeing the design"
+      ],
       "tech": [
         "Embossing",
         "Debossing",
         "Microtextures",
         "Hot foil"
       ],
+      "faq": [
+        [
+          "What is the difference between embossing and debossing?",
+          "Embossing raises a detail from the surface; debossing presses it in."
+        ],
+        [
+          "Can relief be combined with foil?",
+          "Yes. Foil can be raised with the relief in register."
+        ],
+        [
+          "Does embossing work on textured paper?",
+          "Yes. Textured and natural papers take relief well; we confirm the result with a sample."
+        ]
+      ],
+      "shots": [
+        [
+          "L-07",
+          "Blind emboss on white textured paper"
+        ],
+        [
+          "L-08",
+          "Microtexture, macro"
+        ]
+      ],
+      "links": [
+        [
+          "Wine & Spirits",
+          "wine-spirits/"
+        ],
+        [
+          "Hot foil labels",
+          "hot-foil-labels/"
+        ],
+        [
+          "Premium labels",
+          "premium-labels/"
+        ],
+        [
+          "Request samples",
+          "samples/"
+        ]
+      ],
+      "cta": "samples",
+      "macro": "m-relief.webp",
       "meta": {
         "title": "Embossed labels | UltraPixel",
         "description": "Embossed and debossed labels with microtexture and foil in register, for premium wine, spirits, cosmetics and food."
+      }
+    },
+    {
+      "slug": "short-run-wine-labels",
+      "sector": "wine",
+      "h1": "Short-run and limited-edition wine labels",
+      "lead": "UltraPixel prints short runs of premium wine labels digitally, with numbering and versions in the same job and the same finishing as a large run.",
+      "cap": [
+        "Short runs printed digitally",
+        "Numbering on every label",
+        "Vintages, varieties and languages as versions",
+        "Foil, relief and die-cutting on short runs"
+      ],
+      "apps": [
+        "Limited editions and reserves",
+        "Private label",
+        "Small wineries",
+        "Trial and launch runs"
+      ],
+      "mats": [
+        "Natural and textured papers",
+        "Materials selected for chilled bottles",
+        "Material proposed with samples"
+      ],
+      "tech": [
+        "Digital printing",
+        "Numbering",
+        "Hot foil",
+        "Embossing",
+        "Die-cutting"
+      ],
+      "faq": [
+        [
+          "What is the minimum run?",
+          "It depends on the format and the finishing. Tell us the quantity and we quote it."
+        ],
+        [
+          "Can every label be numbered?",
+          "Yes. Sequential numbering is printed on each label."
+        ],
+        [
+          "Can foil and embossing be used on a short run?",
+          "Yes. The same finishing is available on short runs."
+        ],
+        [
+          "Will I see a proof first?",
+          "Yes. You approve a proof before anything goes to press."
+        ]
+      ],
+      "shots": [
+        [
+          "L-09",
+          "Numbered edition, bottles in a row"
+        ],
+        [
+          "L-10",
+          "Numbering detail, macro"
+        ]
+      ],
+      "links": [
+        [
+          "Wine & Spirits",
+          "wine-spirits/"
+        ],
+        [
+          "Variable-data labels",
+          "variable-data-labels/"
+        ],
+        [
+          "Request samples",
+          "samples/"
+        ]
+      ],
+      "cta": "quote",
+      "macro": "m-digital.webp",
+      "meta": {
+        "title": "Short-run and limited-edition wine labels | UltraPixel",
+        "description": "Short-run premium wine labels printed digitally with numbering, versions, foil and embossing. Made in Italy, delivered across Europe."
+      }
+    },
+    {
+      "slug": "labels-for-chilled-bottles",
+      "sector": "wine",
+      "h1": "Labels for chilled bottles and ice buckets",
+      "lead": "For bottles served cold or in an ice bucket, UltraPixel proposes materials and adhesives selected for wet and chilled conditions, and sends samples to test on your own bottles.",
+      "cap": [
+        "Material and adhesive chosen for how the bottle is served",
+        "Samples to test before ordering",
+        "Premium finishing on the chosen material, confirmed with a sample"
+      ],
+      "apps": [
+        "White and sparkling wines",
+        "Rosé",
+        "Spirits served cold"
+      ],
+      "mats": [
+        "Materials and adhesives selected for wet and chilled conditions",
+        "Options proposed after seeing bottle and service"
+      ],
+      "tech": [
+        "Digital printing",
+        "Hot foil",
+        "Die-cutting"
+      ],
+      "faq": [
+        [
+          "Which materials do you propose for an ice bucket?",
+          "Materials and adhesives selected for wet and chilled conditions. We send samples to test on your bottles."
+        ],
+        [
+          "Can I keep a textured-paper look?",
+          "Tell us the look you want; we propose the options and confirm them with samples."
+        ],
+        [
+          "Can I test before ordering?",
+          "Yes. Request samples and try them in real conditions."
+        ],
+        [
+          "Can the labels be applied by machine?",
+          "Yes. Rolls are supplied with the winding direction, core and diameter your line needs."
+        ]
+      ],
+      "shots": [
+        [
+          "L-11",
+          "Bottle with condensation"
+        ],
+        [
+          "L-12",
+          "Bottle in an ice bucket, label intact"
+        ]
+      ],
+      "links": [
+        [
+          "Wine & Spirits",
+          "wine-spirits/"
+        ],
+        [
+          "Short-run wine labels",
+          "short-run-wine-labels/"
+        ],
+        [
+          "Request samples",
+          "samples/"
+        ]
+      ],
+      "cta": "samples",
+      "macro": "",
+      "meta": {
+        "title": "Labels for chilled bottles and ice buckets | UltraPixel",
+        "description": "Wine and spirits labels on materials and adhesives selected for chilled bottles and ice buckets, with samples to test on your own bottles."
+      }
+    },
+    {
+      "slug": "spirits-labels",
+      "sector": "wine",
+      "h1": "Premium labels for spirits",
+      "lead": "UltraPixel makes labels for gin, amaro, grappa and other spirits with foil, high-build screen varnish, relief and shaped die-cutting, in short runs too.",
+      "cap": [
+        "Foil and relief in register",
+        "Dense screen colour and tactile varnish",
+        "Shaped profiles",
+        "Short runs for craft distilleries"
+      ],
+      "apps": [
+        "Gin and vodka",
+        "Amaro and liqueurs",
+        "Grappa and brandy",
+        "Limited editions"
+      ],
+      "mats": [
+        "Textured papers",
+        "Transparent films",
+        "Metallised materials"
+      ],
+      "tech": [
+        "Hot foil",
+        "Screen printing",
+        "High-build tactile effects",
+        "Embossing",
+        "Die-cutting"
+      ],
+      "faq": [
+        [
+          "Can you print a dense solid black?",
+          "Yes. Opaque screen colour gives dense, even solids."
+        ],
+        [
+          "Is holographic foil available?",
+          "Yes, alongside gold, silver and custom foils."
+        ],
+        [
+          "Can the label be transparent on glass?",
+          "Yes, on transparent film with opaque white where needed."
+        ],
+        [
+          "Do you print short runs for craft distilleries?",
+          "Yes. Tell us the quantity and we quote it."
+        ]
+      ],
+      "shots": [
+        [
+          "L-13",
+          "Spirits label with foil and screen"
+        ],
+        [
+          "L-14",
+          "Tactile varnish on a dark label"
+        ]
+      ],
+      "links": [
+        [
+          "Wine & Spirits",
+          "wine-spirits/"
+        ],
+        [
+          "Screen printed labels",
+          "screen-printed-labels/"
+        ],
+        [
+          "Hot foil labels",
+          "hot-foil-labels/"
+        ],
+        [
+          "Request samples",
+          "samples/"
+        ]
+      ],
+      "cta": "samples",
+      "macro": "m-screen.webp",
+      "meta": {
+        "title": "Premium labels for spirits | UltraPixel",
+        "description": "Premium spirits labels with hot foil, high-build screen varnish, embossing and shaped die-cutting, also in short runs. Made in Italy."
+      }
+    },
+    {
+      "slug": "clear-labels-opaque-white",
+      "sector": "cosmetic",
+      "h1": "Clear labels with opaque white",
+      "lead": "UltraPixel prints on transparent film with opaque white, for a no-label look on bottles and jars, with tactile effects where needed.",
+      "cap": [
+        "Opaque white under or beside the colours",
+        "Transparent film for a no-label look",
+        "Small batches and many references"
+      ],
+      "apps": [
+        "Cosmetics and skincare",
+        "Body care",
+        "Supplements",
+        "Glass and clear containers"
+      ],
+      "mats": [
+        "Transparent films",
+        "Option proposed after seeing the container"
+      ],
+      "tech": [
+        "Digital printing",
+        "Screen printing",
+        "High-build tactile effects",
+        "Reverse printing"
+      ],
+      "faq": [
+        [
+          "How opaque is the white?",
+          "Judge it on a sample: we send printed samples on clear film to try on your container."
+        ],
+        [
+          "Can foil be added on a clear label?",
+          "Tell us the material and we confirm it with a sample."
+        ],
+        [
+          "Can you print on the adhesive side?",
+          "Yes. Reverse printing is seen through the container or the product."
+        ],
+        [
+          "Do you print small batches for many references?",
+          "Yes, digitally, in the same job."
+        ]
+      ],
+      "shots": [
+        [
+          "L-15",
+          "Opaque white on clear film, macro"
+        ],
+        [
+          "L-16",
+          "Clear label on a glass bottle"
+        ]
+      ],
+      "links": [
+        [
+          "Cosmetics & Nutraceuticals",
+          "cosmetics-nutraceuticals/"
+        ],
+        [
+          "Technologies",
+          "technologies/#reverse-printing"
+        ],
+        [
+          "Request samples",
+          "samples/"
+        ]
+      ],
+      "cta": "samples",
+      "macro": "",
+      "meta": {
+        "title": "Clear labels with opaque white for cosmetics | UltraPixel",
+        "description": "Clear cosmetic labels printed with opaque white on transparent film for a no-label look, with tactile effects, also in small batches."
+      }
+    },
+    {
+      "slug": "supplement-labels",
+      "sector": "cosmetic",
+      "h1": "Labels for supplements and nutraceuticals",
+      "lead": "UltraPixel prints supplement labels with dense readable text, variable data and many references in the same job.",
+      "cap": [
+        "Fine text printed for readability",
+        "Many references, small quantities",
+        "Variable data on every label",
+        "Multilayer labels for long texts"
+      ],
+      "apps": [
+        "Jars and tubs",
+        "Bottles and droppers",
+        "Sachets and boxes"
+      ],
+      "mats": [
+        "Papers and films",
+        "Transparent films",
+        "Material proposed after seeing the container"
+      ],
+      "tech": [
+        "Digital printing",
+        "Variable data",
+        "Multilayer / booklet labels",
+        "Lamination"
+      ],
+      "faq": [
+        [
+          "Can you handle many references in small quantities?",
+          "Yes. References are printed digitally in the same job."
+        ],
+        [
+          "Can batch and expiry data change on each label?",
+          "Variable data can be printed on every label. Tell us what changes."
+        ],
+        [
+          "What if the text does not fit?",
+          "A multilayer label opens, reads and closes again."
+        ]
+      ],
+      "shots": [
+        [
+          "L-17",
+          "Range of supplement jars"
+        ],
+        [
+          "L-18",
+          "Fine text, macro"
+        ]
+      ],
+      "links": [
+        [
+          "Cosmetics & Nutraceuticals",
+          "cosmetics-nutraceuticals/"
+        ],
+        [
+          "Pharma",
+          "pharma-labels/"
+        ],
+        [
+          "Multilayer labels",
+          "multilayer-booklet-labels/"
+        ]
+      ],
+      "cta": "quote",
+      "macro": "",
+      "meta": {
+        "title": "Labels for supplements and nutraceuticals | UltraPixel",
+        "description": "Supplement and nutraceutical labels with readable fine text, variable data, many references and multilayer options. Made in Italy."
+      }
+    },
+    {
+      "slug": "food-labels-cold-humidity",
+      "sector": "food",
+      "h1": "Food labels for cold and humid environments",
+      "lead": "For chilled products and humid environments, UltraPixel proposes materials and adhesives selected for those conditions, for industrial production and automatic application.",
+      "cap": [
+        "Material and adhesive chosen for storage conditions",
+        "Rolls made for automatic application",
+        "Samples to test on your packs"
+      ],
+      "apps": [
+        "Chilled and fresh products",
+        "Frozen products",
+        "Oils and sauces"
+      ],
+      "mats": [
+        "Materials and adhesives selected for chilled and humid conditions",
+        "Materials selected for contact with oils"
+      ],
+      "tech": [
+        "Digital printing",
+        "Variable data",
+        "Lamination",
+        "Die-cutting"
+      ],
+      "faq": [
+        [
+          "Which materials suit the fridge?",
+          "We propose materials and adhesives selected for chilled, humid conditions and send samples to test."
+        ],
+        [
+          "What about contact with oils?",
+          "We propose materials selected for contact with oils and confirm them on your product with samples."
+        ],
+        [
+          "Do the rolls run on automatic labellers?",
+          "Yes. They are supplied with the winding direction, core and diameter your machine needs."
+        ],
+        [
+          "Can I test samples on my line?",
+          "Yes. Request samples."
+        ]
+      ],
+      "shots": [
+        [
+          "L-19",
+          "Chilled pack with condensation"
+        ],
+        [
+          "L-20",
+          "Label on an oil bottle"
+        ]
+      ],
+      "links": [
+        [
+          "Food",
+          "food-labels/"
+        ],
+        [
+          "Request samples",
+          "samples/"
+        ]
+      ],
+      "cta": "samples",
+      "macro": "",
+      "meta": {
+        "title": "Food labels for cold and humid environments | UltraPixel",
+        "description": "Self-adhesive food labels on materials and adhesives selected for chilled, humid and oily conditions, made for automatic application."
+      }
+    },
+    {
+      "slug": "variable-data-labels",
+      "sector": "industrial",
+      "h1": "Variable-data labels: codes, numbering and QR",
+      "lead": "UltraPixel prints labels where codes, numbers, batches, names or QR codes change on every piece, in the same pass as the artwork.",
+      "cap": [
+        "Sequential numbering",
+        "QR codes that change on every label",
+        "Batches, serials and names",
+        "Versions within the same job"
+      ],
+      "apps": [
+        "Limited editions",
+        "Traceability",
+        "Industrial and chemical",
+        "Pharma and supplements"
+      ],
+      "mats": [
+        "Papers and films",
+        "Technical materials"
+      ],
+      "tech": [
+        "Variable data",
+        "Numbering",
+        "Digital printing"
+      ],
+      "faq": [
+        [
+          "What file do you need?",
+          "A data file with one row per label, together with the artwork. Tell us what changes and we confirm the format."
+        ],
+        [
+          "Can each label carry a different QR code?",
+          "Yes. QR codes can change on every label."
+        ],
+        [
+          "Can labels of a limited edition be numbered?",
+          "Yes, with sequential numbering."
+        ],
+        [
+          "Can variable data be combined with foil and relief?",
+          "Yes. Variable data is printed digitally; finishing is applied on top."
+        ]
+      ],
+      "shots": [
+        [
+          "L-21",
+          "Numbering, macro"
+        ],
+        [
+          "L-22",
+          "QR code on a technical label"
+        ]
+      ],
+      "links": [
+        [
+          "Industrial & Chemical",
+          "industrial-chemical/"
+        ],
+        [
+          "Pharma",
+          "pharma-labels/"
+        ],
+        [
+          "Technologies",
+          "technologies/#variable-data"
+        ]
+      ],
+      "cta": "quote",
+      "macro": "",
+      "meta": {
+        "title": "Variable-data labels: codes, numbering and QR | UltraPixel",
+        "description": "Variable-data labels with sequential numbering, QR codes, batches and serials printed in the same pass as the artwork."
+      }
+    },
+    {
+      "slug": "multilayer-booklet-labels",
+      "sector": "industrial",
+      "h1": "Multilayer and booklet labels",
+      "lead": "When the text does not fit on the label, UltraPixel makes it in layers: it opens, reads and closes again.",
+      "cap": [
+        "More room for text on the same footprint",
+        "Labels that open and close again",
+        "Several languages on one label"
+      ],
+      "apps": [
+        "Chemical and industrial products",
+        "Supplements",
+        "Cosmetics",
+        "Multi-language export"
+      ],
+      "mats": [
+        "Material and construction proposed after seeing the container"
+      ],
+      "tech": [
+        "Multilayer / booklet labels",
+        "Digital printing",
+        "Die-cutting"
+      ],
+      "faq": [
+        [
+          "How much text can a multilayer label carry?",
+          "It depends on the size and the construction. Send us the text and the container and we propose a solution."
+        ],
+        [
+          "Does it close again after opening?",
+          "Yes. It is made to open, read and close again."
+        ],
+        [
+          "Does it work on curved containers?",
+          "Tell us the diameter; we confirm it with a sample."
+        ]
+      ],
+      "shots": [
+        [
+          "L-23",
+          "Multilayer label closed"
+        ],
+        [
+          "L-24",
+          "Multilayer label open"
+        ]
+      ],
+      "links": [
+        [
+          "Industrial & Chemical",
+          "industrial-chemical/"
+        ],
+        [
+          "Pharma",
+          "pharma-labels/"
+        ],
+        [
+          "Technologies",
+          "technologies/#multilayer"
+        ]
+      ],
+      "cta": "quote",
+      "macro": "",
+      "meta": {
+        "title": "Multilayer and booklet labels | UltraPixel",
+        "description": "Multilayer and booklet labels that open, read and close again, for long texts and several languages on a small footprint."
+      }
+    },
+    {
+      "slug": "label-manufacturer-italy",
+      "sector": "wine",
+      "h1": "Self-adhesive label manufacturer in Italy, delivering across Europe",
+      "lead": "UltraPixel is a manufacturer of premium and technical self-adhesive labels based near Trieste, Italy. Founded in 2013, it delivers in Italy and across Europe.",
+      "cap": [
+        "Digital colour workflow, up to 8 colours",
+        "More than five finishing technologies",
+        "Colour measured and controlled",
+        "Short runs and industrial volumes"
+      ],
+      "apps": [
+        "Wine & Spirits",
+        "Food",
+        "Cosmetics & Nutraceuticals",
+        "Pharma",
+        "Industrial & Chemical"
+      ],
+      "mats": [
+        "Papers, films and technical materials",
+        "Material proposed for each application, with samples"
+      ],
+      "tech": [
+        "Digital printing",
+        "Hot foil",
+        "Screen printing",
+        "Embossing",
+        "Die-cutting",
+        "Variable data",
+        "Colour measurement and control"
+      ],
+      "faq": [
+        [
+          "Where do you produce?",
+          "In San Dorligo della Valle, near Trieste, Italy."
+        ],
+        [
+          "Do you deliver outside Italy?",
+          "Yes, across Europe."
+        ],
+        [
+          "Do you work with agents and distributors?",
+          "Yes. We are building a commercial network across Europe."
+        ],
+        [
+          "Do you print short runs?",
+          "Yes, alongside industrial volumes."
+        ]
+      ],
+      "shots": [
+        [
+          "L-25",
+          "Production floor"
+        ],
+        [
+          "L-26",
+          "Finished rolls"
+        ]
+      ],
+      "links": [
+        [
+          "About UltraPixel",
+          "about/"
+        ],
+        [
+          "Commercial partners",
+          "partners/"
+        ],
+        [
+          "Technologies",
+          "technologies/"
+        ]
+      ],
+      "cta": "quote",
+      "macro": "",
+      "meta": {
+        "title": "Self-adhesive label manufacturer in Italy | UltraPixel",
+        "description": "UltraPixel is a manufacturer of premium and technical self-adhesive labels near Trieste, Italy, founded in 2013 and delivering across Europe."
       }
     }
   ],
@@ -754,8 +1690,12 @@
           "UltraPixel Srl"
         ],
         [
+          "VAT",
+          "IT01240410322"
+        ],
+        [
           "Location",
-          "Trieste, Italy"
+          "Via J. Ressel 3, 34018 San Dorligo della Valle (Trieste), Italy"
         ],
         [
           "Founded",
@@ -974,5 +1914,421 @@
     },
     "slot": "Photo to come",
     "macroNote": "Concept macro"
+  },
+  "sectorPages": {
+    "cosmetic": {
+      "code": "C",
+      "xl": "Cosmetics & Nutraceuticals",
+      "sub": "labels for premium packs, in small batches too.",
+      "answer": "UltraPixel prints cosmetics and nutraceutical labels on transparent and premium materials, with opaque white, foil and tactile effects, in small batches and across full ranges. Produced in Italy, delivered across Europe.",
+      "appsH": "Where these labels go.",
+      "apps": [
+        "Skincare bottles and jars",
+        "Fragrance and body care",
+        "Supplement jars and tubs",
+        "Droppers and small-diameter containers",
+        "Gift sets and limited editions"
+      ],
+      "matsH": "Chosen for the container and the hand that holds it.",
+      "matsP": "The right material depends on the container, on how it is handled or squeezed, and on what it touches. We propose the options and send samples.",
+      "mats": [
+        "Transparent films for a no-label look",
+        "White and metallised films",
+        "Premium and textured papers",
+        "Options for small diameters and squeezable packs"
+      ],
+      "tech": [
+        "Digital printing",
+        "Screen printing",
+        "Hot foil",
+        "High-build tactile effects",
+        "Reverse printing",
+        "Variable data"
+      ],
+      "problems": [
+        [
+          "White that holds on clear film",
+          "Opaque white under the colours, so they keep their strength on transparent material and over dark contents."
+        ],
+        [
+          "Many references, small quantities",
+          "Several versions in the same job, each with its own text and colour."
+        ],
+        [
+          "A premium surface without a carton",
+          "Foil, gloss against matt and tactile varnish directly on the label."
+        ],
+        [
+          "Colour that matches across the range",
+          "Colour measured and checked against the target from one run to the next."
+        ]
+      ],
+      "specify": [
+        "Container: material, shape and diameter",
+        "How the product is used and stored",
+        "Contents the label may touch: oils, alcohol, creams",
+        "Quantity per reference and number of references",
+        "Finishes you want: foil, tactile, gloss or matt",
+        "Application: by hand or by machine"
+      ],
+      "faq": [
+        [
+          "Can you print opaque white on clear film?",
+          "Yes. Opaque white is printed under or beside the colours on transparent film, for a no-label look."
+        ],
+        [
+          "Can foil be added to a transparent label?",
+          "We combine transparent materials with opaque white and tactile effects. For foil on film, tell us the material and we confirm it with a sample."
+        ],
+        [
+          "Do you print small batches?",
+          "Yes. Short runs are printed digitally, with several references in the same job."
+        ],
+        [
+          "Can I test the labels on my containers?",
+          "Yes. Request samples and try them on your own packs before ordering."
+        ],
+        [
+          "Do you deliver outside Italy?",
+          "Yes. We produce in Trieste and deliver across Europe."
+        ]
+      ],
+      "shots": [
+        [
+          "C-01",
+          "Clear label on a glass bottle"
+        ],
+        [
+          "C-02",
+          "Opaque white on clear film, macro"
+        ],
+        [
+          "C-03",
+          "Tactile varnish on a cosmetic label"
+        ],
+        [
+          "C-04",
+          "Supplement jars, one range"
+        ],
+        [
+          "C-05",
+          "Foil detail on premium paper"
+        ],
+        [
+          "C-06",
+          "Label on a small-diameter dropper"
+        ]
+      ]
+    },
+    "food": {
+      "code": "F",
+      "xl": "Food",
+      "sub": "labels built for the production line.",
+      "answer": "UltraPixel prints self-adhesive food labels for industrial production and automatic application, with materials and adhesives selected for cold, humidity and contact with oils. Produced in Italy, delivered across Europe.",
+      "appsH": "Where these labels go.",
+      "apps": [
+        "Jars and bottles: sauces, preserves, oils",
+        "Chilled and fresh products",
+        "Trays, tubs and flexible packs",
+        "Private-label ranges with many versions",
+        "Seasonal and promotional editions"
+      ],
+      "matsH": "Chosen for where the product lives.",
+      "matsP": "Tell us how the product is filled, stored and sold. We propose material and adhesive and send samples to try on your packs.",
+      "mats": [
+        "Papers and films for dry goods",
+        "Materials and adhesives selected for chilled and humid conditions",
+        "Materials selected for contact with oils",
+        "Transparent films"
+      ],
+      "tech": [
+        "Digital printing",
+        "Variable data",
+        "Lamination",
+        "Die-cutting",
+        "Colour measurement and control"
+      ],
+      "problems": [
+        [
+          "Rolls that run on your applicator",
+          "Supplied with the winding direction, core and outer diameter your machine needs."
+        ],
+        [
+          "Cold and condensation",
+          "Material and adhesive chosen for how the product is stored, and tried on your pack with samples."
+        ],
+        [
+          "Many versions, one job",
+          "Flavours, weights and languages changed from one version to the next."
+        ],
+        [
+          "Colour held across runs",
+          "Colour measured and checked against the target on every run."
+        ]
+      ],
+      "specify": [
+        "Container and surface",
+        "Storage and use: ambient, chilled, frozen or humid",
+        "Contact with oils or liquids",
+        "Application: machine, winding direction, core and roll diameter",
+        "Quantities and number of versions",
+        "Texts and codes that change"
+      ],
+      "faq": [
+        [
+          "Which materials suit chilled or humid products?",
+          "We propose materials and adhesives selected for those conditions and send samples to test on your own packs."
+        ],
+        [
+          "Do your labels run on automatic applicators?",
+          "Yes. Rolls are supplied with the winding direction, core and outer diameter your machine needs."
+        ],
+        [
+          "Can you print several versions in one order?",
+          "Yes. Versions are printed digitally in the same job."
+        ],
+        [
+          "Can batch codes or dates change on each label?",
+          "Variable data can be printed on every label. Tell us what changes and in what format."
+        ],
+        [
+          "Do you deliver outside Italy?",
+          "Yes. We produce in Trieste and deliver across Europe."
+        ]
+      ],
+      "shots": [
+        [
+          "F-01",
+          "Jar on the line, label applied"
+        ],
+        [
+          "F-02",
+          "Chilled pack with condensation"
+        ],
+        [
+          "F-03",
+          "Range of versions side by side"
+        ],
+        [
+          "F-04",
+          "Finished rolls, winding and core"
+        ],
+        [
+          "F-05",
+          "Transparent label on glass"
+        ],
+        [
+          "F-06",
+          "Oil bottle, label after use"
+        ]
+      ]
+    },
+    "industrial": {
+      "code": "I",
+      "xl": "Industrial & Chemical",
+      "sub": "labels that stay on and stay readable.",
+      "answer": "UltraPixel prints industrial and chemical labels on technical materials, with adhesives selected for difficult surfaces and demanding conditions, and with variable data, QR codes and numbering for traceability. Produced in Italy, delivered across Europe.",
+      "appsH": "Where these labels go.",
+      "apps": [
+        "Drums, canisters and pails",
+        "Lubricants and automotive fluids",
+        "Paints, coatings and building products",
+        "Equipment and component identification",
+        "Logistics and warehouse labels"
+      ],
+      "matsH": "Chosen for the surface and the conditions.",
+      "matsP": "Tell us the surface, the environment and how long the label has to last. We propose material and adhesive and send samples to test.",
+      "mats": [
+        "Films and technical materials",
+        "Adhesives selected for rough, curved or hard-to-stick surfaces",
+        "Options for outdoor and demanding conditions",
+        "Multilayer labels when the text does not fit"
+      ],
+      "tech": [
+        "Digital printing",
+        "Variable data",
+        "Numbering",
+        "Lamination",
+        "Die-cutting",
+        "Multilayer / booklet labels"
+      ],
+      "problems": [
+        [
+          "Labels that stay on difficult surfaces",
+          "Adhesive chosen for the surface and tried on your containers with samples."
+        ],
+        [
+          "Information that stays readable",
+          "A protective film over the print where handling and wear require it."
+        ],
+        [
+          "One label, many codes",
+          "Serial numbers, batches and QR codes that change on every label."
+        ],
+        [
+          "More text than space",
+          "Multilayer labels that open, read and close again."
+        ]
+      ],
+      "specify": [
+        "Surface: material, texture and shape",
+        "Conditions: outdoor, temperature, chemicals, abrasion",
+        "How long the label has to last",
+        "Data that changes: codes, serials, QR",
+        "Application: by hand or by machine",
+        "Size, quantity and number of versions"
+      ],
+      "faq": [
+        [
+          "Which label material suits drums and canisters?",
+          "It depends on the surface and the conditions. We propose a technical material and adhesive and send samples to test on your containers."
+        ],
+        [
+          "Can you print QR codes and serial numbers?",
+          "Yes. Variable data, numbering and QR codes can change on every label."
+        ],
+        [
+          "Do you print hazard and safety content?",
+          "We print the hazard and safety content you supply. Responsibility for the regulatory content stays with you."
+        ],
+        [
+          "Can a label carry more text than fits?",
+          "Yes, with multilayer labels that open and close."
+        ],
+        [
+          "Do you deliver outside Italy?",
+          "Yes. We produce in Trieste and deliver across Europe."
+        ]
+      ],
+      "shots": [
+        [
+          "I-01",
+          "Label on a steel drum"
+        ],
+        [
+          "I-02",
+          "Label on a plastic canister, curved surface"
+        ],
+        [
+          "I-03",
+          "QR and serial number, macro"
+        ],
+        [
+          "I-04",
+          "Multilayer label, closed and open"
+        ],
+        [
+          "I-05",
+          "Laminated label after handling"
+        ],
+        [
+          "I-06",
+          "Finished rolls with variable data"
+        ]
+      ]
+    },
+    "pharma": {
+      "code": "P",
+      "xl": "Pharma",
+      "sub": "labels printed for precision and readability.",
+      "answer": "UltraPixel prints pharma labels for precision and readability, with variable data, numbering and colour control for consistency between runs. Produced in Italy, delivered across Europe. Tell us the requirements of your quality system and we will tell you clearly what we can meet.",
+      "appsH": "Where these labels go.",
+      "apps": [
+        "Bottles and containers",
+        "Cartons and secondary packaging",
+        "Medical devices and equipment",
+        "Supplements and health products",
+        "Laboratory and sample identification"
+      ],
+      "matsH": "Chosen for the container and the text it carries.",
+      "matsP": "Tell us the container, the diameter and the text that has to fit. We propose the material and send samples.",
+      "mats": [
+        "Papers and films for containers and cartons",
+        "Options for small diameters",
+        "Transparent films",
+        "Multilayer labels for long texts"
+      ],
+      "tech": [
+        "Digital printing",
+        "Variable data",
+        "Numbering",
+        "Multilayer / booklet labels",
+        "Colour measurement and control"
+      ],
+      "problems": [
+        [
+          "Small text that stays readable",
+          "High-resolution digital print for fine type and codes."
+        ],
+        [
+          "Data that changes on every label",
+          "Batches, serials and codes printed in the same pass as the artwork."
+        ],
+        [
+          "The same label, run after run",
+          "Colour measured and checked against the target on every run."
+        ],
+        [
+          "Long texts on a small container",
+          "Multilayer labels that open, read and close again."
+        ]
+      ],
+      "specify": [
+        "Container and diameter",
+        "Text size and languages",
+        "Variable data and code types",
+        "Your quality requirements and checks",
+        "Quantities and number of versions",
+        "Application: by hand or by machine"
+      ],
+      "faq": [
+        [
+          "Do you hold pharmaceutical certifications?",
+          "We do not publish certifications on this page. Tell us the requirements of your quality system and we will tell you clearly what we can meet."
+        ],
+        [
+          "Can you print serial numbers and variable data?",
+          "Yes. Variable data and numbering can change on every label."
+        ],
+        [
+          "How do you keep colour consistent between runs?",
+          "Colour is measured spectrally and checked against the target on every run."
+        ],
+        [
+          "Can a small container carry a long text?",
+          "Yes, with multilayer labels that open and close."
+        ],
+        [
+          "Do you deliver outside Italy?",
+          "Yes. We produce in Trieste and deliver across Europe."
+        ]
+      ],
+      "shots": [
+        [
+          "P-01",
+          "Label on a small container, macro of fine text"
+        ],
+        [
+          "P-02",
+          "Variable data and codes, macro"
+        ],
+        [
+          "P-03",
+          "Multilayer label, closed and open"
+        ],
+        [
+          "P-04",
+          "Carton label"
+        ],
+        [
+          "P-05",
+          "Colour measurement on press"
+        ],
+        [
+          "P-06",
+          "Finished rolls"
+        ]
+      ]
+    }
   }
 }
