@@ -998,7 +998,7 @@
         ]
       ],
       "cta": "samples",
-      "macro": "",
+      "macro": "c-icebucket.webp",
       "meta": {
         "title": "Labels for chilled bottles and ice buckets | UltraPixel",
         "description": "Wine and spirits labels on materials and adhesives selected for chilled bottles and ice buckets, with samples to test on your own bottles."
@@ -1155,7 +1155,7 @@
         ]
       ],
       "cta": "samples",
-      "macro": "",
+      "macro": "c-cos-white.webp",
       "meta": {
         "title": "Clear labels with opaque white for cosmetics | UltraPixel",
         "description": "Clear cosmetic labels printed with opaque white on transparent film for a no-label look, with tactile effects, also in small batches."
@@ -1227,7 +1227,7 @@
         ]
       ],
       "cta": "quote",
-      "macro": "",
+      "macro": "c-supplement.webp",
       "meta": {
         "title": "Labels for supplements and nutraceuticals | UltraPixel",
         "description": "Supplement and nutraceutical labels with readable fine text, variable data, many references and multilayer options. Made in Italy."
@@ -1569,6 +1569,26 @@
         "badge": "Illustrative concept"
       },
       {
+        "image": "c-cos-foil.webp",
+        "sector": "Cosmetics",
+        "title": "Foil and blind emboss on a cosmetic label",
+        "finishes": [
+          "Hot foil",
+          "Embossing"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-cos-white.webp",
+        "sector": "Cosmetics",
+        "title": "No-label look, opaque white",
+        "finishes": [
+          "Transparent film",
+          "Opaque white"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
         "image": "c-register.webp",
         "sector": "Wine",
         "title": "Foil and blind emboss in register",
@@ -1643,22 +1663,93 @@
         "badge": "Illustrative concept"
       },
       {
+        "image": "c-cos-clear.webp",
+        "sector": "Cosmetics",
+        "title": "Clear label on a premium bottle",
+        "finishes": [
+          "Transparent film",
+          "Foil detail"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-cos-set.webp",
+        "sector": "Cosmetics",
+        "title": "Bottle and box, coordinated",
+        "finishes": [
+          "Foil",
+          "Fine line work"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-supplement.webp",
+        "sector": "Nutraceutical",
+        "title": "Supplement label",
+        "finishes": [
+          "Digital print",
+          "Fine text"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-icebucket.webp",
+        "sector": "Wine",
+        "title": "Label in the ice bucket",
+        "finishes": [
+          "Material for chilled bottles",
+          "Hot foil"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-dark-foil.webp",
+        "sector": "Wine",
+        "title": "Dark label with foil highlights",
+        "finishes": [
+          "Hot foil",
+          "Textured black"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-range.webp",
+        "sector": "Wine",
+        "title": "A coordinated range",
+        "finishes": [
+          "Digital print",
+          "Versions"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-capsule-set.webp",
+        "sector": "Wine",
+        "title": "Capsule, bottle and label",
+        "finishes": [
+          "Hot foil",
+          "Textured paper"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-loose-labels.webp",
+        "sector": "Wine",
+        "title": "Labels on the table",
+        "finishes": [
+          "Embossing",
+          "Hot foil",
+          "Shaped die-cut"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
         "image": "work-food.webp",
         "sector": "Food",
         "title": "Jar label",
         "finishes": [
           "Digital print",
           "Lamination"
-        ],
-        "badge": "Illustrative concept"
-      },
-      {
-        "image": "work-cosmetic.webp",
-        "sector": "Cosmetics",
-        "title": "Clear label, opaque white",
-        "finishes": [
-          "Transparent film",
-          "Opaque white"
         ],
         "badge": "Illustrative concept"
       },
@@ -1896,7 +1987,9 @@
         "Transparent films for a no-label look",
         "Metallised and special materials"
       ],
-      "shot": "W-08"
+      "shot": "W-08",
+      "image": "c-icebucket.webp",
+      "note": "Illustrative concept"
     },
     "runs": {
       "eyebrow": "Editions",
@@ -1915,7 +2008,9 @@
           "The same colour and finishing held across every label of the range."
         ]
       ],
-      "shot": "W-09"
+      "shot": "W-09",
+      "image": "c-range.webp",
+      "note": "Illustrative concept"
     },
     "process": {
       "eyebrow": "How it works",
@@ -1945,37 +2040,39 @@
       "shots": [
         [
           "W-10",
-          "Black label, gold foil, raking light",
+          "Textured label, foil and relief",
           "c-bottle-scene.webp",
           "Illustrative concept"
         ],
         [
           "W-11",
-          "Blind emboss on white textured paper",
-          "c-texture.webp",
+          "Bottle in an ice bucket, light condensation",
+          "c-icebucket.webp",
           "Illustrative concept"
         ],
         [
           "W-12",
-          "High-build varnish on a dark ground",
-          "c-bottle-sparkling.webp",
+          "Dark bottle with foil highlights",
+          "c-dark-foil.webp",
           "Illustrative concept"
         ],
         [
           "W-13",
-          "Shaped label on the bottle",
-          "c-diecut.webp",
+          "A range of coordinated labels",
+          "c-range.webp",
           "Illustrative concept"
         ],
         [
           "W-14",
-          "Spirits label with foil and screen",
-          "c-bottle-chateau.webp",
+          "Capsule, bottle and label together",
+          "c-capsule-set.webp",
           "Illustrative concept"
         ],
         [
           "W-15",
-          "Range of bottles, one family"
+          "Loose labels on the table",
+          "c-loose-labels.webp",
+          "Illustrative concept"
         ]
       ]
     },
@@ -2090,29 +2187,40 @@
       "shots": [
         [
           "C-01",
-          "Clear label on a glass bottle"
+          "Premium bottle with a clear label",
+          "c-cos-clear.webp",
+          "Illustrative concept"
         ],
         [
           "C-02",
-          "Opaque white on clear film, macro"
+          "No-label look, opaque white on clear",
+          "c-cos-white.webp",
+          "Illustrative concept"
         ],
         [
           "C-03",
-          "Tactile varnish on a cosmetic label"
+          "Foil on a cosmetic label",
+          "c-cos-foil.webp",
+          "Illustrative concept"
         ],
         [
           "C-04",
-          "Supplement jars, one range"
+          "Bottle and box, a coordinated set",
+          "c-cos-set.webp",
+          "Illustrative concept"
         ],
         [
           "C-05",
-          "Foil detail on premium paper"
+          "Supplement label, clean and technical",
+          "c-supplement.webp",
+          "Illustrative concept"
         ],
         [
           "C-06",
           "Label on a small-diameter dropper"
         ]
-      ]
+      ],
+      "heroImg": "c-cos-clear.webp"
     },
     "food": {
       "code": "F",

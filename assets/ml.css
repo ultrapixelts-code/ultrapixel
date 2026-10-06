@@ -402,3 +402,5 @@ ul.rows{list-style:none;margin:0;padding:0}
 .nav2 .logo img{height:40px;width:auto}
 .ftr2 .flogo{height:auto;width:min(270px,70%);margin-top:clamp(40px,6vw,80px)}
 @media(max-width:960px){.nav2 .logo img{height:34px}}
+
+.viz.photo{padding:0}.viz.photo .cover{position:absolute;inset:-3% 0;width:100%;height:106%;object-fit:cover}.viz.photo .tagc,.viz.photo .code{color:#fff;mix-blend-mode:difference}.viz.photo::before{display:none}

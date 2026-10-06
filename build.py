@@ -172,6 +172,9 @@ def talk_ml(C, P):
 
 def viz(C, x):
     ui = C["ui"]
+    hi = C.get("sectorPages", {}).get(x["key"], {}).get("heroImg")
+    if hi:
+        return f'<div class="viz photo" data-light data-k="{x["key"]}"><img class="cover" src="/assets/{e(hi)}" alt="" loading="lazy" data-par><span class="mi tagc">{e(ui["illustrative"])}</span><span class="mi code">{e(x["matter"])}</span></div>'
     if x["key"] == "wine":
         inner = '<img class="flat" src="/assets/final.webp" alt="" loading="lazy" width="1120" height="1402" data-par>'; tag = ui["conceptLabel"]
     else:
@@ -293,9 +296,9 @@ def wine_ml(C, P, x):
             f'<section class="sec w">{top(w["for"]["eyebrow"], w["for"]["h2"])}<div class="trio">{who}</div></section><hr class="spl">'
             f'<section class="sec">{top(w["finish"]["eyebrow"], w["finish"]["h2"])}</section>{scenes}'
             f'<section class="sec"><div class="split"><div class="a"><span class="mi">{e(m["eyebrow"])}</span><h2 class="h2 rv" style="margin:18px 0 22px">{e(m["h2"])}</h2><p class="lead">{e(m["p"])}</p>'
-            f'<ul class="rows big" style="margin-top:34px">{"".join(f"<li>{e(i)}</li>" for i in m["items"])}</ul></div><div class="b">{frame(C, m["shot"], m["h2"], m.get("image", ""))}</div></div></section><hr class="spl">'
+            f'<ul class="rows big" style="margin-top:34px">{"".join(f"<li>{e(i)}</li>" for i in m["items"])}</ul></div><div class="b">{frame(C, m["shot"], m["h2"], m.get("image", ""), m.get("note", ""))}</div></div></section><hr class="spl">'
             f'<section class="sec w"><div class="split r"><div class="a"><span class="mi">{e(r["eyebrow"])}</span><h2 class="h2 rv" style="margin:18px 0 30px">{e(r["h2"])}</h2><div class="rows">{"".join(f"<div><h3>{e(a)}</h3><p>{e(b)}</p></div>" for a, b in r["items"])}</div></div>'
-            f'<div class="b">{frame(C, r["shot"], r["h2"], r.get("image", ""))}</div></div></section><hr class="spl">'
+            f'<div class="b">{frame(C, r["shot"], r["h2"], r.get("image", ""), r.get("note", ""))}</div></div></section><hr class="spl">'
             f'<section class="sec">{top(pr["eyebrow"], pr["h2"])}<ol class="steps">{"".join(f"<li><h3>{e(a)}</h3><p>{e(b)}</p></li>" for a, b in pr["steps"])}</ol></section><hr class="spl">'
             f'<section class="sec w">{top(g["eyebrow"], g["h2"])}<div class="hang">{"".join(frame(C, *s) for s in g["shots"])}</div></section><hr class="spl">'
             f'<section class="sec callx"><h2 class="mega rv">{e(w["kit"]["h2"])}</h2><p class="lead">{e(w["kit"]["p"])}</p><div><a class="cta pill" href="{P}samples/?sector={sq}">{e(w["kit"]["cta"])} ↗</a></div></section><hr class="spl">'
@@ -339,7 +342,7 @@ def sector_ml(C, P, x, n):
     body = (hero + '<hr class="spl">'
             f'<section class="sec w">{top(ui["applications"], d["appsH"])}<ul class="rows big">{"".join(f"<li>{e(i)}</li>" for i in d["apps"])}</ul></section><hr class="spl">'
             f'<section class="sec"><div class="split"><div class="a"><span class="mi">{e(ui["materials"])}</span><h2 class="h2 rv" style="margin:18px 0 22px">{e(d["matsH"])}</h2><p class="lead">{e(d["matsP"])}</p>'
-            f'<ul class="rows big" style="margin-top:34px">{"".join(f"<li>{e(i)}</li>" for i in d["mats"])}</ul></div><div class="b">{frame(C, d["shots"][1][0], d["shots"][1][1])}</div></div></section><hr class="spl">'
+            f'<ul class="rows big" style="margin-top:34px">{"".join(f"<li>{e(i)}</li>" for i in d["mats"])}</ul></div><div class="b">{frame(C, *d["shots"][1])}</div></div></section><hr class="spl">'
             f'<section class="sec w">{top(ui["problems"], x["title"] + ".")}<div class="rows two">{"".join(f"<div><h3>{e(a)}</h3><p>{e(b)}</p></div>" for a, b in d["problems"])}</div>'
             f'<div style="margin-top:clamp(34px,5vw,70px)"><span class="mi">{e(ui["technologies"])}</span>{tech_links(C, P, d["tech"])}</div></section><hr class="spl">'
             f'<section class="sec">{top(ui["specify"], ui["specifyH"])}<ol class="check">{"".join(f"<li>{e(i)}</li>" for i in d["specify"])}</ol></section><hr class="spl">'
