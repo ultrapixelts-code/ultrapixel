@@ -453,3 +453,4 @@ html[lang=de] .shero h1 .xl{font-size:clamp(34px,5.4vw,104px)}
 .lsw a[aria-current]{color:var(--ink);border-bottom:1px solid var(--ink)}
 @media(max-width:1380px){.nav2{grid-template-columns:1fr auto auto;column-gap:16px}.nav2 .right .cta{display:none}.nav2>.cta{display:none}}
 
+@media(max-width:1600px) and (min-width:1381px){.nav2 nav{gap:16px}.nav2 .right{gap:14px}}
