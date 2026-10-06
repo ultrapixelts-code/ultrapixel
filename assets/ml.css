@@ -399,6 +399,6 @@ ul.rows{list-style:none;margin:0;padding:0}
 
 /* brand mark */
 .nav2 .logo{display:flex;align-items:center}
-.nav2 .logo img{height:30px;width:auto}
-.ftr2 .flogo{height:auto;width:min(210px,60%);margin-top:clamp(40px,6vw,80px)}
-@media(max-width:960px){.nav2 .logo img{height:26px}}
+.nav2 .logo img{height:40px;width:auto}
+.ftr2 .flogo{height:auto;width:min(270px,70%);margin-top:clamp(40px,6vw,80px)}
+@media(max-width:960px){.nav2 .logo img{height:34px}}
