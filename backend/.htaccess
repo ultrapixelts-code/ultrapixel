@@ -1,0 +1,13 @@
+# Keep configuration and library files private; never list this folder.
+Options -Indexes
+<FilesMatch "^(config(\.sample)?\.php|lib\.php|.*\.(db|sqlite|md))$">
+  Require all denied
+</FilesMatch>
+# Pass the Authorization header to PHP on hosts that run it as CGI/FPM (needed for the admin login).
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex"
+</IfModule>
