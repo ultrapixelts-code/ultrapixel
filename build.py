@@ -135,7 +135,8 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
 <header class="nav2" id="nav2">
   <a class="logo" href="{P}" aria-label="UltraPixel"><img src="/assets/logo.png" alt="UltraPixel" width="370" height="133"></a>
   <nav id="nav">{nav}<a class="only-m" href="{P}samples/">{e(ui["requestSamples"])} ↗</a></nav>
-  <a class="cta" href="{P}samples/">{e(ui["requestSamples"])} ↗</a>
+  <div class="right"><div class="lsw" aria-label="{e(ui["language"])}">{"".join(f"""<a href="{"/" if l == DEFAULT else "/" + l + "/"}{path[len(P):]}" hreflang="{l}" lang="{l}"{' aria-current="true"' if l == C["lang"] else ""}>{l.upper()}</a>""" for l in LANGS)}</div>
+  <a class="cta" href="{P}samples/">{e(ui["requestSamples"])} ↗</a></div>
   <button class="burger" id="burger" aria-expanded="false" aria-controls="nav">{e(ui["menu"])}</button>
 </header>
 <main>
