@@ -301,7 +301,7 @@ ul.rows{list-style:none;margin:0;padding:0}
   background:linear-gradient(var(--ink),var(--ink)) 0 0/18px 1px no-repeat,linear-gradient(var(--ink),var(--ink)) 0 0/1px 18px no-repeat,linear-gradient(var(--ink),var(--ink)) 100% 0/18px 1px no-repeat,linear-gradient(var(--ink),var(--ink)) 100% 0/1px 18px no-repeat,linear-gradient(var(--ink),var(--ink)) 0 100%/18px 1px no-repeat,linear-gradient(var(--ink),var(--ink)) 0 100%/1px 18px no-repeat,linear-gradient(var(--ink),var(--ink)) 100% 100%/18px 1px no-repeat,linear-gradient(var(--ink),var(--ink)) 100% 100%/1px 18px no-repeat}
 .frame b{font:500 clamp(20px,2.4vw,34px) var(--mono);letter-spacing:.04em}
 .frame span{color:var(--gra);font-size:14px;max-width:24ch}
-.frame.has{padding:0;background:none;display:block}.frame.has img{width:100%;height:100%;object-fit:cover}
+.frame.has{padding:0;background:none;display:block;aspect-ratio:auto}.frame.has img{width:100%;aspect-ratio:4/5;object-fit:cover}.frame.has figcaption{margin-top:9px;color:var(--tg);text-align:left}
 .steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px 20px;counter-reset:s}
 .steps li{counter-increment:s;padding-top:16px;min-width:0;display:grid;gap:10px;align-content:start;border-top:1px solid var(--hair)}
 .steps li::before{content:"PROCESS 0" counter(s);font:400 11px var(--mono);letter-spacing:.14em;color:var(--tg)}

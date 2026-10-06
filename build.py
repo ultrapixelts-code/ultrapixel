@@ -225,7 +225,7 @@ def home_ml(C, P):
     show = "".join(
         f'<figure class="rv"><div class="im" data-light><img src="/assets/{e(w["image"])}" alt="{e(w["title"])}" loading="lazy" width="720" height="900" data-par></div>'
         f'<figcaption><span class="mi">UP / {i+1:03d}</span><span class="t">{e(w["title"])}</span><span class="mi c">{e(" + ".join(w["finishes"]))}{" · " + e(w["badge"]) if w.get("badge") else ""}</span></figcaption></figure>'
-        for i, w in enumerate(C["work"]["items"]))
+        for i, w in enumerate(C["work"]["items"][:h.get("workCount", 6)]))
     soc = "".join(f'<figure><img src="/assets/{e(t["image"])}" alt="" loading="lazy" width="720" height="900"><figcaption><span class="mi">{e(t["caption"])}</span><span class="mi dim">{e(t.get("badge", ""))}</span></figcaption></figure>' for t in C["social"])
     po = h["position"]
     body = f'''{film}
@@ -264,9 +264,9 @@ def home_ml(C, P):
                     extra_foot='<script src="/assets/film.js" defer></script>')
 
 
-def frame(C, code, caption, image=""):
+def frame(C, code, caption, image="", note=""):
     if image:
-        return f'<figure class="frame has"><img src="/assets/{e(image)}" alt="{e(caption)}" loading="lazy"></figure>'
+        return f'<figure class="frame has"><img src="/assets/{e(image)}" alt="{e(caption)}" loading="lazy">{f"""<figcaption class="mi">{e(code)} · {e(note)}</figcaption>""" if note else ""}</figure>'
     return f'<figure class="frame"><b>{e(code)}</b><span>{e(caption)}</span><span class="mi dim">{e(C["wine"]["slot"])}</span></figure>'
 
 
@@ -297,7 +297,7 @@ def wine_ml(C, P, x):
             f'<section class="sec w"><div class="split r"><div class="a"><span class="mi">{e(r["eyebrow"])}</span><h2 class="h2 rv" style="margin:18px 0 30px">{e(r["h2"])}</h2><div class="rows">{"".join(f"<div><h3>{e(a)}</h3><p>{e(b)}</p></div>" for a, b in r["items"])}</div></div>'
             f'<div class="b">{frame(C, r["shot"], r["h2"], r.get("image", ""))}</div></div></section><hr class="spl">'
             f'<section class="sec">{top(pr["eyebrow"], pr["h2"])}<ol class="steps">{"".join(f"<li><h3>{e(a)}</h3><p>{e(b)}</p></li>" for a, b in pr["steps"])}</ol></section><hr class="spl">'
-            f'<section class="sec w">{top(g["eyebrow"], g["h2"])}<div class="hang">{"".join(frame(C, s[0], s[1], s[2] if len(s) > 2 else "") for s in g["shots"])}</div></section><hr class="spl">'
+            f'<section class="sec w">{top(g["eyebrow"], g["h2"])}<div class="hang">{"".join(frame(C, *s) for s in g["shots"])}</div></section><hr class="spl">'
             f'<section class="sec callx"><h2 class="mega rv">{e(w["kit"]["h2"])}</h2><p class="lead">{e(w["kit"]["p"])}</p><div><a class="cta pill" href="{P}samples/?sector={sq}">{e(w["kit"]["cta"])} ↗</a></div></section><hr class="spl">'
             f'<section class="sec w">{top(fq["eyebrow"], fq["h2"])}<div class="faq">{"".join(f"<details><summary>{e(a)}</summary><p>{e(b)}</p></details>" for a, b in fq["items"])}</div></section>'
             + talk_ml(C, P))
@@ -343,7 +343,7 @@ def sector_ml(C, P, x, n):
             f'<section class="sec w">{top(ui["problems"], x["title"] + ".")}<div class="rows two">{"".join(f"<div><h3>{e(a)}</h3><p>{e(b)}</p></div>" for a, b in d["problems"])}</div>'
             f'<div style="margin-top:clamp(34px,5vw,70px)"><span class="mi">{e(ui["technologies"])}</span>{tech_links(C, P, d["tech"])}</div></section><hr class="spl">'
             f'<section class="sec">{top(ui["specify"], ui["specifyH"])}<ol class="check">{"".join(f"<li>{e(i)}</li>" for i in d["specify"])}</ol></section><hr class="spl">'
-            f'<section class="sec w">{top(ui["proof"], ui["proofH"])}<div class="hang">{"".join(frame(C, s[0], s[1], s[2] if len(s) > 2 else "") for s in d["shots"])}</div></section><hr class="spl">'
+            f'<section class="sec w">{top(ui["proof"], ui["proofH"])}<div class="hang">{"".join(frame(C, *s) for s in d["shots"])}</div></section><hr class="spl">'
             f'<section class="sec">{top(ui["questions"], C["wine"]["faq"]["h2"])}{faq_block(C, d["faq"])}</section><hr class="spl">'
             + kit(C, P, x["title"]) + talk_ml(C, P))
     return shell_ml(C, P, f'{P}{x["slug"]}/', x["meta"], body, extra_head=faq_ld(d["faq"]), cls=f'phys-{x["key"]}')
@@ -361,7 +361,7 @@ def landing_ml(C, P, x):
             f'<section class="sec w"><div class="tri">{col(ui["capability"], x["cap"])}{col(ui["applications"], x["apps"])}{col(ui["materials"], x["mats"])}</div>'
             f'<div style="margin-top:clamp(34px,5vw,70px)"><span class="mi">{e(ui["technologies"])}</span>{tech_links(C, P, x["tech"])}</div></section><hr class="spl">'
             f'<section class="sec">{top(ui["questions"], C["wine"]["faq"]["h2"])}{faq_block(C, x["faq"])}</section><hr class="spl">'
-            f'<section class="sec w">{top(ui["proof"], ui["proofH"])}<div class="hang pair">{"".join(frame(C, s[0], s[1], s[2] if len(s) > 2 else "") for s in x["shots"])}</div>'
+            f'<section class="sec w">{top(ui["proof"], ui["proofH"])}<div class="hang pair">{"".join(frame(C, *s) for s in x["shots"])}</div>'
             f'<div style="margin-top:clamp(34px,5vw,70px)"><span class="mi">{e(ui["related"])}</span><div class="tl">{"".join(f"""<a class="cta" href="{P}{h}">{e(l)} →</a>""" for l, h in x["links"])}</div></div></section>'
             + talk_ml(C, P))
     return shell_ml(C, P, f'{P}{x["slug"]}/', x["meta"], body, extra_head=faq_ld(x["faq"]), cls=f'phys-{x["sector"]}')

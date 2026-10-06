@@ -60,7 +60,7 @@
     "capability": "What we do",
     "related": "Related",
     "answer": "In short",
-    "concept": "Concept macro",
+    "concept": "Illustrative concept",
     "photo": "Photo to come",
     "sector": "Sector",
     "labtitle": "Material Lab"
@@ -277,7 +277,7 @@
     ],
     "lab": {
       "eyebrow": "UltraPixel Material Lab",
-      "macro": "Concept label macro",
+      "macro": "Illustrative concept",
       "data": "Generated sample",
       "groups": [
         [
@@ -293,7 +293,7 @@
           [
             "hot-foil"
           ],
-          "m-foil.webp"
+          "c-foil.webp"
         ],
         [
           "Screen",
@@ -302,7 +302,7 @@
             "tactile",
             "lamination"
           ],
-          "m-screen.webp"
+          "c-screen.webp"
         ],
         [
           "Relief",
@@ -310,14 +310,14 @@
             "embossing",
             "debossing"
           ],
-          "m-relief.webp"
+          "c-emboss.webp"
         ],
         [
           "Texture",
           [
             "microtextures"
           ],
-          "m-texture.webp"
+          "c-texture.webp"
         ],
         [
           "Cut",
@@ -325,7 +325,7 @@
             "die-cutting",
             "multilayer"
           ],
-          "m-cut.webp"
+          "c-diecut.webp"
         ],
         [
           "Data",
@@ -337,7 +337,8 @@
           ""
         ]
       ]
-    }
+    },
+    "workCount": 6
   },
   "sectors": [
     {
@@ -622,7 +623,7 @@
         ]
       ],
       "cta": "samples",
-      "macro": "m-register.webp",
+      "macro": "c-register.webp",
       "meta": {
         "title": "Premium labels | UltraPixel",
         "description": "Premium self-adhesive labels combining textured papers, hot foil, screen printing, embossing and shaped die-cutting. Made in Italy for brands across Europe."
@@ -698,7 +699,7 @@
         ]
       ],
       "cta": "samples",
-      "macro": "m-foil.webp",
+      "macro": "c-foil.webp",
       "meta": {
         "title": "Hot foil labels | UltraPixel",
         "description": "Hot foil labels in gold, silver, holographic and custom finishes, flat or embossed, in register with digital print."
@@ -771,7 +772,7 @@
         ]
       ],
       "cta": "samples",
-      "macro": "m-screen.webp",
+      "macro": "c-screen.webp",
       "meta": {
         "title": "Screen printed labels | UltraPixel",
         "description": "Screen printed labels with opaque colour, high-build tactile varnish and selective gloss, combined with digital print and foil."
@@ -846,7 +847,7 @@
         ]
       ],
       "cta": "samples",
-      "macro": "m-relief.webp",
+      "macro": "c-emboss.webp",
       "meta": {
         "title": "Embossed labels | UltraPixel",
         "description": "Embossed and debossed labels with microtexture and foil in register, for premium wine, spirits, cosmetics and food."
@@ -924,7 +925,7 @@
         ]
       ],
       "cta": "quote",
-      "macro": "m-digital.webp",
+      "macro": "c-paper.webp",
       "meta": {
         "title": "Short-run and limited-edition wine labels | UltraPixel",
         "description": "Short-run premium wine labels printed digitally with numbering, versions, foil and embossing. Made in Italy, delivered across Europe."
@@ -1079,7 +1080,7 @@
         ]
       ],
       "cta": "samples",
-      "macro": "m-screen.webp",
+      "macro": "c-screen.webp",
       "meta": {
         "title": "Premium labels for spirits | UltraPixel",
         "description": "Premium spirits labels with hot foil, high-build screen varnish, embossing and shaped die-cutting, also in short runs. Made in Italy."
@@ -1520,7 +1521,7 @@
         ]
       ],
       "cta": "quote",
-      "macro": "",
+      "macro": "c-bottle-scene.webp",
       "meta": {
         "title": "Self-adhesive label manufacturer in Italy | UltraPixel",
         "description": "UltraPixel is a manufacturer of premium and technical self-adhesive labels near Trieste, Italy, founded in 2013 and delivering across Europe."
@@ -1537,26 +1538,109 @@
     "caseH2": "Case studies",
     "items": [
       {
-        "image": "macro-1.webp",
+        "image": "c-foil.webp",
         "sector": "Wine",
-        "title": "Cuvée Prestige, monogram",
+        "title": "Gold foil on textured paper",
+        "finishes": [
+          "Hot foil",
+          "Textured paper"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-emboss.webp",
+        "sector": "Wine",
+        "title": "Sculpted emboss with foil",
+        "finishes": [
+          "Embossing",
+          "Hot foil"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-screen.webp",
+        "sector": "Wine",
+        "title": "Foil and gloss screen on a dark ground",
+        "finishes": [
+          "Hot foil",
+          "Screen printing",
+          "High-build varnish"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-register.webp",
+        "sector": "Wine",
+        "title": "Foil and blind emboss in register",
         "finishes": [
           "Hot foil",
           "Embossing",
-          "Opaque screen"
+          "Digital print"
         ],
-        "badge": "Concept label"
+        "badge": "Illustrative concept"
       },
       {
-        "image": "macro-2.webp",
+        "image": "c-texture.webp",
         "sector": "Wine",
-        "title": "Cuvée Prestige, wordmark",
+        "title": "Embossed microtexture",
+        "finishes": [
+          "Microtexture",
+          "Embossing",
+          "Foil dots"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-paper.webp",
+        "sector": "Wine",
+        "title": "Print on natural fibre paper",
+        "finishes": [
+          "Natural paper",
+          "Digital print"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-diecut.webp",
+        "sector": "Wine",
+        "title": "Shaped label with foil edge",
+        "finishes": [
+          "Shaped die-cut",
+          "Hot foil"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-bottle-scene.webp",
+        "sector": "Wine",
+        "title": "Textured label, foil and relief",
+        "finishes": [
+          "Textured paper",
+          "Hot foil",
+          "Embossing"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-bottle-sparkling.webp",
+        "sector": "Wine",
+        "title": "Sparkling wine, shaped label and neck band",
+        "finishes": [
+          "Shaped die-cut",
+          "Hot foil",
+          "Embossing"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-bottle-chateau.webp",
+        "sector": "Wine",
+        "title": "Classic label with fine engraving",
         "finishes": [
           "Digital print",
-          "Foil",
-          "Tactile dots"
+          "Hot foil"
         ],
-        "badge": "Concept label"
+        "badge": "Illustrative concept"
       },
       {
         "image": "work-food.webp",
@@ -1635,22 +1719,22 @@
   },
   "social": [
     {
-      "image": "macro-3.webp",
-      "caption": "Foil and screen in register",
+      "image": "c-register.webp",
+      "caption": "Foil and emboss in register",
       "url": "",
-      "badge": "Concept label"
+      "badge": "Illustrative concept"
     },
     {
-      "image": "macro-1.webp",
-      "caption": "Embossed gold on textured paper",
+      "image": "c-screen.webp",
+      "caption": "Gloss screen on a dark ground",
       "url": "",
-      "badge": "Concept label"
+      "badge": "Illustrative concept"
     },
     {
-      "image": "macro-2.webp",
-      "caption": "Raised tactile details",
+      "image": "c-texture.webp",
+      "caption": "Embossed microtexture",
       "url": "",
-      "badge": "Concept label"
+      "badge": "Illustrative concept"
     }
   ],
   "pages": {
@@ -1763,28 +1847,28 @@
           "title": "Natural and textured papers",
           "text": "Uncoated, laid and cotton-feel stocks that give a label its character before any ink is on it.",
           "fx": "",
-          "macro": "m-paper.webp"
+          "macro": "c-paper.webp"
         },
         {
           "shot": "W-03",
           "title": "Hot foil",
           "text": "Gold, silver, holographic or custom, for logos, frames and fine lettering.",
           "fx": "foil",
-          "macro": "m-foil.webp"
+          "macro": "c-foil.webp"
         },
         {
           "shot": "W-04",
           "title": "Embossing and debossing",
           "text": "Relief raised from the paper or pressed into it, alone or in register with foil.",
-          "fx": "graze",
-          "macro": "m-relief.webp"
+          "fx": "",
+          "macro": "c-emboss.webp"
         },
         {
           "shot": "W-05",
           "title": "Screen printing and tactile varnish",
           "text": "Dense opaque colour and thick varnish you can feel under a fingertip.",
           "fx": "",
-          "macro": "m-screen.webp"
+          "macro": "c-screen.webp"
         },
         {
           "shot": "W-06",
@@ -1798,7 +1882,7 @@
           "title": "Everything in register",
           "text": "Print, foil, varnish and relief landing in the same place, label after label.",
           "fx": "",
-          "macro": "m-register.webp"
+          "macro": "c-register.webp"
         }
       ]
     },
@@ -1861,23 +1945,33 @@
       "shots": [
         [
           "W-10",
-          "Black label, gold foil, raking light"
+          "Black label, gold foil, raking light",
+          "c-bottle-scene.webp",
+          "Illustrative concept"
         ],
         [
           "W-11",
-          "Blind emboss on white textured paper"
+          "Blind emboss on white textured paper",
+          "c-texture.webp",
+          "Illustrative concept"
         ],
         [
           "W-12",
-          "High-build varnish on a dark ground"
+          "High-build varnish on a dark ground",
+          "c-bottle-sparkling.webp",
+          "Illustrative concept"
         ],
         [
           "W-13",
-          "Shaped label on the bottle"
+          "Shaped label on the bottle",
+          "c-diecut.webp",
+          "Illustrative concept"
         ],
         [
           "W-14",
-          "Spirits label with foil and screen"
+          "Spirits label with foil and screen",
+          "c-bottle-chateau.webp",
+          "Illustrative concept"
         ],
         [
           "W-15",
@@ -1913,7 +2007,7 @@
       ]
     },
     "slot": "Photo to come",
-    "macroNote": "Concept macro"
+    "macroNote": "Illustrative concept"
   },
   "sectorPages": {
     "cosmetic": {
