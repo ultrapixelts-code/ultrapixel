@@ -93,7 +93,8 @@ def offices(C):
 def lang_redirect(C):
     """Root-language pages only: on a first visit from outside the site, send a browser set to another language to its own
     version (unknown languages go to English). A language picked by hand is remembered and always respected; crawlers are left alone."""
-    if C["lang"] != HOME or len(LANGS) < 2:
+    # a country domain (site.countryDomains) always opens in its own language: no automatic redirect there
+    if C["lang"] != HOME or len(LANGS) < 2 or HOME in C["site"].get("countryDomains", {}):
         return ""
     others = [l for l in LANGS if l != HOME]
     return ("<script>(function(){try{var L=" + json.dumps(others) + ",s=null;try{s=localStorage.getItem('up_lang')}catch(e){}"
