@@ -1297,7 +1297,7 @@
         ]
       ],
       "cta": "samples",
-      "macro": "",
+      "macro": "c-food-juice.webp",
       "meta": {
         "title": "Food labels for cold and humid environments | UltraPixel",
         "description": "Self-adhesive food labels on materials and adhesives selected for chilled, humid and oily conditions, made for automatic application."
@@ -1372,7 +1372,7 @@
         ]
       ],
       "cta": "quote",
-      "macro": "",
+      "macro": "c-ind-plate.webp",
       "meta": {
         "title": "Variable-data labels: codes, numbering and QR | UltraPixel",
         "description": "Variable-data labels with sequential numbering, QR codes, batches and serials printed in the same pass as the artwork."
@@ -1548,6 +1548,47 @@
         "badge": "Illustrative concept"
       },
       {
+        "image": "c-cos-foil.webp",
+        "sector": "Cosmetics",
+        "title": "Foil and blind emboss on a cosmetic label",
+        "finishes": [
+          "Hot foil",
+          "Embossing"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-food-jar.webp",
+        "sector": "Food",
+        "title": "Jar label",
+        "finishes": [
+          "Digital print",
+          "Textured paper"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ind-plate.webp",
+        "sector": "Industrial",
+        "title": "Identification label",
+        "finishes": [
+          "Variable data",
+          "QR code",
+          "Serial number"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-cos-white.webp",
+        "sector": "Cosmetics",
+        "title": "No-label look, opaque white",
+        "finishes": [
+          "Transparent film",
+          "Opaque white"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
         "image": "c-emboss.webp",
         "sector": "Wine",
         "title": "Sculpted emboss with foil",
@@ -1565,26 +1606,6 @@
           "Hot foil",
           "Screen printing",
           "High-build varnish"
-        ],
-        "badge": "Illustrative concept"
-      },
-      {
-        "image": "c-cos-foil.webp",
-        "sector": "Cosmetics",
-        "title": "Foil and blind emboss on a cosmetic label",
-        "finishes": [
-          "Hot foil",
-          "Embossing"
-        ],
-        "badge": "Illustrative concept"
-      },
-      {
-        "image": "c-cos-white.webp",
-        "sector": "Cosmetics",
-        "title": "No-label look, opaque white",
-        "finishes": [
-          "Transparent film",
-          "Opaque white"
         ],
         "badge": "Illustrative concept"
       },
@@ -1744,16 +1765,6 @@
         "badge": "Illustrative concept"
       },
       {
-        "image": "work-food.webp",
-        "sector": "Food",
-        "title": "Jar label",
-        "finishes": [
-          "Digital print",
-          "Lamination"
-        ],
-        "badge": "Illustrative concept"
-      },
-      {
         "image": "work-pharma.webp",
         "sector": "Nutraceutical",
         "title": "Container label",
@@ -1764,12 +1775,79 @@
         "badge": "Illustrative concept"
       },
       {
-        "image": "work-industrial.webp",
+        "image": "c-food-oil.webp",
+        "sector": "Food",
+        "title": "Oil label with foil",
+        "finishes": [
+          "Hot foil",
+          "Gloss varnish"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-food-jams.webp",
+        "sector": "Food",
+        "title": "A range of versions",
+        "finishes": [
+          "Digital print",
+          "Versions"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-food-juice.webp",
+        "sector": "Food",
+        "title": "Chilled bottle",
+        "finishes": [
+          "Material for cold and humidity"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-food-pasta.webp",
+        "sector": "Food",
+        "title": "Label on a flexible pack",
+        "finishes": [
+          "Digital print"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ind-ghs.webp",
         "sector": "Industrial",
-        "title": "Drum label",
+        "title": "Hazard and technical data label",
+        "finishes": [
+          "Fine text",
+          "Variable data"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ind-canister.webp",
+        "sector": "Industrial",
+        "title": "Canister label",
+        "finishes": [
+          "Technical film"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ind-adhesion.webp",
+        "sector": "Industrial",
+        "title": "Label on brushed metal",
         "finishes": [
           "Technical material",
-          "QR code"
+          "Adhesive"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ind-pail.webp",
+        "sector": "Industrial",
+        "title": "Steel pail label",
+        "finishes": [
+          "Technical film",
+          "Batch data"
         ],
         "badge": "Illustrative concept"
       }
@@ -2301,29 +2379,40 @@
       "shots": [
         [
           "F-01",
-          "Jar on the line, label applied"
+          "Jar label on textured paper",
+          "c-food-jar.webp",
+          "Illustrative concept"
         ],
         [
           "F-02",
-          "Chilled pack with condensation"
+          "Label with condensation, foil detail",
+          "c-food-oil.webp",
+          "Illustrative concept"
         ],
         [
           "F-03",
-          "Range of versions side by side"
+          "Label on a flexible pack",
+          "c-food-pasta.webp",
+          "Illustrative concept"
         ],
         [
           "F-04",
-          "Finished rolls, winding and core"
+          "Chilled bottle on ice",
+          "c-food-juice.webp",
+          "Illustrative concept"
         ],
         [
           "F-05",
-          "Transparent label on glass"
+          "A range of versions",
+          "c-food-jams.webp",
+          "Illustrative concept"
         ],
         [
           "F-06",
-          "Oil bottle, label after use"
+          "Finished rolls, winding and core"
         ]
-      ]
+      ],
+      "heroImg": "c-food-jar.webp"
     },
     "industrial": {
       "code": "I",
@@ -2405,29 +2494,40 @@
       "shots": [
         [
           "I-01",
-          "Label on a steel drum"
+          "Label on a plastic canister",
+          "c-ind-canister.webp",
+          "Illustrative concept"
         ],
         [
           "I-02",
-          "Label on a plastic canister, curved surface"
+          "Hazard and technical data label on metal",
+          "c-ind-ghs.webp",
+          "Illustrative concept"
         ],
         [
           "I-03",
-          "QR and serial number, macro"
+          "Identification label with QR and serial",
+          "c-ind-plate.webp",
+          "Illustrative concept"
         ],
         [
           "I-04",
-          "Multilayer label, closed and open"
+          "Adhesion on brushed metal, macro",
+          "c-ind-adhesion.webp",
+          "Illustrative concept"
         ],
         [
           "I-05",
-          "Laminated label after handling"
+          "Label on a steel pail",
+          "c-ind-pail.webp",
+          "Illustrative concept"
         ],
         [
           "I-06",
-          "Finished rolls with variable data"
+          "Multilayer label, closed and open"
         ]
-      ]
+      ],
+      "heroImg": "c-ind-canister.webp"
     },
     "pharma": {
       "code": "P",
