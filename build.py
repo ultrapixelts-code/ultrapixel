@@ -78,7 +78,7 @@ def seo_extra(C, P, path, meta):
         alts = "".join(f'<link rel="alternate" hreflang="{l}" href="{base}{"" if l == DEFAULT else "/" + l}{rel}">' for l in LANGS)
         alts += f'<link rel="alternate" hreflang="x-default" href="{base}{rel}">'
     org = {"@type": "Organization", "@id": base + "/#organization", "name": s["name"], "legalName": s["legalName"], "url": base + "/",
-           "description": s["description"], "foundingDate": s["founded"],
+           "description": s["description"], "foundingDate": s["founded"], "logo": base + "/assets/logo.png",
            "address": {"@type": "PostalAddress", "streetAddress": s["street"], "postalCode": s["postalCode"], "addressLocality": s["locality"],
                        "addressRegion": s["region"], "addressCountry": s["country"]}, "vatID": s["vatID"],
            "areaServed": "Europe", "knowsAbout": [t["title"] for t in C["technologies"]["items"]]}
@@ -123,6 +123,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
 {'<meta name="robots" content="noindex">' if s["noindex"] else ""}
 <meta property="og:type" content="website"><meta property="og:title" content="{e(meta["title"])}"><meta property="og:description" content="{e(meta["description"])}"><meta property="og:url" content="{url}"><meta property="og:image" content="{s["url"].rstrip("/")}/assets/macro-1.webp">
 <meta name="theme-color" content="#F4F4F0">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=DM+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="/assets/ml.css">
@@ -130,7 +131,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
 </head>
 <body class="{cls}">
 <header class="nav2" id="nav2">
-  <a class="logo" href="{P}">UltraPixel<sup>TS / IT</sup></a>
+  <a class="logo" href="{P}" aria-label="UltraPixel"><img src="/assets/logo.png" alt="UltraPixel" width="370" height="133"></a>
   <nav id="nav">{nav}<a class="only-m" href="{P}samples/">{e(ui["requestSamples"])} ↗</a></nav>
   <a class="cta" href="{P}samples/">{e(ui["requestSamples"])} ↗</a>
   <button class="burger" id="burger" aria-expanded="false" aria-controls="nav">{e(ui["menu"])}</button>
@@ -148,7 +149,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
     <div><span class="mi">Index</span><ul><li><a href="{P}technologies/">{e(ui["technologies"])}</a></li><li><a href="{P}work/">{e(ui["work"])}</a></li><li><a href="{P}about/">{e(ui["about"])}</a></li><li><a href="{P}contact/">{e(ui["contact"])}</a></li></ul></div>
     <div><span class="mi">{e(ui["contact"])}</span><ul><li><a href="{P}samples/">{e(ui["requestSamples"])}</a></li><li><a href="{P}contact/?topic=quote">{e(ui["requestQuote"])}</a></li><li><a href="{P}partners/">{e(ui["partners"])}</a></li></ul></div>
   </div>
-  <div class="wm" aria-hidden="true">UltraPixel</div>
+  <img class="flogo" src="/assets/logo.png" alt="UltraPixel" width="370" height="133" loading="lazy">
   <p class="mi dim legal">© UltraPixel / {e(s["address"])}</p>
 </footer>
 <script src="/assets/ml.js" defer></script><script src="/assets/lead.js" defer></script>
