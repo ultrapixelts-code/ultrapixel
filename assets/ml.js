@@ -37,7 +37,7 @@
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var t=e.target;t.classList.add('in');io.unobserve(t);
       if(t.dataset.count){var n=+t.dataset.count,from=n>100?n-13:0,t0=performance.now(),suf=t.dataset.suf||'';
         (function tick(now){var k=cl((now-t0)/1700);k=1-Math.pow(1-k,3);t.textContent=Math.round(from+(n-from)*k)+suf;if(k<1)requestAnimationFrame(tick)})(t0)}})},{rootMargin:'0px 0px -8% 0px'});
-    d.querySelectorAll('.rv,.curve,[data-count]').forEach(function(e){io.observe(e)});
+    d.querySelectorAll('.rv,.curve,.stack,[data-count]').forEach(function(e){io.observe(e)});
   }else d.querySelectorAll('.curve').forEach(function(e){e.classList.add('in')});
 
   // material lab

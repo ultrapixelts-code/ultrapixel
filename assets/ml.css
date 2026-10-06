@@ -412,3 +412,20 @@ ul.rows{list-style:none;margin:0;padding:0}
 .whero.ph h1 .xl{font-size:clamp(54px,8.4vw,168px)}
 .whero.ph::before{display:none}
 @media(max-width:900px){.whero .wphoto{grid-column:1/-1;height:44vh}.whero.ph .say{grid-column:1/-1}}
+
+/* sustainability: material science, not eco-marketing */
+.mflow{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin-top:10px}
+.mflow i{flex:0 1 90px;min-width:28px;height:1px;background:var(--spec)}
+.mflow.big span{font:600 clamp(30px,5vw,84px)/1 var(--display);font-stretch:76%;letter-spacing:-.04em;text-transform:uppercase}
+.mflow.big span:last-child{color:var(--tg)}
+.stack{position:relative;height:clamp(340px,40vw,480px);perspective:1400px;display:grid;place-items:center}
+.stack .ly{position:absolute;width:62%;aspect-ratio:16/9;transform:rotateX(58deg) rotateZ(-32deg) translateZ(calc((2 - var(--i))*46px));transition:transform 1.4s cubic-bezier(.2,.7,.1,1);border:1px solid var(--gra);display:flex;align-items:flex-end;justify-content:flex-end;padding:8px 10px}
+html.js .stack:not(.in) .ly{transform:rotateX(58deg) rotateZ(-32deg) translateZ(calc((2 - var(--i))*3px))}
+.ly0{background:linear-gradient(115deg,rgba(201,154,46,.0) 30%,rgba(201,154,46,.55) 46%,rgba(255,243,196,.8) 50%,rgba(201,154,46,.5) 56%,transparent 70%);border-style:dashed!important}
+.ly1{background:url(/assets/m-paper.webp) center/cover}
+.ly2{background:repeating-linear-gradient(45deg,rgba(52,56,59,.16) 0 1px,transparent 1px 6px),rgba(255,255,255,.55)}
+.ly3{background:linear-gradient(120deg,rgba(255,255,255,.7),rgba(167,173,176,.28) 50%,rgba(255,255,255,.6))}
+.ly4{background:none;border-style:dotted!important;border-color:#3E7D5A!important}
+.ly4 .mi{color:#3E7D5A}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#3E7D5A;margin-right:9px}
+.st{justify-self:start;border:1px solid var(--hair);padding:5px 9px;color:var(--gra)}

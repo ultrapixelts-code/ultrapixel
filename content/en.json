@@ -2923,5 +2923,150 @@
       ],
       "heroImg": "c-ph-supplement.webp"
     }
+  },
+  "sustainability": {
+    "meta": {
+      "title": "Sustainability and label material choices | UltraPixel",
+      "description": "How UltraPixel approaches sustainability in labels: material selection, sourcing, waste, compatibility with the pack and the right level of finishing, evaluated from the start of a project."
+    },
+    "nav": "Sustainability",
+    "eyebrow": "Sustainability / Material system",
+    "h1a": "Less material.",
+    "h1b": "Better decisions.",
+    "intro": "Sustainability in labels starts with material choice, construction, production efficiency and compatibility with the final packaging. We help customers evaluate these variables from the beginning of a project.",
+    "flow": [
+      "Material",
+      "Process",
+      "Pack",
+      "Recovery"
+    ],
+    "s1": {
+      "h": "Start with the right material.",
+      "p": "UltraPixel can evaluate label materials according to application, packaging substrate, visual requirements and end-of-life objectives.",
+      "img": "c-paper.webp",
+      "rows": [
+        [
+          "Papers",
+          "Available depending on specification"
+        ],
+        [
+          "Films",
+          "Available depending on specification"
+        ],
+        [
+          "Recycled-content options",
+          "Available depending on specification"
+        ],
+        [
+          "Material thickness",
+          "Evaluated for each application"
+        ],
+        [
+          "Adhesive",
+          "Chosen with the container and its recovery in mind"
+        ]
+      ]
+    },
+    "s2": {
+      "h": "Traceable choices.",
+      "p": "Certified and responsibly sourced material options can be evaluated according to project requirements and supplier availability.",
+      "note": "Any certification is stated per material, only when it is documented for that material."
+    },
+    "s3": {
+      "h": "Use what matters. Reduce what doesn't.",
+      "rows": [
+        [
+          "Layout optimisation",
+          "Labels arranged to use the width of the material."
+        ],
+        [
+          "Appropriate material width",
+          "The web is chosen for the job, not the other way round."
+        ],
+        [
+          "Digital production for suitable quantities",
+          "Printing what is needed, when the run suits it."
+        ],
+        [
+          "Less setup and obsolete stock",
+          "Fewer unnecessary set-ups and fewer labels printed in advance."
+        ],
+        [
+          "Optimised repeat jobs",
+          "Recurring orders reviewed so that each reprint wastes less."
+        ]
+      ]
+    },
+    "s4": {
+      "h": "The label is part of the pack.",
+      "p": "Material compatibility matters. A beautiful label should also be designed with the packaging system it becomes part of.",
+      "p2": "A sustainable choice does not depend on the label alone. Container, adhesive, facestock, decoration and recycling stream have to be considered together.",
+      "layers": [
+        "Decoration",
+        "Facestock",
+        "Adhesive",
+        "Container",
+        "Recycling stream"
+      ]
+    },
+    "s5": {
+      "h": "Add only what adds value.",
+      "p": "We help customers judge when a finish adds value to the product and when it only adds complexity and material. Foil, lamination and premium finishing have their place; the point is to choose them on purpose.",
+      "steps": [
+        "Substrate",
+        "Print",
+        "Finishing"
+      ]
+    },
+    "s6": {
+      "h": "Made in Italy. Connected to Europe.",
+      "p": "Production in the Trieste area and a European supply network allow us to work closely with customers and material partners across the EU.",
+      "place": "San Dorligo della Valle / Trieste"
+    },
+    "s7": {
+      "eyebrow": "Roadmap",
+      "h": "What we're working on next.",
+      "p": "These are objectives, not results. We will publish outcomes when they can be measured.",
+      "todayH": "Today",
+      "today": [
+        "Material evaluation at the start of a project",
+        "Digital production for suitable quantities",
+        "Layout and material-width optimisation",
+        "Colour measurement, to reduce reprints"
+      ],
+      "nextH": "Next",
+      "next": [
+        [
+          "Lower-impact materials",
+          "Exploring"
+        ],
+        [
+          "Renewable-energy projects",
+          "Exploring"
+        ],
+        [
+          "Energy monitoring",
+          "Evaluating"
+        ],
+        [
+          "Packaging compatibility data",
+          "Evaluating"
+        ],
+        [
+          "Improved waste tracking",
+          "In development"
+        ],
+        [
+          "Better material traceability",
+          "In development"
+        ]
+      ]
+    },
+    "home": {
+      "eyebrow": "Sustainability",
+      "h2": "Better labels start with better material decisions.",
+      "p": "Material, construction and finishing are chosen with the whole pack and its end of life in mind, from the first conversation.",
+      "cta": "Explore our approach"
+    }
   }
 }

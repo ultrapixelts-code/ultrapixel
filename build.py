@@ -146,7 +146,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
   <div class="cols">
     <div><span class="mi">{e(s["name"])}</span><ul>{contact}</ul></div>
     <div><span class="mi">{e(ui["sectors"])}</span><ul>{secs}</ul></div>
-    <div><span class="mi">Index</span><ul><li><a href="{P}technologies/">{e(ui["technologies"])}</a></li><li><a href="{P}work/">{e(ui["work"])}</a></li><li><a href="{P}about/">{e(ui["about"])}</a></li><li><a href="{P}contact/">{e(ui["contact"])}</a></li></ul></div>
+    <div><span class="mi">Index</span><ul><li><a href="{P}technologies/">{e(ui["technologies"])}</a></li><li><a href="{P}work/">{e(ui["work"])}</a></li><li><a href="{P}sustainability/">{e(C["sustainability"]["nav"])}</a></li><li><a href="{P}about/">{e(ui["about"])}</a></li><li><a href="{P}contact/">{e(ui["contact"])}</a></li></ul></div>
     <div><span class="mi">{e(ui["contact"])}</span><ul><li><a href="{P}samples/">{e(ui["requestSamples"])}</a></li><li><a href="{P}contact/?topic=quote">{e(ui["requestQuote"])}</a></li><li><a href="{P}partners/">{e(ui["partners"])}</a></li></ul></div>
   </div>
   <img class="flogo" src="/assets/logo.png" alt="UltraPixel" width="370" height="133" loading="lazy">
@@ -249,6 +249,9 @@ def home_ml(C, P):
  <div class="cap"><span class="mi">LAB / 01 — {e(lab["groups"][0][0].upper())}</span><span class="mi dim">{e(lab["macro"])}</span></div><div class="list">{lists}</div></div>
  <p style="margin-top:clamp(28px,4vw,56px)"><a class="cta" href="{P}technologies/">{e(ui["allTechnologies"])} →</a></p>
 </section>
+<hr class="spl">
+<section class="sec t"><div class="split"><div class="a"><span class="mi">{e(C["sustainability"]["home"]["eyebrow"])}</span><h2 class="h2 rv" style="margin-top:16px;font-size:clamp(30px,3.8vw,60px)">{e(C["sustainability"]["home"]["h2"])}</h2></div>
+ <div class="b"><p class="lead">{e(C["sustainability"]["home"]["p"])}</p><p style="margin-top:22px"><a class="cta" href="{P}sustainability/">{e(C["sustainability"]["home"]["cta"])} →</a></p></div></div></section>
 <hr class="spl">
 <section class="sec"><span class="mi">{e(c["eyebrow"])}</span><h2 class="mega rv" style="margin-top:18px">{e(c["mega"])}</h2><p class="lead" style="margin-top:18px;color:var(--ink)">{e(c["h2"])}</p>
  <div class="flow">{flow}</div>{curve}<ul class="pts">{"".join(f'<li class="mi">{e(x)}</li>' for x in c["points"])}</ul></section>
@@ -434,6 +437,27 @@ def form_ml(C, P, key, topic):
     return shell_ml(C, P, f"{P}{key}/", p["meta"], phead(ui["contact"], p["h1"], p["lead"], mega=False) + f'<hr class="spl"><section class="sec w"><div class="split"><div class="a">{form}</div><div class="b">{direct}</div></div></section>')
 
 
+def sustain_ml(C, P):
+    s, ui = C["sustainability"], C["ui"]
+    flow = '<div class="mflow">' + "".join(f'<span class="mi">{e(x)}</span>' + ('<i></i>' if i < 3 else "") for i, x in enumerate(s["flow"])) + "</div>"
+    sec = lambda n, h, inner, w=False: f'<section class="sec{" w" if w else ""}"><header class="top"><span class="mi">{n:02d} / {len(s["flow"]) + 3:02d}</span><h2 class="h2 rv">{e(h)}</h2></header>{inner}</section><hr class="spl">'
+    rows = lambda items: '<div class="lrows">' + "".join(f'<div class="row"><strong>{e(a)}</strong><span>{e(b)}</span></div>' for a, b in items) + "</div>"
+    a, b, c, d, f, g, r = (s[k] for k in ("s1", "s2", "s3", "s4", "s5", "s6", "s7"))
+    stack = '<div class="stack" aria-hidden="true">' + "".join(f'<div class="ly ly{i}" style="--i:{i}"><span class="mi">{e(x)}</span></div>' for i, x in enumerate(d["layers"])) + "</div>"
+    body = (f'<section class="phead"><span class="mi">{e(s["eyebrow"])}</span><h1 class="mega">{e(s["h1a"])}<span style="display:block;color:var(--tg)">{e(s["h1b"])}</span></h1><p class="lead">{e(s["intro"])}</p>{flow}</section><hr class="spl">'
+            + sec(1, a["h"], f'<div class="split"><div class="a"><p class="lead" style="margin-bottom:30px">{e(a["p"])}</p>{rows(a["rows"])}</div><div class="b"><figure class="lmedia" data-light><img src="/assets/{e(a["img"])}" alt="Paper fibre, macro" loading="lazy" data-par></figure></div></div>', True)
+            + sec(2, b["h"], f'<p class="lead" style="color:var(--ink);max-width:54ch;font-size:clamp(20px,2.2vw,30px)">{e(b["p"])}</p><p class="mi" style="margin-top:22px">{e(b["note"])}</p>')
+            + sec(3, c["h"], rows(c["rows"]), True)
+            + sec(4, d["h"], f'<div class="split"><div class="a">{stack}</div><div class="b"><p class="lead" style="color:var(--ink);margin-bottom:18px">{e(d["p"])}</p><p class="lead">{e(d["p2"])}</p></div></div>')
+            + sec(5, f["h"], f'<div class="mflow big">{"".join(f"""<span>{e(x)}</span>""" + ("<i></i>" if i < 2 else "") for i, x in enumerate(f["steps"]))}</div><p class="lead" style="margin-top:34px;max-width:60ch">{e(f["p"])}</p>', True)
+            + sec(6, g["h"], f'<div class="net"><div class="txt"><span class="mi">{e(g["place"])}</span><p class="lead" style="color:var(--ink)">{e(g["p"])}</p></div>{net_map(C)}</div>')
+            + f'<section class="sec w"><header class="top"><span class="mi">07 / 07 — {e(r["eyebrow"])}</span><h2 class="h2 rv">{e(r["h"])}</h2><p class="lead">{e(r["p"])}</p></header>'
+              f'<div class="split"><div class="a"><span class="mi"><i class="dot"></i>{e(r["todayH"])}</span><ul class="rows" style="margin-top:14px">{"".join(f"<li>{e(x)}</li>" for x in r["today"])}</ul></div>'
+              f'<div class="b"><span class="mi">{e(r["nextH"])}</span><div class="lrows" style="margin-top:14px">{"".join(f"""<div class="row"><strong>{e(x)}</strong><span class="mi st">{e(y)}</span></div>""" for x, y in r["next"])}</div></div></div></section>'
+            + talk_ml(C, P))
+    return shell_ml(C, P, f"{P}sustainability/", s["meta"], body)
+
+
 def build(launch=False):
     """launch=True (python3 build.py --launch) removes noindex and switches every URL to site.launchUrl."""
     paths = []
@@ -445,7 +469,7 @@ def build(launch=False):
             C["site"]["noindex"] = False; C["site"]["url"] = C["site"]["launchUrl"]
         if lang == DEFAULT:
             C0 = C
-        out = {P: home_ml(C, P), f"{P}technologies/": tech_ml(C, P), f"{P}work/": work_ml(C, P), f"{P}about/": about_ml(C, P),
+        out = {P: home_ml(C, P), f"{P}technologies/": tech_ml(C, P), f"{P}work/": work_ml(C, P), f"{P}about/": about_ml(C, P), f"{P}sustainability/": sustain_ml(C, P),
                f"{P}samples/": form_ml(C, P, "samples", "samples"), f"{P}contact/": form_ml(C, P, "contact", "quote"), f"{P}partners/": form_ml(C, P, "partners", "partner")}
         for n, x in enumerate(C["sectors"]):
             out[f'{P}{x["slug"]}/'] = wine_ml(C, P, x) if x["key"] == "wine" else sector_ml(C, P, x, n + 1)
