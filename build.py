@@ -15,6 +15,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 LANGS = ["it", "en", "fr", "de"]   # every language except English is content/i18n/<lang>.json: a map from the English string to its translation
 LANG_NAMES = {"en": "English", "it": "Italiano", "fr": "Français", "de": "Deutsch"}
 DEFAULT = "en"   # language the content is written in
+XDEF = "it"      # language used as hreflang x-default
 HOME = "it"      # language served at the site root; the others live under /<lang>/
 e = html.escape
 
@@ -71,6 +72,24 @@ LABELS = {
 }
 
 
+PUB = {}   # launch builds: language -> public base URL of that language (set in build())
+
+
+def pub(C, l, rel):
+    """Public URL of a page in language l. Before launch every language lives on this site; at launch a language
+    with its own country domain (site.countryDomains) lives at that domain's root and the rest on the main domain."""
+    if l in PUB:
+        return PUB[l] + rel
+    return C["site"]["url"].rstrip("/") + ("" if l == HOME else "/" + l) + rel
+
+
+def offices(C):
+    """Main address plus the other offices; the office of the root language's country comes first."""
+    s = C["site"]; o = [(s["legalName"], s["address"])] + [(x["name"], x["address"]) for x in s.get("offices", [])]
+    lead = [x for x in s.get("offices", []) if x.get("lang") == HOME]
+    return [(x["name"], x["address"]) for x in lead] + [x for x in o if x[0] not in [y["name"] for y in lead]]
+
+
 def lang_redirect(C):
     """Root-language pages only: on a first visit from outside the site, send a browser set to another language to its own
     version (unknown languages go to English). A language picked by hand is remembered and always respected; crawlers are left alone."""
@@ -91,13 +110,16 @@ def seo_extra(C, P, path, meta):
     s = C["site"]; base = s["url"].rstrip("/"); rel = path[len(P) - 1:]
     alts = ""
     if len(LANGS) > 1:
-        alts = "".join(f'<link rel="alternate" hreflang="{l}" href="{base}{"" if l == HOME else "/" + l}{rel}">' for l in LANGS)
-        alts += f'<link rel="alternate" hreflang="x-default" href="{base}{rel}">'
+        alts = "".join(f'<link rel="alternate" hreflang="{l}" href="{pub(C, l, rel)}">' for l in LANGS)
+        alts += f'<link rel="alternate" hreflang="x-default" href="{pub(C, XDEF, rel)}">'
     org = {"@type": "Organization", "@id": base + "/#organization", "name": s["name"], "legalName": s["legalName"], "url": base + "/",
            "description": s["description"], "foundingDate": s["founded"], "logo": base + "/assets/logo.png",
            "address": {"@type": "PostalAddress", "streetAddress": s["street"], "postalCode": s["postalCode"], "addressLocality": s["locality"],
                        "addressRegion": s["region"], "addressCountry": s["country"]}, "vatID": s["vatID"],
            "areaServed": "Europe", "knowsAbout": [t["title"] for t in C["technologies"]["items"]]}
+    if s.get("offices"):
+        org["location"] = [{"@type": "Place", "name": x["name"], "address": {"@type": "PostalAddress", "streetAddress": x["street"], "postalCode": x["postalCode"],
+                            "addressLocality": x["locality"], "addressCountry": x["country"]}} for x in s["offices"]]
     if s["email"]: org["email"] = s["email"]
     if s["phone"]: org["telephone"] = s["phone"]
     same = [u for u in (s["linkedin"], s["instagram"]) if u]
@@ -108,24 +130,24 @@ def seo_extra(C, P, path, meta):
     else:
         name = meta["title"].split(" | ")[0]
         graph.append({"@type": "BreadcrumbList", "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": C["ui"]["home"], "item": base + P},
-            {"@type": "ListItem", "position": 2, "name": name, "item": base + path}]})
+            {"@type": "ListItem", "position": 1, "name": C["ui"]["home"], "item": pub(C, C["lang"], "/")},
+            {"@type": "ListItem", "position": 2, "name": name, "item": pub(C, C["lang"], rel)}]})
         svc = {x["slug"]: (x["title"] + " labels", x["copy"]) for x in C["sectors"]}
         svc.update({x["slug"]: (x["h1"], x["lead"]) for x in C["landings"]})
         slug = rel.strip("/")
         if slug in svc:
             graph.append({"@type": "Service", "name": svc[slug][0], "description": svc[slug][1], "serviceType": "Self-adhesive label printing and finishing",
-                          "provider": {"@id": org["@id"]}, "areaServed": "Europe", "url": base + path})
+                          "provider": {"@id": org["@id"]}, "areaServed": "Europe", "url": pub(C, C["lang"], rel)})
     return alts + '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False) + "</script>"
 
 
 # ---------------------------------------------------------------- MATERIAL INTELLIGENCE design system
 def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
-    s, ui = C["site"], C["ui"]; url = s["url"].rstrip("/") + path
+    s, ui = C["site"], C["ui"]; url = pub(C, C["lang"], path[len(P) - 1:]) if path.endswith("/") else s["url"].rstrip("/") + path
     ui = dict(ui, sustain=C["sustainability"]["nav"])
     nav = "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("sustain", f"{P}sustainability/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
     contact = "".join(f"<li>{x}</li>" for x in (
-        e(s["address"]), f'{e(ui["vat"])} {e(s["vatID"][2:] if C["lang"] == "it" else s["vatID"])}', f'<a href="mailto:{e(s["email"])}">{e(s["email"])}</a>' if s["email"] else "", f'<a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a>' if s["phone"] else "",
+        *[(f'{e(n)}<br>' if i or n != s["legalName"] else "") + e(a) for i, (n, a) in enumerate(offices(C))], f'{e(ui["vat"])} {e(s["vatID"][2:] if C["lang"] == "it" else s["vatID"])}', f'<a href="mailto:{e(s["email"])}">{e(s["email"])}</a>' if s["email"] else "", f'<a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a>' if s["phone"] else "",
         f'<a href="{e(s["linkedin"])}" rel="noopener">LinkedIn</a>' if s["linkedin"] else "", f'<a href="{e(s["instagram"])}" rel="noopener">Instagram</a>' if s["instagram"] else "") if x)
     secs = "".join(f'<li><a href="{P}{x["slug"]}/">{e(x["title"])}</a></li>' for x in C["sectors"])
     return f'''<!doctype html>
@@ -458,7 +480,7 @@ def form_ml(C, P, key, topic):
             f'<label>{e(f["sector"])}<select id="f-sector" name="sector">{secs}</select></label><label>{e(f["topic"])}<select id="f-topic" name="request_type">{opts}</select></label>'
             f'<label class="full">{e(f["message"])}<textarea id="f-message" name="message" required></textarea></label>{hidden}'
             f'<div class="full"><button class="cta pill" type="submit">{e(ui["send"])} ↗</button></div><p class="form-msg mi" hidden></p></form>')
-    direct = f'<div class="direct"><span class="mi">{e(s["legalName"])}</span><p>{e(s["address"])}</p><p><a href="mailto:{e(s["email"])}">{e(s["email"])}</a></p><p><a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a></p></div>'
+    direct = f'<div class="direct"><span class="mi">{e(s["legalName"])}</span>{"".join(f"<p>{e(n) + '<br>' if n != s['legalName'] else ''}{e(a)}</p>" for n, a in offices(C))}<p><a href="mailto:{e(s["email"])}">{e(s["email"])}</a></p><p><a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a></p></div>'
     return shell_ml(C, P, f"{P}{key}/", p["meta"], phead(ui["contact"], p["h1"], p["lead"], mega=False) + f'<hr class="spl"><section class="sec w"><div class="split"><div class="a">{form}</div><div class="b">{direct}</div></div></section>')
 
 
@@ -513,7 +535,10 @@ def build(launch=False):
         if launch:
             if not C["site"]["launchUrl"]:
                 raise SystemExit("Set site.launchUrl in content/en.json before a launch build.")
-            C["site"]["noindex"] = False; C["site"]["url"] = C["site"]["launchUrl"]
+            cd = C["site"].get("countryDomains", {}); main = C["site"]["launchUrl"].rstrip("/")
+            for l in LANGS:
+                PUB[l] = cd[l].rstrip("/") if l in cd else main + ("" if l == C["site"]["mainLang"] else "/" + l)
+            C["site"]["noindex"] = False; C["site"]["url"] = PUB[HOME] if HOME in cd or HOME == C["site"]["mainLang"] else main
         if lang == HOME:
             C0 = C
         out = {P: home_ml(C, P), f"{P}technologies/": tech_ml(C, P), f"{P}work/": work_ml(C, P), f"{P}about/": about_ml(C, P), f"{P}sustainability/": sustain_ml(C, P), f"{P}privacy/": legal_ml(C, P, "privacy"), f"{P}cookies/": legal_ml(C, P, "cookies"),
@@ -527,10 +552,10 @@ def build(launch=False):
         site = C["site"]["url"].rstrip("/")
     wr("assets/film.css", rd("src/film.css")); wr("assets/film.js", rd("src/film.js"))
     rels = [p for p in paths if not any(p.startswith(f"/{l}/") for l in LANGS if l != HOME)]
-    loc = lambda l, r: f'{site}{"" if l == HOME else "/" + l}{r}'
+    loc = lambda l, r: pub(C0, l, r)
     wr("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "".join(
-        f"  <url><loc>{loc(l, r)}</loc>" + "".join(f'<xhtml:link rel="alternate" hreflang="{a}" href="{loc(a, r)}"/>' for a in LANGS) + f'<xhtml:link rel="alternate" hreflang="x-default" href="{loc(HOME, r)}"/></url>\n'
-        for r in rels for l in LANGS) + "</urlset>\n")
+        f"  <url><loc>{loc(l, r)}</loc>" + "".join(f'<xhtml:link rel="alternate" hreflang="{a}" href="{loc(a, r)}"/>' for a in LANGS) + f'<xhtml:link rel="alternate" hreflang="x-default" href="{loc(XDEF, r)}"/></url>\n'
+        for r in rels for l in LANGS if loc(l, r).startswith(site + "/")) + "</urlset>\n")
     bots = "User-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\n"
     if C0["site"]["blockAiTraining"]:
         bots += "User-agent: GPTBot\nDisallow: /\n\n"
@@ -546,4 +571,5 @@ if __name__ == "__main__":
     for a in sys.argv:
         if a.startswith("--home=") and a[7:] in LANGS:
             HOME = a[7:]; LANGS.remove(HOME); LANGS.insert(0, HOME)
+    XDEF = HOME if "--launch" not in sys.argv else json.loads(rd("content/en.json"))["site"]["mainLang"]
     build(launch="--launch" in sys.argv)
