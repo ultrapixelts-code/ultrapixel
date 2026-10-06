@@ -597,11 +597,15 @@
       "shots": [
         [
           "L-01",
-          "Premium label, foil and relief in raking light"
+          "Premium label, foil and relief in raking light",
+          "c-register.webp",
+          "Illustrative concept"
         ],
         [
           "L-02",
-          "Textured paper, macro"
+          "Textured paper, macro",
+          "c-paper.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -673,11 +677,15 @@
       "shots": [
         [
           "L-03",
-          "Gold foil on black, raking light"
+          "Gold foil on black, raking light",
+          "c-dark-foil.webp",
+          "Illustrative concept"
         ],
         [
           "L-04",
-          "Foil raised with emboss, macro"
+          "Foil raised with emboss, macro",
+          "c-emboss.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -746,11 +754,15 @@
       "shots": [
         [
           "L-05",
-          "High-build varnish on a dark ground, macro"
+          "High-build varnish on a dark ground, macro",
+          "c-screen.webp",
+          "Illustrative concept"
         ],
         [
           "L-06",
-          "Gloss against matt"
+          "Gloss against matt",
+          "c-cos-foil.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -821,11 +833,15 @@
       "shots": [
         [
           "L-07",
-          "Blind emboss on white textured paper"
+          "Blind emboss on white textured paper",
+          "c-loose-labels.webp",
+          "Illustrative concept"
         ],
         [
           "L-08",
-          "Microtexture, macro"
+          "Microtexture, macro",
+          "c-texture.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -903,11 +919,15 @@
       "shots": [
         [
           "L-09",
-          "Numbered edition, bottles in a row"
+          "Numbered edition, bottles in a row",
+          "c-numbered.webp",
+          "Illustrative concept"
         ],
         [
           "L-10",
-          "Numbering detail, macro"
+          "Numbering detail, macro",
+          "c-number-macro.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -925,7 +945,7 @@
         ]
       ],
       "cta": "quote",
-      "macro": "c-roll-macro.webp",
+      "macro": "c-number-macro.webp",
       "meta": {
         "title": "Short-run and limited-edition wine labels | UltraPixel",
         "description": "Short-run premium wine labels printed digitally with numbering, versions, foil and embossing. Made in Italy, delivered across Europe."
@@ -976,11 +996,15 @@
       "shots": [
         [
           "L-11",
-          "Bottle with condensation"
+          "Bottle with condensation",
+          "c-food-oil.webp",
+          "Illustrative concept"
         ],
         [
           "L-12",
-          "Bottle in an ice bucket, label intact"
+          "Bottle in an ice bucket, label intact",
+          "c-icebucket.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -1054,11 +1078,15 @@
       "shots": [
         [
           "L-13",
-          "Spirits label with foil and screen"
+          "Spirits label with foil and screen",
+          "c-dark-foil.webp",
+          "Illustrative concept"
         ],
         [
           "L-14",
-          "Tactile varnish on a dark label"
+          "Tactile varnish on a dark label",
+          "c-tactile.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -1133,11 +1161,15 @@
       "shots": [
         [
           "L-15",
-          "Opaque white on clear film, macro"
+          "Opaque white on clear film, macro",
+          "c-cos-white.webp",
+          "Illustrative concept"
         ],
         [
           "L-16",
-          "Clear label on a glass bottle"
+          "Clear label on a glass bottle",
+          "c-cos-clear.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -1205,11 +1237,15 @@
       "shots": [
         [
           "L-17",
-          "Range of supplement jars"
+          "Range of supplement jars",
+          "c-ph-range.webp",
+          "Illustrative concept"
         ],
         [
           "L-18",
-          "Fine text, macro"
+          "Fine text, macro",
+          "c-finetext.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -1227,7 +1263,7 @@
         ]
       ],
       "cta": "quote",
-      "macro": "c-supplement.webp",
+      "macro": "c-finetext.webp",
       "meta": {
         "title": "Labels for supplements and nutraceuticals | UltraPixel",
         "description": "Supplement and nutraceutical labels with readable fine text, variable data, many references and multilayer options. Made in Italy."
@@ -1279,11 +1315,15 @@
       "shots": [
         [
           "L-19",
-          "Chilled pack with condensation"
+          "Chilled pack with condensation",
+          "c-food-juice.webp",
+          "Illustrative concept"
         ],
         [
           "L-20",
-          "Label on an oil bottle"
+          "Label on an oil bottle",
+          "c-food-oil.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -1350,11 +1390,15 @@
       "shots": [
         [
           "L-21",
-          "Numbering, macro"
+          "Numbering, macro",
+          "c-serial.webp",
+          "Illustrative concept"
         ],
         [
           "L-22",
-          "QR code on a technical label"
+          "QR code on a technical label",
+          "c-ind-plate.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -1372,7 +1416,7 @@
         ]
       ],
       "cta": "quote",
-      "macro": "c-ind-plate.webp",
+      "macro": "c-serial.webp",
       "meta": {
         "title": "Variable-data labels: codes, numbering and QR | UltraPixel",
         "description": "Variable-data labels with sequential numbering, QR codes, batches and serials printed in the same pass as the artwork."
@@ -1419,11 +1463,15 @@
       "shots": [
         [
           "L-23",
-          "Multilayer label closed"
+          "Multilayer label closed",
+          "c-ml-closed.webp",
+          "Illustrative concept"
         ],
         [
           "L-24",
-          "Multilayer label open"
+          "Multilayer label open",
+          "c-ml-open.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -1441,7 +1489,7 @@
         ]
       ],
       "cta": "quote",
-      "macro": "",
+      "macro": "c-ml-chem.webp",
       "meta": {
         "title": "Multilayer and booklet labels | UltraPixel",
         "description": "Multilayer and booklet labels that open, read and close again, for long texts and several languages on a small footprint."
@@ -1499,11 +1547,15 @@
       "shots": [
         [
           "L-25",
-          "Production floor"
+          "Production floor",
+          "c-press-rolls.webp",
+          "Illustrative concept"
         ],
         [
           "L-26",
-          "Finished rolls"
+          "Finished rolls",
+          "c-rolls.webp",
+          "Illustrative concept"
         ]
       ],
       "links": [
@@ -1959,6 +2011,105 @@
           "Spectral measurement"
         ],
         "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-numbered.webp",
+        "sector": "Wine",
+        "title": "Numbered limited edition",
+        "finishes": [
+          "Numbering",
+          "Hot foil"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-number-macro.webp",
+        "sector": "Wine",
+        "title": "Numbering, macro",
+        "finishes": [
+          "Numbering",
+          "Hot foil",
+          "Embossing"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-shaped-roll.webp",
+        "sector": "Wine",
+        "title": "Shaped label on the roll",
+        "finishes": [
+          "Shaped die-cut",
+          "Hot foil"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-dropper.webp",
+        "sector": "Cosmetics",
+        "title": "Label on a small dropper",
+        "finishes": [
+          "Hot foil",
+          "Textured paper"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ml-open.webp",
+        "sector": "Nutraceutical",
+        "title": "Multilayer label, open",
+        "finishes": [
+          "Multilayer"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ml-closed.webp",
+        "sector": "Nutraceutical",
+        "title": "Multilayer label, closed",
+        "finishes": [
+          "Multilayer"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-finetext.webp",
+        "sector": "Nutraceutical",
+        "title": "Fine text, macro",
+        "finishes": [
+          "Digital print",
+          "Foil detail"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ml-pharma.webp",
+        "sector": "Pharma",
+        "title": "Multilayer label",
+        "finishes": [
+          "Multilayer",
+          "Variable data"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-ml-chem.webp",
+        "sector": "Industrial",
+        "title": "Multilayer hazard label",
+        "finishes": [
+          "Multilayer",
+          "QR code"
+        ],
+        "badge": "Illustrative concept"
+      },
+      {
+        "image": "c-serial.webp",
+        "sector": "Industrial",
+        "title": "Serial number and barcode",
+        "finishes": [
+          "Variable data",
+          "Numbering"
+        ],
+        "badge": "Illustrative concept"
       }
     ],
     "showcase": {
@@ -2152,8 +2303,8 @@
           "shot": "W-06",
           "title": "Shaped die-cutting",
           "text": "Profiles that follow the design: points, curves and recesses.",
-          "fx": "cut",
-          "macro": ""
+          "fx": "",
+          "macro": "c-shaped-roll.webp"
         },
         {
           "shot": "W-07",
@@ -2196,7 +2347,7 @@
         ]
       ],
       "shot": "W-09",
-      "image": "c-range.webp",
+      "image": "c-numbered.webp",
       "note": "Illustrative concept"
     },
     "process": {
@@ -2404,7 +2555,9 @@
         ],
         [
           "C-06",
-          "Label on a small-diameter dropper"
+          "Label on a small-diameter dropper",
+          "c-dropper.webp",
+          "Illustrative concept"
         ]
       ],
       "heroImg": "c-cos-clear.webp"
@@ -2635,7 +2788,9 @@
         ],
         [
           "I-06",
-          "Multilayer label, closed and open"
+          "Multilayer label, closed and open",
+          "c-ml-chem.webp",
+          "Illustrative concept"
         ]
       ],
       "heroImg": "c-ind-canister.webp"
@@ -2731,7 +2886,9 @@
         ],
         [
           "P-03",
-          "Multilayer label, closed and open"
+          "Multilayer label, closed and open",
+          "c-ml-pharma.webp",
+          "Illustrative concept"
         ],
         [
           "P-04",
