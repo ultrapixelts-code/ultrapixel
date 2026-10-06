@@ -106,7 +106,8 @@ def seo_extra(C, P, path, meta):
 # ---------------------------------------------------------------- MATERIAL INTELLIGENCE design system
 def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
     s, ui = C["site"], C["ui"]; url = s["url"].rstrip("/") + path
-    nav = "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
+    ui = dict(ui, sustain=C["sustainability"]["nav"])
+    nav = "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("sustain", f"{P}sustainability/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
     contact = "".join(f"<li>{x}</li>" for x in (
         e(s["address"]), f'<a href="mailto:{e(s["email"])}">{e(s["email"])}</a>' if s["email"] else "", f'<a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a>' if s["phone"] else "",
         f'<a href="{e(s["linkedin"])}" rel="noopener">LinkedIn</a>' if s["linkedin"] else "", f'<a href="{e(s["instagram"])}" rel="noopener">Instagram</a>' if s["instagram"] else "") if x)
