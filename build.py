@@ -542,4 +542,8 @@ def build(launch=False):
 
 if __name__ == "__main__":
     import sys
+    # --home=fr serves another language at the root (e.g. for a country domain); the languages keep the same folders otherwise
+    for a in sys.argv:
+        if a.startswith("--home=") and a[7:] in LANGS:
+            HOME = a[7:]; LANGS.remove(HOME); LANGS.insert(0, HOME)
     build(launch="--launch" in sys.argv)
