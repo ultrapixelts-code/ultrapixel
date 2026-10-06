@@ -276,7 +276,9 @@ def frame(C, code, caption, image="", note=""):
 def wine_ml(C, P, x):
     w, ui = C["wine"], C["ui"]; he = w["hero"]
     sq = x["title"].replace("&", "%26").replace(" ", "+")
-    hero = (f'<section class="whero"><div class="float" id="float"><div class="tilt"><img src="/assets/final.webp" alt="UltraPixel wine label" width="1120" height="1402"><div class="gl"></div></div></div>'
+    fl = (f'<div class="wphoto" data-light><img src="/assets/{e(he["image"])}" alt="Wine and spirits bottles with textured, foiled labels" width="1800" height="1200" data-par></div>' if he.get("image")
+          else '<div class="float" id="float"><div class="tilt"><img src="/assets/final.webp" alt="UltraPixel wine label" width="1120" height="1402"><div class="gl"></div></div></div>')
+    hero = (f'<section class="whero{" ph" if he.get("image") else ""}">{fl}'
             f'<div class="say"><span class="mi">{e(he["sector"])}</span><h1><span class="xl">{e(he["xl"])}</span><span class="sub">{e(he["subh"])}</span></h1><p class="lead">{e(he["lead"])}</p>'
             f'<div class="ctas"><a class="cta pill" href="{P}samples/?sector={sq}">{e(he["cta1"])} ↗</a><a class="cta pill ghost" href="{P}contact/?topic=quote&sector={sq}">{e(he["cta2"])} ↗</a></div></div>'
             f'<div class="meta"><span class="mi">{e(he["system"])}</span><span class="mi dim">{e(ui["conceptLabel"])}</span></div></section>')

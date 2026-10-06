@@ -1652,6 +1652,17 @@
         "badge": ""
       },
       {
+        "image": "c-wine-hero.webp",
+        "sector": "Wine",
+        "title": "Wine and spirits, one family of papers",
+        "finishes": [
+          "Textured paper",
+          "Hot foil",
+          "Embossing"
+        ],
+        "badge": ""
+      },
+      {
         "image": "c-cos-white.webp",
         "sector": "Cosmetics",
         "title": "No-label look, opaque white",
@@ -2247,7 +2258,8 @@
       "xl": "Wine & Spirits",
       "subh": "labels made to be picked up.",
       "sector": "Sector / 01",
-      "system": "Premium label systems"
+      "system": "Premium label systems",
+      "image": "c-wine-hero.webp"
     },
     "for": {
       "eyebrow": "Who we work with",
