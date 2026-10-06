@@ -43,8 +43,8 @@
     "formNotConnected": "This form is not connected yet. Please contact us directly.",
     "formSent": "Thank you. Your request has been sent.",
     "formError": "Something went wrong. Please try again or contact us directly.",
-    "illustrative": "Illustrative concept",
-    "conceptLabel": "Concept label",
+    "illustrative": "",
+    "conceptLabel": "",
     "home": "Home",
     "notFound": "This page does not exist.",
     "backHome": "Back to the homepage",
@@ -60,7 +60,7 @@
     "capability": "What we do",
     "related": "Related",
     "answer": "In short",
-    "concept": "Illustrative concept",
+    "concept": "",
     "photo": "Photo to come",
     "sector": "Sector",
     "labtitle": "Material Lab"
@@ -277,7 +277,7 @@
     ],
     "lab": {
       "eyebrow": "UltraPixel Material Lab",
-      "macro": "Illustrative concept",
+      "macro": "",
       "data": "Generated sample",
       "groups": [
         [
@@ -599,13 +599,13 @@
           "L-01",
           "Premium label, foil and relief in raking light",
           "c-register.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-02",
           "Textured paper, macro",
           "c-paper.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -679,13 +679,13 @@
           "L-03",
           "Gold foil on black, raking light",
           "c-dark-foil.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-04",
           "Foil raised with emboss, macro",
           "c-emboss.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -756,13 +756,13 @@
           "L-05",
           "High-build varnish on a dark ground, macro",
           "c-screen.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-06",
           "Gloss against matt",
           "c-cos-foil.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -835,13 +835,13 @@
           "L-07",
           "Blind emboss on white textured paper",
           "c-loose-labels.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-08",
           "Microtexture, macro",
           "c-texture.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -921,13 +921,13 @@
           "L-09",
           "Numbered edition, bottles in a row",
           "c-numbered.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-10",
           "Numbering detail, macro",
           "c-number-macro.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -998,13 +998,13 @@
           "L-11",
           "Bottle with condensation",
           "c-food-oil.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-12",
           "Bottle in an ice bucket, label intact",
           "c-icebucket.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -1080,13 +1080,13 @@
           "L-13",
           "Spirits label with foil and screen",
           "c-dark-foil.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-14",
           "Tactile varnish on a dark label",
           "c-tactile.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -1163,13 +1163,13 @@
           "L-15",
           "Opaque white on clear film, macro",
           "c-cos-white.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-16",
           "Clear label on a glass bottle",
           "c-cos-clear.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -1239,13 +1239,13 @@
           "L-17",
           "Range of supplement jars",
           "c-ph-range.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-18",
           "Fine text, macro",
           "c-finetext.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -1317,13 +1317,13 @@
           "L-19",
           "Chilled pack with condensation",
           "c-food-juice.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-20",
           "Label on an oil bottle",
           "c-food-oil.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -1392,13 +1392,13 @@
           "L-21",
           "Numbering, macro",
           "c-serial.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-22",
           "QR code on a technical label",
           "c-ind-plate.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -1465,13 +1465,13 @@
           "L-23",
           "Multilayer label closed",
           "c-ml-closed.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-24",
           "Multilayer label open",
           "c-ml-open.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -1549,13 +1549,13 @@
           "L-25",
           "Production floor",
           "c-press-rolls.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "L-26",
           "Finished rolls",
           "c-rolls.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "links": [
@@ -1597,7 +1597,7 @@
           "Hot foil",
           "Textured paper"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-cos-foil.webp",
@@ -1607,7 +1607,7 @@
           "Hot foil",
           "Embossing"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-food-jar.webp",
@@ -1617,7 +1617,7 @@
           "Digital print",
           "Textured paper"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ind-plate.webp",
@@ -1628,7 +1628,7 @@
           "QR code",
           "Serial number"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ph-vialbox.webp",
@@ -1638,7 +1638,7 @@
           "Variable data",
           "Fine text"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-tactile.webp",
@@ -1649,7 +1649,7 @@
           "Hot foil",
           "Tactile varnish"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-cos-white.webp",
@@ -1659,7 +1659,7 @@
           "Transparent film",
           "Opaque white"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-emboss.webp",
@@ -1669,7 +1669,7 @@
           "Embossing",
           "Hot foil"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-screen.webp",
@@ -1680,7 +1680,7 @@
           "Screen printing",
           "High-build varnish"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-register.webp",
@@ -1691,7 +1691,7 @@
           "Embossing",
           "Digital print"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-texture.webp",
@@ -1702,7 +1702,7 @@
           "Embossing",
           "Foil dots"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-paper.webp",
@@ -1712,7 +1712,7 @@
           "Natural paper",
           "Digital print"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-diecut.webp",
@@ -1722,7 +1722,7 @@
           "Shaped die-cut",
           "Hot foil"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-bottle-scene.webp",
@@ -1733,7 +1733,7 @@
           "Hot foil",
           "Embossing"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-bottle-sparkling.webp",
@@ -1744,7 +1744,7 @@
           "Hot foil",
           "Embossing"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-bottle-chateau.webp",
@@ -1754,7 +1754,7 @@
           "Digital print",
           "Hot foil"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-cos-clear.webp",
@@ -1764,7 +1764,7 @@
           "Transparent film",
           "Foil detail"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-cos-set.webp",
@@ -1774,7 +1774,7 @@
           "Foil",
           "Fine line work"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-supplement.webp",
@@ -1784,7 +1784,7 @@
           "Digital print",
           "Fine text"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-icebucket.webp",
@@ -1794,7 +1794,7 @@
           "Material for chilled bottles",
           "Hot foil"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-dark-foil.webp",
@@ -1804,7 +1804,7 @@
           "Hot foil",
           "Textured black"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-range.webp",
@@ -1814,7 +1814,7 @@
           "Digital print",
           "Versions"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-capsule-set.webp",
@@ -1824,7 +1824,7 @@
           "Hot foil",
           "Textured paper"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-loose-labels.webp",
@@ -1835,7 +1835,7 @@
           "Hot foil",
           "Shaped die-cut"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-food-oil.webp",
@@ -1845,7 +1845,7 @@
           "Hot foil",
           "Gloss varnish"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-food-jams.webp",
@@ -1855,7 +1855,7 @@
           "Digital print",
           "Versions"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-food-juice.webp",
@@ -1864,7 +1864,7 @@
         "finishes": [
           "Material for cold and humidity"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-food-pasta.webp",
@@ -1873,7 +1873,7 @@
         "finishes": [
           "Digital print"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ind-ghs.webp",
@@ -1883,7 +1883,7 @@
           "Fine text",
           "Variable data"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ind-canister.webp",
@@ -1892,7 +1892,7 @@
         "finishes": [
           "Technical film"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ind-adhesion.webp",
@@ -1902,7 +1902,7 @@
           "Technical material",
           "Adhesive"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ind-pail.webp",
@@ -1912,7 +1912,7 @@
           "Technical film",
           "Batch data"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-collage.webp",
@@ -1924,7 +1924,7 @@
           "Foil",
           "Relief"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ph-vial.webp",
@@ -1934,7 +1934,7 @@
           "Digital print",
           "Variable data"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ph-supplement.webp",
@@ -1943,7 +1943,7 @@
         "finishes": [
           "Digital print"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ph-range.webp",
@@ -1953,7 +1953,7 @@
           "Digital print",
           "Versions"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-rolls.webp",
@@ -1963,7 +1963,7 @@
           "Shaped die-cut",
           "Hot foil"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-roll-macro.webp",
@@ -1973,7 +1973,7 @@
           "Hot foil",
           "Embossing"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-press-rolls.webp",
@@ -1983,7 +1983,7 @@
           "Digital print",
           "Hot foil"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-foil-unit.webp",
@@ -1992,7 +1992,7 @@
         "finishes": [
           "Hot foil"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-press-line.webp",
@@ -2001,7 +2001,7 @@
         "finishes": [
           "Digital print"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-spectro.webp",
@@ -2010,7 +2010,7 @@
         "finishes": [
           "Spectral measurement"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-numbered.webp",
@@ -2020,7 +2020,7 @@
           "Numbering",
           "Hot foil"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-number-macro.webp",
@@ -2031,7 +2031,7 @@
           "Hot foil",
           "Embossing"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-shaped-roll.webp",
@@ -2041,7 +2041,7 @@
           "Shaped die-cut",
           "Hot foil"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-dropper.webp",
@@ -2051,7 +2051,7 @@
           "Hot foil",
           "Textured paper"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ml-open.webp",
@@ -2060,7 +2060,7 @@
         "finishes": [
           "Multilayer"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ml-closed.webp",
@@ -2069,7 +2069,7 @@
         "finishes": [
           "Multilayer"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-finetext.webp",
@@ -2079,7 +2079,7 @@
           "Digital print",
           "Foil detail"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ml-pharma.webp",
@@ -2089,7 +2089,7 @@
           "Multilayer",
           "Variable data"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-ml-chem.webp",
@@ -2099,7 +2099,7 @@
           "Multilayer",
           "QR code"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       },
       {
         "image": "c-serial.webp",
@@ -2109,12 +2109,12 @@
           "Variable data",
           "Numbering"
         ],
-        "badge": "Illustrative concept"
+        "badge": ""
       }
     ],
     "showcase": {
       "h2": "Technology showcase",
-      "tag": "Concept label",
+      "tag": "Showcase",
       "title": "UltraPixel Cuvée Prestige",
       "image": "macro-3.webp",
       "rows": [
@@ -2151,19 +2151,19 @@
       "image": "c-tactile.webp",
       "caption": "Relief you can feel",
       "url": "",
-      "badge": "Illustrative concept"
+      "badge": ""
     },
     {
       "image": "c-collage.webp",
       "caption": "Labels across sectors",
       "url": "",
-      "badge": "Illustrative concept"
+      "badge": ""
     },
     {
       "image": "c-roll-macro.webp",
       "caption": "Foil on the roll",
       "url": "",
-      "badge": "Illustrative concept"
+      "badge": ""
     }
   ],
   "pages": {
@@ -2327,7 +2327,7 @@
       ],
       "shot": "W-08",
       "image": "c-icebucket.webp",
-      "note": "Illustrative concept"
+      "note": ""
     },
     "runs": {
       "eyebrow": "Editions",
@@ -2348,7 +2348,7 @@
       ],
       "shot": "W-09",
       "image": "c-numbered.webp",
-      "note": "Illustrative concept"
+      "note": ""
     },
     "process": {
       "eyebrow": "How it works",
@@ -2380,37 +2380,37 @@
           "W-10",
           "Textured label, foil and relief",
           "c-bottle-scene.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "W-11",
           "Bottle in an ice bucket, light condensation",
           "c-icebucket.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "W-12",
           "Dark bottle with foil highlights",
           "c-dark-foil.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "W-13",
           "A range of coordinated labels",
           "c-range.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "W-14",
           "Capsule, bottle and label together",
           "c-capsule-set.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "W-15",
           "Loose labels on the table",
           "c-loose-labels.webp",
-          "Illustrative concept"
+          ""
         ]
       ]
     },
@@ -2442,7 +2442,7 @@
       ]
     },
     "slot": "Photo to come",
-    "macroNote": "Illustrative concept"
+    "macroNote": ""
   },
   "sectorPages": {
     "cosmetic": {
@@ -2527,37 +2527,37 @@
           "C-01",
           "Premium bottle with a clear label",
           "c-cos-clear.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "C-02",
           "No-label look, opaque white on clear",
           "c-cos-white.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "C-03",
           "Foil on a cosmetic label",
           "c-cos-foil.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "C-04",
           "Bottle and box, a coordinated set",
           "c-cos-set.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "C-05",
           "Supplement label, clean and technical",
           "c-supplement.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "C-06",
           "Label on a small-diameter dropper",
           "c-dropper.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "heroImg": "c-cos-clear.webp"
@@ -2643,37 +2643,37 @@
           "F-01",
           "Jar label on textured paper",
           "c-food-jar.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "F-02",
           "Label with condensation, foil detail",
           "c-food-oil.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "F-03",
           "Label on a flexible pack",
           "c-food-pasta.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "F-04",
           "Chilled bottle on ice",
           "c-food-juice.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "F-05",
           "A range of versions",
           "c-food-jams.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "F-06",
           "Finished rolls",
           "c-rolls.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "heroImg": "c-food-jar.webp"
@@ -2760,37 +2760,37 @@
           "I-01",
           "Label on a plastic canister",
           "c-ind-canister.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "I-02",
           "Hazard and technical data label on metal",
           "c-ind-ghs.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "I-03",
           "Identification label with QR and serial",
           "c-ind-plate.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "I-04",
           "Adhesion on brushed metal, macro",
           "c-ind-adhesion.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "I-05",
           "Label on a steel pail",
           "c-ind-pail.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "I-06",
           "Multilayer label, closed and open",
           "c-ml-chem.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "heroImg": "c-ind-canister.webp"
@@ -2876,37 +2876,37 @@
           "P-01",
           "Fine text on a small container",
           "c-ph-vial.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "P-02",
           "Variable data and codes",
           "c-ph-vialbox.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "P-03",
           "Multilayer label, closed and open",
           "c-ml-pharma.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "P-04",
           "Container and carton, one range",
           "c-ph-range.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "P-05",
           "Colour measurement",
           "c-spectro.webp",
-          "Illustrative concept"
+          ""
         ],
         [
           "P-06",
           "Finished rolls",
           "c-rolls.webp",
-          "Illustrative concept"
+          ""
         ]
       ],
       "heroImg": "c-ph-supplement.webp"

@@ -234,7 +234,7 @@ def home_ml(C, P):
     body = f'''{film}
 <hr class="spl">
 <section class="sec w">{top(an["eyebrow"], an["h2"], an["p"])}
- <div class="anat" id="anat"><figure><img src="/assets/final.webp" alt="UltraPixel concept label with numbered callouts" loading="lazy" width="1120" height="1402">{pins}</figure><ol>{lis}</ol></div>
+ <div class="anat" id="anat"><figure><img src="/assets/final.webp" alt="UltraPixel label with numbered callouts" loading="lazy" width="1120" height="1402">{pins}</figure><ol>{lis}</ol></div>
 </section>
 <hr class="spl">
 <section class="sec" id="sectors">{top(h["sectors"]["eyebrow"], h["sectors"]["h2"], h["sectors"]["p"])}{scenes}</section>
@@ -276,14 +276,14 @@ def frame(C, code, caption, image="", note=""):
 def wine_ml(C, P, x):
     w, ui = C["wine"], C["ui"]; he = w["hero"]
     sq = x["title"].replace("&", "%26").replace(" ", "+")
-    hero = (f'<section class="whero"><div class="float" id="float"><div class="tilt"><img src="/assets/final.webp" alt="UltraPixel concept wine label" width="1120" height="1402"><div class="gl"></div></div></div>'
+    hero = (f'<section class="whero"><div class="float" id="float"><div class="tilt"><img src="/assets/final.webp" alt="UltraPixel wine label" width="1120" height="1402"><div class="gl"></div></div></div>'
             f'<div class="say"><span class="mi">{e(he["sector"])}</span><h1><span class="xl">{e(he["xl"])}</span><span class="sub">{e(he["subh"])}</span></h1><p class="lead">{e(he["lead"])}</p>'
             f'<div class="ctas"><a class="cta pill" href="{P}samples/?sector={sq}">{e(he["cta1"])} ↗</a><a class="cta pill ghost" href="{P}contact/?topic=quote&sector={sq}">{e(he["cta2"])} ↗</a></div></div>'
             f'<div class="meta"><span class="mi">{e(he["system"])}</span><span class="mi dim">{e(ui["conceptLabel"])}</span></div></section>')
     who = "".join(f'<div><h3 class="rv">{e(a)}</h3><p>{e(b)}</p></div>' for a, b in w["for"]["items"])
     scenes = ""
     for i, it in enumerate(w["finish"]["items"]):
-        real = it.get("image", ""); note = "" if real else f'<span class="mi">{e(w["macroNote"])} · {e(w["slot"])}</span>'
+        real = it.get("image", ""); note = ""
         codes = f'<div class="codes"><span class="mi">{e(it["shot"])}</span>{note}</div>'
         ov = f'<div class="ov"><span class="mi">Material {i+1:02d} / {len(w["finish"]["items"]):02d}</span><h2 class="rv">{e(it["title"])}</h2><p>{e(it["text"])}</p></div>'
         if it["fx"] == "cut" and not real:
@@ -354,7 +354,7 @@ def sector_ml(C, P, x, n):
 
 def landing_ml(C, P, x):
     ui = C["ui"]; sec = next(s for s in C["sectors"] if s["key"] == x["sector"])
-    media = (f'<figure class="lmedia" data-light><img src="/assets/{e(x["macro"])}" alt="" loading="lazy" width="1400" height="1050" data-par><figcaption class="mi">{e(ui["concept"])} · {e(ui["photo"])} {e(x["shots"][0][0])}</figcaption></figure>'
+    media = (f'<figure class="lmedia" data-light><img src="/assets/{e(x["macro"])}" alt="" loading="lazy" width="1400" height="1050" data-par></figure>'
              if x["macro"] else frame(C, x["shots"][0][0], x["shots"][0][1]))
     cta = (f'<a class="cta pill" href="{P}samples/">{e(ui["requestSamples"])} ↗</a><a class="cta pill ghost" href="{P}contact/?topic=quote">{e(ui["requestQuote"])} ↗</a>' if x["cta"] == "samples"
            else f'<a class="cta pill" href="{P}contact/?topic=quote">{e(ui["requestQuote"])} ↗</a><a class="cta pill ghost" href="{P}samples/">{e(ui["requestSamples"])} ↗</a>')
