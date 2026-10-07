@@ -978,5 +978,7 @@
  "How it works: we read size, material and finishes from your label.": "Comment ça marche : nous lisons le format, la matière et les finitions sur votre étiquette.",
  "Get your price": "Calculer le prix",
  "Price": "Prix",
- "Read from the die line in your file": "Lu sur le tracé de découpe du fichier"
+ "Read from the die line in your file": "Lu sur le tracé de découpe du fichier",
+ "Label price calculator": "Calcul du prix de l'étiquette",
+ "When you use the price page, the photo or file you upload and the values you enter (size, material, finishes and quantity) are sent to our server to read the label and calculate the price. The image is used only for this reading and is not stored. Nothing in this step identifies you, unless you then choose to send us a request. The reading of the image may be carried out by an external provider acting as data processor.": "Lorsque vous utilisez la page de prix, la photo ou le fichier que vous chargez et les valeurs que vous saisissez (format, matière, finitions et quantité) sont envoyés à notre serveur pour lire l'étiquette et calculer le prix. L'image sert uniquement à cette lecture et n'est pas conservée. Rien ne vous identifie à cette étape, sauf si vous choisissez ensuite de nous envoyer une demande. La lecture de l'image peut être effectuée par un prestataire externe agissant en qualité de sous-traitant."
 }

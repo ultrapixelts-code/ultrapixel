@@ -6,6 +6,9 @@
   var T=JSON.parse($('q-t').textContent),lang=S.dataset.lang||'en',rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
   var nf=new Intl.NumberFormat(lang),eur=function(x,dec){return new Intl.NumberFormat(lang,{style:'currency',currency:'EUR',minimumFractionDigits:dec||0,maximumFractionDigits:dec||0}).format(x)};
   var st={foil_cov:0.2,busy:false,seq:0,shown:0},timer,scanT=[];
+  var API=S.dataset.api||'';
+  /* the price server may be asleep: wake it while the visitor reads the page */
+  try{fetch(API+'/api/quote/status').catch(function(){})}catch(e){}
   var show=function(el,on){el.hidden=!on},err=function(k){var e=$('q-err');if(!k){e.hidden=true;return}e.textContent=T['e_'+k]||T.e_net;e.hidden=false;show($('q-price'),false);st.shown=0};
   var wait=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
   /* numbers settle instead of jumping */
@@ -39,7 +42,7 @@
     show($('q-pick'),false);show($('q-prev'),true);show($('q-form'),false);show($('q-dim'),false);$('q-prev').classList.remove('done');show($('q-reading'),true);scanning(true);
     if(!S.classList.contains('mouse')){try{$('q-drop').scrollIntoView({behavior:rm?'auto':'smooth',block:'start'})}catch(e){}}
     var min=wait(rm?0:1900);
-    shrink(file).then(function(b){var fd=new FormData();fd.append('file',b,isPdf?'label.pdf':'label.jpg');return fetch('/api/quote/analyze',{method:'POST',body:fd})})
+    shrink(file).then(function(b){var fd=new FormData();fd.append('file',b,isPdf?'label.pdf':'label.jpg');return fetch(API+'/api/quote/analyze',{method:'POST',body:fd})})
       .then(function(r){return r.json().then(function(j){return{ok:r.ok,status:r.status,j:j}})})
       .then(function(x){if(x.ok&&x.j.preview){$('q-img').src=x.j.preview;$('q-prev').classList.remove('pdf')}return min.then(function(){return x})})
       .then(function(x){
@@ -72,7 +75,7 @@
       if(!q){show($('q-price'),false);st.shown=0;err();return}
       if(!w||!h)return err('size');
       var body={w:w,h:h,qty:q,material:$('q-mat').value,varnish:$('q-varnish').checked,foil:$('q-foil').checked?($('q-foil2').checked?2:1):0,relief:$('q-relief').checked,foil_cov:st.foil_cov},n=++st.seq;
-      fetch('/api/quote/price',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
+      fetch(API+'/api/quote/price',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)})
         .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})
         .then(function(x){if(n!==st.seq)return;if(!x.ok)return err(x.j.error);render(x.j)}).catch(function(){if(n===st.seq)err('net')});
     },350);

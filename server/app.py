@@ -257,6 +257,25 @@ def api_status():
     return jsonify(vision=bool(os.environ.get("ANTHROPIC_API_KEY")))
 
 
+# ------------------------------------------------------------------ chiamate dai siti pubblicati altrove
+ALLOWED_ORIGINS = set(filter(None, os.environ.get("QUOTE_ORIGINS", "https://ultrapixel.it,https://www.ultrapixel.it,https://ultrapixel.fr,https://www.ultrapixel.fr").split(",")))
+
+
+@app.after_request
+def cors(resp):
+    o = request.headers.get("Origin", "")
+    if request.path.startswith("/api/") and o in ALLOWED_ORIGINS:
+        resp.headers["Access-Control-Allow-Origin"] = o; resp.headers["Vary"] = "Origin"
+        resp.headers["Access-Control-Allow-Headers"] = "Content-Type"; resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        resp.headers["Access-Control-Max-Age"] = "86400"
+    return resp
+
+
+@app.route("/api/<path:_p>", methods=["OPTIONS"])
+def preflight(_p):
+    return ("", 204)
+
+
 # ------------------------------------------------------------------ sito statico
 BLOCKED = ("server/", "content/", "src/", ".git", "build.py", "requirements.txt", "README.md", "render.yaml")
 

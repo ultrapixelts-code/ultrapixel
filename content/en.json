@@ -37,7 +37,8 @@
     "postalCode": "34018",
     "region": "TS",
     "analyticsEndpoint": "",
-    "privacyVersion": "Draft, 6 October 2026"
+    "privacyVersion": "Draft, 6 October 2026",
+    "quoteApi": ""
   },
   "ui": {
     "requestSamples": "Request samples",
@@ -3240,6 +3241,10 @@
         [
           "Requests you send us",
           "When you send a request for samples, a quote, a conversation or a partnership, we receive what you write in the form: name, company, country, email address, sector, type of request and message. Together with the request we record the date and time, the page of this site you came from, the first page you visited, the website that referred you to us and any campaign parameters in the link you followed."
+        ],
+        [
+          "Label price calculator",
+          "When you use the price page, the photo or file you upload and the values you enter (size, material, finishes and quantity) are sent to our server to read the label and calculate the price. The image is used only for this reading and is not stored. Nothing in this step identifies you, unless you then choose to send us a request. The reading of the image may be carried out by an external provider acting as data processor."
         ],
         [
           "Why we use this data",

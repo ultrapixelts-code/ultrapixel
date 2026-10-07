@@ -75,6 +75,7 @@ LABELS = {
 # Scroll-film label per language. g = bottle w,h / label centre x,y in the bottle / flat label w,h / end squeeze x,y
 # (when the bottle is a photo that already wears the label, the flat label is squeezed onto it and faded out).
 FILM = {"": {"a": "/assets", "vb": "0 0 1500 1000", "die": "src/die.txt", "g": [333, 1026, 167.8, 767.8, 450, 300, 0.79, 1.208], "sw": 900, "sz": "(max-width:899px) 70vw, 800px", "qc": [(30, 31), (61, 52), (27, 70)]}}
+QUOTE_API = ""   # --quote-api=https://… : where the price page sends its requests when the site is served as plain files
 PUB = {}   # launch builds: language -> public base URL of that language (set in build())
 
 
@@ -511,7 +512,7 @@ def quote_ml(C, P):
     scan = "".join(f'<li class="mi"><i class="dot"></i>{e(t[k])}<b></b></li>' for k in ("scan1", "scan2", "scan3"))
     head = (f'<section class="phead qhero"><span class="mi">{e(p["eyebrow"])}</span><h1 class="mega rv">{e(p["h1a"])}<span>{e(p["h1b"])}</span></h1>'
             f'<p class="lead">{e(p["lead"])}</p></section>')
-    body = (head + f"""<hr class="spl"><section class="sec w quote" id="quote" data-contact="{P}contact/" data-lang="{C["lang"]}">
+    body = (head + f"""<hr class="spl"><section class="sec w quote" id="quote" data-contact="{P}contact/" data-lang="{C["lang"]}" data-api="{e(QUOTE_API or s.get("quoteApi", ""))}">
 <div class="split"><div class="a">
   <span class="mi">{e(t["s1"])}</span>
   <div class="qdrop" id="q-drop">
@@ -641,6 +642,8 @@ if __name__ == "__main__":
     import sys
     # --home=fr serves another language at the root (e.g. for a country domain); the languages keep the same folders otherwise
     for a in sys.argv:
+        if a.startswith("--quote-api="):
+            QUOTE_API = a[12:].rstrip("/")
         if a.startswith("--home=") and a[7:] in LANGS:
             HOME = a[7:]; LANGS.remove(HOME); LANGS.insert(0, HOME)
     XDEF = HOME if "--launch" not in sys.argv else json.loads(rd("content/en.json"))["site"]["mainLang"]
