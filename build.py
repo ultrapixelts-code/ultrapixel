@@ -72,6 +72,10 @@ LABELS = {
 }
 
 
+# Scroll-film label per language. g = bottle w,h / label centre x,y in the bottle / flat label w,h / end squeeze x,y
+# (when the bottle is a photo that already wears the label, the flat label is squeezed onto it and faded out).
+FILM = {"": {"a": "/assets", "vb": "0 0 1120 1402", "die": "src/die.txt", "g": [387, 1026, 193.5, 643, 300, 375.5, 1, 1]},
+        "fr": {"a": "/assets/fr", "vb": "0 0 1500 1000", "die": "src/die-fr.txt", "g": [333, 1026, 167.8, 767.8, 450, 300, 0.79, 1.208]}}
 PUB = {}   # launch builds: language -> public base URL of that language (set in build())
 
 
@@ -250,7 +254,14 @@ def home_ml(C, P):
         extra = (f'<span class="mat" id="mat">{e(fm["mats"][0])}</span>' if i == 0 else '<div class="chips" id="chips"></div>' if i == 1 else "")
         text = "<br>".join(e(x) for x in fm["measure"]) if i == 6 else e(pp)
         panels += f'<div class="panel" data-c="{i+1}"><span class="mono">{e(mono)}</span><h2>{e(h2)}</h2><p>{text}</p>{extra}{f"<small>{e(small)}</small>" if small else ""}</div>\n  '
-    film = (rd("src/film.html").replace("{{HERO}}", hero).replace("{{RAIL}}", rail).replace("{{PANELS}}", panels)
+    fv = FILM.get(C["lang"], FILM[""])
+    geo = (f'<style>#film .rig{{width:{fv["g"][0]}px;height:{fv["g"][1]}px;transform-origin:{fv["g"][2]}px {fv["g"][3]}px}}'
+           f'#film .label{{left:{fv["g"][2] - fv["g"][4] / 2}px;top:{fv["g"][3] - fv["g"][5] / 2}px;width:{fv["g"][4]}px;height:{fv["g"][5]}px}}'
+           f'#film .shadow{{left:{fv["g"][2] - fv["g"][4] * .4}px;top:{fv["g"][3] - fv["g"][5] * .38}px;width:{fv["g"][4] * .8}px;height:{fv["g"][5] * .8}px;border-radius:46%;filter:blur(30px)}}'
+           f'#film #m0{{background-image:url({fv["a"]}/sheet.jpg)}}#film .glint{{-webkit-mask-image:url({fv["a"]}/gold.webp);mask-image:url({fv["a"]}/gold.webp)}}'
+           f'#film .curve{{-webkit-mask-image:url({fv["a"]}/final.webp);mask-image:url({fv["a"]}/final.webp)}}</style>') if C["lang"] in FILM else ""
+    film = (rd("src/film.html").replace("{{A}}", fv["a"]).replace("{{VB}}", fv["vb"]).replace("{{DIE}}", rd(fv["die"]).strip())
+            .replace("{{G}}", ",".join(str(x) for x in fv["g"])).replace("{{GEO}}", geo).replace("{{HERO}}", hero).replace("{{RAIL}}", rail).replace("{{PANELS}}", panels)
             .replace("{{SCROLL}}", e(ui["scroll"])).replace("{{MATS}}", e(json.dumps(fm["mats"] + fm["mats"][:1], ensure_ascii=False))))
     an = h["anatomy"]
     pins = "".join(f'<span class="pin" data-i="{i}" style="left:{x}%;top:{y}%">{i+1}</span>' for i, (_, _, x, y) in enumerate(an["items"]))
@@ -282,7 +293,7 @@ def home_ml(C, P):
     body = f'''{film}
 <hr class="spl">
 <section class="sec w">{top(an["eyebrow"], an["h2"], an["p"])}
- <div class="anat" id="anat"><figure><img src="/assets/final.webp" alt="UltraPixel label with numbered callouts" loading="lazy" width="1120" height="1402">{pins}</figure><ol>{lis}</ol></div>
+ <div class="anat" id="anat"><figure><img src="{fv["a"]}/final.webp" alt="UltraPixel label with numbered callouts" loading="lazy" width="{fv["vb"].split()[2]}" height="{fv["vb"].split()[3]}">{pins}</figure><ol>{lis}</ol></div>
 </section>
 <hr class="spl">
 <section class="sec" id="sectors">{top(h["sectors"]["eyebrow"], h["sectors"]["h2"], h["sectors"]["p"])}{scenes}</section>
@@ -314,7 +325,7 @@ def home_ml(C, P):
 <hr class="spl">
 <section class="sec t"><span class="mi" style="display:block;margin-bottom:26px">{e(h["social"]["eyebrow"])}</span><div class="soc">{soc}</div></section>'''
     return shell_ml(C, P, P, h["meta"], body,
-                    extra_head='<link rel="stylesheet" href="/assets/film.css"><link rel="preload" as="image" href="/assets/final.webp">',
+                    extra_head=f'<link rel="stylesheet" href="/assets/film.css"><link rel="preload" as="image" href="{fv["a"]}/final.webp">',
                     extra_foot='<script src="/assets/film.js" defer></script>')
 
 
@@ -533,6 +544,13 @@ def build(launch=False):
         C = json.loads(rd(f"content/{DEFAULT}.json")); P = "/" if lang == HOME else f"/{lang}/"
         if lang != DEFAULT:
             C = translate(C, json.loads(rd(f"content/i18n/{lang}.json"))); C["lang"] = lang
+        if os.path.exists(os.path.join(ROOT, f"content/film-{lang}.json")):   # texts and callout positions for this language's own film label
+            ov = json.loads(rd(f"content/film-{lang}.json"))
+            for i, it in ov.get("anatomy", {}).items():
+                a = C["home"]["anatomy"]["items"][int(i) - 1]; a[2:] = it[-2:]
+                if len(it) == 3: a[1] = it[0]
+            for i, t in ov.get("panels", {}).items():
+                C["film"]["panels"][int(i) - 1][2] = t
         if launch:
             if not C["site"]["launchUrl"]:
                 raise SystemExit("Set site.launchUrl in content/en.json before a launch build.")

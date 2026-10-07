@@ -11,6 +11,8 @@ const seps=[...Lpr.querySelectorAll('.sp')], stns=inks.map(c=>{const e=document.
 const zs=[sheet,Lpr,Lg,Ls,Lf], mats=JSON.parse($("hint").dataset.mats);
 
 let lx=.35, ly=.4, queued=false;
+/* geometry: bottle w,h / label centre x,y in the bottle / flat label w,h / end squeeze x,y (flat label -> label on the bottle photo) */
+const [RW,RH,CX,CY,LW,LH,SX,SY]=($("film").dataset.g||"387,1026,193.5,643,300,375.5,1,1").split(",").map(Number), photo=SX!==1||SY!==1;
 function frame(){
   queued=false;
   const film=$("film"), vw=innerWidth, vh=$("stage").clientHeight, r=film.getBoundingClientRect();
@@ -20,10 +22,10 @@ function frame(){
 
   /* camera */
   const zin=ease(seg(t,.1,.95)), zout=ease(seg(t,7.6,8.5)), end=t>4, z=zin*(1-zout);
-  const s0=Math.min(vh*(wide?.84:vw<380?.38:.44)/1026,vw*.6/387), s1=Math.min(vh*(wide?.68:.46)/375.5,vw*(wide?.4:.7)/300), sh=Math.min(vh*(wide?.6:.34)/375.5,vw*(wide?.34:.62)/300);
+  const s0=Math.min(vh*(wide?.84:vw<380?.38:.44)/RH,vw*.6/RW), s1=Math.min(vh*(wide?.68:.46)/LH,vw*(wide?.4:.7)/LW), sh=Math.min(vh*(wide?.6:.34)/LH,vw*(wide?.34:.62)/LW);
   /* the label opens alone, suspended; the bottle only arrives with the result */
   const s=end?mix(s1,s0,zout):mix(sh,s1,zin), ax=wide?vw*.68:vw*.5, ay=wide?vh*.5:vh*(end?mix(.36,vw<380?.78:.74,zout):mix(.77,.36,zin));
-  $("rig").style.transform=`translate(${ax-193.5}px,${ay-643+(end?130*s0*zout:0)}px) scale(${s})`;
+  $("rig").style.transform=`translate(${ax-CX}px,${ay-CY+(end?(CY-RH/2)*s0*zout:0)}px) scale(${s})`;
   const off=1-seg(t,7.7,8.2);
   $("bottle").style.opacity=1-off; $("curve").style.opacity=1-off;
 
@@ -39,17 +41,18 @@ function frame(){
   $("m0").style.opacity=m>=4?1:Math.max(w(0),w(4)); $("m1").style.opacity=w(1); $("m2").style.opacity=w(2); $("m3").style.opacity=w(3);
   $("mat").textContent=mats[Math.round(m)];
   chips.forEach((b,i)=>b.classList.toggle("on",st(i)>0||t>2.35));
-  stns.forEach((e,i)=>{const q=st(i);e.style.opacity=build&&q>0&&q<1?1:0;e.style.transform=`translateY(${375.5*q}px)`});
+  stns.forEach((e,i)=>{const q=st(i);e.style.opacity=build&&q>0&&q<1?1:0;e.style.transform=`translateY(${LH*q}px)`});
   glint.style.opacity=build?(pF>=1?1:0):+Lf.style.opacity;
   glint.style.backgroundPosition=`${(110-((lx*90+t*55)%140)*1.1)}% 0`;
 
-    const rb=$("ribbon"); rb.style.opacity=build&&pF>0&&pF<1?1:0; rb.style.transform=`translateY(${375.5*pF-37}px)`;
-  const sq=$("sq"); sq.style.opacity=build&&pS>0&&pS<1?1:0; sq.style.transform=`translateX(${300*(1-pS)-8}px)`;
+    const rb=$("ribbon"); rb.style.opacity=build&&pF>0&&pF<1?1:0; rb.style.transform=`translateY(${LH*pF-37}px)`;
+  const sq=$("sq"); sq.style.opacity=build&&pS>0&&pS<1?1:0; sq.style.transform=`translateX(${LW*(1-pS)-8}px)`;
 
   /* side view: the passes pull apart, then the relief lands on top */
   const sv=ease(seg(t,4.4,4.8))*(1-ease(seg(t,5.4,5.8)));
   const hk=1-seg(t,.15,.7);
-  $("label").style.transform=sv?`perspective(1300px) rotateY(${-56*sv}deg) rotateX(${7*sv}deg)`:hk>0?`perspective(1200px) rotateY(${(lx-.5)*18*hk}deg) rotateX(${-(ly-.5)*12*hk}deg)`:"none";
+  $("label").style.transform=sv?`perspective(1300px) rotateY(${-56*sv}deg) rotateX(${7*sv}deg)`:hk>0?`perspective(1200px) rotateY(${(lx-.5)*18*hk}deg) rotateX(${-(ly-.5)*12*hk}deg)`:photo&&zout>0?`scale(${mix(1,SX,zout)},${mix(1,SY,zout)})`:"none";
+  $("label").style.opacity=photo?1-seg(t,7.95,8.35):1;
   const rl=$("relit"); rl.style.opacity=build?0:.9; rl.style.setProperty("--lx",(lx*100).toFixed(1)+"%"); rl.style.setProperty("--ly",(ly*100).toFixed(1)+"%");
   zs.forEach((e,i)=>e.style.transform=sv?`translateZ(${i*26*sv}px)`:"none"); glint.style.transform=sv?`translateZ(${4*26*sv+1}px)`:"none";
   $("shadow").style.opacity=.3*off*(1-sv);
@@ -61,7 +64,7 @@ function frame(){
   const mx=$("matrix"); mx.style.opacity=t>=6.25&&fall<1?1-fall:0; mx.style.transform=`translate(${18*fall}px,${150*fall}px) rotate(${9*fall}deg)`;
 
   /* scan */
-  const pQ=seg(t,6.75,7.4), sc=$("scan"); sc.style.opacity=pQ>0&&pQ<1?1:0; sc.style.transform=`translateY(${375.5*pQ}px)`;
+  const pQ=seg(t,6.75,7.4), sc=$("scan"); sc.style.opacity=pQ>0&&pQ<1?1:0; sc.style.transform=`translateY(${LH*pQ}px)`;
   qcs.forEach(q=>q.style.opacity=(pQ>+q.dataset.y&&t<7.65)?1:0);
 }
 function ask(){if(!queued){queued=true;requestAnimationFrame(frame)}}
