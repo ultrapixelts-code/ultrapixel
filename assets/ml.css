@@ -81,7 +81,9 @@ h1,h2,h3{margin:0;font-family:var(--display);font-weight:560;font-stretch:82%;le
 #film .mat{border-color:var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
 #film .chips b{font-family:var(--mono)}
 #film .hint{color:var(--tgt)}
-.relit{-webkit-mask:url(/assets/final.webp) center/100% 100%;mask:url(/assets/final.webp) center/100% 100%;background:radial-gradient(circle at var(--lx,40%) var(--ly,35%),rgba(255,255,255,.34),rgba(255,255,255,0) 42%),radial-gradient(circle at calc(100% - var(--lx,40%)) calc(100% - var(--ly,35%)),rgba(0,0,0,.2),rgba(0,0,0,0) 55%);pointer-events:none}
+#film.rdy .relit{-webkit-mask:url(/assets/final.webp) center/100% 100%;mask:url(/assets/final.webp) center/100% 100%}
+#film:not(.rdy) .relit{display:none}
+.relit{background:radial-gradient(circle at var(--lx,40%) var(--ly,35%),rgba(255,255,255,.34),rgba(255,255,255,0) 42%),radial-gradient(circle at calc(100% - var(--lx,40%)) calc(100% - var(--ly,35%)),rgba(0,0,0,.2),rgba(0,0,0,0) 55%);pointer-events:none}
 .hero .ctas{margin-top:28px}
 .hero .sys{margin-top:26px;display:grid;gap:8px}
 .hero h1 em{font-style:normal;color:var(--tgl)}
