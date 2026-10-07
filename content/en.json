@@ -2324,8 +2324,14 @@
         "e_rate": "Too many requests from this connection. Please try again later.",
         "e_badfile": "We could not open this file. Try a photo or a PDF.",
         "e_net": "Something went wrong. Please try again.",
-        "msg": "I would like a confirmed quote for this label:"
-      }
+        "msg": "I would like a confirmed quote for this label:",
+        "scan1": "Size",
+        "scan2": "Paper or film",
+        "scan3": "Finishes",
+        "demo": "How it works: we read size, material and finishes from your label."
+      },
+      "h1a": "What does",
+      "h1b": "your label cost?"
     }
   },
   "wine": {

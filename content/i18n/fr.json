@@ -969,5 +969,11 @@
  "Too many requests from this connection. Please try again later.": "Trop de demandes depuis cette connexion. Réessayez plus tard.",
  "We could not open this file. Try a photo or a PDF.": "Nous n'arrivons pas à ouvrir ce fichier. Essayez une photo ou un PDF.",
  "Something went wrong. Please try again.": "Une erreur s'est produite. Réessayez.",
- "I would like a confirmed quote for this label:": "Je souhaite un devis confirmé pour cette étiquette :"
+ "I would like a confirmed quote for this label:": "Je souhaite un devis confirmé pour cette étiquette :",
+ "What does": "Combien coûte",
+ "your label cost?": "votre étiquette ?",
+ "Size": "Format",
+ "Paper or film": "Papier ou film",
+ "Finishes": "Finitions",
+ "How it works: we read size, material and finishes from your label.": "Comment ça marche : nous lisons le format, la matière et les finitions sur votre étiquette."
 }

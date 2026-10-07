@@ -502,17 +502,26 @@ def quote_ml(C, P):
     chk = lambda k: f'<label class="qc"><input type="checkbox" id="q-{k}"><span>{e(t[k])}</span></label>'
     chips = "".join(f'<button type="button" class="mi" data-q="{q}"></button>' for q in (1000, 5000, 10000, 25000))
     tel = f'<a class="cta" href="tel:{e(s["phone"].replace(" ", ""))}">{e(t["call"])} {e(s["phone"])} →</a>' if s["phone"] else ""
-    body = (phead(p["eyebrow"], p["h1"], p["lead"], mega=False) + f"""<hr class="spl"><section class="sec w quote" id="quote" data-contact="{P}contact/" data-lang="{C["lang"]}">
+    demo = (f'<div class="qdemo" aria-hidden="true"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="qmet" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8d9498"/><stop offset=".45" stop-color="#eef0f1"/><stop offset=".6" stop-color="#a7adb0"/><stop offset="1" stop-color="#5f666a"/></linearGradient></defs>'
+            '<rect class="lb" x="135" y="42" width="130" height="216" rx="3"/><circle class="fo" cx="200" cy="104" r="26"/><circle class="fo i" cx="200" cy="104" r="17"/>'
+            '<path class="tx" d="M160 156h80M170 170h60M150 206h100M150 216h100M150 226h64"/><path class="em" d="M158 186h84"/>'
+            '<path class="dm" pathLength="1" d="M135 272h130M135 267v10M265 267v10M290 42v216M285 42h10M285 258h10"/>'
+            '<path class="ld l2" pathLength="1" d="M135 150H92"/><path class="ld l3" pathLength="1" d="M226 104h66"/><path class="ld l4" pathLength="1" d="M242 186h50"/></svg>'
+            f'<span class="tag t1 mi">80 × 130 mm</span><span class="tag t2 mi">{e(t["m_wine"])}</span><span class="tag t3 mi">{e(t["foil"])}</span><span class="tag t4 mi">{e(t["relief"])}</span><i class="beam"></i></div>')
+    scan = "".join(f'<li class="mi"><i class="dot"></i>{e(t[k])}<b></b></li>' for k in ("scan1", "scan2", "scan3"))
+    head = (f'<section class="phead qhero"><span class="mi">{e(p["eyebrow"])}</span><h1 class="mega rv">{e(p["h1a"])}<span>{e(p["h1b"])}</span></h1>'
+            f'<p class="lead">{e(p["lead"])}</p></section>')
+    body = (head + f"""<hr class="spl"><section class="sec w quote" id="quote" data-contact="{P}contact/" data-lang="{C["lang"]}">
 <div class="split"><div class="a">
   <span class="mi">{e(t["s1"])}</span>
   <div class="qdrop" id="q-drop">
-    <div class="qpick" id="q-pick"><button class="cta pill only-touch" type="button" id="q-bphoto">{e(t["photo"])} ↗</button><button class="cta pill ghost" type="button" id="q-bfile">{e(t["file"])} ↗</button><p class="mi dim only-mouse">{e(t["drop"])}</p></div>
-    <figure class="qprev" id="q-prev" hidden><img id="q-img" alt=""><figcaption><button class="cta" type="button" id="q-again">{e(t["again"])} →</button></figcaption></figure>
+    <div class="qpick" id="q-pick">{demo}<p class="qdemo-cap">{e(t["demo"])}</p><div class="qbtns"><button class="cta pill only-touch" type="button" id="q-bphoto">{e(t["photo"])} ↗</button><button class="cta pill ghost" type="button" id="q-bfile">{e(t["file"])} ↗</button></div><p class="mi dim only-mouse">{e(t["drop"])}</p></div>
+    <figure class="qprev" id="q-prev" hidden><div class="qshot"><img id="q-img" alt=""><i class="beam"></i><i class="cn a"></i><i class="cn b"></i><i class="cn c"></i><i class="cn d"></i><span class="qdim mi" id="q-dim" hidden></span></div><figcaption><button class="cta" type="button" id="q-again">{e(t["again"])} →</button></figcaption></figure>
   </div>
   <p class="mi dim qhint">{e(t["hint"])}</p>
   <input type="file" id="q-photo" accept="image/*" capture="environment" hidden><input type="file" id="q-file" accept="image/*,application/pdf" hidden>
 </div><div class="b">
-  <p class="qstate mi" id="q-reading" hidden><i class="dot"></i>{e(t["reading"])}</p>
+  <div class="qstate" id="q-reading" hidden><span class="mi">{e(t["reading"])}</span><ul>{scan}</ul></div>
   <div id="q-form" hidden>
     <span class="mi">{e(t["s2"])}</span><p class="qsub" id="q-sub">{e(t["fix"])}</p>
     <div class="form qf">
@@ -527,7 +536,7 @@ def quote_ml(C, P):
     <p class="form-msg mi" id="q-err" hidden></p>
     <div class="qprice" id="q-price" hidden aria-live="polite">
       <span class="mi">{e(t["from"])}</span>
-      <p class="qbig"><b id="q-total"></b><span class="mi">{e(t["vat"])}</span></p>
+      <p class="qbig"><b id="q-total"></b><i class="qline"></i><span class="mi">{e(t["vat"])}</span></p>
       <p class="mi" id="q-per"></p>
       <p class="qcfg"><span class="mi">{e(t["for"])}</span> <span id="q-cfg"></span></p>
       <div class="qtab"><span class="mi">{e(t["others"])}</span><dl class="facts" id="q-table"></dl></div>
