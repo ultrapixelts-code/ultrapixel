@@ -91,7 +91,9 @@
     "lab": "Lab",
     "process": "Process",
     "vat": "VAT",
-    "priceNav": "What does your label cost?"
+    "priceNav": "What does your label cost?",
+    "priceCta": "Get your price",
+    "priceShort": "Price"
   },
   "form": {
     "name": "Name",
@@ -2328,7 +2330,8 @@
         "scan1": "Size",
         "scan2": "Paper or film",
         "scan3": "Finishes",
-        "demo": "How it works: we read size, material and finishes from your label."
+        "demo": "How it works: we read size, material and finishes from your label.",
+        "sizeDie": "Read from the die line in your file"
       },
       "h1a": "What does",
       "h1b": "your label cost?"

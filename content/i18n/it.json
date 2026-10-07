@@ -975,5 +975,8 @@
  "Size": "Misura",
  "Paper or film": "Carta o film",
  "Finishes": "Lavorazioni",
- "How it works: we read size, material and finishes from your label.": "Come funziona: dalla tua etichetta leggiamo misura, materiale e lavorazioni."
+ "How it works: we read size, material and finishes from your label.": "Come funziona: dalla tua etichetta leggiamo misura, materiale e lavorazioni.",
+ "Get your price": "Calcola il prezzo",
+ "Price": "Prezzo",
+ "Read from the die line in your file": "Letta dal tracciato della fustella nel file"
 }

@@ -975,5 +975,8 @@
  "Size": "Format",
  "Paper or film": "Papier ou film",
  "Finishes": "Finitions",
- "How it works: we read size, material and finishes from your label.": "Comment ça marche : nous lisons le format, la matière et les finitions sur votre étiquette."
+ "How it works: we read size, material and finishes from your label.": "Comment ça marche : nous lisons le format, la matière et les finitions sur votre étiquette.",
+ "Get your price": "Calculer le prix",
+ "Price": "Prix",
+ "Read from the die line in your file": "Lu sur le tracé de découpe du fichier"
 }

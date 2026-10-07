@@ -181,6 +181,40 @@ def clean(v):
             "relief": bool(v.get("relief")), "varnish": bool(v.get("varnish", True))}
 
 
+DIE_NAMES = re.compile(r"die|fustell|cut|kiss|stanz|d[eé]coupe|troquel|crease|contour|thru", re.I)
+
+
+def label_box(doc, page):
+    """Size of the label inside a print file. The die line wins over the page: a stroked, unfilled outline drawn in the
+    usual die colours (green or magenta) or while the file declares a spot colour named like a die. Then trim box, art box, page."""
+    pr = page.rect; cands = []
+    try:
+        spots = " ".join(doc.xref_object(x) for x in range(1, doc.xref_length()) if "/Separation" in (doc.xref_object(x) or ""))
+        has_die_spot = bool(DIE_NAMES.search(" ".join(re.findall(r"/Separation\s*/([^\s/\[]+)", spots))))
+        for d in page.get_drawings():
+            c, r = d.get("color"), d.get("rect")
+            if d.get("type") != "s" or not c or not r or (d.get("width") or 0) > 2.5:
+                continue
+            if r.width < 28 or r.height < 28 or (r.width > pr.width * .985 and r.height > pr.height * .985):
+                continue                                         # under 1 cm, or the page frame itself
+            rr, g, b = c[:3]
+            green = g > .45 and g - rr > .25 and g - b > .15
+            magenta = rr > .7 and b > .4 and g < .35
+            if max(rr, g, b) > .97 and min(rr, g, b) > .97:
+                continue                                         # white strokes are never the die
+            if green or magenta or has_die_spot:
+                cands.append(((2 if green or magenta else 1), r.width * r.height, r))
+    except Exception:
+        cands = []
+    if cands:
+        return max(cands, key=lambda x: (x[0], x[1]))[2], "die"
+    for name in ("trimbox", "artbox"):
+        b = getattr(page, name)
+        if b.width > 1 and (abs(b.width - pr.width) > 1 or abs(b.height - pr.height) > 1):
+            return b, name
+    return pr, "page"
+
+
 @app.post("/api/quote/analyze")
 def api_analyze():
     if limited("analyze", 12, 3600) or limited("analyze-day", 30, 86400):
@@ -188,15 +222,16 @@ def api_analyze():
     f = request.files.get("file")
     if not f:
         return jsonify(error="nofile"), 400
-    data = f.read(); kind = "photo"; exact = None
+    data = f.read(); kind = "photo"; exact = None; src = ""
     try:
         if data[:5] == b"%PDF-":
             import pymupdf as fitz
             doc = fitz.open(stream=data, filetype="pdf"); page = doc[0]
-            box = page.trimbox if page.trimbox.width > 1 and page.trimbox != page.mediabox else page.rect
+            box, src = label_box(doc, page)
             exact = (round(box.width / 72 * 25.4), round(box.height / 72 * 25.4)); kind = "pdf"
-            z = 1400 / max(page.rect.width, page.rect.height)
-            data = page.get_pixmap(matrix=fitz.Matrix(z, z), alpha=False).tobytes("jpeg")
+            clip = (box + (-9, -9, 9, 9)) & page.rect          # a little air around the label, never the whole sheet
+            z = 1400 / max(clip.width, clip.height)
+            data = page.get_pixmap(matrix=fitz.Matrix(z, z), clip=clip, alpha=False).tobytes("jpeg")
         else:
             from PIL import Image, ImageOps
             im = ImageOps.exif_transpose(Image.open(io.BytesIO(data))).convert("RGB"); im.thumbnail((1600, 1600))
@@ -213,7 +248,7 @@ def api_analyze():
     if v:
         res.update(v, recognised=True)
     if exact:
-        res.update(w=exact[0], h=exact[1], size_confidence="exact")
+        res.update(w=exact[0], h=exact[1], size_confidence="die" if src == "die" else "exact")
     return jsonify(res)
 
 

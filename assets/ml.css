@@ -466,3 +466,8 @@ main>section.sec,main>.ms,footer.ftr2{content-visibility:auto;contain-intrinsic-
 .nav2 nav a.price{color:var(--ink);background:var(--spec) 0 100%/100% 1px no-repeat;padding-bottom:5px}
 @media(max-width:1380px){.nav2 nav a.price{background:none;padding-bottom:17px;font-weight:500}}
 @media(max-width:1760px) and (min-width:1381px){.nav2 .right .cta{display:none}.nav2 nav{gap:clamp(12px,1.3vw,22px)}}
+/* price button in the header bar, shown whenever the menu is folded away */
+.nav2 .pcta{display:none}
+@media(max-width:1380px){.nav2 .pcta{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;background:var(--ink);color:var(--cer);border-radius:999px;padding:9px 15px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;background:linear-gradient(var(--ink),var(--ink)) padding-box,var(--spec) border-box;border:1px solid transparent}.nav2 .pcta .s{display:none}}
+@media(max-width:640px){.nav2 .pcta{padding:8px 11px;font-size:10px;letter-spacing:.08em}.nav2 .pcta .l{display:none}.nav2 .pcta .s{display:inline}.nav2 .right{gap:10px}.nav2{column-gap:10px}.lsw{gap:7px}}
+@media(max-width:350px){.nav2 .lsw{display:none}}

@@ -51,8 +51,8 @@
   function dim(){var w=int($('q-w').value),h=int($('q-h').value),e=$('q-dim');if(w&&h){e.textContent=w+' × '+h+' mm';show(e,true)}else show(e,false)}
   function fill(a){
     var sub=T.fix,note='';
-    if(!a.recognised)sub=T.manual;else if(a.is_label===false)sub=T.noLabel;
-    if(a.size_confidence==='exact')note=T.sizeExact;else if(a.recognised&&a.w)note=a.size_confidence==='low'?T.sizeLow:T.sizeEst;
+    if(!a.recognised)sub=a.w?T.fix:T.manual;else if(a.is_label===false)sub=T.noLabel;
+    if(a.size_confidence==='die')note=T.sizeDie;else if(a.size_confidence==='exact')note=T.sizeExact;else if(a.recognised&&a.w)note=a.size_confidence==='low'?T.sizeLow:T.sizeEst;
     $('q-sizenote').textContent=note;show($('q-sizenote'),!!note);
     $('q-sub').textContent=sub;
     $('q-mat').value=a.material||'coated';
