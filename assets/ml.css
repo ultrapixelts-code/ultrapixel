@@ -461,3 +461,8 @@ html[lang=de] .shero h1 .xl{font-size:clamp(34px,5.4vw,104px)}
 .lab .tabs button i{color:var(--tgt)}
 /* sections below the fold are laid out and painted only when they come near the viewport */
 main>section.sec,main>.ms,footer.ftr2{content-visibility:auto;contain-intrinsic-size:auto 900px}
+
+/* header link to the price page */
+.nav2 nav a.price{color:var(--ink);background:var(--spec) 0 100%/100% 1px no-repeat;padding-bottom:5px}
+@media(max-width:1380px){.nav2 nav a.price{background:none;padding-bottom:17px;font-weight:500}}
+@media(max-width:1760px) and (min-width:1381px){.nav2 .right .cta{display:none}.nav2 nav{gap:clamp(12px,1.3vw,22px)}}

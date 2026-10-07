@@ -149,7 +149,7 @@ def seo_extra(C, P, path, meta):
 def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
     s, ui = C["site"], C["ui"]; url = pub(C, C["lang"], path[len(P) - 1:]) if path.endswith("/") else s["url"].rstrip("/") + path
     ui = dict(ui, sustain=C["sustainability"]["nav"])
-    nav = "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("sustain", f"{P}sustainability/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
+    nav = f'<a class="price" href="{P}quote/">{e(ui["priceNav"])}</a>' + "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("sustain", f"{P}sustainability/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
     contact = "".join(f"<li>{x}</li>" for x in (
         *[(f'{e(n)}<br>' if i or n != s["legalName"] else "") + e(a) for i, (n, a) in enumerate(offices(C))], f'{e(ui["vat"])} {e(s["vatID"][2:] if C["lang"] == "it" else s["vatID"])}', f'<a href="mailto:{e(s["email"])}">{e(s["email"])}</a>' if s["email"] else "", f'<a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a>' if s["phone"] else "",
         f'<a href="{e(s["linkedin"])}" rel="noopener">LinkedIn</a>' if s["linkedin"] else "", f'<a href="{e(s["instagram"])}" rel="noopener">Instagram</a>' if s["instagram"] else "") if x)
@@ -495,6 +495,51 @@ def form_ml(C, P, key, topic):
     return shell_ml(C, P, f"{P}{key}/", p["meta"], phead(ui["contact"], p["h1"], p["lead"], mega=False) + f'<hr class="spl"><section class="sec w"><div class="split"><div class="a">{form}</div><div class="b">{direct}</div></div></section>')
 
 
+def quote_ml(C, P):
+    """Instant indicative price: photo or file of the label + quantity. Reading and pricing happen on the server (/api/quote/*)."""
+    p, s, ui = C["pages"]["quote"], C["site"], C["ui"]; t = p["t"]
+    mats = "".join(f'<option value="{k}">{e(t["m_" + k])}</option>' for k in ("coated", "wine", "textured", "pp_white", "pp_clear"))
+    chk = lambda k: f'<label class="qc"><input type="checkbox" id="q-{k}"><span>{e(t[k])}</span></label>'
+    chips = "".join(f'<button type="button" class="mi" data-q="{q}"></button>' for q in (1000, 5000, 10000, 25000))
+    tel = f'<a class="cta" href="tel:{e(s["phone"].replace(" ", ""))}">{e(t["call"])} {e(s["phone"])} →</a>' if s["phone"] else ""
+    body = (phead(p["eyebrow"], p["h1"], p["lead"], mega=False) + f"""<hr class="spl"><section class="sec w quote" id="quote" data-contact="{P}contact/" data-lang="{C["lang"]}">
+<div class="split"><div class="a">
+  <span class="mi">{e(t["s1"])}</span>
+  <div class="qdrop" id="q-drop">
+    <div class="qpick" id="q-pick"><button class="cta pill only-touch" type="button" id="q-bphoto">{e(t["photo"])} ↗</button><button class="cta pill ghost" type="button" id="q-bfile">{e(t["file"])} ↗</button><p class="mi dim only-mouse">{e(t["drop"])}</p></div>
+    <figure class="qprev" id="q-prev" hidden><img id="q-img" alt=""><figcaption><button class="cta" type="button" id="q-again">{e(t["again"])} →</button></figcaption></figure>
+  </div>
+  <p class="mi dim qhint">{e(t["hint"])}</p>
+  <input type="file" id="q-photo" accept="image/*" capture="environment" hidden><input type="file" id="q-file" accept="image/*,application/pdf" hidden>
+</div><div class="b">
+  <p class="qstate mi" id="q-reading" hidden><i class="dot"></i>{e(t["reading"])}</p>
+  <div id="q-form" hidden>
+    <span class="mi">{e(t["s2"])}</span><p class="qsub" id="q-sub">{e(t["fix"])}</p>
+    <div class="form qf">
+      <label>{e(t["w"])}<input id="q-w" inputmode="numeric" autocomplete="off"></label><label>{e(t["h"])}<input id="q-h" inputmode="numeric" autocomplete="off"></label>
+      <p class="mi dim full" id="q-sizenote"></p>
+      <label class="full">{e(t["mat"])}<select id="q-mat">{mats}</select></label>
+      <div class="full qchecks">{chk("varnish")}{chk("foil")}{chk("foil2")}{chk("relief")}</div>
+    </div>
+    <span class="mi qs3">{e(t["s3"])}</span>
+    <div class="form qf"><label class="full">{e(t["qty"])}<input id="q-qty" inputmode="numeric" autocomplete="off" placeholder="5000"></label>
+      <div class="full qchips" id="q-chips">{chips}</div></div>
+    <p class="form-msg mi" id="q-err" hidden></p>
+    <div class="qprice" id="q-price" hidden aria-live="polite">
+      <span class="mi">{e(t["from"])}</span>
+      <p class="qbig"><b id="q-total"></b><span class="mi">{e(t["vat"])}</span></p>
+      <p class="mi" id="q-per"></p>
+      <p class="qcfg"><span class="mi">{e(t["for"])}</span> <span id="q-cfg"></span></p>
+      <div class="qtab"><span class="mi">{e(t["others"])}</span><dl class="facts" id="q-table"></dl></div>
+      <p class="qnote">{e(t["note"])}</p>
+      <div class="ctas"><a class="cta pill" id="q-cta" href="{P}contact/?topic=quote">{e(t["cta"])} ↗</a>{tel}</div>
+    </div>
+  </div>
+</div></div></section>""")
+    foot = '<script type="application/json" id="q-t">' + json.dumps(t, ensure_ascii=False).replace("</", "<\\/") + '</script><script src="/assets/quote.js" defer></script>'
+    return shell_ml(C, P, f"{P}quote/", p["meta"], body, extra_head='<link rel="stylesheet" href="/assets/quote.css">', extra_foot=foot)
+
+
 def sustain_ml(C, P):
     s, ui = C["sustainability"], C["ui"]
     flow = '<div class="mflow">' + "".join(f'<span class="mi">{e(x)}</span>' + ('<i></i>' if i < 3 else "") for i, x in enumerate(s["flow"])) + "</div>"
@@ -560,7 +605,7 @@ def build(launch=False):
         if lang == HOME:
             C0 = C
         out = {P: home_ml(C, P), f"{P}technologies/": tech_ml(C, P), f"{P}work/": work_ml(C, P), f"{P}about/": about_ml(C, P), f"{P}sustainability/": sustain_ml(C, P), f"{P}privacy/": legal_ml(C, P, "privacy"), f"{P}cookies/": legal_ml(C, P, "cookies"),
-               f"{P}samples/": form_ml(C, P, "samples", "samples"), f"{P}contact/": form_ml(C, P, "contact", "quote"), f"{P}partners/": form_ml(C, P, "partners", "partner")}
+               f"{P}samples/": form_ml(C, P, "samples", "samples"), f"{P}contact/": form_ml(C, P, "contact", "quote"), f"{P}partners/": form_ml(C, P, "partners", "partner"), f"{P}quote/": quote_ml(C, P)}
         for n, x in enumerate(C["sectors"]):
             out[f'{P}{x["slug"]}/'] = wine_ml(C, P, x) if x["key"] == "wine" else sector_ml(C, P, x, n + 1)
         for x in C["landings"]:

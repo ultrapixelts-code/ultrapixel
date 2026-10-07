@@ -1,0 +1,42 @@
+/* UltraPixel — price page */
+.quote .split{align-items:start}
+.quote .mi{display:block}
+.quote [hidden]{display:none!important}
+.qdrop{margin-top:18px;border:1px solid var(--hair);background:var(--white);min-height:clamp(220px,34vw,440px);display:grid;place-items:center;transition:border-color .2s}
+.qdrop.over{border-color:var(--ink)}
+.qpick{display:grid;gap:16px;justify-items:center;padding:28px;text-align:center}
+.qpick .cta{cursor:pointer;font-family:var(--mono)}
+.quote.mouse .only-touch,.quote:not(.mouse) .only-mouse{display:none}
+.qprev{margin:0;width:100%;display:grid}
+.qprev img{display:block;width:100%;max-height:70vh;object-fit:contain;background:var(--sheet-2)}
+.qprev.pdf img{min-height:200px}
+.qprev figcaption{padding:14px 16px;border-top:1px solid var(--hair)}
+.qprev .cta,.qchips button{background:none;border:0;cursor:pointer;padding:0;color:inherit}
+.qhint{margin-top:14px;line-height:1.7;max-width:46ch}
+.qstate{line-height:1.7}
+.qsub{margin:10px 0 22px;color:var(--gra);max-width:46ch}
+.qf{margin-bottom:8px}
+.qchecks{display:flex;flex-wrap:wrap;gap:10px}
+.form .qc{display:inline-flex;grid-template-columns:none;align-items:center;gap:0;cursor:pointer}
+.qc input{position:absolute;opacity:0;width:1px;height:1px}
+.qc span{display:block;border:1px solid var(--tg);border-radius:999px;padding:11px 16px;font:400 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gra)}
+.qc input:checked+span{background:var(--ink);border-color:var(--ink);color:var(--cer)}
+.qc input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
+.qc.off{opacity:.35;cursor:default}
+.qs3{margin-top:34px}
+.qchips{display:flex;flex-wrap:wrap;gap:8px 20px}
+.qchips button{padding:10px 0;border-bottom:1px solid var(--hair);color:var(--gra)}
+.qchips button:hover{color:var(--ink);border-color:var(--ink)}
+.qprice{margin-top:34px;padding-top:26px;border-top:1px solid var(--ink)}
+.qbig{margin:8px 0 6px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.qbig b{font:600 clamp(52px,9vw,112px)/.95 var(--display);font-stretch:88%;letter-spacing:-.03em}
+.qcfg{margin:22px 0 0;line-height:1.5}
+.qcfg .mi{display:inline;margin-right:6px}
+.qtab{margin-top:26px}
+.qtab .facts{display:grid;grid-template-columns:auto 1fr;gap:0 24px;margin-top:10px}
+.qtab .facts dt,.qtab .facts dd{border-top:1px solid var(--hair);padding:12px 0;margin:0}
+.qtab .facts dd{text-align:right;font-variant-numeric:tabular-nums}
+.qtab .facts dd small{display:block;font:400 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--tgt);margin-top:4px}
+.qtab .facts .cur{color:var(--ink);font-weight:600}
+.qnote{margin:22px 0 26px;color:var(--tgt);font-size:14px;line-height:1.55;max-width:60ch}
+@media(max-width:900px){.quote .split>.b{margin-top:34px;scroll-margin-top:70px}.qdrop{min-height:200px}.qprev img{max-height:46vh}}

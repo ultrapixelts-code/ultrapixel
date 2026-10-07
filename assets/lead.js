@@ -15,6 +15,7 @@
     var set=function(n,v){var i=f.querySelector('[name="'+n+'"]');if(i)i.value=v||''};
     set('source_page',prev);set('lang',document.documentElement.lang);set('landing_page',a.landing_page);set('referrer',a.referrer);set('utm_source',a.utm_source);set('utm_medium',a.utm_medium);set('utm_campaign',a.utm_campaign);
     var t=q.get('topic'),sel=f.querySelector('[name=request_type]');if(t&&sel&&sel.querySelector('option[value="'+t+'"]'))sel.value=t;
+    var qm=q.get('msg'),ta=f.querySelector('[name=message]');if(qm&&ta)ta.value=qm;
     var sq=q.get('sector'),sc=f.querySelector('[name=sector]');if(sq&&sc)[].forEach.call(sc.options,function(o){if(o.text===sq||o.value===sq)sc.value=o.value});
     var started=false;f.addEventListener('input',function(){if(!started){started=true;window.upTrack&&upTrack('form_start',{form:location.pathname})}});
     var msg=f.querySelector('.form-msg'),say=function(k){msg.textContent=f.dataset[k];msg.hidden=false};
