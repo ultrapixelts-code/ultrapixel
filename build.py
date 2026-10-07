@@ -9,7 +9,7 @@ To change a work tile, a case study or a social tile, edit content/en.json
 (image file name in /assets, title, finishes) and run this script again.
 The scroll sequence on the homepage lives in src/film.* and is not generated.
 """
-import html, json, os, random
+import hashlib, html, json, os, random, re
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 LANGS = ["it", "en", "fr", "de"]   # every language except English is content/i18n/<lang>.json: a map from the English string to its translation
@@ -25,7 +25,21 @@ def rd(p):
         return f.read()
 
 
+_VER = {}
+
+
+def _ver(m):
+    """Stylesheets and scripts carry a short fingerprint of their content, so a browser never keeps an old copy after an update."""
+    name = m.group(1)
+    if name not in _VER:
+        src = os.path.join(ROOT, "src", name) if name.startswith("film.") else os.path.join(ROOT, "assets", name)
+        _VER[name] = hashlib.md5(open(src, "rb").read()).hexdigest()[:8] if os.path.exists(src) else ""
+    return f'/assets/{name}{"?v=" + _VER[name] if _VER[name] else ""}"'
+
+
 def wr(p, s):
+    if p.endswith(".html"):
+        s = re.sub(r'/assets/([\w.-]+\.(?:css|js))"', _ver, s)
     p = os.path.join(ROOT, p)
     os.makedirs(os.path.dirname(p), exist_ok=True)
     with open(p, "w", encoding="utf-8") as f:
