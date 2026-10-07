@@ -15,7 +15,7 @@
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Archivo-100-900-latin.woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fonts.css">
 <link rel="stylesheet" href="/assets/ml.css">
-<link rel="stylesheet" href="/assets/film.css"><link rel="preload" as="image" href="/assets/final.webp">
+<link rel="stylesheet" href="/assets/film.css"><link rel="preload" as="image" href="/assets/final.webp" fetchpriority="high">
 </head>
 <body class="">
 <header class="nav2" id="nav2">
@@ -35,19 +35,19 @@
   <span class="crop a"></span><span class="crop b"></span><div class="bar" id="bar"></div>
 
   <div class="rig" id="rig">
-   <img class="bottle" id="bottle" src="/assets/bottle.webp" alt="">
+   <img class="bottle" id="bottle" data-src="/assets/bottle.webp" alt="">
    <div class="shadow" id="shadow"></div>
    <div class="label" id="label">
     <div class="layer sheet" id="sheet" style="opacity:0"><i id="m0"></i><i id="m1"></i><i id="m2"></i><i id="m3"></i></div>
     <img class="layer" id="Lpaper" src="/assets/paper.webp" alt="">
-    <div class="layer seps" id="Lprint" style="opacity:0"><i style="background-image:url(/assets/sheet.jpg)"></i><i class="sp" style="background-image:url(/assets/sepC.jpg)"></i><i class="sp" style="background-image:url(/assets/sepM.jpg)"></i><i class="sp" style="background-image:url(/assets/sepY.jpg)"></i><i class="sp" style="background-image:url(/assets/sepK.jpg)"></i></div>
-    <img class="layer" id="Lgold" src="/assets/gold.webp" alt="" style="opacity:0">
-    <img class="layer" id="Lscreen" src="/assets/screen.webp" alt="" style="opacity:0">
-    <img class="layer" id="Lfinal" src="/assets/final.webp" alt="UltraPixel Cuvée Prestige label">
+    <div class="layer seps" id="Lprint" style="opacity:0"><i style="background-image:url(/assets/sheet.jpg)"></i><i class="sp" data-bg="/assets/sepC.jpg"></i><i class="sp" data-bg="/assets/sepM.jpg"></i><i class="sp" data-bg="/assets/sepY.jpg"></i><i class="sp" data-bg="/assets/sepK.jpg"></i></div>
+    <img class="layer" id="Lgold" data-src="/assets/gold.webp" alt="" style="opacity:0">
+    <img class="layer" id="Lscreen" data-src="/assets/screen.webp" alt="" style="opacity:0">
+    <img class="layer" id="Lfinal" fetchpriority="high" src="/assets/final.webp" alt="UltraPixel Cuvée Prestige label">
     <div class="over glint" id="glint"></div>
     <div class="over relit" id="relit"></div>
     <div class="over curve" id="curve"></div>
-    <img class="over" id="matrix" src="/assets/matrix.webp" alt="" style="opacity:0">
+    <img class="over" id="matrix" data-src="/assets/matrix.webp" alt="" style="opacity:0">
     <svg class="over" id="die" viewBox="0 0 1120 1402" style="overflow:visible;opacity:0;filter:drop-shadow(0 0 2px #1B2FBF) drop-shadow(0 0 9px #1B2FBF)"><path id="diep" pathLength="1" d="M556,46 L516,83 L493,91 L485,92 L471,103 L443,102 L414,107 L408,111 L398,111 L390,114 L373,126 L354,149 L338,152 L324,152 L319,155 L278,161 L260,167 L251,167 L236,173 L220,184 L201,204 L191,211 L175,216 L173,219 L166,219 L156,222 L153,226 L150,237 L140,245 L132,257 L115,273 L91,285 L84,286 L83,289 L64,291 L53,301 L51,305 L51,485 L54,491 L67,501 L71,508 L72,514 L72,696 L68,712 L60,721 L52,726 L49,733 L47,1060 L51,1068 L58,1075 L64,1078 L95,1083 L108,1088 L118,1095 L134,1111 L136,1117 L146,1130 L153,1147 L153,1154 L157,1161 L168,1169 L189,1172 L206,1182 L212,1188 L215,1195 L218,1196 L223,1207 L230,1216 L253,1235 L266,1240 L282,1243 L332,1245 L348,1251 L358,1259 L362,1259 L364,1263 L374,1269 L378,1269 L386,1273 L398,1274 L399,1277 L406,1279 L435,1281 L449,1285 L463,1295 L471,1297 L474,1301 L501,1311 L515,1325 L533,1336 L549,1350 L558,1355 L562,1355 L576,1346 L583,1338 L597,1331 L616,1313 L619,1313 L630,1306 L648,1301 L655,1297 L655,1295 L663,1289 L683,1281 L717,1279 L733,1274 L734,1272 L741,1272 L760,1263 L763,1258 L776,1250 L786,1247 L826,1244 L835,1241 L852,1241 L862,1238 L874,1231 L890,1217 L908,1186 L923,1176 L959,1165 L966,1157 L969,1142 L980,1120 L988,1108 L1000,1095 L1006,1093 L1014,1087 L1035,1082 L1036,1080 L1056,1078 L1064,1073 L1068,1068 L1072,1059 L1072,942 L1070,861 L1070,734 L1066,726 L1053,716 L1048,705 L1047,514 L1049,505 L1065,490 L1068,484 L1067,307 L1062,298 L1051,291 L1034,289 L1017,284 L1006,279 L997,271 L994,271 L977,249 L964,238 L962,228 L959,223 L951,220 L934,218 L924,214 L912,205 L902,193 L899,192 L886,179 L883,179 L880,176 L864,169 L843,163 L789,152 L769,150 L767,147 L762,146 L758,140 L752,136 L750,131 L744,128 L733,118 L704,106 L683,102 L652,104 L632,91 L619,86 L603,83 L600,78 L598,78 L563,46 Z" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
     <div id="stations"></div>
     <div class="ribbon" id="ribbon" style="background:linear-gradient(100deg,#7A5A1C,#C99A2E 25%,#FFF3C4 48%,#C99A2E 62%,#7A5A1C)"></div>

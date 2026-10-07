@@ -258,7 +258,7 @@ def home_ml(C, P):
     geo = (f'<style>#film .rig{{width:{fv["g"][0]}px;height:{fv["g"][1]}px;transform-origin:{fv["g"][2]}px {fv["g"][3]}px}}'
            f'#film .label{{left:{fv["g"][2] - fv["g"][4] / 2}px;top:{fv["g"][3] - fv["g"][5] / 2}px;width:{fv["g"][4]}px;height:{fv["g"][5]}px}}'
            f'#film .shadow{{left:{fv["g"][2] - fv["g"][4] * .4}px;top:{fv["g"][3] - fv["g"][5] * .38}px;width:{fv["g"][4] * .8}px;height:{fv["g"][5] * .8}px;border-radius:46%;filter:blur(30px)}}'
-           f'#film #m0{{background-image:url({fv["a"]}/sheet.jpg)}}#film .glint{{-webkit-mask-image:url({fv["a"]}/gold.webp);mask-image:url({fv["a"]}/gold.webp)}}'
+           f'#film #m0{{background-image:url({fv["a"]}/sheet.jpg)}}#film.rdy .glint{{-webkit-mask-image:url({fv["a"]}/gold.webp);mask-image:url({fv["a"]}/gold.webp)}}'
            f'#film .curve{{-webkit-mask-image:url({fv["a"]}/final.webp);mask-image:url({fv["a"]}/final.webp)}}</style>') if C["lang"] in FILM else ""
     film = (rd("src/film.html").replace("{{A}}", fv["a"]).replace("{{VB}}", fv["vb"]).replace("{{DIE}}", rd(fv["die"]).strip())
             .replace("{{G}}", ",".join(str(x) for x in fv["g"])).replace("{{GEO}}", geo).replace("{{HERO}}", hero).replace("{{RAIL}}", rail).replace("{{PANELS}}", panels)
@@ -325,7 +325,7 @@ def home_ml(C, P):
 <hr class="spl">
 <section class="sec t"><span class="mi" style="display:block;margin-bottom:26px">{e(h["social"]["eyebrow"])}</span><div class="soc">{soc}</div></section>'''
     return shell_ml(C, P, P, h["meta"], body,
-                    extra_head=f'<link rel="stylesheet" href="/assets/film.css"><link rel="preload" as="image" href="{fv["a"]}/final.webp">',
+                    extra_head=f'<link rel="stylesheet" href="/assets/film.css"><link rel="preload" as="image" href="{fv["a"]}/final.webp" fetchpriority="high">',
                     extra_foot='<script src="/assets/film.js" defer></script>')
 
 
@@ -503,7 +503,7 @@ def sustain_ml(C, P):
     rows = lambda items: '<div class="lrows">' + "".join(f'<div class="row"><strong>{e(a)}</strong><span>{e(b)}</span></div>' for a, b in items) + "</div>"
     a, b, c, d, f, g, r = (s[k] for k in ("s1", "s2", "s3", "s4", "s5", "s6", "s7"))
     stack = '<div class="stack" aria-hidden="true">' + "".join(f'<div class="ly ly{i}" style="--i:{i}"><span class="mi">{e(x)}</span></div>' for i, x in enumerate(d["layers"])) + "</div>"
-    body = (f'<section class="phead"><span class="mi">{e(s["eyebrow"])}</span><h1 class="mega">{e(s["h1a"])}<span style="display:block;color:var(--tg)">{e(s["h1b"])}</span></h1><p class="lead">{e(s["intro"])}</p>{flow}</section><hr class="spl">'
+    body = (f'<section class="phead"><span class="mi">{e(s["eyebrow"])}</span><h1 class="mega">{e(s["h1a"])}<span style="display:block;color:var(--tgl)">{e(s["h1b"])}</span></h1><p class="lead">{e(s["intro"])}</p>{flow}</section><hr class="spl">'
             + sec(1, a["h"], f'<div class="split"><div class="a"><p class="lead" style="margin-bottom:30px">{e(a["p"])}</p>{rows(a["rows"])}</div><div class="b"><figure class="lmedia" data-light><img src="/assets/{e(a["img"])}" alt="Paper fibre, macro" loading="lazy" data-par></figure></div></div>', True)
             + sec(2, b["h"], f'<p class="lead" style="color:var(--ink);max-width:54ch;font-size:clamp(20px,2.2vw,30px)">{e(b["p"])}</p><p class="mi" style="margin-top:22px">{e(b["note"])}</p>')
             + sec(3, c["h"], rows(c["rows"]), True)

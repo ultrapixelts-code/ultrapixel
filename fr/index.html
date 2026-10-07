@@ -14,7 +14,7 @@
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Archivo-100-900-latin.woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fonts.css">
 <link rel="stylesheet" href="/assets/ml.css">
-<link rel="stylesheet" href="/assets/film.css"><link rel="preload" as="image" href="/assets/fr/final.webp">
+<link rel="stylesheet" href="/assets/film.css"><link rel="preload" as="image" href="/assets/fr/final.webp" fetchpriority="high">
 </head>
 <body class="">
 <header class="nav2" id="nav2">
@@ -29,24 +29,24 @@
   <clipPath id="dieClip" clipPathUnits="objectBoundingBox"><path d="M0,.3 C0,.1 .22,0 .5,0 C.78,0 1,.1 1,.3 L1,.9 L.86,1 L.14,1 L0,.9 Z"/></clipPath>
 </defs></svg>
 
-<style>#film .rig{width:333px;height:1026px;transform-origin:167.8px 767.8px}#film .label{left:-57.19999999999999px;top:617.8px;width:450px;height:300px}#film .shadow{left:-12.199999999999989px;top:653.8px;width:360.0px;height:240.0px;border-radius:46%;filter:blur(30px)}#film #m0{background-image:url(/assets/fr/sheet.jpg)}#film .glint{-webkit-mask-image:url(/assets/fr/gold.webp);mask-image:url(/assets/fr/gold.webp)}#film .curve{-webkit-mask-image:url(/assets/fr/final.webp);mask-image:url(/assets/fr/final.webp)}</style><div id="film" data-g="333,1026,167.8,767.8,450,300,0.79,1.208">
+<style>#film .rig{width:333px;height:1026px;transform-origin:167.8px 767.8px}#film .label{left:-57.19999999999999px;top:617.8px;width:450px;height:300px}#film .shadow{left:-12.199999999999989px;top:653.8px;width:360.0px;height:240.0px;border-radius:46%;filter:blur(30px)}#film #m0{background-image:url(/assets/fr/sheet.jpg)}#film.rdy .glint{-webkit-mask-image:url(/assets/fr/gold.webp);mask-image:url(/assets/fr/gold.webp)}#film .curve{-webkit-mask-image:url(/assets/fr/final.webp);mask-image:url(/assets/fr/final.webp)}</style><div id="film" data-g="333,1026,167.8,767.8,450,300,0.79,1.208">
  <div class="stage" id="stage">
   <span class="crop a"></span><span class="crop b"></span><div class="bar" id="bar"></div>
 
   <div class="rig" id="rig">
-   <img class="bottle" id="bottle" src="/assets/fr/bottle.webp" alt="">
+   <img class="bottle" id="bottle" data-src="/assets/fr/bottle.webp" alt="">
    <div class="shadow" id="shadow"></div>
    <div class="label" id="label">
     <div class="layer sheet" id="sheet" style="opacity:0"><i id="m0"></i><i id="m1"></i><i id="m2"></i><i id="m3"></i></div>
     <img class="layer" id="Lpaper" src="/assets/fr/paper.webp" alt="">
-    <div class="layer seps" id="Lprint" style="opacity:0"><i style="background-image:url(/assets/fr/sheet.jpg)"></i><i class="sp" style="background-image:url(/assets/fr/sepC.jpg)"></i><i class="sp" style="background-image:url(/assets/fr/sepM.jpg)"></i><i class="sp" style="background-image:url(/assets/fr/sepY.jpg)"></i><i class="sp" style="background-image:url(/assets/fr/sepK.jpg)"></i></div>
-    <img class="layer" id="Lgold" src="/assets/fr/gold.webp" alt="" style="opacity:0">
-    <img class="layer" id="Lscreen" src="/assets/fr/screen.webp" alt="" style="opacity:0">
-    <img class="layer" id="Lfinal" src="/assets/fr/final.webp" alt="UltraPixel Cuvée Prestige label">
+    <div class="layer seps" id="Lprint" style="opacity:0"><i style="background-image:url(/assets/fr/sheet.jpg)"></i><i class="sp" data-bg="/assets/fr/sepC.jpg"></i><i class="sp" data-bg="/assets/fr/sepM.jpg"></i><i class="sp" data-bg="/assets/fr/sepY.jpg"></i><i class="sp" data-bg="/assets/fr/sepK.jpg"></i></div>
+    <img class="layer" id="Lgold" data-src="/assets/fr/gold.webp" alt="" style="opacity:0">
+    <img class="layer" id="Lscreen" data-src="/assets/fr/screen.webp" alt="" style="opacity:0">
+    <img class="layer" id="Lfinal" fetchpriority="high" src="/assets/fr/final.webp" alt="UltraPixel Cuvée Prestige label">
     <div class="over glint" id="glint"></div>
     <div class="over relit" id="relit"></div>
     <div class="over curve" id="curve"></div>
-    <img class="over" id="matrix" src="/assets/fr/matrix.webp" alt="" style="opacity:0">
+    <img class="over" id="matrix" data-src="/assets/fr/matrix.webp" alt="" style="opacity:0">
     <svg class="over" id="die" viewBox="0 0 1500 1000" style="overflow:visible;opacity:0;filter:drop-shadow(0 0 2px #1B2FBF) drop-shadow(0 0 9px #1B2FBF)"><path id="diep" pathLength="1" d="M744,52 L712,58 L682,72 L656,95 L641,114 L572,132 L530,147 L520,149 L390,198 L290,244 L253,265 L224,284 L184,316 L163,337 L163,343 L175,351 L178,355 L178,366 L171,385 L155,403 L137,414 L121,420 L105,423 L103,425 L97,453 L94,505 L97,546 L105,581 L116,612 L133,647 L149,673 L181,713 L209,740 L251,773 L297,802 L346,827 L405,852 L447,867 L507,885 L541,893 L631,910 L647,911 L688,920 L714,929 L747,947 L753,947 L779,932 L811,920 L852,911 L868,910 L958,893 L1019,877 L1076,858 L1089,852 L1093,852 L1171,818 L1221,790 L1257,766 L1287,742 L1319,711 L1350,672 L1365,648 L1384,609 L1398,565 L1404,526 L1405,490 L1402,454 L1395,424 L1363,415 L1349,407 L1335,395 L1326,382 L1321,367 L1321,355 L1325,350 L1336,343 L1336,338 L1306,310 L1249,268 L1205,243 L1167,224 L1086,189 L949,139 L892,122 L886,122 L861,115 L834,85 L816,71 L798,62 L777,55 Z" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
     <div id="stations"></div>
     <div class="ribbon" id="ribbon" style="background:linear-gradient(100deg,#7A5A1C,#C99A2E 25%,#FFF3C4 48%,#C99A2E 62%,#7A5A1C)"></div>

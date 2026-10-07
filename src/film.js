@@ -70,6 +70,9 @@ function frame(){
 function ask(){if(!queued){queued=true;requestAnimationFrame(frame)}}
 addEventListener("scroll",ask,{passive:true}); addEventListener("resize",ask);
 addEventListener("pointermove",e=>{lx=e.clientX/innerWidth;ly=e.clientY/innerHeight;ask()},{passive:true});
-addEventListener("load",ask); frame();
+/* the layers used only further down the sequence load after the first paint, or on the first scroll */
+let rest=false;function loadRest(){if(rest)return;rest=true;document.querySelectorAll("#film [data-src]").forEach(e=>{e.src=e.dataset.src});document.querySelectorAll("#film [data-bg]").forEach(e=>{e.style.backgroundImage=`url(${e.dataset.bg})`});$("film").classList.add("rdy");ask()}
+addEventListener("scroll",loadRest,{passive:true,once:true});
+addEventListener("load",()=>{ask();setTimeout(loadRest,1200)}); frame();
 
 })();

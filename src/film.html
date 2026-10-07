@@ -7,19 +7,19 @@
   <span class="crop a"></span><span class="crop b"></span><div class="bar" id="bar"></div>
 
   <div class="rig" id="rig">
-   <img class="bottle" id="bottle" src="{{A}}/bottle.webp" alt="">
+   <img class="bottle" id="bottle" data-src="{{A}}/bottle.webp" alt="">
    <div class="shadow" id="shadow"></div>
    <div class="label" id="label">
     <div class="layer sheet" id="sheet" style="opacity:0"><i id="m0"></i><i id="m1"></i><i id="m2"></i><i id="m3"></i></div>
     <img class="layer" id="Lpaper" src="{{A}}/paper.webp" alt="">
-    <div class="layer seps" id="Lprint" style="opacity:0"><i style="background-image:url({{A}}/sheet.jpg)"></i><i class="sp" style="background-image:url({{A}}/sepC.jpg)"></i><i class="sp" style="background-image:url({{A}}/sepM.jpg)"></i><i class="sp" style="background-image:url({{A}}/sepY.jpg)"></i><i class="sp" style="background-image:url({{A}}/sepK.jpg)"></i></div>
-    <img class="layer" id="Lgold" src="{{A}}/gold.webp" alt="" style="opacity:0">
-    <img class="layer" id="Lscreen" src="{{A}}/screen.webp" alt="" style="opacity:0">
-    <img class="layer" id="Lfinal" src="{{A}}/final.webp" alt="UltraPixel Cuvée Prestige label">
+    <div class="layer seps" id="Lprint" style="opacity:0"><i style="background-image:url({{A}}/sheet.jpg)"></i><i class="sp" data-bg="{{A}}/sepC.jpg"></i><i class="sp" data-bg="{{A}}/sepM.jpg"></i><i class="sp" data-bg="{{A}}/sepY.jpg"></i><i class="sp" data-bg="{{A}}/sepK.jpg"></i></div>
+    <img class="layer" id="Lgold" data-src="{{A}}/gold.webp" alt="" style="opacity:0">
+    <img class="layer" id="Lscreen" data-src="{{A}}/screen.webp" alt="" style="opacity:0">
+    <img class="layer" id="Lfinal" fetchpriority="high" src="{{A}}/final.webp" alt="UltraPixel Cuvée Prestige label">
     <div class="over glint" id="glint"></div>
     <div class="over relit" id="relit"></div>
     <div class="over curve" id="curve"></div>
-    <img class="over" id="matrix" src="{{A}}/matrix.webp" alt="" style="opacity:0">
+    <img class="over" id="matrix" data-src="{{A}}/matrix.webp" alt="" style="opacity:0">
     <svg class="over" id="die" viewBox="{{VB}}" style="overflow:visible;opacity:0;filter:drop-shadow(0 0 2px #1B2FBF) drop-shadow(0 0 9px #1B2FBF)"><path id="diep" pathLength="1" d="{{DIE}}" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
     <div id="stations"></div>
     <div class="ribbon" id="ribbon" style="background:linear-gradient(100deg,#7A5A1C,#C99A2E 25%,#FFF3C4 48%,#C99A2E 62%,#7A5A1C)"></div>
