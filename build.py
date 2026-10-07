@@ -74,8 +74,7 @@ LABELS = {
 
 # Scroll-film label per language. g = bottle w,h / label centre x,y in the bottle / flat label w,h / end squeeze x,y
 # (when the bottle is a photo that already wears the label, the flat label is squeezed onto it and faded out).
-FILM = {"": {"a": "/assets", "vb": "0 0 1120 1402", "die": "src/die.txt", "g": [387, 1026, 193.5, 643, 300, 375.5, 1, 1], "sw": 720, "sz": "(max-width:899px) 62vw, 620px", "qc": [(12, 24), (54, 53), (16, 72)]},
-        "fr": {"a": "/assets/fr", "vb": "0 0 1500 1000", "die": "src/die-fr.txt", "g": [333, 1026, 167.8, 767.8, 450, 300, 0.79, 1.208], "sw": 900, "sz": "(max-width:899px) 70vw, 800px", "qc": [(30, 31), (61, 52), (27, 70)]}}
+FILM = {"": {"a": "/assets", "vb": "0 0 1500 1000", "die": "src/die.txt", "g": [333, 1026, 167.8, 767.8, 450, 300, 0.79, 1.208], "sw": 900, "sz": "(max-width:899px) 70vw, 800px", "qc": [(30, 31), (61, 52), (27, 70)]}}
 PUB = {}   # launch builds: language -> public base URL of that language (set in build())
 
 
@@ -222,7 +221,7 @@ def viz(C, x):
     if hi:
         return f'<div class="viz photo" data-light data-k="{x["key"]}"><img class="cover" src="/assets/{e(hi)}" alt="" loading="lazy" data-par><span class="mi tagc">{e(ui["illustrative"])}</span><span class="mi code">{e(x["matter"])}</span></div>'
     if x["key"] == "wine":
-        inner = '<img class="flat" src="/assets/final.webp" alt="" loading="lazy" width="1120" height="1402" data-par>'; tag = ui["conceptLabel"]
+        inner = '<img class="flat" src="/assets/final.webp" alt="" loading="lazy" width="1500" height="1000" data-par>'; tag = ui["conceptLabel"]
     else:
         pos, svg = LABELS[x["key"]]; tag = ui["illustrative"]
         inner = f'<div class="obj" data-par><img src="/assets/c-{x["key"]}.webp" alt="" loading="lazy" width="600" height="920"><div class="lb wrapc" style="{pos}">{svg}</div></div>'
@@ -259,7 +258,7 @@ def home_ml(C, P):
            f'#film .label{{left:{fv["g"][2] - fv["g"][4] / 2}px;top:{fv["g"][3] - fv["g"][5] / 2}px;width:{fv["g"][4]}px;height:{fv["g"][5]}px}}'
            f'#film .shadow{{left:{fv["g"][2] - fv["g"][4] * .4}px;top:{fv["g"][3] - fv["g"][5] * .38}px;width:{fv["g"][4] * .8}px;height:{fv["g"][5] * .8}px;border-radius:46%;filter:blur(30px)}}'
            f'#film.rdy #m0{{background-image:url({fv["a"]}/sheet.jpg)}}#film.rdy .relit{{-webkit-mask-image:url({fv["a"]}/final.webp);mask-image:url({fv["a"]}/final.webp)}}#film.rdy .glint{{-webkit-mask-image:url({fv["a"]}/gold.webp);mask-image:url({fv["a"]}/gold.webp)}}'
-           f'#film.rdy .curve{{-webkit-mask-image:url({fv["a"]}/final.webp);mask-image:url({fv["a"]}/final.webp)}}</style>') if C["lang"] in FILM else ""
+           f'#film.rdy .curve{{-webkit-mask-image:url({fv["a"]}/final.webp);mask-image:url({fv["a"]}/final.webp)}}</style>')
     film = (rd("src/film.html").replace("{{SRCSET}}", f'{fv["a"]}/final-s.webp {fv["sw"]}w, {fv["a"]}/final.webp {fv["vb"].split()[2]}w').replace("{{SIZES}}", fv["sz"]).replace("{{QC}}", "".join(f'<div class="qc" style="left:{x}%;top:{y}%" data-y="{y / 100}"></div>' for x, y in fv["qc"])).replace("{{A}}", fv["a"]).replace("{{VB}}", fv["vb"]).replace("{{DIE}}", rd(fv["die"]).strip())
             .replace("{{G}}", ",".join(str(x) for x in fv["g"])).replace("{{GEO}}", geo).replace("{{HERO}}", hero).replace("{{RAIL}}", rail).replace("{{PANELS}}", panels)
             .replace("{{SCROLL}}", e(ui["scroll"])).replace("{{MATS}}", e(json.dumps(fm["mats"] + fm["mats"][:1], ensure_ascii=False))))
@@ -339,7 +338,7 @@ def wine_ml(C, P, x):
     w, ui = C["wine"], C["ui"]; he = w["hero"]
     sq = x["title"].replace("&", "%26").replace(" ", "+")
     fl = (f'<div class="wphoto" data-light><img src="/assets/{e(he["image"])}" alt="Wine and spirits bottles with textured, foiled labels" width="1800" height="1200" data-par></div>' if he.get("image")
-          else '<div class="float" id="float"><div class="tilt"><img src="/assets/final.webp" alt="UltraPixel wine label" width="1120" height="1402"><div class="gl"></div></div></div>')
+          else '<div class="float" id="float"><div class="tilt"><img src="/assets/final.webp" alt="UltraPixel wine label" width="1500" height="1000"><div class="gl"></div></div></div>')
     hero = (f'<section class="whero{" ph" if he.get("image") else ""}">{fl}'
             f'<div class="say"><span class="mi">{e(he["sector"])}</span><h1><span class="xl">{e(he["xl"])}</span><span class="sub">{e(he["subh"])}</span></h1><p class="lead">{e(he["lead"])}</p>'
             f'<div class="ctas"><a class="cta pill" href="{P}samples/?sector={sq}">{e(he["cta1"])} ↗</a><a class="cta pill ghost" href="{P}contact/?topic=quote&sector={sq}">{e(he["cta2"])} ↗</a></div></div>'
@@ -351,7 +350,7 @@ def wine_ml(C, P, x):
         codes = f'<div class="codes"><span class="mi">{e(it["shot"])}</span>{note}</div>'
         ov = f'<div class="ov"><span class="mi">{e(ui["material"])} {i+1:02d} / {len(w["finish"]["items"]):02d}</span><h2 class="rv">{e(it["title"])}</h2><p>{e(it["text"])}</p></div>'
         if it["fx"] == "cut" and not real:
-            scenes += (f'<section class="ms cut">{codes}<div class="dieb"><img src="/assets/final.webp" alt="" loading="lazy"><svg viewBox="0 0 1120 1402" aria-hidden="true"><defs><linearGradient id="specd" gradientUnits="userSpaceOnUse" x1="0" x2="1120" y1="0" y2="1402"><stop offset="0" stop-color="#22B8D6"/><stop offset=".4" stop-color="#6F5BE8"/><stop offset=".7" stop-color="#D9438F"/><stop offset="1" stop-color="#EBA43A"/></linearGradient></defs>'
+            scenes += (f'<section class="ms cut">{codes}<div class="dieb"><img src="/assets/final.webp" alt="" loading="lazy"><svg viewBox="0 0 1500 1000" aria-hidden="true"><defs><linearGradient id="specd" gradientUnits="userSpaceOnUse" x1="0" x2="1500" y1="0" y2="1000"><stop offset="0" stop-color="#22B8D6"/><stop offset=".4" stop-color="#6F5BE8"/><stop offset=".7" stop-color="#D9438F"/><stop offset="1" stop-color="#EBA43A"/></linearGradient></defs>'
                        f'<path pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" d="{rd("src/die.txt")}"/></svg></div>{ov}</section>')
         else:
             scenes += f'<section class="ms {it["fx"]}" data-light>{codes}<img class="bgi" src="/assets/{e(real or it["macro"])}" alt="{e(it["title"])}" loading="lazy">{ov}</section>'
@@ -369,7 +368,7 @@ def wine_ml(C, P, x):
             f'<section class="sec w">{top(fq["eyebrow"], fq["h2"])}<div class="faq">{"".join(f"<details><summary>{e(a)}</summary><p>{e(b)}</p></details>" for a, b in fq["items"])}</div></section>'
             + talk_ml(C, P))
     ld = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": a, "acceptedAnswer": {"@type": "Answer", "text": b}} for a, b in fq["items"]]}, ensure_ascii=False)
-    return shell_ml(C, P, f'{P}{x["slug"]}/', w["meta"], body, extra_head=f'<script type="application/ld+json">{ld}</script><link rel="preload" as="image" href="/assets/final.webp">')
+    return shell_ml(C, P, f'{P}{x["slug"]}/', w["meta"], body, extra_head=f'<script type="application/ld+json">{ld}</script>')
 
 
 # the master design system is applied to the homepage and Wine & Spirits first

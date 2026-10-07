@@ -13,8 +13,20 @@
     "legalName": "UltraPixel Srl",
     "launchUrl": "https://ultrapixel.it",
     "mainLang": "it",
-    "countryDomains": {"fr": "https://ultrapixel.fr"},
-    "offices": [{"name": "UltraPixel France", "lang": "fr", "address": "11 Rue Pouteau, 69001 Lyon, France", "street": "11 Rue Pouteau", "postalCode": "69001", "locality": "Lyon", "country": "FR"}],
+    "countryDomains": {
+      "fr": "https://ultrapixel.fr"
+    },
+    "offices": [
+      {
+        "name": "UltraPixel France",
+        "lang": "fr",
+        "address": "11 Rue Pouteau, 69001 Lyon, France",
+        "street": "11 Rue Pouteau",
+        "postalCode": "69001",
+        "locality": "Lyon",
+        "country": "FR"
+      }
+    ],
     "blockAiTraining": true,
     "founded": "2013",
     "locality": "San Dorligo della Valle",
@@ -116,87 +128,87 @@
       "items": [
         [
           "Multicolour digital printing",
-          "Blacks, greys and all illustrated parts, including the fine landscape.",
-          17,
-          22
+          "Deep greens, text and every printed element, down to the finest rules.",
+          10.2,
+          44
         ],
         [
           "Premium textured paper",
           "Ivory natural stock with visible fibre.",
-          30,
-          60
+          37.7,
+          70.9
         ],
         [
           "Hot foil gold",
           "Logo, frames, flourishes, leaves, grapes and lettering.",
-          51,
-          18
+          49.9,
+          40.9
         ],
         [
           "Foil and relief combined",
           "Gold that also rises from the surface.",
-          67,
-          23
+          21.3,
+          65.5
         ],
         [
           "Embossing",
           "Raised flourishes, side elements and some lettering.",
-          90,
-          43
+          73.4,
+          66.4
         ],
         [
           "Debossing",
           "Decorative areas pressed into the paper.",
-          9,
-          43
+          24,
+          28.9
         ],
         [
           "Opaque screen printing",
-          "Dense black and blue in the lower field and the medallion.",
-          23,
-          62
+          "Dense deep green in the house name and the medallion.",
+          50.2,
+          16.4
         ],
         [
           "High-build screen varnish",
-          "Floral motifs with a strong tactile relief.",
-          80,
-          69
+          "House-name lettering with a strong tactile relief.",
+          37.7,
+          52.5
         ],
         [
           "Selective screen varnish",
           "Gloss against matt on the dark areas.",
-          86,
-          61
+          66.9,
+          52.5
         ],
         [
           "Microtexture",
           "Very fine relief patterns in grounds and side panels.",
-          9,
-          76
+          83.6,
+          47.6
         ],
         [
           "Raised tactile details",
-          "Raised dots under “Cuvée Prestige”.",
-          52,
-          65
+          "Raised dots along the perimeter rule.",
+          22.2,
+          81.6
         ],
         [
           "Complex shaped die-cut",
           "A fully contoured, non-rectangular profile.",
-          51,
-          3
+          62.7,
+          13.2
         ],
         [
           "Precision die-cutting",
           "Points, curves and recesses on the perimeter.",
-          53,
-          95
+          50.2,
+          92.8
         ],
         [
           "Multi-process registration",
           "Foil, relief, screen and print landing together.",
-          50,
-          43
+          56.7,
+          46.7
         ]
       ]
     },
@@ -3095,7 +3107,7 @@
       [
         "02 / DIGITAL",
         "Up to 8 colours.",
-        "High-resolution digital printing, up to eight colours in register: grounds, blacks, greys and every line of the landscape.",
+        "High-resolution digital printing, up to eight colours in register: grounds, solids, text and every fine rule.",
         "Variable data • short runs • industrial volumes"
       ],
       [
