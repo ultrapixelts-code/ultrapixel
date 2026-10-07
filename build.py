@@ -74,8 +74,8 @@ LABELS = {
 
 # Scroll-film label per language. g = bottle w,h / label centre x,y in the bottle / flat label w,h / end squeeze x,y
 # (when the bottle is a photo that already wears the label, the flat label is squeezed onto it and faded out).
-FILM = {"": {"a": "/assets", "vb": "0 0 1120 1402", "die": "src/die.txt", "g": [387, 1026, 193.5, 643, 300, 375.5, 1, 1], "sw": 720, "sz": "(max-width:899px) 62vw, 620px"},
-        "fr": {"a": "/assets/fr", "vb": "0 0 1500 1000", "die": "src/die-fr.txt", "g": [333, 1026, 167.8, 767.8, 450, 300, 0.79, 1.208], "sw": 900, "sz": "(max-width:899px) 70vw, 800px"}}
+FILM = {"": {"a": "/assets", "vb": "0 0 1120 1402", "die": "src/die.txt", "g": [387, 1026, 193.5, 643, 300, 375.5, 1, 1], "sw": 720, "sz": "(max-width:899px) 62vw, 620px", "qc": [(12, 24), (54, 53), (16, 72)]},
+        "fr": {"a": "/assets/fr", "vb": "0 0 1500 1000", "die": "src/die-fr.txt", "g": [333, 1026, 167.8, 767.8, 450, 300, 0.79, 1.208], "sw": 900, "sz": "(max-width:899px) 70vw, 800px", "qc": [(30, 31), (61, 52), (27, 70)]}}
 PUB = {}   # launch builds: language -> public base URL of that language (set in build())
 
 
@@ -260,7 +260,7 @@ def home_ml(C, P):
            f'#film .shadow{{left:{fv["g"][2] - fv["g"][4] * .4}px;top:{fv["g"][3] - fv["g"][5] * .38}px;width:{fv["g"][4] * .8}px;height:{fv["g"][5] * .8}px;border-radius:46%;filter:blur(30px)}}'
            f'#film.rdy #m0{{background-image:url({fv["a"]}/sheet.jpg)}}#film.rdy .relit{{-webkit-mask-image:url({fv["a"]}/final.webp);mask-image:url({fv["a"]}/final.webp)}}#film.rdy .glint{{-webkit-mask-image:url({fv["a"]}/gold.webp);mask-image:url({fv["a"]}/gold.webp)}}'
            f'#film.rdy .curve{{-webkit-mask-image:url({fv["a"]}/final.webp);mask-image:url({fv["a"]}/final.webp)}}</style>') if C["lang"] in FILM else ""
-    film = (rd("src/film.html").replace("{{SRCSET}}", f'{fv["a"]}/final-s.webp {fv["sw"]}w, {fv["a"]}/final.webp {fv["vb"].split()[2]}w').replace("{{SIZES}}", fv["sz"]).replace("{{A}}", fv["a"]).replace("{{VB}}", fv["vb"]).replace("{{DIE}}", rd(fv["die"]).strip())
+    film = (rd("src/film.html").replace("{{SRCSET}}", f'{fv["a"]}/final-s.webp {fv["sw"]}w, {fv["a"]}/final.webp {fv["vb"].split()[2]}w').replace("{{SIZES}}", fv["sz"]).replace("{{QC}}", "".join(f'<div class="qc" style="left:{x}%;top:{y}%" data-y="{y / 100}"></div>' for x, y in fv["qc"])).replace("{{A}}", fv["a"]).replace("{{VB}}", fv["vb"]).replace("{{DIE}}", rd(fv["die"]).strip())
             .replace("{{G}}", ",".join(str(x) for x in fv["g"])).replace("{{GEO}}", geo).replace("{{HERO}}", hero).replace("{{RAIL}}", rail).replace("{{PANELS}}", panels)
             .replace("{{SCROLL}}", e(ui["scroll"])).replace("{{MATS}}", e(json.dumps(fm["mats"] + fm["mats"][:1], ensure_ascii=False))))
     an = h["anatomy"]
