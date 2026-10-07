@@ -12,9 +12,116 @@
 <meta name="theme-color" content="#F4F4F0">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Archivo-100-900-latin.woff2" crossorigin>
-<link rel="stylesheet" href="/assets/fonts.css">
+<style>@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url(/assets/fonts/Archivo-100-900-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url(/assets/fonts/Archivo-100-900-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'DM Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/DMMono-400-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'DM Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/DMMono-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'DM Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/DMMono-500-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'DM Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/DMMono-500-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
 <link rel="stylesheet" href="/assets/ml.css">
-<link rel="stylesheet" href="/assets/film.css"><link rel="preload" as="image" href="/assets/final.webp" fetchpriority="high">
+<style>/* ---------- film ---------- */
+#film{height:1000vh;position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:
+  radial-gradient(120% 80% at 62% 45%,#F7F8F8 0%,var(--sheet) 55%,var(--sheet-2) 100%)}
+/* crop marks: the stage is a press sheet */
+.crop{position:absolute;width:22px;height:22px;border:0 solid var(--ink);opacity:.35}
+.crop.a{left:14px;bottom:14px;border-left-width:1px;border-bottom-width:1px}
+.crop.b{right:14px;bottom:14px;border-right-width:1px;border-bottom-width:1px}
+.bar{position:absolute;left:0;bottom:0;height:3px;background:var(--reflex);width:0;z-index:5}
+
+.rig{position:absolute;left:0;top:0;width:387px;height:1026px;transform-origin:193.5px 643px}
+.bottle{position:absolute;inset:0;width:100%;height:100%;display:block}
+.shadow{position:absolute;left:57.5px;top:471px;width:272px;height:346px;background:#0b1220;filter:blur(26px);opacity:0;transform:translate(14px,22px)}
+.label{position:absolute;left:43.5px;top:455.25px;width:300px;height:375.5px;transform-style:preserve-3d}
+.layer,.over{position:absolute;inset:0;width:100%;height:100%;max-width:none;display:block}
+.sheet i{position:absolute;inset:0;display:block}
+#m0{background:url(/assets/sheet.jpg) center/100% 100%}
+#m1{background:linear-gradient(135deg,#fff,#EDF1F4)}
+#m2{background:linear-gradient(105deg,rgba(255,255,255,.5) 8%,rgba(159,196,220,.2) 30%,rgba(159,196,220,.26) 70%,rgba(255,255,255,.35));box-shadow:inset 0 0 0 1.5px #5f8196}
+#m3{background:linear-gradient(110deg,#8f979e,#f1f4f6 30%,#a9b1b8 50%,#eef1f3 72%,#868e95)}
+#film:not(.rdy) .glint{display:none}
+#film.rdy .glint{-webkit-mask:url(/assets/gold.webp) center/100% 100%;mask:url(/assets/gold.webp) center/100% 100%}
+.glint{background:linear-gradient(105deg,transparent 38%,rgba(255,248,214,.8) 50%,transparent 62%) 0 0/300% 100% no-repeat;pointer-events:none}
+#film.rdy .curve{-webkit-mask:url(/assets/final.webp) center/100% 100%;mask:url(/assets/final.webp) center/100% 100%}
+#film:not(.rdy) .curve{display:none}
+.curve{background:linear-gradient(90deg,rgba(0,0,0,.6),rgba(0,0,0,0) 24%,rgba(255,255,255,.08) 44%,rgba(0,0,0,0) 72%,rgba(0,0,0,.62));pointer-events:none}
+.head,.sq{position:absolute;top:-6%;height:112%;width:30px;left:0;background:linear-gradient(90deg,#2a3038,#59626d 45%,#20252b);border-radius:3px;box-shadow:0 8px 20px rgba(0,0,0,.3);opacity:0}
+.head::after{content:"";position:absolute;inset:8% 12px;background:repeating-linear-gradient(180deg,#00A0DC 0 6px,#D6006F 6px 12px,#F5D800 12px 18px,#111 18px 24px)}
+.seps{isolation:isolate}.seps i{position:absolute;inset:0;display:block;background-size:100% 100%}.seps .sp{mix-blend-mode:multiply}
+.stn{position:absolute;left:-7%;width:114%;height:7px;top:-3px;border-radius:2px;opacity:0;box-shadow:0 0 0 1px rgba(16,20,24,.35),0 5px 12px rgba(0,0,0,.25)}
+.sq{width:16px;background:linear-gradient(90deg,#0d1016,#232a3a 50%,#0d1016)}
+.ribbon{position:absolute;left:-12%;width:124%;height:74px;top:0;opacity:0;box-shadow:0 10px 22px rgba(0,0,0,.28)}
+.scan{position:absolute;left:-6%;width:112%;height:2px;top:0;background:var(--reflex);box-shadow:0 0 0 1px rgba(255,255,255,.5),0 0 22px 6px rgba(27,47,191,.55);opacity:0}
+.qc{position:absolute;display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:8px;color:#fff;opacity:0;transition:opacity .25s;white-space:nowrap}
+.qc::before{content:"";width:9px;height:9px;border:1px solid #fff;border-radius:50%;box-shadow:0 0 0 2px var(--reflex)}
+.qc span{background:var(--reflex);padding:2px 5px}
+
+.panel{position:absolute;left:var(--gut);right:var(--gut);bottom:9vh;opacity:0;transform:translateY(14px);transition:opacity .45s,transform .45s;pointer-events:none;z-index:4}
+.panel.on{opacity:1;transform:none;pointer-events:auto}
+.panel .mono{color:var(--reflex);display:block;margin-bottom:14px}
+.panel h2,.panel h1{font-family:var(--display);font-weight:400;margin:0;line-height:1.02;letter-spacing:-.01em;text-wrap:balance}
+.panel h1{font-size:clamp(38px,6.2vw,86px)}
+.panel h2{font-size:clamp(34px,5vw,68px)}
+.panel p{margin:16px 0 0;color:var(--ink-soft);max-width:34ch}
+.panel small{display:block;margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-soft)}
+.hero{top:84px;bottom:auto}
+.hint{position:absolute;left:var(--gut);bottom:26px;z-index:4;color:var(--ink-soft);transition:opacity .3s}
+.chips{display:flex;gap:6px;margin-top:18px;flex-wrap:wrap}
+.chips b{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:500 10px var(--mono);color:#fff;border:1px solid rgba(16,20,24,.25);opacity:.12;transition:opacity .3s}
+.chips b.on{opacity:1}
+.mat{display:inline-block;margin-top:16px;padding:6px 10px;border:1px solid var(--ink);font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+@media(min-width:900px){
+  .panel{right:auto;bottom:auto;top:50%;width:min(36vw,470px);transform:translateY(calc(-50% + 14px))}
+  .panel.on{transform:translateY(-50%)}
+  .hero{top:50%}
+}
+
+</style><link rel="preload" as="image" href="/assets/final.webp" imagesrcset="/assets/final-s.webp 720w, /assets/final.webp 1120w" imagesizes="(max-width:899px) 62vw, 620px" fetchpriority="high">
 </head>
 <body class="">
 <header class="nav2" id="nav2">
@@ -42,7 +149,7 @@
     <div class="layer seps" id="Lprint" style="opacity:0"><i style="background-image:url(/assets/sheet.jpg)"></i><i class="sp" data-bg="/assets/sepC.jpg"></i><i class="sp" data-bg="/assets/sepM.jpg"></i><i class="sp" data-bg="/assets/sepY.jpg"></i><i class="sp" data-bg="/assets/sepK.jpg"></i></div>
     <img class="layer" id="Lgold" data-src="/assets/gold.webp" alt="" style="opacity:0">
     <img class="layer" id="Lscreen" data-src="/assets/screen.webp" alt="" style="opacity:0">
-    <img class="layer" id="Lfinal" fetchpriority="high" src="/assets/final.webp" alt="UltraPixel Cuvée Prestige label">
+    <img class="layer" id="Lfinal" fetchpriority="high" srcset="/assets/final-s.webp 720w, /assets/final.webp 1120w" sizes="(max-width:899px) 62vw, 620px" src="/assets/final.webp" alt="UltraPixel Cuvée Prestige label">
     <div class="over glint" id="glint"></div>
     <div class="over relit" id="relit"></div>
     <div class="over curve" id="curve"></div>

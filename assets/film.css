@@ -21,7 +21,9 @@
 #film:not(.rdy) .glint{display:none}
 #film.rdy .glint{-webkit-mask:url(/assets/gold.webp) center/100% 100%;mask:url(/assets/gold.webp) center/100% 100%}
 .glint{background:linear-gradient(105deg,transparent 38%,rgba(255,248,214,.8) 50%,transparent 62%) 0 0/300% 100% no-repeat;pointer-events:none}
-.curve{-webkit-mask:url(/assets/final.webp) center/100% 100%;mask:url(/assets/final.webp) center/100% 100%;background:linear-gradient(90deg,rgba(0,0,0,.6),rgba(0,0,0,0) 24%,rgba(255,255,255,.08) 44%,rgba(0,0,0,0) 72%,rgba(0,0,0,.62));pointer-events:none}
+#film.rdy .curve{-webkit-mask:url(/assets/final.webp) center/100% 100%;mask:url(/assets/final.webp) center/100% 100%}
+#film:not(.rdy) .curve{display:none}
+.curve{background:linear-gradient(90deg,rgba(0,0,0,.6),rgba(0,0,0,0) 24%,rgba(255,255,255,.08) 44%,rgba(0,0,0,0) 72%,rgba(0,0,0,.62));pointer-events:none}
 .head,.sq{position:absolute;top:-6%;height:112%;width:30px;left:0;background:linear-gradient(90deg,#2a3038,#59626d 45%,#20252b);border-radius:3px;box-shadow:0 8px 20px rgba(0,0,0,.3);opacity:0}
 .head::after{content:"";position:absolute;inset:8% 12px;background:repeating-linear-gradient(180deg,#00A0DC 0 6px,#D6006F 6px 12px,#F5D800 12px 18px,#111 18px 24px)}
 .seps{isolation:isolate}.seps i{position:absolute;inset:0;display:block;background-size:100% 100%}.seps .sp{mix-blend-mode:multiply}

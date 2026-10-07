@@ -74,8 +74,8 @@ LABELS = {
 
 # Scroll-film label per language. g = bottle w,h / label centre x,y in the bottle / flat label w,h / end squeeze x,y
 # (when the bottle is a photo that already wears the label, the flat label is squeezed onto it and faded out).
-FILM = {"": {"a": "/assets", "vb": "0 0 1120 1402", "die": "src/die.txt", "g": [387, 1026, 193.5, 643, 300, 375.5, 1, 1]},
-        "fr": {"a": "/assets/fr", "vb": "0 0 1500 1000", "die": "src/die-fr.txt", "g": [333, 1026, 167.8, 767.8, 450, 300, 0.79, 1.208]}}
+FILM = {"": {"a": "/assets", "vb": "0 0 1120 1402", "die": "src/die.txt", "g": [387, 1026, 193.5, 643, 300, 375.5, 1, 1], "sw": 720, "sz": "(max-width:899px) 62vw, 620px"},
+        "fr": {"a": "/assets/fr", "vb": "0 0 1500 1000", "die": "src/die-fr.txt", "g": [333, 1026, 167.8, 767.8, 450, 300, 0.79, 1.208], "sw": 900, "sz": "(max-width:899px) 70vw, 800px"}}
 PUB = {}   # launch builds: language -> public base URL of that language (set in build())
 
 
@@ -169,7 +169,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
 <meta name="theme-color" content="#F4F4F0">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Archivo-100-900-latin.woff2" crossorigin>
-<link rel="stylesheet" href="/assets/fonts.css">
+<style>{rd("assets/fonts.css")}</style>
 <link rel="stylesheet" href="/assets/ml.css">
 {extra_head}
 </head>
@@ -259,8 +259,8 @@ def home_ml(C, P):
            f'#film .label{{left:{fv["g"][2] - fv["g"][4] / 2}px;top:{fv["g"][3] - fv["g"][5] / 2}px;width:{fv["g"][4]}px;height:{fv["g"][5]}px}}'
            f'#film .shadow{{left:{fv["g"][2] - fv["g"][4] * .4}px;top:{fv["g"][3] - fv["g"][5] * .38}px;width:{fv["g"][4] * .8}px;height:{fv["g"][5] * .8}px;border-radius:46%;filter:blur(30px)}}'
            f'#film #m0{{background-image:url({fv["a"]}/sheet.jpg)}}#film.rdy .glint{{-webkit-mask-image:url({fv["a"]}/gold.webp);mask-image:url({fv["a"]}/gold.webp)}}'
-           f'#film .curve{{-webkit-mask-image:url({fv["a"]}/final.webp);mask-image:url({fv["a"]}/final.webp)}}</style>') if C["lang"] in FILM else ""
-    film = (rd("src/film.html").replace("{{A}}", fv["a"]).replace("{{VB}}", fv["vb"]).replace("{{DIE}}", rd(fv["die"]).strip())
+           f'#film.rdy .curve{{-webkit-mask-image:url({fv["a"]}/final.webp);mask-image:url({fv["a"]}/final.webp)}}</style>') if C["lang"] in FILM else ""
+    film = (rd("src/film.html").replace("{{SRCSET}}", f'{fv["a"]}/final-s.webp {fv["sw"]}w, {fv["a"]}/final.webp {fv["vb"].split()[2]}w').replace("{{SIZES}}", fv["sz"]).replace("{{A}}", fv["a"]).replace("{{VB}}", fv["vb"]).replace("{{DIE}}", rd(fv["die"]).strip())
             .replace("{{G}}", ",".join(str(x) for x in fv["g"])).replace("{{GEO}}", geo).replace("{{HERO}}", hero).replace("{{RAIL}}", rail).replace("{{PANELS}}", panels)
             .replace("{{SCROLL}}", e(ui["scroll"])).replace("{{MATS}}", e(json.dumps(fm["mats"] + fm["mats"][:1], ensure_ascii=False))))
     an = h["anatomy"]
@@ -325,7 +325,7 @@ def home_ml(C, P):
 <hr class="spl">
 <section class="sec t"><span class="mi" style="display:block;margin-bottom:26px">{e(h["social"]["eyebrow"])}</span><div class="soc">{soc}</div></section>'''
     return shell_ml(C, P, P, h["meta"], body,
-                    extra_head=f'<link rel="stylesheet" href="/assets/film.css"><link rel="preload" as="image" href="{fv["a"]}/final.webp" fetchpriority="high">',
+                    extra_head=f'<style>{rd("src/film.css")}</style><link rel="preload" as="image" href="{fv["a"]}/final.webp" imagesrcset="{fv["a"]}/final-s.webp {fv["sw"]}w, {fv["a"]}/final.webp {fv["vb"].split()[2]}w" imagesizes="{fv["sz"]}" fetchpriority="high">',
                     extra_foot='<script src="/assets/film.js" defer></script>')
 
 
