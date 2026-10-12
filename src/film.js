@@ -52,7 +52,7 @@ function frame(){
   const sv=ease(seg(t,4.4,4.8))*(1-ease(seg(t,5.4,5.8)));
   const hk=1-seg(t,.15,.7);
   $("label").style.transform=sv?`perspective(1300px) rotateY(${-56*sv}deg) rotateX(${7*sv}deg)`:hk>0?`perspective(1200px) rotateY(${(lx-.5)*18*hk}deg) rotateX(${-(ly-.5)*12*hk}deg)`:photo&&zout>0?`scale(${mix(1,SX,zout)},${mix(1,SY,zout)})`:"none";
-  $("label").style.opacity=photo?1-seg(t,7.95,8.35):1;
+  $("label").style.opacity=photo?1-seg(t,7.85,8.12):1;
   const rl=$("relit"); rl.style.opacity=build?0:.9; rl.style.setProperty("--lx",(lx*100).toFixed(1)+"%"); rl.style.setProperty("--ly",(ly*100).toFixed(1)+"%");
   zs.forEach((e,i)=>e.style.transform=sv?`translateZ(${i*26*sv}px)`:"none"); glint.style.transform=sv?`translateZ(${4*26*sv+1}px)`:"none";
   $("shadow").style.opacity=.3*off*(1-sv);
