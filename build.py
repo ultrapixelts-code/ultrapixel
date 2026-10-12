@@ -74,7 +74,7 @@ LABELS = {
 
 # Scroll-film label per language. g = bottle w,h / label centre x,y in the bottle / flat label w,h / end squeeze x,y
 # (when the bottle is a photo that already wears the label, the flat label is squeezed onto it and faded out).
-FILM = {"": {"a": "/assets", "vb": "0 0 1500 1000", "die": "src/die.txt", "g": [336.5, 1026, 167.7, 812.4, 450, 300, 0.751, 0.973], "sw": 900, "sz": "(max-width:899px) 70vw, 800px", "qc": [(24, 16), (62, 40), (30, 86)]}}
+FILM = {"": {"a": "/assets", "vb": "0 0 1500 1000", "die": "src/die.txt", "g": [336.5, 1026, 167.7, 812.4, 450, 300, 0.751, 0.948], "sw": 900, "sz": "(max-width:899px) 70vw, 800px", "qc": [(22, 12), (62, 38), (28, 84)]}}
 PUB = {}   # launch builds: language -> public base URL of that language (set in build())
 
 

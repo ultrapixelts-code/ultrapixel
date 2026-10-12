@@ -22,6 +22,9 @@ cx=(xl+xr)/2;hw=(xr-xl)/2;R=hw*1.04;pm=np.arcsin(hw/R)
 F=cv2.imread('clean.png').astype(np.float32);lab0=np.load('lab0.npy').astype(np.float32)
 x0,y0,w0,h0=cv2.boundingRect(lab0.astype(np.uint8))
 F=F[y0:y0+h0,x0:x0+w0];M0=lab0[y0:y0+h0,x0:x0+w0]
+# pre-shrink with area averaging so the fine embossed lines do not alias when wrapped onto the small bottle
+tw=int((xr-xl)*1.3);th=int(h0*tw/w0)
+F=cv2.resize(F,(tw,th),interpolation=cv2.INTER_AREA);M0=cv2.resize(M0,(tw,th),interpolation=cv2.INTER_AREA);w0,h0=tw,th
 yy,xx=np.mgrid[0:H,0:W].astype(np.float32)
 t=np.clip((xx-cx)/R,-.999,.999);u=(np.arcsin(t)/pm+1)/2
 vv=(yy-T[None,:])/(Bo-T)[None,:]

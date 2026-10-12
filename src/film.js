@@ -60,7 +60,7 @@ function frame(){
   /* die */
   const pD=seg(t,5.75,6.25), fall=seg(t,6.25,6.65);
   $("diep").setAttribute("stroke-dashoffset",1-pD); $("die").style.opacity=(t>5.7&&t<6.7)?1-seg(t,6.45,6.7):0;
-  const dim=seg(t,5.55,5.8)*(1-seg(t,6.3,6.55)), fl=dim?`brightness(${1-.42*dim}) saturate(${1-.5*dim})`:"none"; Lf.style.filter=fl; sheet.style.filter=fl; $("matrix").style.filter=fl; glint.style.visibility=dim>.05?"hidden":"visible";
+  const dim=seg(t,5.55,5.8)*(1-seg(t,6.3,6.55)), fl=dim?`brightness(${1-.42*dim}) saturate(${1-.5*dim})`:""; Lf.style.filter=fl; sheet.style.filter=fl; $("matrix").style.filter=fl; glint.style.visibility=dim>.05?"hidden":"visible";
   const mx=$("matrix"); mx.style.opacity=t>=6.25&&fall<1?1-fall:0; mx.style.transform=`translate(${18*fall}px,${150*fall}px) rotate(${9*fall}deg)`;
 
   /* scan */
