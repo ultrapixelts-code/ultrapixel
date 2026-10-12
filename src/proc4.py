@@ -19,6 +19,10 @@ n,cc,st,_=cv2.connectedComponentsWithStats(lab0);k=1+np.argmax(st[1:,4]);lab0=(c
 cn,_=cv2.findContours(lab0,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
 poly=cv2.approxPolyDP(max(cn,key=cv2.contourArea),3.0,True)
 lab0[:]=0;cv2.fillPoly(lab0,[poly],1);lab0=cv2.erode(lab0,np.ones((3,3),np.uint8))
+# replace the traced outline with the geometric die: a true rectangle with equal 45-degree chamfers
+X0,Y0,X1,Y1,C=15,11,1524,991,82
+die=np.array([[X0+C,Y0],[X1-C,Y0],[X1,Y0+C],[X1,Y1-C],[X1-C,Y1],[X0+C,Y1],[X0,Y1-C],[X0,Y0+C]],np.int32)
+lab0[:]=0;cv2.fillPoly(lab0,[die],1)
 x,y,w,h=cv2.boundingRect(lab0);print('label',x,y,w,h,'poly pts',len(poly))
 # --- remove the appellation and side texts
 img=src0.copy()
@@ -84,7 +88,7 @@ scr=np.clip(src.astype(np.float32)*.88+np.array([150,190,170.])*(bev*.6+sheen*.1
 Image.fromarray(paper[...,::-1]).save('a/sheet.jpg',quality=84)
 save('paper.webp',paper,la);save('matrix.webp',paper,1-la)
 save('gold.webp',src,ga*la);save('screen.webp',scr,sa*la);save('final.webp',src,la,90)
-cnts,_=cv2.findContours(lab,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE);c=cv2.approxPolyDP(max(cnts,key=cv2.contourArea),1.0,True)[:,0]
+cnts,_=cv2.findContours(lab,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE);c=cv2.approxPolyDP(max(cnts,key=cv2.contourArea),2.0,True)[:,0]
 open('a/die.txt','w').write('M'+' L'.join(f'{p[0]},{p[1]}' for p in c)+' Z');print('die pts',len(c))
 def over(b,f,a):a=a[...,None];return (b*(1-a)+f*a)
 srcf=src.astype(np.float32)
