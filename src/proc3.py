@@ -23,6 +23,8 @@ for (x0,y0,x1,y1) in boxes:
     out=cv2.inpaint(reg,mk,6,cv2.INPAINT_TELEA).astype(np.float32)
     rng=np.random.default_rng(2);n=cv2.GaussianBlur(rng.normal(0,1,reg.shape[:2]).astype(np.float32),(0,0),.9)*4
     img[y0:y1,x0:x1]=np.clip(out+n[...,None]*(mk[...,None]>0),0,255).astype(np.uint8)
+from grade import grade
+img=grade(img)
 cv2.imwrite('clean.png',img)
 # place on the 1500x1000 canvas with a rounded-rectangle die
 OW,OH=1500,1000;LW,LH=1340,int(round(1340*h0/w0));ox,oy=(OW-LW)//2,(OH-LH)//2

@@ -34,6 +34,9 @@ for (a,b,c2,d) in [(290,672,420,700),(205,762,262,806),(455,762,515,806)]:
     vv=hv[...,2].astype(np.int16);md=cv2.medianBlur(hv[...,2],15).astype(np.int16)
     mk=cv2.dilate((vv<md-20).astype(np.uint8),np.ones((3,3),np.uint8))
     img[b:d,a:c2]=cv2.inpaint(reg,mk,4,cv2.INPAINT_TELEA)
+from grade import grade
+lm=np.zeros(img.shape[:2],bool);lm[669:918,209:509]=True;lm&=sil>.5
+img=grade(img,lm)
 pad=12;xa,xb=int(cx-hw.max()-pad),int(cx+hw.max()+pad);ya,yb=max(0,y0-pad),min(H,y1+pad)
 rgba=np.dstack([img[...,::-1],(sil*255).astype(np.uint8)])[ya:yb,xa:xb]
 Image.fromarray(rgba).save('a/bottle.webp',quality=90,method=5)
