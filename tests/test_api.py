@@ -113,3 +113,17 @@ def test_ricevimento_due_scansioni_via_http(client, conn, ids, actors):
     assert (r["metri_residui"], r["lotto_fornitore"], r["codice"]) == (500, "L9", "A-01-02")
     n = conn.execute("SELECT count(*) n FROM wms.scan_events WHERE device_id=%s", (ids["devices"]["Postazione ricevimento"],)).fetchone()["n"]
     assert n == 2
+
+
+def test_postazione_senza_badge(client, conn, ids, actors):
+    """Un solo operatore: la postazione lavora a suo nome senza login, i permessi restano lato server."""
+    from wms import demo
+    b = receive(conn, actors, ids, 100)[0]
+    madiwor.import_job(conn, seed.load_job_fixture(), "FIXTURE")
+    demo.single_operator(conn)
+    h = H(ids, "Postazione Xeikon")
+    assert client.get("/api/stato", headers=h).json["senza_badge"] is True
+    assert client.post("/api/scan", json={"code": "4515", "client_scan_id": str(uuid.uuid4())}, headers=h).json["esito"] == "INFO"
+    r = client.post("/api/scan", json={"code": b["barcode"], "client_scan_id": str(uuid.uuid4())}, headers=h).json
+    assert r["esito"] == "OK"
+    assert client.post("/api/scan", json={"code": "x"}, headers={"X-Device-Token": "sbagliato"}).status_code == 403

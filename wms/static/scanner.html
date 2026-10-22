@@ -5,47 +5,58 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Scanner magazzino</title>
 <link rel="manifest" href="/static/manifest.json">
-<meta name="theme-color" content="#2f6feb">
+<meta name="theme-color" content="#1a1f24">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;800&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <link rel="stylesheet" href="/static/scanner.css">
 </head>
 <body>
-<header class="top">
-  <div class="brand">Ultra<span>Pixel</span> <small>magazzino</small></div>
+<header class="bar">
+  <div class="station">
+    <span class="cmyk" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span id="station">UltraPixel</span>
+  </div>
   <div class="ctx" id="ctx"></div>
-  <div class="who"><span id="net" class="net on">online</span><span id="queue" class="queue" hidden></span>
-    <span id="who"></span><button id="logout" class="link" hidden>Esci</button></div>
+  <div class="state">
+    <span id="queue" class="queue" hidden></span>
+    <span id="net" class="net">in linea</span>
+    <button id="logout" class="link" hidden>Esci</button>
+  </div>
 </header>
 
 <main>
-  <section id="setup" class="panel" hidden>
-    <h1>Registra questa postazione</h1>
-    <p>Incolla il codice della postazione ricevuto dal responsabile. Si fa una volta sola.</p>
-    <input id="devtoken" autocomplete="off" placeholder="codice postazione">
-    <button id="savetoken" class="btn">Salva</button>
+  <section id="setup" class="setup" hidden>
+    <h1>Collega questa postazione</h1>
+    <p>Incolla il codice postazione. Si fa una volta sola su questo computer.</p>
+    <input id="devtoken" autocomplete="off" placeholder="Codice postazione">
+    <button id="savetoken" class="btn">Collega</button>
   </section>
 
   <section id="scanbox" class="scanbox">
-    <label for="scan" id="scanlabel">SCANSIONA IL TUO BADGE</label>
+    <label for="scan" id="scanlabel">Leggi un codice</label>
     <input id="scan" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="none">
   </section>
 
   <section id="result" class="result idle" aria-live="assertive">
+    <span class="mark tl"></span><span class="mark tr"></span><span class="mark bl"></span><span class="mark br"></span>
     <div class="r-title" id="rtitle">Pronto</div>
-    <div class="r-msg" id="rmsg"></div>
+    <div class="r-msg" id="rmsg">Leggi una commessa, una bobina o un'ubicazione.</div>
     <form id="ask" class="ask" hidden></form>
     <ol id="choices" class="choices" hidden></ol>
-    <div id="detail" class="detail"></div>
   </section>
 
+  <section id="detail" class="detail"></section>
+
   <section id="review" class="review" hidden>
-    <h2>Da rivedere (registrate offline e rifiutate)</h2>
+    <h2>Letture fatte senza rete e non accettate</h2>
     <ul id="reviewlist"></ul>
   </section>
 </main>
 
 <footer class="keys">
-  <span><b>Invio</b> conferma</span><span><b>Esc</b> annulla modulo</span><span><b>1-9</b> scegli</span>
-  <span><b>F8</b> annulla ultima operazione</span><span><b>F9</b> ristampa etichetta</span>
+  <span><kbd>Invio</kbd> conferma</span><span><kbd>Esc</kbd> chiudi modulo</span><span><kbd>1–9</kbd> scegli</span>
+  <span><kbd>F8</kbd> annulla l'ultima</span><span><kbd>F9</kbd> ristampa</span>
 </footer>
 <iframe id="printframe" title="stampa" hidden></iframe>
 <script src="/static/scanner.js"></script>

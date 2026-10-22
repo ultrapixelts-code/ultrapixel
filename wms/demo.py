@@ -15,8 +15,18 @@ POSTAZIONI = {
 }
 
 
+def single_operator(conn):
+    """Un solo operatore al momento: tutte le postazioni lavorano a suo nome, senza badge."""
+    u = conn.execute("SELECT id FROM wms.users WHERE username='operatore'").fetchone()
+    if not u:
+        u = conn.execute("""INSERT INTO wms.users(username, display_name, role_code)
+                            VALUES ('operatore','Operatore','RESPONSABILE_MAGAZZINO') RETURNING id""").fetchone()
+    conn.execute("UPDATE wms.devices SET utente_predefinito=%s WHERE utente_predefinito IS NULL", (u["id"],))
+
+
 def bootstrap(conn) -> bool:
     if conn.execute("SELECT count(*) n FROM wms.users").fetchone()["n"] > 0:
+        single_operator(conn)
         return False
     ids = seed.seed_master(conn, fixed_tokens=POSTAZIONI)
 
@@ -38,6 +48,7 @@ def bootstrap(conn) -> bool:
     engine.execute(conn, resp, uuid.uuid4(), "ASSOCIA_CODICE",
                    {"code": "08012345678907", "namespace": "GTIN", "material_id": epique})
     madiwor.import_job(conn, seed.load_job_fixture(), "FIXTURE")
+    single_operator(conn)
     return True
 
 
@@ -69,13 +80,11 @@ ol li{{margin:4px 0}}
 Se hai una pistola, leggi i codici dallo schermo; altrimenti clicca un codice per copiarlo, incollalo nel campo e premi Invio.</p>
 <h2>1. Scegli la postazione</h2>{post}
 <h2>Percorso consigliato (postazione Xeikon)</h2><ol>
-<li>Badge <b>UPBPROD01</b> → accesso</li><li>Commessa <b>4515</b> → mostra fabbisogno e bobina prenotata</li>
+<li>Commessa <b>4515</b> → mostra fabbisogno e bobina prenotata</li>
 <li><b>UPR000004</b> (materiale sbagliato) → bloccata · <b>UPR000005</b> (330 mm) → bloccata</li>
 <li><b>UPR000002</b> → montata · dopo qualche secondo rileggila → chiede i metri residui</li>
 <li>Postazione magazzino: <b>UPLA0101</b> poi più bobine → stoccaggio a raffica · F8 annulla l'ultima</li>
 <li>Postazione ricevimento: <b>AA335</b> → chiede solo i metri · etichetta GS1 sotto → metri e lotto già letti, scrivi solo la larghezza (170) e Invio, poi scansiona un'ubicazione</li></ol>
-{sec("Badge operatori", [card(b, n) for b, n in [("UPBPROD01", "Operatore produzione"), ("UPBPROD02", "Operatore produzione 2"),
-    ("UPBSPED01", "Operatore spedizione"), ("UPBRESP01", "Responsabile magazzino")]])}
 {sec("Commesse e codici fornitore", [card("4515", "Commessa 4515", "Cacovich · 650 pz"), card("AA335", "Codice fornitore EPIQUE", "identifica solo l'articolo"),
     card("01" + "08012345678907" + "3111005000" + "10LOTDEMO", "Etichetta GS1 fornitore", "EPIQUE · 500 m · lotto LOTDEMO")])}
 {sec("Bobine", [card(r["barcode"], r["descrizione"], f"{r['larghezza_mm']:g} mm · {r['metri_residui']:g} m · {r['stato'].lower()}") for r in rolls])}

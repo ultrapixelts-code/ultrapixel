@@ -107,7 +107,7 @@ def create_app(dsn: str | None = None) -> Flask:
         a = actor()
         u = _conn().execute("SELECT display_name FROM wms.users WHERE id=%s", (a.user_id,)).fetchone()
         return {"operatore": u["display_name"], "ruolo": a.role_code, "postazione": a.postazione,
-                "dispositivo": g.device["nome"]}
+                "dispositivo": g.device["nome"], "senza_badge": bool(g.device.get("utente_predefinito"))}
 
     @app.post("/api/scan")
     def do_scan():

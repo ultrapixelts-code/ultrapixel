@@ -11,7 +11,7 @@
   const uuid = () => (crypto.randomUUID ? crypto.randomUUID() :
     ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)));
 
-  let mode = "login";            // login | scan
+  let mode = "login", senzaBadge = false;            // login | scan
   let lastCode = null, lastCommand = null, lastPrint = null, undoArmed = 0, askState = null, choiceState = null;
 
   // ---------- suoni ----------
@@ -43,7 +43,7 @@
 
   // ---------- coda offline ----------
   function queue() { return store.get("queue", []); }
-  function setQueue(q) { store.set("queue", q); const el = $("queue"); el.hidden = !q.length; el.textContent = q.length + " in coda"; }
+  function setQueue(q) { store.set("queue", q); const el = $("queue"); el.hidden = !q.length; el.textContent = q.length + " da inviare"; }
   async function flush() {
     let q = queue();
     while (q.length) {
@@ -68,7 +68,7 @@
     const list = store.get("review", []); $("review").hidden = !list.length;
     $("reviewlist").innerHTML = list.map((r) => `<li>${esc(r.cosa)} — ${esc(r.why)} <small>(${esc(new Date(r.quando).toLocaleString("it-IT"))})</small></li>`).join("");
   }
-  function setNet(on) { const n = $("net"); n.className = "net " + (on ? "on" : "off"); n.textContent = on ? "online" : "offline"; }
+  function setNet(on) { const n = $("net"); n.className = "net " + (on ? "on" : "off"); n.textContent = on ? "in linea" : "senza rete"; }
   window.addEventListener("online", flush);
   setInterval(() => { if (queue().length) flush(); }, 8000);
 
@@ -83,13 +83,17 @@
 
   function render(r) {
     clearExtras();
-    const cls = { OK: "ok", INFO: "ok", ERRORE: "err", SCONOSCIUTO: "err", DOPPIA: "att", AVVISO: "att", CHIEDI: "att", SCEGLI: "att", LOGIN: "ok" }[r.esito] || "idle";
-    show(cls, r.titolo || r.messaggio, r.titolo ? r.messaggio : "");
+    const cls = { OK: "ok", INFO: "info", ERRORE: "err", SCONOSCIUTO: "err", DOPPIA: "att", AVVISO: "att", CHIEDI: "att", SCEGLI: "att", LOGIN: "ok" }[r.esito] || "idle";
+    let title = r.titolo || r.messaggio, msg = r.titolo ? r.messaggio : "";
+    // titoli brevi e leggibili da lontano: "Materiale sbagliato: serve X..." → titolo + spiegazione
+    const cut = title ? title.indexOf(": ") : -1;
+    if (cut > 0 && cut < 40 && title.length > 48) { msg = title.slice(cut + 2) + (msg ? " — " + msg : ""); title = title.slice(0, cut); }
+    show(cls, title, msg);
     beep(r.suono || (cls === "err" ? "errore" : cls === "att" ? "attenzione" : "ok"));
     if (r.contesto) renderCtx(r.contesto);
     if (r.comando) lastCommand = r.comando;
     if (r.stampa && r.stampa.length) { lastPrint = r.stampa; printLabels(r.stampa); }
-    if (r.esito === "LOGIN" && r.badge) return doLogin(r.badge);
+    if (r.esito === "LOGIN" && r.badge) { if (senzaBadge) { show("info", "Badge non necessario", "Questa postazione lavora già a nome dell'operatore"); return; } return doLogin(r.badge); }
     if (r.chiedi) buildAsk(r.chiedi);
     if (r.scelte) buildChoices(r.scelte);
     if (r.commessa) $("detail").innerHTML = jobHtml(r.commessa);
@@ -98,24 +102,29 @@
   function renderCtx(c) {
     const chips = [];
     if (c.commessa) chips.push("Commessa " + c.commessa);
-    if (c.in_attesa_ubicazione) chips.push(c.in_attesa_ubicazione + " → ubicazione?");
+    if (c.in_attesa_ubicazione) chips.push("Da riporre " + c.in_attesa_ubicazione);
     if (c.stoccaggio_in) chips.push("Stoccaggio in " + c.stoccaggio_in);
     if (c.spedizione) chips.push("Spedizione " + c.spedizione);
-    $("ctx").innerHTML = chips.map((x) => `<span class="chip">${esc(x)}</span>`).join("");
+    $("ctx").innerHTML = chips.map((x) => `<span>${esc(x).replace(/(UP[A-Z]\d{6}|\b\d{4,}\b)/g, "<b>$1</b>")}</span>`).join("");
   }
   function jobHtml(j) {
-    const rows = j.materiali.map((m) => `<tr><td>${esc(m.materiale)}${m.risolto ? "" : " ⚠ non associato"}</td><td class=num>${n(m.larghezza_mm)}</td>
-      <td class=num>${n(m.teorico)}</td><td class=num>${n(m.prenotato)}</td><td class=num>${n(m.consumato)}</td><td class=num>${n(m.stimato)}</td>
-      <td>${m.bobine.map((b) => esc(b.barcode) + " (" + esc(b.ubicazione || "-") + ")").join(", ") || "—"}</td></tr>`).join("");
-    const fasi = (j.fasi || []).map((f) => `<span class="fase ${esc(f.stato)}">${esc(f.fase.replace(/_/g, " ").toLowerCase())}</span>`).join("");
-    return `<div><b>${esc(j.cliente)}</b> · art. ${esc(j.articolo)} ${esc(j.descrizione || "")} · ${n(j.quantita)} pz · consegna ${esc(j.consegna || "-")}</div>
-      <table><tr><th>Materiale</th><th class=num>mm</th><th class=num>Teorico m</th><th class=num>Prenotato</th><th class=num>Consumato</th><th class=num>Stimato</th><th>Bobine</th></tr>${rows}</table>
+    const rows = j.materiali.map((m) => {
+      const bob = m.bobine.map((b) => `<span class="code">${esc(b.barcode)}</span> in ${esc(b.ubicazione || "?")}`).join("<br>");
+      return `<tr><td>${esc(m.materiale)}${m.risolto ? "" : ' <span class="short">non associato</span>'}</td>
+        <td class=num>${n(m.larghezza_mm)} mm</td><td class=num>${n(m.teorico)} m</td><td class=num>${n(m.prenotato)} m</td>
+        <td class=num>${n(m.consumato)} m${Number(m.stimato) ? `<br><small>stima ${n(m.stimato)} m</small>` : ""}</td>
+        <td>${bob || (Number(m.da_coprire) ? `<span class="short">mancano ${n(m.da_coprire)} m</span>` : "—")}</td></tr>`;
+    }).join("");
+    const fasi = (j.fasi || []).map((f) => `<span class="fase ${esc(f.stato)}">${esc(f.fase.charAt(0) + f.fase.slice(1).toLowerCase().replace(/_/g, " "))}</span>`).join("");
+    return `<div class="who">${esc(j.cliente)}<small>articolo ${esc(j.articolo)} ${esc(j.descrizione || "")}, ${n(j.quantita)} etichette, consegna ${esc(fmtDate(j.consegna))}</small></div>
+      <div class="scroll"><table><tr><th>Materiale</th><th class=num>Larghezza</th><th class=num>Previsto</th><th class=num>Prenotato</th><th class=num>Consumato</th><th>Bobine</th></tr>${rows}</table></div>
       <div class="fasi">${fasi}</div>`;
   }
+  function fmtDate(d) { if (!d) return "-"; const [y, m, g] = String(d).split("-"); return g ? `${g}/${m}/${y}` : d; }
   function shipHtml(s) {
-    return `<table><tr><th>Articolo</th><th class=num>Richiesti</th><th class=num>Preparati</th><th>Colli disponibili</th></tr>` +
-      s.righe.map((r) => `<tr><td>${esc(r.articolo)} v${esc(r.versione)}</td><td class=num>${n(r.quantita_richiesta)}</td><td class=num>${n(r.quantita_preparata)}</td>
-      <td>${(r.colli_suggeriti || []).map((c) => esc(c.barcode) + " " + n(c.pz) + "pz (" + esc(c.ubicazione || "-") + ")").join(", ") || "—"}</td></tr>`).join("") + "</table>";
+    return `<div class="who">${esc(s.cliente)}<small>spedizione ${esc(s.barcode)}</small></div><div class="scroll"><table><tr><th>Articolo</th><th class=num>Richiesti</th><th class=num>Preparati</th><th>Colli da prendere</th></tr>` +
+      s.righe.map((r) => `<tr><td class="code">${esc(r.articolo)}</td><td class=num>${n(r.quantita_richiesta)}</td><td class=num>${n(r.quantita_preparata)}</td>
+      <td>${(r.colli_suggeriti || []).map((c) => `<span class="code">${esc(c.barcode)}</span> ${n(c.pz)} pz in ${esc(c.ubicazione || "?")}`).join("<br>") || "—"}</td></tr>`).join("") + "</table></div>";
   }
 
   // ---------- modulo dati mancanti (in linea, niente finestre) ----------
@@ -173,12 +182,12 @@
   async function doLogin(badge) {
     try {
       const r = await api("/api/login", { badge });
-      store.set("session", r.sessione); $("who").textContent = r.operatore + " · " + r.dispositivo; setMode("scan");
+      store.set("session", r.sessione); $("station").textContent = r.dispositivo.replace(/^Postazione /, ""); setMode("scan");
       show("ok", "Ciao " + r.operatore, "Postazione " + r.postazione.toLowerCase()); beep("ok");
     } catch (e) { show("err", isNetErr(e) ? "Senza rete non si può accedere" : ((e.data && e.data.messaggio) || e.message)); beep("errore"); }
   }
   function setMode(m) {
-    mode = m; $("scanlabel").textContent = m === "login" ? "SCANSIONA IL TUO BADGE" : "SCANSIONA UN CODICE"; $("logout").hidden = m === "login";
+    mode = m; $("scanlabel").textContent = m === "login" ? "Leggi il tuo badge" : "Leggi un codice"; $("logout").hidden = m === "login" || senzaBadge;
   }
   $("scan").addEventListener("keydown", (ev) => {
     if (ev.key !== "Enter") return;
@@ -225,13 +234,17 @@
   // ---------- avvio ----------
   $("savetoken").addEventListener("click", () => { store.set("device", $("devtoken").value.trim()); location.reload(); });
   $("logout").addEventListener("click", async () => { try { await api("/api/logout", {}); } catch (e) { /* offline */ }
-    store.set("session", null); setMode("login"); $("who").textContent = ""; show("idle", "Uscito"); focusScan(); });
+    store.set("session", null); setMode("login"); show("idle", "Uscito"); focusScan(); });
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("/static/sw.js", { scope: "/" }).catch(() => {});
   setQueue(queue()); renderReview();
   if (!store.get("device", "")) { $("setup").hidden = false; $("scanbox").hidden = true; $("devtoken").focus(); return; }
   if (store.get("session", null)) {
-    api("/api/stato").then((r) => { $("who").textContent = r.operatore + " · " + r.dispositivo; setMode("scan"); show("idle", "Pronto"); })
+    api("/api/stato").then((r) => { $("station").textContent = r.dispositivo.replace(/^Postazione /, ""); setMode("scan"); })
       .catch((e) => { if (isNetErr(e)) { setMode("scan"); setNet(false); } else { store.set("session", null); setMode("login"); } })
       .finally(focusScan);
-  } else { setMode("login"); focusScan(); }
+  } else {
+    // una postazione con operatore predefinito lavora subito, senza badge
+    api("/api/stato").then((r) => { senzaBadge = !!r.senza_badge; $("station").textContent = r.dispositivo.replace(/^Postazione /, ""); setMode("scan"); })
+      .catch((e) => { if (isNetErr(e)) { setNet(false); setMode("scan"); } else setMode("login"); }).finally(focusScan);
+  }
 })();

@@ -67,6 +67,13 @@ def login(conn, device: dict, *, badge: str | None = None, username: str | None 
 def actor_from_session(conn, device: dict, session_token: str | None, *, fonte="SCANNER", offline=False,
                        client_ts=None) -> Actor:
     if not session_token:
+        if device.get("utente_predefinito"):
+            s = conn.execute("""SELECT u.id, u.role_code, r.livello FROM wms.users u JOIN wms.roles r ON r.code=u.role_code
+                                WHERE u.id=%s AND u.active""", (device["utente_predefinito"],)).fetchone()
+            if s:
+                return Actor(user_id=s["id"], role_code=s["role_code"], role_level=s["livello"], device_id=device["id"],
+                             postazione=device["postazione"], device_location_id=device["location_id"], fonte=fonte,
+                             offline=offline, client_ts=client_ts)
         raise Forbidden("Accesso richiesto: scansiona il tuo badge", code="LOGIN_RICHIESTO")
     s = conn.execute(
         """SELECT u.id, u.role_code, r.livello FROM wms.sessions s JOIN wms.users u ON u.id=s.user_id
