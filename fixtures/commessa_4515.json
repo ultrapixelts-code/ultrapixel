@@ -1,0 +1,30 @@
+{
+  "_nota": "Fixture di TEST (non importazione produttiva) ricavata dalla specifica Smart Warehouse 2.0, sezione 15. Le fasi sono derivate solo dai dati presenti: macchina CX3S (stampa), lavorazioni speciali 'rilievo e vernice opaca', fustella indicata; CONTROLLO e IMBALLAGGIO sono passaggi del processo UltraPixel, non dati Madiwor. Le macchine di vernice/rilievo/fustellatura non sono indicate nella commessa e restano vuote; anche l'ordine vernice→rilievo è un'ipotesi del test, non un dato della commessa.",
+  "external_id": "4515",
+  "sales_order_id": "1426",
+  "cliente_nome": "Azienda Agricola Cacovich di Cacovich Dimitri",
+  "cliente_ref": "CUS_000182",
+  "articolo": "117951",
+  "descrizione": "Nariousna ITA 05/25",
+  "quantita": 650,
+  "data_consegna": "2026-10-23",
+  "stato": "ATTIVA",
+  "materiali": [
+    {"descrizione": "EPIQUE FSC S2047N - BG45WH IMP FSC", "larghezza_mm": "170", "metri": "54"}
+  ],
+  "fasi": [
+    {"fase": "STAMPA", "macchina": "CX3S"},
+    {"fase": "VERNICIATURA", "macchina": null},
+    {"fase": "RILIEVO", "macchina": null},
+    {"fase": "FUSTELLATURA", "macchina": null},
+    {"fase": "CONTROLLO", "macchina": null},
+    {"fase": "IMBALLAGGIO", "macchina": null}
+  ],
+  "specifiche": {
+    "formato": "80 x 150 mm",
+    "macchina": "CX3S",
+    "lavorazioni_speciali": "rilievo e vernice opaca",
+    "fustella_id": "0060000006662",
+    "metratura_prevista_testo": "circa 54 m"
+  }
+}

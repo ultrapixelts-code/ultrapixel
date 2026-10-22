@@ -1,0 +1,50 @@
+:root{
+  --paper:#f3f5f9; --raised:#fff; --ink:#16213b; --soft:#5b6b85; --faint:#97a3b8; --line:#e7eaf2;
+  --accent:#2f6feb; --accent-soft:#e8f0fe; --good:#16a34a; --good-soft:#e7f7ec; --warn:#d64545; --warn-soft:#fdeceb;
+  --amber:#b45309; --amber-soft:#fff4e0;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0c1220; --raised:#131b2e; --ink:#e8ecf7; --soft:#a3aec6; --faint:#66708c; --line:#212b45;
+  --accent:#5c8cff; --accent-soft:#182849; --good:#4ade80; --good-soft:#10291a; --warn:#f0716f; --warn-soft:#331616;
+  --amber:#f2b84b; --amber-soft:#33260d;}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.top{display:flex;align-items:center;gap:16px;padding:10px 20px;background:var(--raised);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.brand{font-weight:800;font-size:20px}.brand span{color:var(--accent)}.brand small{font-weight:500;color:var(--faint);font-size:13px;margin-left:4px}
+.ctx{flex:1;display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--accent-soft);color:var(--ink);border-radius:20px;padding:3px 12px;font-size:15px;font-weight:600}
+.who{display:flex;gap:10px;align-items:center;font-size:15px;color:var(--soft)}
+.net{padding:2px 10px;border-radius:20px;font-size:13px;font-weight:700}.net.on{background:var(--good-soft);color:var(--good)}
+.net.off{background:var(--warn-soft);color:var(--warn)}
+.queue{background:var(--amber-soft);color:var(--amber);padding:2px 10px;border-radius:20px;font-size:13px;font-weight:700}
+.link{background:none;border:none;color:var(--soft);text-decoration:underline;font:inherit;cursor:pointer}
+main{max-width:1100px;margin:0 auto;padding:20px}
+.panel{background:var(--raised);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+.scanbox label{display:block;font-weight:800;font-size:clamp(22px,4vw,34px);letter-spacing:.02em;margin-bottom:8px}
+#scan,#devtoken{width:100%;font:600 clamp(22px,4vw,32px)/1.2 ui-monospace,Menlo,Consolas,monospace;padding:14px 18px;
+  border:3px solid var(--accent);border-radius:12px;background:var(--raised);color:var(--ink)}
+#scan:focus{outline:4px solid var(--accent-soft)}
+.result{margin-top:18px;border-radius:14px;padding:22px 24px;background:var(--raised);border:1px solid var(--line);border-left:12px solid var(--faint)}
+.result.ok{border-left-color:var(--good);background:var(--good-soft)}
+.result.err{border-left-color:var(--warn);background:var(--warn-soft)}
+.result.att{border-left-color:var(--amber);background:var(--amber-soft)}
+.r-title{font-weight:800;font-size:clamp(24px,4.5vw,40px);line-height:1.15}
+.r-msg{font-size:clamp(18px,2.6vw,24px);color:var(--soft);margin-top:6px}
+.ask{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px;align-items:flex-end}
+.ask label{display:flex;flex-direction:column;font-size:15px;font-weight:700;color:var(--soft);gap:4px}
+.ask input{font:600 26px ui-monospace,Menlo,monospace;padding:10px 12px;border:2px solid var(--accent);border-radius:10px;width:220px;background:var(--raised);color:var(--ink)}
+.btn{font:700 20px system-ui;padding:12px 22px;border-radius:10px;border:none;background:var(--accent);color:#fff;cursor:pointer}
+.choices{margin:14px 0 0;padding-left:28px;font-size:24px}.choices li{padding:6px 0}
+.detail{margin-top:14px;font-size:16px}
+.detail table{border-collapse:collapse;width:100%;background:var(--raised);border-radius:10px;overflow:hidden}
+.detail th,.detail td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line)}
+.detail th{font-size:13px;text-transform:uppercase;color:var(--faint)}
+.num{font-variant-numeric:tabular-nums;text-align:right}
+.fasi{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.fase{padding:3px 10px;border-radius:20px;font-size:14px;background:var(--line)}
+.fase.COMPLETATA{background:var(--good);color:#fff}.fase.IN_CORSO,.fase.RILAVORAZIONE{background:var(--amber);color:#fff}
+.review{margin-top:18px;background:var(--warn-soft);border-radius:14px;padding:12px 20px}
+.review h2{font-size:18px;margin:0 0 6px}
+.keys{position:fixed;bottom:0;left:0;right:0;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;padding:8px;
+  background:var(--raised);border-top:1px solid var(--line);font-size:14px;color:var(--soft)}
+.keys b{color:var(--ink)}
+@media (max-width:600px){main{padding:12px}.keys{display:none}}

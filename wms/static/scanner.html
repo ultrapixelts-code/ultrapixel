@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scanner magazzino</title>
+<link rel="manifest" href="/static/manifest.json">
+<meta name="theme-color" content="#2f6feb">
+<link rel="stylesheet" href="/static/scanner.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">Ultra<span>Pixel</span> <small>magazzino</small></div>
+  <div class="ctx" id="ctx"></div>
+  <div class="who"><span id="net" class="net on">online</span><span id="queue" class="queue" hidden></span>
+    <span id="who"></span><button id="logout" class="link" hidden>Esci</button></div>
+</header>
+
+<main>
+  <section id="setup" class="panel" hidden>
+    <h1>Registra questa postazione</h1>
+    <p>Incolla il codice della postazione ricevuto dal responsabile. Si fa una volta sola.</p>
+    <input id="devtoken" autocomplete="off" placeholder="codice postazione">
+    <button id="savetoken" class="btn">Salva</button>
+  </section>
+
+  <section id="scanbox" class="scanbox">
+    <label for="scan" id="scanlabel">SCANSIONA IL TUO BADGE</label>
+    <input id="scan" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="none">
+  </section>
+
+  <section id="result" class="result idle" aria-live="assertive">
+    <div class="r-title" id="rtitle">Pronto</div>
+    <div class="r-msg" id="rmsg"></div>
+    <form id="ask" class="ask" hidden></form>
+    <ol id="choices" class="choices" hidden></ol>
+    <div id="detail" class="detail"></div>
+  </section>
+
+  <section id="review" class="review" hidden>
+    <h2>Da rivedere (registrate offline e rifiutate)</h2>
+    <ul id="reviewlist"></ul>
+  </section>
+</main>
+
+<footer class="keys">
+  <span><b>Invio</b> conferma</span><span><b>Esc</b> annulla modulo</span><span><b>1-9</b> scegli</span>
+  <span><b>F8</b> annulla ultima operazione</span><span><b>F9</b> ristampa etichetta</span>
+</footer>
+<iframe id="printframe" title="stampa" hidden></iframe>
+<script src="/static/scanner.js"></script>
+</body>
+</html>
