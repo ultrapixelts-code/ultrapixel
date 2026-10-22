@@ -330,9 +330,13 @@ def cmd_ricevi_bobina(tx: Tx, p: dict) -> dict:
                 metadata={"lotto": p.get("lotto_fornitore"), "origine_metratura": origine,
                           "codice_letto": p.get("codice_letto")})
         out.append({"id": r["id"], "barcode": r["barcode"], "metri": metri, "larghezza_mm": larghezza})
+    if p.get("colloca"):
+        for b in out:
+            b["collocazione"] = _colloca(tx, b["id"])
     sugg = suggest_location(conn, mat["id"], exclude=loc["id"])
     return {"messaggio": f"Ricevut{'a' if n == 1 else 'e'} {n} bobin{'a' if n == 1 else 'e'} {mat['descrizione']}",
             "bobine": out, "ubicazione": loc["codice"], "ubicazione_suggerita": sugg,
+            "metratura": "nominale del fornitore" if p.get("metratura_nominale") else origine.lower(),
             "stampa": [{"tipo": "bobina", "id": b["id"]} for b in out]}
 
 
@@ -365,7 +369,7 @@ def cmd_sposta_bobina(tx: Tx, p: dict) -> dict:
     if roll["ubicazione_id"] == dest["id"]:
         return {"esito": "INVARIATO", "messaggio": f"{roll['barcode']} è già in {dest['codice']}"}
     tx.move("SPOSTAMENTO", "ROLL", roll["id"], 0, "m", origine=roll["ubicazione_id"], destinazione=dest["id"])
-    _roll_update(tx.conn, roll["id"], ubicazione_id=dest["id"])
+    _roll_update(tx.conn, roll["id"], ubicazione_id=dest["id"], ubicazione_confermata=True)
     return {"messaggio": f"{roll['barcode']} → {dest['codice']}", "bobina": roll["barcode"], "ubicazione": dest["codice"]}
 
 
@@ -556,9 +560,7 @@ def cmd_assegna_bobina(tx: Tx, p: dict) -> dict:
                                 code="BOBINA_GIA_IN_USO")
     if stato == "ESAURITA":
         raise BusinessRuleError(f"Bobina {roll['barcode']} esaurita", code="BOBINA_ESAURITA")
-    if stato == "DA_VERIFICARE":
-        raise BusinessRuleError(f"Bobina {roll['barcode']}: misura prima i metri residui", code="BOBINA_DA_VERIFICARE")
-    if stato != "DISPONIBILE":
+    if stato not in ("DISPONIBILE", "DA_VERIFICARE"):
         raise BusinessRuleError(f"Bobina {roll['barcode']} in stato {stato}", code="BOBINA_NON_DISPONIBILE")
     jm = _match_jm_for_roll(conn, job, roll)
     comp = jm.pop("_comp")
@@ -567,7 +569,10 @@ def cmd_assegna_bobina(tx: Tx, p: dict) -> dict:
         "SELECT * FROM wms.material_reservations WHERE job_material_id=%s AND roll_id=%s AND status='ATTIVA' FOR UPDATE",
         (jm["id"], roll["id"])).fetchone()
     mine_q = D(mine["quantity"]) if mine else Decimal("0")
-    free_for_us = D(roll["metri_residui"]) - (D(roll["metri_riservati"]) - mine_q)
+    stimata = stato == "DA_VERIFICARE"
+    # con metratura solo stimata si ragiona sulla stima (più prudente del dato verificato precedente)
+    fisici = D(roll["metri_stimati"]) if stimata and roll["metri_stimati"] is not None else D(roll["metri_residui"])
+    free_for_us = min(D(roll["metri_residui"]), fisici) - (D(roll["metri_riservati"]) - mine_q)
     if free_for_us <= 0:
         jobs = conn.execute(
             """SELECT DISTINCT j.external_madiwor_id FROM wms.material_reservations r
@@ -577,7 +582,7 @@ def cmd_assegna_bobina(tx: Tx, p: dict) -> dict:
                                 code="RISERVATA_ALTRA_COMMESSA")
     need = remaining_need(jm)
     target = min(need, free_for_us)
-    if target > mine_q:
+    if target > mine_q and not stimata:
         _reserve(tx, job, jm, roll, target - mine_q, causale="Prenotazione all'assegnazione")
     # le prenotazioni della stessa riga su altre bobine non montate vengono ridotte se non più necessarie
     others = conn.execute(
@@ -593,20 +598,24 @@ def cmd_assegna_bobina(tx: Tx, p: dict) -> dict:
     if free_for_us < need:
         tx.warnings.append(f"Metratura insufficiente: mancano {need - free_for_us} m, servirà un'altra bobina")
     a = conn.execute(
-        """INSERT INTO wms.roll_assignments(job_id, job_material_id, roll_id, location_id, metri_inizio)
-           VALUES (%s,%s,%s,%s,%s) RETURNING id""",
-        (job["id"], jm["id"], roll["id"], machine["id"], D(roll["metri_residui"]))).fetchone()
+        """INSERT INTO wms.roll_assignments(job_id, job_material_id, roll_id, location_id, metri_inizio,
+                                            inizio_verificato, macchina)
+           VALUES (%s,%s,%s,%s,%s,%s,%s) RETURNING id""",
+        (job["id"], jm["id"], roll["id"], machine["id"], fisici, not stimata, machine["machine_code"])).fetchone()
+    if stimata:
+        tx.warnings.append("Metratura di partenza stimata: si verifica con i dati della macchina")
     tx.move("ASSEGNAZIONE", "ROLL", roll["id"], 0, "m", origine=roll["ubicazione_id"], destinazione=machine["id"],
             commessa=job["id"], reference=a["id"],
-            metadata={"metri_inizio": roll["metri_residui"], "compatibilita": comp})
+            metadata={"metri_inizio": fisici, "inizio_verificato": not stimata, "compatibilita": comp,
+                      "stato_prima": stato})
     _roll_update(conn, roll["id"], stato="IN_PRODUZIONE", assigned_job_id=job["id"], ubicazione_id=machine["id"])
     if job["stato"] == "APERTA":
         conn.execute("UPDATE wms.production_jobs SET stato='IN_PRODUZIONE' WHERE id=%s", (job["id"],))
     msg = f"Bobina {roll['barcode']} montata su {machine['codice']} per commessa {job['external_madiwor_id']}"
     if comp != "IDENTICO":
         msg += f" (materiale equivalente approvato: {comp})"
-    return {"messaggio": msg, "assignment_id": a["id"], "bobina": roll["barcode"],
-            "commessa": job["external_madiwor_id"], "metri_inizio": roll["metri_residui"], "compatibilita": comp}
+    return {"messaggio": msg, "assignment_id": a["id"], "bobina": roll["barcode"], "job_id": job["id"],
+            "commessa": job["external_madiwor_id"], "metri_inizio": fisici, "compatibilita": comp}
 
 
 def _close_consumption(tx: Tx, a: dict, roll: dict, residui: Decimal, scarto: Decimal, tipo: str, dest_id=None):
@@ -675,9 +684,14 @@ def cmd_chiudi_bobina(tx: Tx, p: dict) -> dict:
         consumo = D(p["consumo_macchina"])
         r = _close_consumption(tx, a, roll, D(a["metri_inizio"]) - consumo, scarto, "MACCHINA", dest)
         return {"messaggio": f"{roll['barcode']}: consumo da macchina {consumo} m, residuo {r['residui']} m", **r}
-    # nessuna misura: stima dichiarata, NON trasformata in consumo
+    # nessuna misura dall'operatore: stima dichiarata, NON trasformata in consumo;
+    # subito dopo si prova a verificarla con lo storico della macchina (se copre già questo intervallo)
     jm = _get_jm(conn, a["job_material_id"])
     stima = min(D(a["metri_inizio"]), remaining_need(jm))
+    # la stima sostituisce la prenotazione di questa commessa (altrimenti la bobina resterebbe "riservata")
+    for res in conn.execute("SELECT * FROM wms.material_reservations WHERE job_material_id=%s AND roll_id=%s "
+                            "AND status='ATTIVA' FOR UPDATE", (jm["id"], roll["id"])).fetchall():
+        _release(tx, res, causale="Chiusura con consumo stimato", final_status="CONSUMATA")
     conn.execute("UPDATE wms.production_job_materials SET metri_consumo_stimato=metri_consumo_stimato+%s WHERE id=%s",
                  (stima, jm["id"]))
     conn.execute("""UPDATE wms.roll_assignments SET stato='DA_VERIFICARE', consumo_tipo='STIMATO',
@@ -686,8 +700,16 @@ def cmd_chiudi_bobina(tx: Tx, p: dict) -> dict:
                  origine_dato_metratura="STIMA")
     tx.audit("STIMA_CONSUMO", "ROLL", roll["id"], dopo={"stima_consumo": stima, "metri_inizio": a["metri_inizio"]},
              motivo="Chiusura senza misura")
-    return {"esito": "AVVISO", "stima_consumo": stima, "metri_stimati": D(a["metri_inizio"]) - stima,
-            "messaggio": f"{roll['barcode']}: consumo STIMATO {stima} m (non definitivo). Misura i metri residui."}
+    from .machine import reconcile_roll
+    ver = reconcile_roll(tx, roll["id"])
+    if ver["verificati"]:
+        r = get_roll(conn, roll["id"])
+        return {"esito": "OK", "consumo_macchina": ver["consumo"], "residui": r["metri_residui"],
+                "stato_bobina": r["stato"], "verificato": True,
+                "messaggio": f"{roll['barcode']}: consumo dalla macchina {ver['consumo']:g} m, residuo {D(r['metri_residui']):g} m"}
+    return {"esito": "OK", "stima_consumo": stima, "metri_stimati": D(a["metri_inizio"]) - stima, "residui": D(a["metri_inizio"]) - stima,
+            "verificato": False,
+            "messaggio": f"{roll['barcode']}: consumo stimato {stima:g} m, si conferma con i dati della macchina"}
 
 
 @command("VERIFICA_METRATURA", roles=ALL_OPS)
@@ -793,6 +815,30 @@ def cmd_taglia_bobina(tx: Tx, p: dict) -> dict:
         out.append({"id": r["id"], "barcode": r["barcode"], "larghezza_mm": w, "metri": l})
     return {"messaggio": f"{parent['barcode']} tagliata in {len(out)} bobine", "figlie": out,
             "sfrido_mm_x_m": sfrido_mm_m, "stampa": [{"tipo": "bobina", "id": o["id"]} for o in out]}
+
+
+def _colloca(tx: Tx, roll_id) -> dict | None:
+    from .slotting import choose_location
+    roll = get_roll(tx.conn, roll_id)
+    if roll["stato"] not in ("DISPONIBILE", "DA_VERIFICARE"):
+        return None
+    c = choose_location(tx.conn, roll["id"])
+    if not c:
+        tx.warnings.append("Magazzino pieno: nessun posto libero, chiedi al responsabile")
+        return None
+    tx.move("SPOSTAMENTO", "ROLL", roll["id"], 0, "m", origine=roll["ubicazione_id"], destinazione=c["id"],
+            causale="Posto scelto dal sistema", metadata={"deciso_da": "SISTEMA", "motivo": c["motivo"]})
+    _roll_update(tx.conn, roll["id"], ubicazione_id=c["id"], ubicazione_confermata=False)
+    return c
+
+
+@command("COLLOCA_BOBINA", roles=ALL_OPS)
+def cmd_colloca(tx: Tx, p: dict) -> dict:
+    c = _colloca(tx, p.get("roll_id"))
+    roll = get_roll(tx.conn, p.get("roll_id"), lock=False)
+    if not c:
+        return {"esito": "AVVISO", "messaggio": f"{roll['barcode']}: nessun posto libero"}
+    return {"messaggio": f"Metti {roll['barcode']} in {c['codice']}", "collocazione": c}
 
 
 @command("BLOCCA_BOBINA", roles=set())

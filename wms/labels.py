@@ -79,7 +79,8 @@ def items_for(conn, tipo: str, ids: list) -> list[dict]:
             r = conn.execute("""SELECT r.*, m.descrizione FROM wms.material_rolls r JOIN wms.materials m ON m.id=r.material_id
                                 WHERE r.id=%s""", (i,)).fetchone()
             out.append({"barcode": r["barcode"], "titolo": r["descrizione"],
-                        "righe": [f"{_fmt(r['larghezza_mm'])} mm × {_fmt(r['metri_residui'])} m",
+                        "righe": [f"{_fmt(r['larghezza_mm'])} mm × " + (f"≈{_fmt(r['metri_stimati'])} m (stima)"
+                                  if r["metri_stimati"] is not None else f"{_fmt(r['metri_residui'])} m"),
                                   f"Lotto {_fmt(r['lotto_fornitore'])}", f"Ric. {r['data_ricezione']:%d/%m/%Y}"]})
         elif tipo == "collo":
             r = conn.execute("""SELECT p.*, l.codice AS lotto, fp.external_sku_id, fp.descrizione, j.cliente_nome

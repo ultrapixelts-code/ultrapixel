@@ -24,9 +24,25 @@ def single_operator(conn):
     conn.execute("UPDATE wms.devices SET utente_predefinito=%s WHERE utente_predefinito IS NULL", (u["id"],))
 
 
+def three_scan_setup(conn):
+    """Dati dimostrativi per il flusso a tre scansioni (idempotente). Valori di esempio, da sostituire con quelli veri."""
+    conn.execute("""UPDATE wms.materials SET larghezza_mm=coalesce(larghezza_mm,170), metri_nominali=coalesce(metri_nominali,500)
+                    WHERE codice_interno IN ('EPIQUE-FSC-S2047N','MATT-WINE-FSC')""")
+    for codice, cap, liv, area, vicina, istr in [
+            ("A-01-01", 6, 1, "SCORTA", None, "in piedi sull'anima, etichetta verso il corridoio"),
+            ("A-01-02", 6, 2, "SCORTA", None, "in piedi sull'anima, etichetta verso il corridoio"),
+            ("B-02-01", 12, 1, "RIMANENZE", None, "nel contenitore spezzoni"),
+            ("P-XEIKON", 4, 1, "PRONTO_MACCHINA", "CX3S", "sul carrello accanto alla Xeikon, pronta da montare")]:
+        conn.execute("""INSERT INTO wms.warehouse_locations(codice, barcode, tipo, zona) VALUES (%s,%s,'SCAFFALE',%s)
+                        ON CONFLICT (codice) DO NOTHING""", (codice, "UPL" + codice.replace("-", ""), codice.split("-")[0]))
+        conn.execute("""UPDATE wms.warehouse_locations SET capacita_bobine=%s, livello=%s, area=%s, macchina_vicina=%s,
+                        istruzioni=%s WHERE codice=%s""", (cap, liv, area, vicina, istr, codice))
+
+
 def bootstrap(conn) -> bool:
     if conn.execute("SELECT count(*) n FROM wms.users").fetchone()["n"] > 0:
         single_operator(conn)
+        three_scan_setup(conn)
         return False
     ids = seed.seed_master(conn, fixed_tokens=POSTAZIONI)
 
@@ -47,6 +63,7 @@ def bootstrap(conn) -> bool:
     engine.execute(conn, resp, uuid.uuid4(), "ASSOCIA_CODICE", {"code": "AA335", "material_id": epique})
     engine.execute(conn, resp, uuid.uuid4(), "ASSOCIA_CODICE",
                    {"code": "08012345678907", "namespace": "GTIN", "material_id": epique})
+    three_scan_setup(conn)
     madiwor.import_job(conn, seed.load_job_fixture(), "FIXTURE")
     single_operator(conn)
     return True
@@ -79,12 +96,12 @@ ol li{{margin:4px 0}}
 <p class=note>Dati finti su un database di prova separato (scade il 21/11/2026). Niente qui tocca il magazzino reale.
 Se hai una pistola, leggi i codici dallo schermo; altrimenti clicca un codice per copiarlo, incollalo nel campo e premi Invio.</p>
 <h2>1. Scegli la postazione</h2>{post}
-<h2>Percorso consigliato (postazione Xeikon)</h2><ol>
-<li>Commessa <b>4515</b> → mostra fabbisogno e bobina prenotata</li>
-<li><b>UPR000004</b> (materiale sbagliato) → bloccata · <b>UPR000005</b> (330 mm) → bloccata</li>
-<li><b>UPR000002</b> → montata · dopo qualche secondo rileggila → chiede i metri residui</li>
-<li>Postazione magazzino: <b>UPLA0101</b> poi più bobine → stoccaggio a raffica · F8 annulla l'ultima</li>
-<li>Postazione ricevimento: <b>AA335</b> → chiede solo i metri · etichetta GS1 sotto → metri e lotto già letti, scrivi solo la larghezza (170) e Invio, poi scansiona un'ubicazione</li></ol>
+<h2>Le tre letture dell'operatore</h2><ol>
+<li><b>Arrivo</b> — postazione ricevimento: leggi <b>AA335</b> (etichetta fornitore). La bobina viene registrata con la metratura nominale, il sistema sceglie il posto e stampa l'etichetta.</li>
+<li><b>Prima di stampare</b> — postazione Xeikon: leggi la bobina (es. <b>UPR000002</b>). La commessa la trova il sistema.</li>
+<li><b>Fine</b> — rileggi la stessa bobina dopo qualche secondo: si chiude il consumo e ti dice dove riporla.</li>
+<li>Poi premi <b>Simula storico Xeikon</b> qui sotto: il consumo stimato diventa quello "letto dalla macchina" (+7%, simulato).</li></ol>
+<p><button onclick="sim(this)" style="width:auto;padding:10px 16px">Simula storico Xeikon</button> <span id=simres></span></p>
 {sec("Commesse e codici fornitore", [card("4515", "Commessa 4515", "Cacovich · 650 pz"), card("AA335", "Codice fornitore EPIQUE", "identifica solo l'articolo"),
     card("01" + "08012345678907" + "3111005000" + "10LOTDEMO", "Etichetta GS1 fornitore", "EPIQUE · 500 m · lotto LOTDEMO")])}
 {sec("Bobine", [card(r["barcode"], r["descrizione"], f"{r['larghezza_mm']:g} mm · {r['metri_residui']:g} m · {r['stato'].lower()}") for r in rolls])}
@@ -92,6 +109,8 @@ Se hai una pistola, leggi i codici dallo schermo; altrimenti clicca un codice pe
 {sec("Colli e spedizioni", [card(p["barcode"], "Collo", f"{p['quantita']} pz · {p['stato'].lower()}") for p in pk]
     + [card(s["barcode"], "Spedizione", s["cliente_nome"]) for s in sh]) if (pk or sh) else ""}
 </main><script>
+async function sim(b){{b.disabled=true;const r=await fetch('/api/demo/simula-storico',{{method:'POST',headers:{{'X-Device-Token':'demo-magazzino'}}}});
+document.getElementById('simres').textContent=(await r.json()).messaggio||'fatto';b.disabled=false;}}
 function go(t){{localStorage.setItem('wms.device',JSON.stringify(t));localStorage.removeItem('wms.session');location.href='/';}}
 function copy(b){{navigator.clipboard&&navigator.clipboard.writeText(b.dataset.c);b.textContent='copiato ✓';setTimeout(()=>b.textContent=b.dataset.c,1200);}}
 </script></body></html>"""

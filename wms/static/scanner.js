@@ -90,13 +90,15 @@
     tag: '<svg viewBox="0 0 24 24"><path d="M3 12V3h9l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>',
     box: '<svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg>',
   };
+  // numeri all'italiana: "54.00 m" → "54 m", "57.78" → "57,78"
+  const pretty = (t) => String(t || "").replace(/\b(\d+)\.(\d{1,3})\b/g, (m, a, b) => { b = b.replace(/0+$/, ""); return b ? a + "," + b : a; });
   function show(cls, title, msg) {
     $("result").className = "card result " + cls; $("ricon").innerHTML = ICON[cls] || ICON.idle;
-    $("rtitle").textContent = title || ""; $("rmsg").textContent = msg || "";
+    $("rtitle").textContent = pretty(title); $("rmsg").textContent = pretty(msg);
   }
   function facts(r) {
     const f = [], b = r.bobina, c = r.commessa, k = r.collo, res = r.risultato || r;
-    if (b) f.push(["roll", "Bobina", b.barcode], ["layers", "Materiale", b.materiale], ["ruler", "Metri", n(b.metri_fisici) + " m"], ["pin", "Ubicazione", b.ubicazione || "—"]);
+    if (b) f.push(["roll", "Bobina", b.barcode], ["layers", "Materiale", b.materiale], ["ruler", b.metri_stimati != null ? "Metri (stima)" : "Metri", (b.metri_stimati != null ? "≈ " + n(b.metri_stimati) : n(b.metri_fisici)) + " m"], ["pin", "Ubicazione", b.ubicazione || "—"]);
     else if (res.bobine && res.bobine.length) f.push(["roll", "Bobina", res.bobine[0].barcode + (res.bobine.length > 1 ? " +" + (res.bobine.length - 1) : "")],
       ["ruler", "Metri", n(res.bobine[0].metri) + " m"], ["pin", "Ubicazione suggerita", (res.ubicazione_suggerita || {}).codice || "leggi uno scaffale"]);
     if (c) f.push(["doc", "Commessa", c.commessa], ["user", "Cliente", c.cliente], ["tag", "Etichette", n(c.quantita)], ["cal", "Consegna", fmtDate(c.consegna)]);
@@ -138,6 +140,7 @@
     if (r.esito === "LOGIN" && r.badge) { if (senzaBadge) { show("info", "Badge non necessario", "Questa postazione lavora già a nome dell'operatore"); return; } return doLogin(r.badge); }
     if (r.chiedi) buildAsk(r.chiedi);
     if (r.scelte) buildChoices(r.scelte);
+    if (r.prossimo) showNext(r.prossimo, true);
     if (r.commessa) $("detail").innerHTML = jobHtml(r.commessa);
     if (r.spedizione) $("detail").innerHTML = shipHtml(r.spedizione);
   }
@@ -147,7 +150,7 @@
     if (c.in_attesa_ubicazione) chips.push("Da riporre " + c.in_attesa_ubicazione);
     if (c.stoccaggio_in) chips.push("Stoccaggio in " + c.stoccaggio_in);
     if (c.spedizione) chips.push("Spedizione " + c.spedizione);
-    const el = document.querySelector(".sub"); if (el) el.textContent = chips.length ? chips.join(" · ") : "Leggi una commessa, una bobina o un'ubicazione.";
+    const el = document.querySelector(".sub"); if (el) el.textContent = chips.length ? chips.join(" · ") : (baseSub || "Leggi una commessa, una bobina o un'ubicazione.");
   }
   function jobHtml(j) {
     const rows = j.materiali.map((m) => {
@@ -273,7 +276,20 @@
   document.addEventListener("click", (ev) => { if (!ev.target.closest("form,button,input")) focusScan(); });
   setInterval(() => { const a = document.activeElement; if (!askState && (!a || a === document.body)) focusScan(); }, 700);
 
-  function setStation(r) { const st = r.dispositivo.replace(/^Postazione /, ""); $("station").textContent = st.charAt(0).toUpperCase() + st.slice(1); $("opname").textContent = r.operatore; }
+  const SUB = { RICEVIMENTO: "Leggi l'etichetta del fornitore: al resto pensa il sistema.",
+    MACCHINA: "Leggi la bobina prima di stampare e di nuovo a fine lavoro.",
+    MAGAZZINO: "Leggi una bobina e poi lo scaffale, o lo scaffale e poi le bobine.",
+    SPEDIZIONE: "Leggi la spedizione e poi i colli." };
+  let baseSub = null;
+  function showNext(nx, append) {
+    if (!nx) return;
+    const txt = `Prossimo: commessa ${nx.commessa}` + (nx.bobina ? ` — prendi ${nx.bobina} in ${nx.ubicazione || "?"}` : "");
+    if (append) { $("rmsg").textContent = ($("rmsg").textContent ? $("rmsg").textContent + "  ·  " : "") + txt; }
+    else show("info", `Prossimo lavoro: commessa ${nx.commessa}`, nx.bobina ? `Prendi ${nx.bobina} in ${nx.ubicazione || "?"} e leggila` : `${nx.cliente}`);
+  }
+  function setStation(r) { const st = r.dispositivo.replace(/^Postazione /, ""); $("station").textContent = st.charAt(0).toUpperCase() + st.slice(1); $("opname").textContent = r.operatore;
+    baseSub = SUB[r.postazione] || null; if (baseSub) document.querySelector(".sub").textContent = baseSub;
+    if (r.prossimo) showNext(r.prossimo, false); }
   function tick() { const d = new Date(); $("clock").textContent = d.toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "short" }) + "  " + d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }); }
   tick(); setInterval(tick, 20000);
   $("clearhist").addEventListener("click", () => { store.set("history", []); renderHistory(); focusScan(); });

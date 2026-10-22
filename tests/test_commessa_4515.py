@@ -57,13 +57,11 @@ def test_commessa_4515_end_to_end(conn, ids, actors):
 
     # 10. fine bobina senza misura → solo stima, nessun consumo fisico
     est = run(conn, prod, "CHIUDI_BOBINA", {"roll_id": str(giusta["id"])})
-    assert est["esito"] == "AVVISO" and Decimal(str(est["stima_consumo"])) == Decimal("54.00")
+    assert est["verificato"] is False and Decimal(str(est["stima_consumo"])) == Decimal("54.00")
     roll = conn.execute("SELECT * FROM wms.material_rolls WHERE id=%s", (giusta["id"],)).fetchone()
     assert roll["stato"] == "DA_VERIFICARE" and roll["metri_residui"] == Decimal("75.00")
     assert roll["metri_stimati"] == Decimal("21.00")
     # 11. misura reale → consumo definitivo e residuo
-    s = scan_(conn, actors["mag"], giusta["barcode"])
-    assert s["esito"] == "CHIEDI" and s["chiedi"]["azione"] == "VERIFICA_METRATURA"
     ver = run(conn, actors["mag"], "VERIFICA_METRATURA", {"roll_id": str(giusta["id"]), "metri_misurati": 18,
                                                          "metri_scarto": 5})
     assert Decimal(str(ver["utilizzati"])) == Decimal("52.00") and Decimal(str(ver["scarto"])) == Decimal("5.00")

@@ -16,7 +16,7 @@ import threading
 
 from flask import Flask, Response, g, jsonify, request, send_from_directory
 
-from . import auth, db, engine, labels, madiwor, scan
+from . import auth, db, engine, labels, machine, madiwor, scan
 from .errors import WmsError
 from .engine import _jsonable
 
@@ -106,8 +106,12 @@ def create_app(dsn: str | None = None) -> Flask:
     def stato():
         a = actor()
         u = _conn().execute("SELECT display_name FROM wms.users WHERE id=%s", (a.user_id,)).fetchone()
-        return {"operatore": u["display_name"], "ruolo": a.role_code, "postazione": a.postazione,
-                "dispositivo": g.device["nome"], "senza_badge": bool(g.device.get("utente_predefinito"))}
+        out = {"operatore": u["display_name"], "ruolo": a.role_code, "postazione": a.postazione,
+               "dispositivo": g.device["nome"], "senza_badge": bool(g.device.get("utente_predefinito"))}
+        if a.postazione == "MACCHINA" and a.device_location_id:
+            mc = _conn().execute("SELECT machine_code FROM wms.warehouse_locations WHERE id=%s", (a.device_location_id,)).fetchone()
+            out["prossimo"] = machine.next_job(_conn(), mc["machine_code"] if mc else None)
+        return jsonify(_jsonable(out))
 
     @app.post("/api/scan")
     def do_scan():
@@ -159,6 +163,37 @@ def create_app(dsn: str | None = None) -> Flask:
     def anomalie():
         actor()
         return jsonify(_jsonable(inventory_checks(_conn())))
+
+    @app.post("/api/macchine/<codice>/storico")
+    def storico_macchina(codice):
+        """Carica l'export 'print history' della macchina (CSV) e verifica i consumi stimati."""
+        a = actor(fonte="UI")
+        text = request.get_data(as_text=True)
+        righe = machine.parse_xeikon_csv(text)
+        import hashlib, uuid as _u
+        ev = _u.uuid5(_u.NAMESPACE_URL, f"storico:{codice}:{hashlib.sha256(text.encode()).hexdigest()}")
+        r = engine.execute(_conn(), a, ev, "IMPORTA_STORICO_MACCHINA",
+                           {"macchina": codice, "righe": righe, "file": request.args.get("file")})
+        return jsonify(_jsonable(r))
+
+    @app.post("/api/demo/simula-storico")
+    def simula_storico():
+        """SOLO istanza di prova: crea uno storico Xeikon finto (stima +7%) per mostrare la verifica dei consumi."""
+        if os.environ.get("WMS_DEMO") != "1":
+            return Response("Non disponibile", status=404)
+        a = actor(fonte="UI")
+        import uuid as _u
+        rows = _conn().execute("""SELECT id, inizio_at, fine_at, metri_utilizzati FROM wms.roll_assignments
+                                  WHERE stato='DA_VERIFICARE' AND macchina='CX3S' ORDER BY inizio_at""").fetchall()
+        if not rows:
+            return jsonify({"messaggio": "Nessun consumo stimato da verificare"})
+        righe = [{"job_name": "SIMULAZIONE", "medium": "simulato", "stato": "Completed",
+                  "fine_at": (x["inizio_at"] + (x["fine_at"] - x["inizio_at"]) / 2).isoformat(), "durata_s": 60,
+                  "metri": str((engine.D(x["metri_utilizzati"]) * engine.D("1.07")).quantize(engine.D("0.01")))} for x in rows]
+        righe.append({"job_name": "SIMULAZIONE", "medium": "", "stato": "Completed", "durata_s": 0, "metri": "0",
+                      "fine_at": (max(x["fine_at"] for x in rows) + __import__("datetime").timedelta(seconds=1)).isoformat()})
+        return jsonify(_jsonable(engine.execute(_conn(), a, _u.uuid4(), "IMPORTA_STORICO_MACCHINA",
+                                                {"macchina": "CX3S", "righe": righe, "file": "simulazione"})))
 
     @app.get("/api/metriche")
     def metriche():

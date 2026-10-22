@@ -33,14 +33,22 @@ def seed_master(conn, fixed_tokens: dict | None = None) -> dict:
                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,'m') RETURNING id""",
                 (code, os_id, fcode, sup, descr, madiwor, descr.split(" S20")[0], "S2047N", ["FSC"] if "FSC" in descr else [])
             ).fetchone()["id"]
-        for codice, tipo, machine in [("RICEVIMENTO", "RICEVIMENTO", None), ("A-01-01", "SCAFFALE", None),
-                                      ("A-01-02", "SCAFFALE", None), ("B-02-01", "SCAFFALE", None),
-                                      ("XEIKON", "MACCHINA", "CX3S"), ("CARTES", "MACCHINA", "HS"),
-                                      ("SPEDIZIONE", "SPEDIZIONE", None), ("QUARANTENA", "QUARANTENA", None)]:
+        # (codice, tipo, macchina, capienza, ripiano, area, macchina vicina)
+        for codice, tipo, machine, cap, liv, area, vicina in [
+                ("RICEVIMENTO", "RICEVIMENTO", None, None, None, None, None),
+                ("A-01-01", "SCAFFALE", None, 6, 1, "SCORTA", None),
+                ("A-01-02", "SCAFFALE", None, 6, 2, "SCORTA", None),
+                ("B-02-01", "SCAFFALE", None, 12, 1, "RIMANENZE", None),
+                ("P-XEIKON", "SCAFFALE", None, 4, 1, "PRONTO_MACCHINA", "CX3S"),
+                ("XEIKON", "MACCHINA", "CX3S", None, None, None, None), ("CARTES", "MACCHINA", "HS", None, None, None, None),
+                ("SPEDIZIONE", "SPEDIZIONE", None, None, None, None, None),
+                ("QUARANTENA", "QUARANTENA", None, None, None, None, None)]:
             ids["loc"][codice] = conn.execute(
-                """INSERT INTO wms.warehouse_locations(codice, barcode, tipo, machine_code, zona)
-                   VALUES (%s,%s,%s,%s,%s) RETURNING id""",
-                (codice, "UPL" + codice.replace("-", ""), tipo, machine, codice.split("-")[0])).fetchone()["id"]
+                """INSERT INTO wms.warehouse_locations(codice, barcode, tipo, machine_code, zona, capacita_bobine, livello,
+                                                      area, macchina_vicina)
+                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id""",
+                (codice, "UPL" + codice.replace("-", ""), tipo, machine, codice.split("-")[0], cap, liv, area, vicina)
+            ).fetchone()["id"]
         for username, nome, role, badge, pin in [
             ("op.produzione", "Operatore produzione", "OPERATORE_PRODUZIONE", "UPBPROD01", "1111"),
             ("op.produzione2", "Operatore produzione 2", "OPERATORE_PRODUZIONE", "UPBPROD02", "2222"),

@@ -9,7 +9,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from wms import db as wdb  # noqa: E402
-from wms import engine, ledger, madiwor, seed  # noqa: E402,F401
+from wms import engine, ledger, machine, madiwor, seed  # noqa: E402,F401
 from wms.engine import Actor  # noqa: E402
 
 DSN = os.environ.get("WMS_TEST_DATABASE_URL", "host=/tmp port=5433 user=postgres dbname=wms_test")

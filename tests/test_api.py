@@ -93,8 +93,7 @@ def test_code128_leggibile_da_un_decoder(conn):
         assert [r.text for r in zx.read_barcodes(img)] == [t]
 
 
-def test_ricevimento_due_scansioni_via_http(client, conn, ids, actors):
-    """Obiettivo sez. 17: materiale noto = max 2 scansioni (+ conferma). Etichetta GS1 con GTIN, metri e lotto."""
+def test_ricevimento_una_scansione_via_http(client, conn, ids, actors):
     from conftest import run
     gtin = "08012345678907"
     run(conn, actors["resp"], "ASSOCIA_CODICE", {"code": gtin, "namespace": "GTIN", "material_id": str(ids["mat"]["EPIQUE-FSC-S2047N"])})
@@ -102,17 +101,9 @@ def test_ricevimento_due_scansioni_via_http(client, conn, ids, actors):
     s = login(client, ids, "Postazione ricevimento", "UPBPROD01")
     h = H(ids, "Postazione ricevimento", s)
     sc = client.post("/api/scan", json={"code": "01" + gtin + "3111005000" + "10L9", "client_scan_id": str(uuid.uuid4())}, headers=h).json
-    assert sc["esito"] == "CHIEDI"                                                     # scansione 1
-    cmd = client.post("/api/command", json={"event_id": str(uuid.uuid4()), "tipo": sc["chiedi"]["azione"],
-                                            "payload": sc["chiedi"]["dati"]}, headers=h).json   # Invio
-    assert cmd["contesto"]["in_attesa_ubicazione"] == cmd["bobine"][0]["barcode"] and cmd["stampa"]
-    mv = client.post("/api/scan", json={"code": "UPLA0102", "client_scan_id": str(uuid.uuid4())}, headers=h).json   # scansione 2
-    assert mv["esito"] == "OK"
-    r = conn.execute("SELECT r.metri_residui, r.lotto_fornitore, l.codice FROM wms.material_rolls r "
-                     "JOIN wms.warehouse_locations l ON l.id=r.ubicazione_id").fetchone()
-    assert (r["metri_residui"], r["lotto_fornitore"], r["codice"]) == (500, "L9", "A-01-02")
+    assert sc["esito"] == "OK" and sc["titolo"].startswith("Metti in") and sc["stampa"]
     n = conn.execute("SELECT count(*) n FROM wms.scan_events WHERE device_id=%s", (ids["devices"]["Postazione ricevimento"],)).fetchone()["n"]
-    assert n == 2
+    assert n == 1
 
 
 def test_postazione_senza_badge(client, conn, ids, actors):

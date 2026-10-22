@@ -56,9 +56,9 @@ def test_scansione_ripetuta_intenzionale_dopo_finestra(conn, ids, actors):
     t0 = dt.datetime.now(dt.timezone.utc)
     scan_(conn, actors["prod"], "4515", client_ts=t0)
     assert scan_(conn, actors["prod"], b["barcode"], client_ts=t0 + dt.timedelta(seconds=1))["esito"] == "OK"
-    # dopo la finestra, rileggere la bobina montata = voglio chiuderla
+    # dopo la finestra, rileggere la bobina montata = fine lavoro: si chiude senza domande e si indica il posto
     r = scan_(conn, actors["prod"], b["barcode"], client_ts=t0 + dt.timedelta(seconds=30))
-    assert r["esito"] == "CHIEDI" and r["chiedi"]["azione"] == "CHIUDI_BOBINA"
+    assert r["esito"] == "OK" and r["comando"]["tipo"] == "CHIUDI_BOBINA" and r["titolo"].startswith("Metti in")
 
 
 # 2 -------------------------------------------------------------------------------
@@ -467,25 +467,26 @@ def test_ruoli_lato_server(conn, ids, actors):
     expect("RUOLO_NON_AUTORIZZATO", run, conn, actors["prod"], "BLOCCA_BOBINA", {"roll_id": str(b["id"]), "causale": "x"})
 
 
-def test_ricevimento_gs1_due_scansioni(conn, ids, actors):
-    """Materiale noto con etichetta GS1 (GTIN + lotto + metri): 1 scansione + Invio, poi l'ubicazione."""
+def test_ricevimento_una_scansione(conn, ids, actors):
+    """Arrivo: una lettura e basta. Il sistema registra, sceglie il posto, stampa l'etichetta."""
     gtin = "08012345678907"   # cifra di controllo calcolata (verificata su EAN reale 4006381333931)
     assert barcodes._gtin_ok(gtin)
     run(conn, actors["resp"], "ASSOCIA_CODICE", {"code": gtin, "namespace": "GTIN", "material_id": str(ids["mat"]["EPIQUE-FSC-S2047N"])})
     conn.execute("UPDATE wms.materials SET larghezza_mm=170 WHERE id=%s", (ids["mat"]["EPIQUE-FSC-S2047N"],))
-    code = "01" + gtin + "3111001000" + "10LOT77"          # AI 311, 1 decimale, 001000 → 100,0 m; lotto LOT77
+    code = "01" + gtin + "3111006000" + "10LOT77"          # AI 311, 1 decimale, 006000 → 600,0 m; lotto LOT77
     s = scan_(conn, actors["ric"], code)
-    assert s["esito"] == "CHIEDI" and [c["nome"] for c in s["chiedi"]["campi"]] == ["numero_bobine"]
-    assert s["chiedi"]["dati"]["metri"] == 100.0 and s["chiedi"]["dati"]["lotto_fornitore"] == "LOT77"
-    r = run(conn, actors["ric"], "RICEVI_BOBINA", s["chiedi"]["dati"])
-    bc = r["bobine"][0]["barcode"]
-    scan_(conn, actors["ric"], bc)
-    mv = scan_(conn, actors["ric"], "UPLA0101")
-    assert mv["esito"] == "OK" and roll(conn, r["bobine"][0]["id"])["ubicazione_id"] == ids["loc"]["A-01-01"]
-    # un codice fornitore che identifica solo l'articolo NON porta con sé la metratura
+    assert s["esito"] == "OK" and s["titolo"] == "Metti in A-01-01", s      # 600 m = pesante → ripiano 1
+    assert s["stampa"] and s["bobina"]["metri_fisici"] == 600.0
+    r = roll(conn, s["bobina"]["id"])
+    assert r["lotto_fornitore"] == "LOT77" and r["ubicazione_confermata"] is False
+    # un codice che identifica solo l'articolo, senza metratura nominale configurata: si chiede solo quella
     run(conn, actors["resp"], "ASSOCIA_CODICE", {"code": "AA335", "material_id": str(ids["mat"]["EPIQUE-FSC-S2047N"])})
     s2 = scan_(conn, actors["ric"], "AA335")
-    assert "metri" in [c["nome"] for c in s2["chiedi"]["campi"]]
+    assert s2["esito"] == "CHIEDI" and [c["nome"] for c in s2["chiedi"]["campi"]] == ["metri"]
+    # con la metratura nominale del fornitore in anagrafica basta la lettura
+    conn.execute("UPDATE wms.materials SET metri_nominali=500 WHERE id=%s", (ids["mat"]["EPIQUE-FSC-S2047N"],))
+    s3 = scan_(conn, actors["ric"], "AA335", client_ts=dt.datetime.now(dt.timezone.utc) + dt.timedelta(seconds=5))
+    assert s3["esito"] == "OK" and "nominale" in s3["messaggio"]
 
 
 def test_stoccaggio_a_raffica(conn, ids, actors):
