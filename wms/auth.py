@@ -30,8 +30,8 @@ def check_pin(pin: str, stored: str | None) -> bool:
     return hmac.compare_digest(hash_pin(pin, bytes.fromhex(salt)).split("$", 1)[1], dk)
 
 
-def create_device(conn, nome: str, postazione: str, location_id=None) -> tuple[dict, str]:
-    token = secrets.token_urlsafe(32)
+def create_device(conn, nome: str, postazione: str, location_id=None, token: str | None = None) -> tuple[dict, str]:
+    token = token or secrets.token_urlsafe(32)
     d = conn.execute("""INSERT INTO wms.devices(nome, postazione, location_id, token_hash) VALUES (%s,%s,%s,%s)
                         RETURNING *""", (nome, postazione, location_id, sha(token))).fetchone()
     return d, token

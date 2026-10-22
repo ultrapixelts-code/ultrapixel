@@ -21,6 +21,14 @@ def main(argv: list[str]) -> int:
     cmd, args = argv[0], argv[1:]
     if cmd == "migra":
         print("Applicate:", db.apply_migrations(conn) or "nessuna (già aggiornato)")
+    elif cmd == "demo":
+        import os
+        if os.environ.get("WMS_DEMO") != "1":
+            print("Rifiutato: serve WMS_DEMO=1 (solo istanze di prova)")
+            return 2
+        db.apply_migrations(conn)
+        from . import demo
+        print("Dati demo caricati" if demo.bootstrap(conn) else "Dati demo già presenti")
     elif cmd == "verifica":
         problems = ledger.verify(conn)
         for p in problems:

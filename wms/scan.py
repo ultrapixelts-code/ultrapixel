@@ -327,7 +327,7 @@ def _on_material(conn, actor, ctx, cand: Candidate, rec) -> dict:
         campi.append({"nome": "lotto_fornitore", "etichetta": "Lotto fornitore (facoltativo)", "tipo": "testo"})
     campi.append({"nome": "numero_bobine", "etichetta": "Quante bobine uguali", "tipo": "numero", "default": 1})
     return _resp("CHIEDI", f"Ricevimento: {mat['descrizione']}",
-                 "Conferma con Invio" if len(campi) <= 2 else "Inserisci solo i dati mancanti",
+                 "Inserisci solo i dati mancanti" if any(c.get("obbligatorio") for c in campi) else "Conferma con Invio",
                  chiedi={"azione": "RICEVI_BOBINA", "dati": dati, "campi": campi})
 
 

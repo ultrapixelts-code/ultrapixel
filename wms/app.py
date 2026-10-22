@@ -72,6 +72,13 @@ def create_app(dsn: str | None = None) -> Flask:
             resp.headers["Service-Worker-Allowed"] = "/"
         return resp
 
+    @app.get("/demo")
+    def demo_page():
+        if os.environ.get("WMS_DEMO") != "1":
+            return Response("Non disponibile", status=404)
+        from . import demo
+        return Response(demo.page(_conn()), mimetype="text/html")
+
     @app.get("/api/salute")
     def salute():
         _conn().execute("SELECT 1")

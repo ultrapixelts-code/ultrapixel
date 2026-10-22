@@ -16,7 +16,7 @@ from .engine import D
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
-def seed_master(conn) -> dict:
+def seed_master(conn, fixed_tokens: dict | None = None) -> dict:
     ids: dict = {"loc": {}, "users": {}, "devices": {}, "tokens": {}, "mat": {}}
     with conn.transaction():
         sup = conn.execute("INSERT INTO wms.suppliers(nome, os_supplier_id) VALUES ('Fornitore SUP_000033','SUP_000033') "
@@ -55,7 +55,8 @@ def seed_master(conn) -> dict:
                                 ("Postazione Xeikon", "MACCHINA", "XEIKON"),
                                 ("Postazione Xeikon (2)", "MACCHINA", "XEIKON"),
                                 ("Postazione spedizione", "SPEDIZIONE", "SPEDIZIONE")]:
-            d, tok = auth.create_device(conn, nome, post, ids["loc"][loc] if loc else None)
+            d, tok = auth.create_device(conn, nome, post, ids["loc"][loc] if loc else None,
+                                        token=(fixed_tokens or {}).get(nome))
             ids["devices"][nome] = d["id"]
             ids["tokens"][nome] = tok
     return ids
