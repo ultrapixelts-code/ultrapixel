@@ -68,17 +68,56 @@
     const list = store.get("review", []); $("review").hidden = !list.length;
     $("reviewlist").innerHTML = list.map((r) => `<li>${esc(r.cosa)} — ${esc(r.why)} <small>(${esc(new Date(r.quando).toLocaleString("it-IT"))})</small></li>`).join("");
   }
-  function setNet(on) { const n = $("net"); n.className = "net " + (on ? "on" : "off"); n.textContent = on ? "in linea" : "senza rete"; }
+  function setNet(on) { const n = $("net"); n.className = "net " + (on ? "on" : "off"); n.textContent = on ? "Online" : "Senza rete"; }
   window.addEventListener("online", flush);
   setInterval(() => { if (queue().length) flush(); }, 8000);
 
   // ---------- rendering ----------
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const n = (v) => v == null ? "-" : Number(v).toLocaleString("it-IT", { maximumFractionDigits: 2 });
+  const ICON = { ok: '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+    info: '<svg viewBox="0 0 24 24"><path d="M12 11v6M12 7.5v.01"/></svg>',
+    err: '<svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></svg>',
+    att: '<svg viewBox="0 0 24 24"><path d="M12 6.5v7M12 17.5v.01"/></svg>', idle: '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>' };
+  const FI = {
+    roll: '<svg viewBox="0 0 24 24"><ellipse cx="8" cy="12" rx="4" ry="7"/><path d="M8 5h9c2.2 0 4 3.1 4 7s-1.8 7-4 7H8"/><ellipse cx="8" cy="12" rx="1.3" ry="2.3"/></svg>',
+    layers: '<svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>',
+    pin: '<svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+    doc: '<svg viewBox="0 0 24 24"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>',
+    ruler: '<svg viewBox="0 0 24 24"><path d="M3 16l13-13 5 5L8 21z"/><path d="M7 12l2 2M10 9l2 2M13 6l2 2"/></svg>',
+    user: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
+    cal: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+    tag: '<svg viewBox="0 0 24 24"><path d="M3 12V3h9l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>',
+    box: '<svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg>',
+  };
   function show(cls, title, msg) {
-    $("result").className = "result " + cls; $("rtitle").textContent = title || ""; $("rmsg").textContent = msg || "";
+    $("result").className = "card result " + cls; $("ricon").innerHTML = ICON[cls] || ICON.idle;
+    $("rtitle").textContent = title || ""; $("rmsg").textContent = msg || "";
   }
-  function clearExtras() { $("ask").hidden = true; $("ask").innerHTML = ""; $("choices").hidden = true; $("choices").innerHTML = "";
+  function facts(r) {
+    const f = [], b = r.bobina, c = r.commessa, k = r.collo, res = r.risultato || r;
+    if (b) f.push(["roll", "Bobina", b.barcode], ["layers", "Materiale", b.materiale], ["ruler", "Metri", n(b.metri_fisici) + " m"], ["pin", "Ubicazione", b.ubicazione || "—"]);
+    else if (res.bobine && res.bobine.length) f.push(["roll", "Bobina", res.bobine[0].barcode + (res.bobine.length > 1 ? " +" + (res.bobine.length - 1) : "")],
+      ["ruler", "Metri", n(res.bobine[0].metri) + " m"], ["pin", "Ubicazione suggerita", (res.ubicazione_suggerita || {}).codice || "leggi uno scaffale"]);
+    if (c) f.push(["doc", "Commessa", c.commessa], ["user", "Cliente", c.cliente], ["tag", "Etichette", n(c.quantita)], ["cal", "Consegna", fmtDate(c.consegna)]);
+    if (k) f.push(["box", "Collo", k.barcode], ["tag", "Articolo", k.articolo], ["ruler", "Pezzi", n(k.quantita)], ["pin", "Ubicazione", k.ubicazione || "—"]);
+    const ctx = r.contesto || {};
+    if (!c && ctx.commessa && f.length && f.length < 4) f.push(["doc", "Commessa", ctx.commessa]);
+    const out = f.slice(0, 4);
+    $("facts").hidden = !out.length;
+    $("facts").innerHTML = out.map(([i, l, v]) => `<div class="fact"><span class="ic">${FI[i]}</span><span><small>${esc(l)}</small><b title="${esc(v)}">${esc(v)}</b></span></div>`).join("");
+  }
+  // ---------- ultime scansioni ----------
+  function pushHistory(code, cls, title) {
+    const h = store.get("history", []); h.unshift({ t: new Date().toISOString(), code, cls, title }); store.set("history", h.slice(0, 8)); renderHistory();
+  }
+  function renderHistory() {
+    const h = store.get("history", []); $("historybox").hidden = !h.length;
+    $("history").innerHTML = h.map((x) => `<li><span class="st ${esc(x.cls)}">${ICON[x.cls] || ICON.ok}</span>
+      <time>${new Date(x.t).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}</time>
+      <span class="c">${esc(x.code)}</span><span class="t">${esc(x.title)}</span></li>`).join("");
+  }
+  function clearExtras() { $("facts").hidden = true; $("facts").innerHTML = ""; $("ask").hidden = true; $("ask").innerHTML = ""; $("choices").hidden = true; $("choices").innerHTML = "";
     $("detail").innerHTML = ""; askState = null; choiceState = null; }
 
   function render(r) {
@@ -88,7 +127,10 @@
     // titoli brevi e leggibili da lontano: "Materiale sbagliato: serve X..." → titolo + spiegazione
     const cut = title ? title.indexOf(": ") : -1;
     if (cut > 0 && cut < 40 && title.length > 48) { msg = title.slice(cut + 2) + (msg ? " — " + msg : ""); title = title.slice(0, cut); }
+    if (r.commessa && title && title.startsWith("Commessa")) title = "Commessa " + r.commessa.commessa;   // il cliente è già nei dati sotto
     show(cls, title, msg);
+    facts(r);
+    if (r.esito !== "LOGIN") pushHistory(r._code || lastCode || "", cls, title);
     beep(r.suono || (cls === "err" ? "errore" : cls === "att" ? "attenzione" : "ok"));
     if (r.contesto) renderCtx(r.contesto);
     if (r.comando) lastCommand = r.comando;
@@ -105,7 +147,7 @@
     if (c.in_attesa_ubicazione) chips.push("Da riporre " + c.in_attesa_ubicazione);
     if (c.stoccaggio_in) chips.push("Stoccaggio in " + c.stoccaggio_in);
     if (c.spedizione) chips.push("Spedizione " + c.spedizione);
-    $("ctx").innerHTML = chips.map((x) => `<span>${esc(x).replace(/(UP[A-Z]\d{6}|\b\d{4,}\b)/g, "<b>$1</b>")}</span>`).join("");
+    const el = document.querySelector(".sub"); if (el) el.textContent = chips.length ? chips.join(" · ") : "Leggi una commessa, una bobina o un'ubicazione.";
   }
   function jobHtml(j) {
     const rows = j.materiali.map((m) => {
@@ -149,7 +191,7 @@
     await sendCommand(body);
   });
   async function sendCommand(body) {
-    try { const r = await api("/api/command", body); clearExtras(); render({ ...r, esito: (r.avvisi && r.avvisi.length) ? "AVVISO" : (r.esito === "OK" ? "OK" : r.esito === "INVARIATO" ? "INFO" : r.esito),
+    try { const r = await api("/api/command", body); clearExtras(); render({ ...r, _code: (body.tipo || "").replace(/_/g, " ").toLowerCase(), esito: (r.avvisi && r.avvisi.length) ? "AVVISO" : (r.esito === "OK" ? "OK" : r.esito === "INVARIATO" ? "INFO" : r.esito),
         titolo: r.messaggio, messaggio: [...(r.avvisi || []), r.prossimo_passo].filter(Boolean).join(" · "),
         comando: { event_id: r.event_id, tipo: r.comando }, stampa: r.stampa, contesto: r.contesto });
       if (r.esito === "OK" && r.bobine) { /* dopo un ricevimento la bobina aspetta l'ubicazione: basta scansionarla */ } }
@@ -182,12 +224,12 @@
   async function doLogin(badge) {
     try {
       const r = await api("/api/login", { badge });
-      store.set("session", r.sessione); $("station").textContent = r.dispositivo.replace(/^Postazione /, ""); setMode("scan");
+      store.set("session", r.sessione); setStation(r); setMode("scan");
       show("ok", "Ciao " + r.operatore, "Postazione " + r.postazione.toLowerCase()); beep("ok");
     } catch (e) { show("err", isNetErr(e) ? "Senza rete non si può accedere" : ((e.data && e.data.messaggio) || e.message)); beep("errore"); }
   }
   function setMode(m) {
-    mode = m; $("scanlabel").textContent = m === "login" ? "Leggi il tuo badge" : "Leggi un codice"; $("logout").hidden = m === "login" || senzaBadge;
+    mode = m; $("scanlabel").textContent = m === "login" ? "Leggi il tuo badge" : "Scansiona un codice"; $("logout").hidden = m === "login" || senzaBadge;
   }
   $("scan").addEventListener("keydown", (ev) => {
     if (ev.key !== "Enter") return;
@@ -231,6 +273,11 @@
   document.addEventListener("click", (ev) => { if (!ev.target.closest("form,button,input")) focusScan(); });
   setInterval(() => { const a = document.activeElement; if (!askState && (!a || a === document.body)) focusScan(); }, 700);
 
+  function setStation(r) { const st = r.dispositivo.replace(/^Postazione /, ""); $("station").textContent = st.charAt(0).toUpperCase() + st.slice(1); $("opname").textContent = r.operatore; }
+  function tick() { const d = new Date(); $("clock").textContent = d.toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "short" }) + "  " + d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }); }
+  tick(); setInterval(tick, 20000);
+  $("clearhist").addEventListener("click", () => { store.set("history", []); renderHistory(); focusScan(); });
+  renderHistory();
   // ---------- avvio ----------
   $("savetoken").addEventListener("click", () => { store.set("device", $("devtoken").value.trim()); location.reload(); });
   $("logout").addEventListener("click", async () => { try { await api("/api/logout", {}); } catch (e) { /* offline */ }
@@ -239,12 +286,12 @@
   setQueue(queue()); renderReview();
   if (!store.get("device", "")) { $("setup").hidden = false; $("scanbox").hidden = true; $("devtoken").focus(); return; }
   if (store.get("session", null)) {
-    api("/api/stato").then((r) => { $("station").textContent = r.dispositivo.replace(/^Postazione /, ""); setMode("scan"); })
+    api("/api/stato").then((r) => { setStation(r); setMode("scan"); })
       .catch((e) => { if (isNetErr(e)) { setMode("scan"); setNet(false); } else { store.set("session", null); setMode("login"); } })
       .finally(focusScan);
   } else {
     // una postazione con operatore predefinito lavora subito, senza badge
-    api("/api/stato").then((r) => { senzaBadge = !!r.senza_badge; $("station").textContent = r.dispositivo.replace(/^Postazione /, ""); setMode("scan"); })
+    api("/api/stato").then((r) => { senzaBadge = !!r.senza_badge; setStation(r); setMode("scan"); })
       .catch((e) => { if (isNetErr(e)) { setNet(false); setMode("scan"); } else setMode("login"); }).finally(focusScan);
   }
 })();
