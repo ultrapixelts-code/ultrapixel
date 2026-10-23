@@ -108,19 +108,36 @@ def offices(C):
     return [(x["name"], x["address"]) for x in lead] + [x for x in o if x[0] not in [y["name"] for y in lead]]
 
 
-def lang_redirect(C):
-    """Root-language pages only: on a first visit from outside the site, send a browser set to another language to its own
-    version (unknown languages go to English). A language picked by hand is remembered and always respected; crawlers are left alone."""
-    # a country domain (site.countryDomains) always opens in its own language: no automatic redirect there
+LANG_HINT = {   # banner shown on root-language pages to a browser set to another language: text, button, "stay" link
+    "en": ("This site is also available in English.", "Switch to English", "Stay"),
+    "fr": ("Ce site existe aussi en français.", "Passer au français", "Rester"),
+    "de": ("Diese Website gibt es auch auf Deutsch.", "Auf Deutsch ansehen", "Bleiben"),
+    "it": ("Questo sito è disponibile anche in italiano.", "Passa all'italiano", "Resta"),
+}
+
+
+def lang_hint(C):
+    """Root-language pages only: a browser set to another language sees a small banner offering its own version
+    (unknown languages are offered English). Nobody is redirected automatically, so crawlers always read the page they asked for.
+    A language picked by hand, or the banner closed, is remembered."""
+    # a country domain (site.countryDomains) always opens in its own language: no banner there
     if C["lang"] != HOME or len(LANGS) < 2 or HOME in C["site"].get("countryDomains", {}):
         return ""
     others = [l for l in LANGS if l != HOME]
-    return ("<script>(function(){try{var L=" + json.dumps(others) + ",s=null;try{s=localStorage.getItem('up_lang')}catch(e){}"
-            "if(s||/bot|crawl|spider|slurp|preview|lighthouse|gpt|headless/i.test(navigator.userAgent))return;"
-            "var r=document.referrer;if(r&&r.indexOf(location.protocol+'//'+location.host+'/')===0)return;"
-            "var b=((navigator.languages&&navigator.languages[0])||navigator.language||'').slice(0,2).toLowerCase();"
-            "if(!b||b==='" + HOME + "')return;var t=L.indexOf(b)>-1?b:'" + DEFAULT + "';"
-            "try{if(r)sessionStorage.setItem('up_ref',r)}catch(e){}location.replace('/'+t+location.pathname+location.search+location.hash)}catch(e){}})()</script>\n")
+    texts = {l: LANG_HINT[l] for l in others if l in LANG_HINT}
+    cd = C["site"].get("countryDomains", {})   # a language with its own domain is offered there (e.g. ultrapixel.fr)
+    base = {l: (PUB[l].rstrip("/") if l in PUB and l in cd else "/" + l) for l in others}
+    return ("<script>(function(){try{var L=" + json.dumps(others) + ",X=" + json.dumps(texts, ensure_ascii=False) + ",s=null;try{s=localStorage.getItem('up_lang')}catch(e){}"
+            "if(s)return;var b=((navigator.languages&&navigator.languages[0])||navigator.language||'').slice(0,2).toLowerCase();"
+            "if(!b||b==='" + HOME + "')return;var t=L.indexOf(b)>-1?b:'" + DEFAULT + "',x=X[t];if(!x)return;"
+            "var B=" + json.dumps(base) + ";var go=function(){var d=document.createElement('div');d.className='lhint';d.setAttribute('role','region');d.setAttribute('lang',t);d.setAttribute('aria-label',x[1]);"
+            "var p=document.createElement('p');p.textContent=x[0];var a=document.createElement('a');a.className='cta pill';a.href=B[t]+location.pathname+location.search+location.hash;a.setAttribute('hreflang',t);a.textContent=x[1]+' \u2197';"
+            "var c=document.createElement('button');c.type='button';c.className='cta';c.textContent=x[2];c.onclick=function(){try{localStorage.setItem('up_lang','" + HOME + "')}catch(e){}d.remove()};"
+            "d.appendChild(p);d.appendChild(a);d.appendChild(c);document.body.appendChild(d)};"
+            "document.readyState==='loading'?document.addEventListener('DOMContentLoaded',go):go()}catch(e){}})()</script>\n"
+            "<style>.lhint{position:fixed;left:16px;right:16px;bottom:16px;z-index:90;max-width:660px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;"
+            "padding:16px 18px;background:var(--white);color:var(--ink);border:1px solid var(--hair);border-radius:14px;box-shadow:0 18px 50px rgba(16,18,20,.16)}"
+            ".lhint p{flex:1 1 220px;margin:0;font:400 15px/1.35 var(--body)}.lhint .cta.pill{padding:11px 18px}.lhint button.cta{background:none;border:0;cursor:pointer;color:var(--gra)}</style>\n")
 
 
 def seo_extra(C, P, path, meta):
@@ -141,9 +158,26 @@ def seo_extra(C, P, path, meta):
                             "addressLocality": x["locality"], "addressCountry": x["country"]}} for x in s["offices"]]
     if s["email"]: org["email"] = s["email"]
     if s["phone"]: org["telephone"] = s["phone"]
-    same = [u for u in (s["linkedin"], s["instagram"]) if u]
+    same = [u for u in (s["linkedin"], s["instagram"], *s.get("sameAs", [])) if u]
     if same: org["sameAs"] = same
     graph = [org]
+    # LocalBusiness: the production site in Trieste and each office (local searches, maps, "etichettificio Trieste")
+    def local(i, name, street, postal, city, country, region=None, extra=None):
+        lb = {"@type": "LocalBusiness", "@id": base + f"/#location-{i}", "name": name, "parentOrganization": {"@id": org["@id"]}, "url": base + "/",
+              "image": base + "/assets/logo.png", "address": {"@type": "PostalAddress", "streetAddress": street, "postalCode": postal, "addressLocality": city, "addressCountry": country}}
+        if region: lb["address"]["addressRegion"] = region
+        for k, v in (extra or {}).items():
+            if v: lb[k] = v
+        return lb
+    hq = {"telephone": s["phone"], "email": s["email"], "sameAs": same or None}
+    if s.get("geo"): hq["geo"] = {"@type": "GeoCoordinates", "latitude": s["geo"][0], "longitude": s["geo"][1]}
+    if s.get("openingHours"): hq["openingHours"] = s["openingHours"]
+    graph.append(local("trieste", s["legalName"], s["street"], s["postalCode"], s["locality"], s["country"], s["region"], hq))
+    for x in s.get("offices", []):
+        ex = {k: x.get(k) for k in ("telephone", "email")}
+        if x.get("geo"): ex["geo"] = {"@type": "GeoCoordinates", "latitude": x["geo"][0], "longitude": x["geo"][1]}
+        if x.get("openingHours"): ex["openingHours"] = x["openingHours"]
+        graph.append(local(x["locality"].lower(), x["name"], x["street"], x["postalCode"], x["locality"], x["country"], None, ex))
     if rel == "/":
         graph.append({"@type": "WebSite", "@id": base + "/#website", "url": base + "/", "name": s["name"], "inLanguage": C["lang"], "publisher": {"@id": org["@id"]}})
     else:
@@ -173,7 +207,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
 <html lang="{C["lang"]}">
 <head>
 <meta charset="utf-8">
-{lang_redirect(C)}<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{e(meta["title"])}</title>
 <meta name="description" content="{e(meta["description"])}">
 <link rel="canonical" href="{url}">
@@ -185,7 +219,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Archivo-100-900-latin.woff2" crossorigin>
 <style>{rd("assets/fonts.css")}</style>
 <link rel="stylesheet" href="/assets/ml.css">
-{extra_head}
+{lang_hint(C)}{extra_head}
 </head>
 <body class="{cls}">
 <header class="nav2" id="nav2">
@@ -225,7 +259,7 @@ def top(eyebrow, h2, p="", cls="h2"):
 
 def talk_ml(C, P):
     ui, h = C["ui"], C["home"]
-    return (f'<hr class="spl"><section class="sec talk"><h2 class="mega rv">{e(h["contact"]["h2a"])}<span>{e(h["contact"]["h2b"])}</span></h2>'
+    return (f'<hr class="spl"><section class="sec talk"><h2 class="mega rv">{e(h["contact"]["h2a"])} <span>{e(h["contact"]["h2b"])}</span></h2>'
             f'<div class="ctas" style="margin-top:clamp(28px,4vw,56px)"><a class="cta pill" href="{P}contact/?topic=quote">{e(ui["requestQuote"])} ↗</a><a class="cta pill ghost" href="{P}samples/">{e(ui["requestSamples"])} ↗</a>'
             f'<a class="cta" href="{P}contact/?topic=specialist">{e(ui["talkSpecialist"])} →</a></div></section>')
 
@@ -234,12 +268,12 @@ def viz(C, x):
     ui = C["ui"]
     hi = C.get("sectorPages", {}).get(x["key"], {}).get("heroImg")
     if hi:
-        return f'<div class="viz photo" data-light data-k="{x["key"]}"><img class="cover" src="/assets/{e(hi)}" alt="" loading="lazy" data-par><span class="mi tagc">{e(ui["illustrative"])}</span><span class="mi code">{e(x["matter"])}</span></div>'
+        return f'<div class="viz photo" data-light data-k="{x["key"]}"><img class="cover" src="/assets/{e(hi)}" alt="{e(ui["sectorAlt"].format(x["title"]))}" loading="lazy" data-par><span class="mi tagc">{e(ui["illustrative"])}</span><span class="mi code">{e(x["matter"])}</span></div>'
     if x["key"] == "wine":
-        inner = '<img class="flat" src="/assets/final.webp" alt="" loading="lazy" width="1500" height="1000" data-par>'; tag = ui["conceptLabel"]
+        inner = f'<img class="flat" src="/assets/final.webp" alt="{e(ui["conceptAlt"])}" loading="lazy" width="1500" height="1000" data-par>'; tag = ui["conceptLabel"]
     else:
         pos, svg = LABELS[x["key"]]; tag = ui["illustrative"]
-        inner = f'<div class="obj" data-par><img src="/assets/c-{x["key"]}.webp" alt="" loading="lazy" width="600" height="920"><div class="lb wrapc" style="{pos}">{svg}</div></div>'
+        inner = f'<div class="obj" data-par><img src="/assets/c-{x["key"]}.webp" alt="{e(ui["sectorAlt"].format(x["title"]))}" loading="lazy" width="600" height="920"><div class="lb wrapc" style="{pos}">{svg}</div></div>'
     return f'<div class="viz mat-{x["key"]}" data-light data-k="{x["key"]}">{inner}<span class="mi tagc">{e(tag)}</span><span class="mi code">{e(x["matter"])}</span></div>'
 
 
@@ -302,7 +336,7 @@ def home_ml(C, P):
         f'<figure class="rv"><div class="im" data-light><img src="/assets/{e(w["image"])}" alt="{e(w["title"])}" loading="lazy" width="720" height="900" data-par></div>'
         f'<figcaption><span class="mi">UP / {i+1:03d}</span><span class="t">{e(w["title"])}</span><span class="mi c">{e(" + ".join(w["finishes"]))}{" · " + e(w["badge"]) if w.get("badge") else ""}</span></figcaption></figure>'
         for i, w in enumerate(C["work"]["items"][:h.get("workCount", 6)]))
-    soc = "".join(f'<figure><img src="/assets/{e(t["image"])}" alt="" loading="lazy" width="720" height="900"><figcaption><span class="mi">{e(t["caption"])}</span><span class="mi dim">{e(t.get("badge", ""))}</span></figcaption></figure>' for t in C["social"])
+    soc = "".join(f'<figure><img src="/assets/{e(t["image"])}" alt="{e(t["caption"])}" loading="lazy" width="720" height="900"><figcaption><span class="mi">{e(t["caption"])}</span><span class="mi dim">{e(t.get("badge", ""))}</span></figcaption></figure>' for t in C["social"])
     po = h["position"]
     body = f'''{film}
 <hr class="spl">
@@ -355,7 +389,7 @@ def wine_ml(C, P, x):
     fl = (f'<div class="wphoto" data-light><img src="/assets/{e(he["image"])}" alt="Wine and spirits bottles with textured, foiled labels" width="1800" height="1200" data-par></div>' if he.get("image")
           else '<div class="float" id="float"><div class="tilt"><img src="/assets/final.webp" alt="UltraPixel wine label" width="1500" height="1000"><div class="gl"></div></div></div>')
     hero = (f'<section class="whero{" ph" if he.get("image") else ""}">{fl}'
-            f'<div class="say"><span class="mi">{e(he["sector"])}</span><h1><span class="xl">{e(he["xl"])}</span><span class="sub">{e(he["subh"])}</span></h1><p class="lead">{e(he["lead"])}</p>'
+            f'<div class="say"><span class="mi">{e(he["sector"])}</span><h1><span class="xl">{e(he["xl"])}</span> <span class="sub">{e(he["subh"])}</span></h1><p class="lead">{e(he["lead"])}</p>'
             f'<div class="ctas"><a class="cta pill" href="{P}samples/?sector={sq}">{e(he["cta1"])} ↗</a><a class="cta pill ghost" href="{P}contact/?topic=quote&sector={sq}">{e(he["cta2"])} ↗</a></div></div>'
             f'<div class="meta"><span class="mi">{e(he["system"])}</span><span class="mi dim">{e(ui["conceptLabel"])}</span></div></section>')
     who = "".join(f'<div><h3 class="rv">{e(a)}</h3><p>{e(b)}</p></div>' for a, b in w["for"]["items"])
@@ -414,7 +448,7 @@ def sector_ml(C, P, x, n):
     """Food, Cosmetics, Industrial and Pharma: one structure, a different visual physics each (body class phys-<key>)."""
     ui, d = C["ui"], C["sectorPages"][x["key"]]; sq = x["title"].replace("&", "%26").replace(" ", "+")
     hero = (f'<section class="shero"><div class="say"><span class="mi">{e(ui["sector"])} / {n:02d}</span>'
-            f'<h1><span class="xl">{e(d["xl"])}</span><span class="sub">{e(d["sub"])}</span></h1><p class="lead">{e(d["answer"])}</p>'
+            f'<h1><span class="xl">{e(d["xl"])}</span> <span class="sub">{e(d["sub"])}</span></h1><p class="lead">{e(d["answer"])}</p>'
             f'<div class="ctas"><a class="cta pill" href="{P}samples/?sector={sq}">{e(ui["requestSamples"])} ↗</a><a class="cta pill ghost" href="{P}contact/?topic=quote&sector={sq}">{e(ui["requestQuote"])} ↗</a></div></div>'
             f'{viz(C, x)}<div class="motif" aria-hidden="true"></div></section>')
     body = (hero + '<hr class="spl">'
@@ -547,7 +581,7 @@ def quote_ml(C, P):
     else:
         request = f'<div class="ctas"><a class="cta pill" id="q-cta" href="{P}contact/?topic=quote">{e(t["cta"])} ↗</a>{tel}</div>'
     scan = "".join(f'<li class="mi"><i class="dot"></i>{e(t[k])}<b></b></li>' for k in ("scan1", "scan2", "scan3"))
-    head = (f'<section class="phead qhero"><span class="mi">{e(p["eyebrow"])}</span><h1 class="mega rv">{e(p["h1a"])}<span>{e(p["h1b"])}</span></h1>'
+    head = (f'<section class="phead qhero"><span class="mi">{e(p["eyebrow"])}</span><h1 class="mega rv">{e(p["h1a"])} <span>{e(p["h1b"])}</span></h1>'
             f'<p class="lead">{e(p["lead"])}</p></section>')
     body = (head + f"""<hr class="spl"><section class="sec w quote" id="quote" data-contact="{P}contact/" data-lang="{C["lang"]}" data-api="{e(QUOTE_API or s.get("quoteApi", ""))}">
 <div class="split"><div class="a">
@@ -594,7 +628,7 @@ def sustain_ml(C, P):
     rows = lambda items: '<div class="lrows">' + "".join(f'<div class="row"><strong>{e(a)}</strong><span>{e(b)}</span></div>' for a, b in items) + "</div>"
     a, b, c, d, f, g, r = (s[k] for k in ("s1", "s2", "s3", "s4", "s5", "s6", "s7"))
     stack = '<div class="stack" aria-hidden="true">' + "".join(f'<div class="ly ly{i}" style="--i:{i}"><span class="mi">{e(x)}</span></div>' for i, x in enumerate(d["layers"])) + "</div>"
-    body = (f'<section class="phead"><span class="mi">{e(s["eyebrow"])}</span><h1 class="mega">{e(s["h1a"])}<span style="display:block;color:var(--tgl)">{e(s["h1b"])}</span></h1><p class="lead">{e(s["intro"])}</p>{flow}</section><hr class="spl">'
+    body = (f'<section class="phead"><span class="mi">{e(s["eyebrow"])}</span><h1 class="mega">{e(s["h1a"])} <span style="display:block;color:var(--tgl)">{e(s["h1b"])}</span></h1><p class="lead">{e(s["intro"])}</p>{flow}</section><hr class="spl">'
             + sec(1, a["h"], f'<div class="split"><div class="a"><p class="lead" style="margin-bottom:30px">{e(a["p"])}</p>{rows(a["rows"])}</div><div class="b"><figure class="lmedia" data-light><img src="/assets/{e(a["img"])}" alt="Paper fibre, macro" loading="lazy" data-par></figure></div></div>', True)
             + sec(2, b["h"], f'<p class="lead" style="color:var(--ink);max-width:54ch;font-size:clamp(20px,2.2vw,30px)">{e(b["p"])}</p><p class="mi" style="margin-top:22px">{e(b["note"])}</p>')
             + sec(3, c["h"], rows(c["rows"]), True)
@@ -608,6 +642,29 @@ def sustain_ml(C, P):
     return shell_ml(C, P, f"{P}sustainability/", s["meta"], body)
 
 
+def llms_txt(C0, CE):
+    """/llms.txt: a short plain-text profile of UltraPixel for AI assistants (llmstxt.org), with links to the key pages.
+    Written in English from the site's own copy; links point to the root language of this domain and to English."""
+    s = CE["site"]; L = [C0["lang"]] + ([DEFAULT] if C0["lang"] != DEFAULT else [])
+    u = lambda l, rel: pub(C0, l, rel)
+    link = lambda title, rel, note="": "- " + " / ".join(f"[{title}{'' if i == 0 else ' (' + LANG_NAMES[l] + ')'}]({u(l, rel)})" for i, l in enumerate(L)) + (f": {note}" if note else "")
+    offices = [f"- {n}: {a}" for n, a in [(s["legalName"], s["address"])] + [(x["name"], x["address"]) for x in s.get("offices", [])]]
+    out = [f"# {s['name']}", "", f"> {s['description']}", "",
+           f"{s['legalName']} (VAT {s['vatID']}) was founded in {s['founded']}. It designs, prints and finishes self-adhesive labels in Trieste, Italy, "
+           "for brands, wineries, manufacturers, agents and distributors in Italy and across Europe.", "",
+           "## Company facts", "", *offices]
+    if s["email"]: out.append(f"- Email: {s['email']}")
+    if s["phone"]: out.append(f"- Phone: {s['phone']}")
+    out += [f"- Website languages: {', '.join(LANG_NAMES[l] for l in LANGS)}", "",
+            "## Sectors", "", *[link(x["title"] + " labels", f"/{x['slug']}/", x["copy"]) for x in CE["sectors"]], "",
+            "## Label types and applications", "", *[link(x["h1"], f"/{x['slug']}/") for x in CE["landings"]], "",
+            "## Technologies", "", ", ".join(t["title"] for t in CE["technologies"]["items"]) + ".", "", link("All technologies", "/technologies/"), "",
+            "## Contact and requests", "", link("Contact and quote requests", "/contact/"), link("Request samples", "/samples/"),
+            link("Indicative label price", "/quote/"), link("Agents and distributors", "/partners/"), "",
+            "## About", "", link("About UltraPixel", "/about/"), link("Work", "/work/"), link("Sustainability", "/sustainability/"), ""]
+    return "\n".join(out)
+
+
 def legal_ml(C, P, key):
     d = C["legal"][key]
     body = (phead(C["site"]["privacyVersion"], d["h1"], mega=False) + '<hr class="spl"><section class="sec w"><div class="legal-text">'
@@ -615,7 +672,7 @@ def legal_ml(C, P, key):
     return shell_ml(C, P, f"{P}{key}/", d["meta"], body)
 
 
-NO_TR = {"slug", "key", "image", "img", "id", "url", "lang", "macro", "fx", "shot", "heroImg", "launchUrl", "email", "phone", "linkedin", "instagram", "formEndpoint", "analyticsEndpoint",
+NO_TR = {"slug", "key", "image", "img", "id", "url", "lang", "macro", "fx", "shot", "heroImg", "launchUrl", "email", "phone", "linkedin", "instagram", "formEndpoint", "analyticsEndpoint", "sameAs", "openingHours", "telephone",
          "vatID", "street", "postalCode", "locality", "region", "country", "address", "name", "legalName", "founded"}
 
 
@@ -652,6 +709,8 @@ def build(launch=False):
             C["site"]["noindex"] = False; C["site"]["url"] = PUB[HOME] if HOME in cd or HOME == C["site"]["mainLang"] else main
         if lang == HOME:
             C0 = C
+        if lang == DEFAULT:
+            CE = C
         out = {P: home_ml(C, P), f"{P}technologies/": tech_ml(C, P), f"{P}work/": work_ml(C, P), f"{P}about/": about_ml(C, P), f"{P}sustainability/": sustain_ml(C, P), f"{P}privacy/": legal_ml(C, P, "privacy"), f"{P}cookies/": legal_ml(C, P, "cookies"),
                f"{P}samples/": form_ml(C, P, "samples", "samples"), f"{P}contact/": form_ml(C, P, "contact", "quote"), f"{P}partners/": form_ml(C, P, "partners", "partner"), f"{P}quote/": quote_ml(C, P)}
         for n, x in enumerate(C["sectors"]):
@@ -671,6 +730,7 @@ def build(launch=False):
     if C0["site"]["blockAiTraining"]:
         bots += "User-agent: GPTBot\nDisallow: /\n\n"
     wr("robots.txt", bots + f"User-agent: *\nAllow: /\n\nSitemap: {site}/sitemap.xml\n")
+    wr("llms.txt", llms_txt(C0, CE))
     wr("404.html", shell_ml(C0, "/", "/404.html", {"title": "Page not found | UltraPixel", "description": C0["ui"]["notFound"]},
                             phead("404", C0["ui"]["notFound"], mega=False) + f'<section class="sec"><a class="cta pill" href="/">{e(C0["ui"]["backHome"])} ↗</a></section>'))
     print(f"built {len(paths)} pages")

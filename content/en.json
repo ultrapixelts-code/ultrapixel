@@ -9,6 +9,9 @@
     "phone": "+39 040 817222",
     "linkedin": "",
     "instagram": "",
+    "sameAs": [],
+    "openingHours": "",
+    "geo": [],
     "formEndpoint": "https://ultrapixel.it/backend/api/lead.php",
     "legalName": "UltraPixel Srl",
     "launchUrl": "https://ultrapixel.it",
@@ -96,7 +99,9 @@
     "priceCta": "Get your price",
     "priceShort": "Price",
     "fileTooBig": "The file is larger than 25 MB: please send it to info@ultrapixel.it.",
-    "sending": "Sending…"
+    "sending": "Sending…",
+    "sectorAlt": "{}: illustrative label image",
+    "conceptAlt": "UltraPixel concept wine label with hot foil and embossing"
   },
   "form": {
     "name": "Name",
@@ -398,7 +403,7 @@
       ],
       "meta": {
         "title": "Wine and spirits labels | UltraPixel",
-        "description": "Premium wine and spirits labels: textured papers, hot foil, embossing, tactile varnish and materials selected for ice buckets. Made in Italy, delivered across Europe."
+        "description": "Premium wine and spirits labels: textured papers, hot foil, embossing, tactile varnish, ice-bucket materials. Made in Italy, delivered across Europe."
       },
       "matter": "Paper fibre + foil"
     },
@@ -665,7 +670,7 @@
       "macro": "c-tactile.webp",
       "meta": {
         "title": "Premium labels | UltraPixel",
-        "description": "Premium self-adhesive labels combining textured papers, hot foil, screen printing, embossing and shaped die-cutting. Made in Italy for brands across Europe."
+        "description": "Premium self-adhesive labels combining textured papers, hot foil, screen printing, embossing and shaped die-cutting. Made in Italy for European brands."
       }
     },
     {
@@ -2240,7 +2245,7 @@
     "about": {
       "meta": {
         "title": "About UltraPixel | Label manufacturer in Trieste, Italy",
-        "description": "UltraPixel is a self-adhesive label manufacturer founded in Trieste in 2013, producing premium and technical labels for customers in Italy and across Europe."
+        "description": "UltraPixel is a self-adhesive label manufacturer founded in Trieste in 2013, producing premium and technical labels for Italy and Europe."
       },
       "h1": "About UltraPixel",
       "facts": [
@@ -2351,7 +2356,7 @@
   "wine": {
     "meta": {
       "title": "Wine and spirits labels | Premium label printing | UltraPixel",
-      "description": "Premium wine and spirits labels printed and finished in Italy: textured papers, hot foil, embossing, tactile varnish and shaped die-cutting, delivered across Europe."
+      "description": "Premium wine and spirits labels printed and finished in Italy: textured papers, hot foil, embossing, tactile varnish and shaped die-cutting."
     },
     "hero": {
       "h1": "Wine and spirits labels made to be picked up.",
@@ -3030,7 +3035,7 @@
   "sustainability": {
     "meta": {
       "title": "Sustainability and label material choices | UltraPixel",
-      "description": "How UltraPixel approaches sustainability in labels: material selection, sourcing, waste, compatibility with the pack and the right level of finishing, evaluated from the start of a project."
+      "description": "How UltraPixel approaches label sustainability: material choice, sourcing, waste, pack compatibility and the right level of finishing, from day one."
     },
     "nav": "Sustainability",
     "eyebrow": "Sustainability / Material system",

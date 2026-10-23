@@ -1,0 +1,82 @@
+# UltraPixel — root .htaccess (ultrapixel.it and ultrapixel.fr, same file)
+# If the hosting already has a .htaccess in the site root, paste this block AT THE TOP of it
+# and delete any old "ErrorDocument" line from the previous site.
+
+ErrorDocument 404 /404.html
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# ---------------------------------------------------------------- 1. old pages of the previous ultrapixel.it
+# 301 = the page moved here (visitors and Google follow); 410 = gone for good (Google drops it quickly).
+# Each old address is sent straight to its final https address, in a single hop.
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^ultrapixel\.html$ https://ultrapixel.it/ [R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^(index|ultrapixel)_eng\.html$ https://ultrapixel.it/en/ [R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^etichetteadesive(_eng)?\.html$ https://ultrapixel.it/label-manufacturer-italy/ [R=301,L,NC]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^(etichettedigitali|grafica|polipropilene|pvc|manuale)\.html$ https://ultrapixel.it/technologies/ [R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^(etichettedigitali|grafica|polipropilene|polipropylene|pvc|manuale)_eng\.html$ https://ultrapixel.it/en/technologies/ [R=301,L,NC]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^(pregiate|cartemetalizzate|cartecolorate|cartepatinate|cartenaturali)\.html$ https://ultrapixel.it/premium-labels/ [R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^(pregiate|cartemetalizzate|cartecolorate|cartepatinate|cartenaturali)_eng\.html$ https://ultrapixel.it/en/premium-labels/ [R=301,L,NC]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^(enologico|wineelabel)\.html$ https://ultrapixel.it/wine-spirits/ [R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^(enologico|wineelabel)_eng\.html$ https://ultrapixel.it/en/wine-spirits/ [R=301,L,NC]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^alimentare\.html$ https://ultrapixel.it/food-labels/ [R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^alimentare_eng\.html$ https://ultrapixel.it/en/food-labels/ [R=301,L,NC]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^farmaceutico\.html$ https://ultrapixel.it/pharma-labels/ [R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^farmaceutico_eng\.html$ https://ultrapixel.it/en/pharma-labels/ [R=301,L,NC]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^(chimico|elettronico)\.html$ https://ultrapixel.it/industrial-chemical/ [R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^(chimico|elettronico)_eng\.html$ https://ultrapixel.it/en/industrial-chemical/ [R=301,L,NC]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^(logistico|codiciean)\.html$ https://ultrapixel.it/variable-data-labels/ [R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^(logistico|codiciean)_eng\.html$ https://ultrapixel.it/en/variable-data-labels/ [R=301,L,NC]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^contatti\.html$ https://ultrapixel.it/contact/ [R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^contatti_eng\.html$ https://ultrapixel.it/en/contact/ [R=301,L,NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^cookies(_eng)?\.html$ https://ultrapixel.it/cookies/ [R=301,L,NC]
+
+# Topics no longer on the site: 410 Gone.
+# If UltraPixel still sells one of these, replace "- [G,L,NC]" with a 301 to the closest page.
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^(ribbontermici|cartetrasferimentotermico|etichetteneutre|stampaticommerciali|blog)(_eng)?\.html$ - [G,L,NC]
+
+# ---------------------------------------------------------------- 2. one address per page
+# www -> without www, http -> https, /index.html -> folder (one hop, same domain).
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+((?:[^\s?]*/)?)index\.html[\s?]
+RewriteRule ^ https://%{HTTP_HOST}/%1 [R=301,L,NE]
+</IfModule>
+
+# ---------------------------------------------------------------- 3. plain-text files for AI assistants
+<Files "llms.txt">
+  ForceType "text/plain; charset=utf-8"
+</Files>
