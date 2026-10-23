@@ -56,8 +56,10 @@ def test_scansione_ripetuta_intenzionale_dopo_finestra(conn, ids, actors):
     t0 = dt.datetime.now(dt.timezone.utc)
     scan_(conn, actors["prod"], "4515", client_ts=t0)
     assert scan_(conn, actors["prod"], b["barcode"], client_ts=t0 + dt.timedelta(seconds=1))["esito"] == "OK"
-    # dopo la finestra, rileggere la bobina montata = fine lavoro: si chiude senza domande e si indica il posto
-    r = scan_(conn, actors["prod"], b["barcode"], client_ts=t0 + dt.timedelta(seconds=30))
+    # dopo la finestra, rileggere la bobina montata = fine lavoro: una domanda (quanto resta), poi il posto
+    q = scan_(conn, actors["prod"], b["barcode"], client_ts=t0 + dt.timedelta(seconds=30))
+    assert q["esito"] == "CHIEDI" and [o["etichetta"] for o in q["opzioni"]] == ["Finita", "1/4", "2/4", "3/4"]
+    r = scan_(conn, actors["prod"], "UPQ2", client_ts=t0 + dt.timedelta(seconds=33))
     assert r["esito"] == "OK" and r["comando"]["tipo"] == "CHIUDI_BOBINA" and r["titolo"].startswith("Metti in")
 
 

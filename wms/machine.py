@@ -86,6 +86,27 @@ def reconcile_roll(tx: Tx, roll_id) -> dict:
             _release(tx, res, causale="Consumo verificato da macchina", final_status="CONSUMATA")
         roll = get_roll(conn, roll["id"])
         nuovo = start - consumo
+        scarto = Decimal("0")
+        quarti = a.get("quarti_dichiarati")
+        if quarti is not None:
+            # confronto con quanto indicato a occhio dall'operatore (finita, 1/4, 2/4, 3/4)
+            intera = D(roll["metri_iniziali"])
+            toll = intera * D(engine.setting(conn, "tolleranza_quarti", "0.125"))
+            detto = D(a["metri_fine"] if a.get("metri_fine") is not None else 0)
+            if quarti == 0 and nuovo > 0:
+                # bobina finita: quello che la macchina non ha stampato è carta di aggancio e coda, va a scarto
+                scarto = nuovo
+                if scarto > toll:
+                    tx.warnings.append(f"{roll['barcode']}: indicata finita ma la macchina ne ha usati {consumo:g} m su "
+                                       f"{start:g}: {scarto:g} m a scarto, serve un controllo")
+                    tx.audit("DIFFERENZA_STIMA_OPERATORE", "ROLL", roll["id"],
+                             dopo={"quarti": 0, "residuo_macchina": nuovo, "scarto": scarto})
+                nuovo = Decimal("0")
+            elif abs(nuovo - detto) > toll:
+                tx.warnings.append(f"{roll['barcode']}: indicati {quarti}/4 (≈{detto:g} m) ma secondo la macchina restano "
+                                   f"{nuovo:g} m: vale il dato macchina, conviene controllare")
+                tx.audit("DIFFERENZA_STIMA_OPERATORE", "ROLL", roll["id"],
+                         dopo={"quarti": quarti, "residuo_operatore": detto, "residuo_macchina": nuovo})
         over = D(roll["metri_riservati"]) - nuovo
         if over > 0:
             for res in conn.execute("SELECT * FROM wms.material_reservations WHERE roll_id=%s AND status='ATTIVA' "
@@ -96,11 +117,16 @@ def reconcile_roll(tx: Tx, roll_id) -> dict:
         if consumo > 0:
             tx.move("CONSUMO", "ROLL", roll["id"], -consumo, "m", commessa=a["job_id"], reference=a["id"],
                     metadata={"tipo_dato": "MACCHINA", "macchina": a["macchina"], "stima_precedente": stima})
+        if scarto > 0:
+            tx.move("SCARTO", "ROLL", roll["id"], -scarto, "m", commessa=a["job_id"], reference=a["id"],
+                    causale="Fine bobina: aggancio e coda", metadata={"tipo_dato": "MACCHINA", "quarti_dichiarati": 0})
+            conn.execute("UPDATE wms.production_job_materials SET metri_scarto=metri_scarto+%s WHERE id=%s",
+                         (scarto, a["job_material_id"]))
         _roll_update(conn, roll["id"], metri_residui=nuovo, origine_dato_metratura="CALCOLATO",
                      ultima_verifica=dt.datetime.now(dt.timezone.utc))
         conn.execute("""UPDATE wms.roll_assignments SET stato='CHIUSA', consumo_tipo='MACCHINA', metri_inizio=%s,
-                        inizio_verificato=true, metri_utilizzati=%s, metri_scarto=0, metri_fine=%s WHERE id=%s""",
-                     (start, consumo, nuovo, a["id"]))
+                        inizio_verificato=true, metri_utilizzati=%s, metri_scarto=%s, metri_fine=%s WHERE id=%s""",
+                     (start, consumo, scarto, nuovo, a["id"]))
         done += 1
         tot += consumo
     if done:

@@ -70,7 +70,8 @@ def handle_scan(conn, actor: Actor, code: str, client_scan_id, *, client_ts: dt.
             """INSERT INTO wms.scan_events(client_scan_id, client_ts, device_id, user_id, raw_code, tipo_risolto, entita_id,
                  azione_proposta, esito, offline, dettagli) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
             (client_scan_id, when, actor.device_id, actor.user_id, printable(rec.normalized),
-             rec.unico.tipo if rec.unico else rec.stato, rec.unico.id if rec.unico else None,
+             rec.unico.tipo if rec.unico else rec.stato,
+             rec.unico.id if rec.unico and isinstance(rec.unico.id, uuid.UUID) else None,
              (resp.get("comando") or {}).get("tipo"), resp["esito"], offline, Jsonb({"risposta": resp})))
         return resp
 
@@ -120,6 +121,9 @@ def _dispatch(conn, actor: Actor, ctx: dict, rec, scan_id, scelta) -> dict:
     else:
         cand = rec.unico
     t = cand.tipo
+    if t == "QUARTI":
+        return _on_quarti(conn, actor, ctx, cand.id, scan_id)
+    ctx.pop("chiusura", None)   # letto altro: la domanda di fine lavoro decade (rileggendo la bobina si ripropone)
     if t == "USER":
         return _resp("LOGIN", f"Badge di {cand.etichetta}", "Cambio operatore", badge=rec.normalized)
     if t == "JOB":
@@ -241,22 +245,10 @@ def _on_roll(conn, actor, ctx, roll_id, scan_id) -> dict:
     if actor.postazione == "MACCHINA":
         roll = conn.execute("SELECT * FROM wms.material_rolls WHERE id=%s", (roll_id,)).fetchone()
         if s["stato"] == "IN_PRODUZIONE":
-            # fine lavoro: chiusura senza chiedere nulla (consumo dalla macchina o stimato), poi posto e etichetta
-            r = _cmd(conn, actor, scan_id, "CHIUDI_BOBINA", {"roll_id": str(roll_id)})
-            after = roll_summary(conn, roll_id)
-            if after["stato"] == "ESAURITA" or (after["metri_stimati"] is not None and after["metri_stimati"] <= 0):
-                titolo, istr, stampa = "Bobina finita", "Butta l'anima vuota", None
-            else:
-                c = _cmd(conn, actor, scan_id, "COLLOCA_BOBINA", {"roll_id": str(roll_id)}, 1).get("collocazione")
-                titolo, istr = _place_text(c)
-                stampa = [{"tipo": "bobina", "id": str(roll_id)}]
-            nj = next_job(conn, (conn.execute("SELECT machine_code FROM wms.warehouse_locations WHERE id=%s",
-                                              (actor.device_location_id,)).fetchone() or {}).get("machine_code"))
-            dati = ("consumo dalla macchina " + f"{D(r['consumo_macchina']):g} m") if r.get("verificato") else \
-                   (f"consumo stimato {D(r['stima_consumo']):g} m, lo conferma la macchina" if r.get("stima_consumo") is not None else r["messaggio"])
-            ctx.pop("job_id", None)
-            return _resp("OK", titolo, f"{istr} — {dati}", comando={"event_id": r["event_id"], "tipo": r["comando"]},
-                         bobina=roll_summary(conn, roll_id), stampa=stampa, prossimo=nj)
+            # fine lavoro: una sola domanda, a occhio, quanto resta (finita, 1/4, 2/4, 3/4)
+            ctx["chiusura"] = {"roll_id": str(roll_id), "barcode": s["barcode"]}
+            return _resp("CHIEDI", "Quanto è rimasto?", f"{s['barcode']} · tocca la risposta o leggi il cartellino",
+                         bobina=s, opzioni=QUARTI_OPZIONI)
         job_id = ctx.get("job_id")
         auto = None
         if not job_id:
@@ -279,6 +271,46 @@ def _on_roll(conn, actor, ctx, roll_id, scan_id) -> dict:
     return _resp("INFO", f"{s['barcode']} — {s['materiale']}",
                  f"{s['metri_fisici']} m ({s['metri_disponibili']} liberi) in {s['ubicazione'] or '-'} · "
                  "scansiona l'ubicazione per spostarla", bobina=s)
+
+
+QUARTI_OPZIONI = [{"codice": "UPQ0", "etichetta": "Finita"}, {"codice": "UPQ1", "etichetta": "1/4"},
+                  {"codice": "UPQ2", "etichetta": "2/4"}, {"codice": "UPQ3", "etichetta": "3/4"}]
+
+
+def _m(x) -> str:
+    """Metri leggibili: 75 · 57,8."""
+    q = D(x).quantize(Decimal("0.1"))
+    return f"{q:.0f}" if q == q.to_integral_value() else f"{q}".replace(".", ",")
+
+
+def _on_quarti(conn, actor, ctx, quarti: int, scan_id) -> dict:
+    """Fine lavoro: chiusura con i quarti indicati, poi posto, etichetta e prossimo lavoro."""
+    from .machine import next_job
+    ch = ctx.pop("chiusura", None)
+    if not ch:
+        return _resp("ERRORE", "Prima leggi la bobina", "A fine lavoro: leggi la bobina, poi indica quanto è rimasto")
+    roll_id = engine.as_uuid(ch["roll_id"])
+    r = _cmd(conn, actor, scan_id, "CHIUDI_BOBINA", {"roll_id": str(roll_id), "quarti_rimasti": quarti})
+    after = roll_summary(conn, roll_id)
+    if after["stato"] == "ESAURITA" or (after["metri_stimati"] is not None and after["metri_stimati"] <= 0):
+        titolo, istr, stampa = "Bobina finita", "Butta l'anima vuota", None
+    else:
+        c = _cmd(conn, actor, scan_id, "COLLOCA_BOBINA", {"roll_id": str(roll_id)}, 1).get("collocazione")
+        titolo, istr = _place_text(c)
+        stampa = [{"tipo": "bobina", "id": str(roll_id)}]
+    mc = (conn.execute("SELECT machine_code FROM wms.warehouse_locations WHERE id=%s",
+                       (actor.device_location_id,)).fetchone() or {}).get("machine_code")
+    if r.get("verificato"):
+        dati = f"consumo dalla macchina {_m(r['consumo_macchina'])} m"
+    elif r.get("stima_consumo") is not None:
+        dati = f"consumo ≈ {_m(r['stima_consumo'])} m, lo conferma la macchina"
+    else:
+        dati = r["messaggio"]
+    avvisi = r.get("avvisi") or []
+    ctx.pop("job_id", None)
+    return _resp("AVVISO" if avvisi else "OK", titolo, " · ".join([f"{istr} — {dati}", *avvisi]),
+                 comando={"event_id": r["event_id"], "tipo": r["comando"]},
+                 bobina=roll_summary(conn, roll_id), stampa=stampa, prossimo=next_job(conn, mc))
 
 
 def _ask_measure(s) -> dict:

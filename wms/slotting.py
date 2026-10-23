@@ -53,7 +53,8 @@ def choose_location(conn, roll_id) -> dict | None:
         """SELECT ubicazione_id, count(*) AS n FROM wms.material_rolls WHERE material_id=%s AND id<>%s
            AND stato IN ('DISPONIBILE','DA_VERIFICARE') AND ubicazione_id IS NOT NULL GROUP BY 1""",
         (roll["material_id"], roll["id"])).fetchall()}
-    heavy = D(roll["metri_residui"]) >= D(setting(conn, "soglia_bobina_pesante_metri", 500))
+    metri = roll["metri_stimati"] if roll.get("metri_stimati") is not None else roll["metri_residui"]
+    heavy = D(metri) >= D(setting(conn, "soglia_bobina_pesante_metri", 500))
 
     def free(l):
         return l["capacita_bobine"] is None or occ.get(l["id"], 0) < l["capacita_bobine"]

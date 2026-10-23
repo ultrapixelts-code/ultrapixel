@@ -29,6 +29,12 @@ def scan_(conn, actor, code, ts=None):
     return scan.handle_scan(conn, actor, code, uuid.uuid4(), client_ts=ts)
 
 
+def finish(conn, actor, barcode, quarti, ts):
+    q = scan_(conn, actor, barcode, ts=ts)
+    assert q["esito"] == "CHIEDI", q
+    return scan_(conn, actor, f"UPQ{quarti}", ts=ts + dt.timedelta(seconds=3))
+
+
 def later(sec):
     return dt.datetime.now(dt.timezone.utc) + dt.timedelta(seconds=sec)
 
@@ -71,16 +77,19 @@ def test_tre_scansioni_con_dati_macchina(conn, ids, actors):
     # 2. prima di stampare: una lettura in macchina, la commessa la trova il sistema
     s2 = scan_(conn, actors["prod"], s1["bobina"]["barcode"])
     assert s2["esito"] == "OK" and s2["titolo"] == "Commessa 4515", s2
-    # 3. fine: una lettura, nessuna domanda
-    s3 = scan_(conn, actors["prod"], s1["bobina"]["barcode"], ts=later(30))
-    assert s3["esito"] == "OK" and s3["titolo"].startswith("Metti in") and "stimato" in s3["messaggio"]
+    # 3. fine: una lettura + quanto è rimasto a occhio (3/4 di 300 m)
+    q = scan_(conn, actors["prod"], s1["bobina"]["barcode"], ts=later(30))
+    assert q["esito"] == "CHIEDI" and q["titolo"] == "Quanto è rimasto?" and len(q["opzioni"]) == 4
+    s3 = scan_(conn, actors["prod"], "UPQ3", ts=later(33))
+    assert s3["esito"] == "OK" and s3["titolo"].startswith("Metti in") and "≈ 75 m" in s3["messaggio"], s3
     assert s3["stampa"] == [{"tipo": "bobina", "id": rid}]
     r = roll(conn, rid)
     assert r["stato"] == "DA_VERIFICARE" and r["metri_residui"] == Decimal("300.00")   # la stima non tocca il fisico
+    assert r["metri_stimati"] == Decimal("225.00")
     # arriva lo storico Xeikon: 61,5 m passati in macchina in quell'intervallo
     aid = conn.execute("SELECT id FROM wms.roll_assignments WHERE roll_id=%s", (rid,)).fetchone()["id"]
     imp = feed_machine(conn, actors, [aid], ["61.5"])
-    assert imp["consumi_verificati"] == 1
+    assert imp["consumi_verificati"] == 1 and not imp.get("avvisi")       # 238,5 m vs 225 indicati: dentro tolleranza
     r = roll(conn, rid)
     assert (r["stato"], r["metri_residui"], r["metri_stimati"]) == ("DISPONIBILE", Decimal("238.50"), None)
     jm = conn.execute("SELECT * FROM wms.production_job_materials").fetchone()
@@ -96,13 +105,13 @@ def test_riuso_bobina_prima_dei_dati_macchina(conn, ids, actors):
     madiwor.import_job(conn, seed.load_job_fixture(), "FIXTURE")
     j2 = seed.load_job_fixture(); j2.external_id = "4520"; j2.materiali[0].metri = Decimal("40")
     madiwor.import_job(conn, j2, "FIXTURE")
-    for k in range(2):
+    for k, quarti in enumerate((3, 2)):
         a = scan_(conn, actors["prod"], b["barcode"], ts=later(100 * k))
         assert a["esito"] in ("OK", "AVVISO"), a
-        e = scan_(conn, actors["prod"], b["barcode"], ts=later(100 * k + 30))
+        e = finish(conn, actors["prod"], b["barcode"], quarti, later(100 * k + 30))
         assert e["esito"] == "OK", e
     r = roll(conn, b["id"])
-    assert r["stato"] == "DA_VERIFICARE" and r["metri_stimati"] == Decimal("106.00")      # 200 − 54 − 40 stimati
+    assert r["stato"] == "DA_VERIFICARE" and r["metri_stimati"] == Decimal("100.00")      # indicati 3/4, poi 2/4 di 200 m
     aids = [x["id"] for x in conn.execute("SELECT id FROM wms.roll_assignments ORDER BY inizio_at")]
     feed_machine(conn, actors, aids, ["58", "45.25"])
     r = roll(conn, b["id"])
@@ -115,7 +124,7 @@ def test_storico_incoerente_non_viene_applicato(conn, ids, actors):
     b = receive(conn, actors, ids, 50)[0]
     madiwor.import_job(conn, seed.load_job_fixture(), "FIXTURE")
     scan_(conn, actors["prod"], b["barcode"])
-    scan_(conn, actors["prod"], b["barcode"], ts=later(30))
+    finish(conn, actors["prod"], b["barcode"], 1, later(30))
     aid = conn.execute("SELECT id FROM wms.roll_assignments").fetchone()["id"]
     imp = feed_machine(conn, actors, [aid], ["80"])          # più carta di quanta ne avesse la bobina
     assert imp["consumi_verificati"] == 0 and any("controllo" in w for w in imp["avvisi"])
@@ -171,3 +180,43 @@ def test_prossimo_lavoro_per_la_macchina(conn, ids, actors):
     nj = machine.next_job(conn, "CX3S")
     assert nj["commessa"] == "4515" and nj["bobina"] == "UPR000001"
     assert machine.next_job(conn, "ALTRA") is None          # la 4515 si stampa sulla CX3S
+
+
+def test_bobina_finita_la_coda_va_a_scarto(conn, ids, actors):
+    b = receive(conn, actors, ids, 100)[0]
+    madiwor.import_job(conn, seed.load_job_fixture(), "FIXTURE")
+    scan_(conn, actors["prod"], b["barcode"])
+    e = finish(conn, actors["prod"], b["barcode"], 0, later(30))
+    assert e["esito"] == "OK" and e["titolo"] == "Bobina finita" and not e.get("stampa")
+    aid = conn.execute("SELECT id FROM wms.roll_assignments").fetchone()["id"]
+    imp = feed_machine(conn, actors, [aid], ["92"])          # la macchina ha stampato 92 m: 8 m di aggancio e coda
+    assert imp["consumi_verificati"] == 1 and not imp.get("avvisi")
+    r = roll(conn, b["id"])
+    assert (r["stato"], r["metri_residui"]) == ("ESAURITA", Decimal("0.00"))
+    sc = conn.execute("SELECT -sum(quantita) s FROM wms.inventory_movements WHERE tipo_movimento='SCARTO'").fetchone()["s"]
+    jm = conn.execute("SELECT * FROM wms.production_job_materials").fetchone()
+    assert sc == Decimal("8.00") and (jm["metri_consumati"], jm["metri_scarto"]) == (Decimal("92.00"), Decimal("8.00"))
+
+
+def test_quarti_lontani_dal_dato_macchina(conn, ids, actors):
+    b = receive(conn, actors, ids, 300)[0]
+    madiwor.import_job(conn, seed.load_job_fixture(), "FIXTURE")
+    scan_(conn, actors["prod"], b["barcode"])
+    finish(conn, actors["prod"], b["barcode"], 3, later(30))   # detto 3/4 (225 m)...
+    aid = conn.execute("SELECT id FROM wms.roll_assignments").fetchone()["id"]
+    imp = feed_machine(conn, actors, [aid], ["200"])           # ...ma la macchina dice che ne restano 100
+    assert imp["consumi_verificati"] == 1 and any("conviene controllare" in w for w in imp["avvisi"])
+    assert roll(conn, b["id"])["metri_residui"] == Decimal("100.00")    # vale il dato macchina
+    assert conn.execute("SELECT count(*) n FROM wms.audit_logs WHERE azione='DIFFERENZA_STIMA_OPERATORE'").fetchone()["n"] == 1
+
+
+def test_quarti_senza_bobina_o_dopo_altra_lettura(conn, ids, actors):
+    b = receive(conn, actors, ids, 100)[0]
+    madiwor.import_job(conn, seed.load_job_fixture(), "FIXTURE")
+    assert scan_(conn, actors["prod"], "UPQ2")["titolo"] == "Prima leggi la bobina"
+    scan_(conn, actors["prod"], b["barcode"])
+    assert scan_(conn, actors["prod"], b["barcode"], ts=later(30))["esito"] == "CHIEDI"
+    scan_(conn, actors["prod"], "4515", ts=later(32))            # letto altro: la domanda decade, nulla si chiude
+    assert scan_(conn, actors["prod"], "UPQ2", ts=later(34))["esito"] == "ERRORE"
+    assert roll(conn, b["id"])["stato"] == "IN_PRODUZIONE"
+    assert scan_(conn, actors["prod"], "UPQ9")["esito"] == "ERRORE"

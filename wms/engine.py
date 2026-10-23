@@ -687,7 +687,22 @@ def cmd_chiudi_bobina(tx: Tx, p: dict) -> dict:
     # nessuna misura dall'operatore: stima dichiarata, NON trasformata in consumo;
     # subito dopo si prova a verificarla con lo storico della macchina (se copre già questo intervallo)
     jm = _get_jm(conn, a["job_material_id"])
-    stima = min(D(a["metri_inizio"]), remaining_need(jm))
+    inizio = D(a["metri_inizio"])
+    quarti = p.get("quarti_rimasti")
+    if quarti is not None:
+        # l'operatore indica a occhio quanto resta: finita (0), 1/4, 2/4, 3/4 della bobina intera
+        try:
+            quarti = int(quarti)
+        except (TypeError, ValueError):
+            quarti = -1
+        if quarti not in (0, 1, 2, 3, 4):
+            raise BusinessRuleError("Indica quanto è rimasto: finita, 1/4, 2/4 o 3/4", code="DATO_NON_VALIDO")
+        residuo = min(inizio, (D(roll["metri_iniziali"]) * quarti / 4).quantize(Decimal("1")))
+        if quarti and D(roll["metri_iniziali"]) * quarti / 4 > inizio * Decimal("1.25"):
+            tx.warnings.append(f"Indicati {quarti}/4 ma a inizio lavoro la bobina aveva {inizio:g} m: uso {inizio:g} m")
+        stima = inizio - residuo
+    else:
+        stima = min(inizio, remaining_need(jm))
     # la stima sostituisce la prenotazione di questa commessa (altrimenti la bobina resterebbe "riservata")
     for res in conn.execute("SELECT * FROM wms.material_reservations WHERE job_material_id=%s AND roll_id=%s "
                             "AND status='ATTIVA' FOR UPDATE", (jm["id"], roll["id"])).fetchall():
@@ -695,11 +710,13 @@ def cmd_chiudi_bobina(tx: Tx, p: dict) -> dict:
     conn.execute("UPDATE wms.production_job_materials SET metri_consumo_stimato=metri_consumo_stimato+%s WHERE id=%s",
                  (stima, jm["id"]))
     conn.execute("""UPDATE wms.roll_assignments SET stato='DA_VERIFICARE', consumo_tipo='STIMATO',
-                    metri_utilizzati=%s, fine_at=now() WHERE id=%s""", (stima, a["id"]))
-    _roll_update(conn, roll["id"], stato="DA_VERIFICARE", metri_stimati=D(a["metri_inizio"]) - stima,
+                    metri_utilizzati=%s, metri_fine=%s, quarti_dichiarati=%s, fine_at=now() WHERE id=%s""",
+                 (stima, inizio - stima, quarti, a["id"]))
+    _roll_update(conn, roll["id"], stato="DA_VERIFICARE", metri_stimati=inizio - stima,
                  origine_dato_metratura="STIMA")
-    tx.audit("STIMA_CONSUMO", "ROLL", roll["id"], dopo={"stima_consumo": stima, "metri_inizio": a["metri_inizio"]},
-             motivo="Chiusura senza misura")
+    tx.audit("STIMA_CONSUMO", "ROLL", roll["id"], dopo={"stima_consumo": stima, "metri_inizio": a["metri_inizio"],
+                                                        "quarti_dichiarati": quarti},
+             motivo="Quarti indicati dall'operatore" if quarti is not None else "Chiusura senza misura")
     from .machine import reconcile_roll
     ver = reconcile_roll(tx, roll["id"])
     if ver["verificati"]:
@@ -707,8 +724,8 @@ def cmd_chiudi_bobina(tx: Tx, p: dict) -> dict:
         return {"esito": "OK", "consumo_macchina": ver["consumo"], "residui": r["metri_residui"],
                 "stato_bobina": r["stato"], "verificato": True,
                 "messaggio": f"{roll['barcode']}: consumo dalla macchina {ver['consumo']:g} m, residuo {D(r['metri_residui']):g} m"}
-    return {"esito": "OK", "stima_consumo": stima, "metri_stimati": D(a["metri_inizio"]) - stima, "residui": D(a["metri_inizio"]) - stima,
-            "verificato": False,
+    return {"esito": "OK", "stima_consumo": stima, "metri_stimati": inizio - stima, "residui": inizio - stima,
+            "verificato": False, "quarti": quarti,
             "messaggio": f"{roll['barcode']}: consumo stimato {stima:g} m, si conferma con i dati della macchina"}
 
 

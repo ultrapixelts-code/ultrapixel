@@ -79,6 +79,20 @@ def create_app(dsn: str | None = None) -> Flask:
         from . import demo
         return Response(demo.page(_conn()), mimetype="text/html")
 
+    @app.get("/cartellino-quarti")
+    def cartellino_quarti():
+        """Cartellino da plastificare e tenere in macchina: a fine lavoro si legge quanto è rimasto."""
+        from .labels import code128_svg
+        voci = [("UPQ0", "Finita"), ("UPQ1", "1/4"), ("UPQ2", "2/4"), ("UPQ3", "3/4")]
+        celle = "".join(f'<div class=v><b>{t}</b>{code128_svg(c, 14)}<small>{c}</small></div>' for c, t in voci)
+        html = ("<!doctype html><html lang=it><meta charset=utf-8><title>Cartellino fine lavoro</title><style>"
+                "@page{size:A5 landscape;margin:8mm}body{font-family:Arial,sans-serif;margin:0}"
+                "h1{font-size:16pt;margin:0 0 4mm}.g{display:grid;grid-template-columns:1fr 1fr;gap:6mm}"
+                ".v{border:1px solid #000;border-radius:3mm;padding:4mm 6mm;text-align:center}"
+                ".v b{display:block;font-size:28pt;margin-bottom:2mm}.v small{font:10pt monospace}</style>"
+                f"<h1>Fine lavoro: quanto è rimasto sulla bobina?</h1><div class=g>{celle}</div></html>")
+        return Response(html, mimetype="text/html")
+
     @app.get("/api/salute")
     def salute():
         _conn().execute("SELECT 1")

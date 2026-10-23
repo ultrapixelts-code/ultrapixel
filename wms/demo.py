@@ -99,11 +99,13 @@ Se hai una pistola, leggi i codici dallo schermo; altrimenti clicca un codice pe
 <h2>Le tre letture dell'operatore</h2><ol>
 <li><b>Arrivo</b> — postazione ricevimento: leggi <b>AA335</b> (etichetta fornitore). La bobina viene registrata con la metratura nominale, il sistema sceglie il posto e stampa l'etichetta.</li>
 <li><b>Prima di stampare</b> — postazione Xeikon: leggi la bobina (es. <b>UPR000002</b>). La commessa la trova il sistema.</li>
-<li><b>Fine</b> — rileggi la stessa bobina dopo qualche secondo: si chiude il consumo e ti dice dove riporla.</li>
+<li><b>Fine</b> — rileggi la stessa bobina dopo qualche secondo: chiede <b>quanto è rimasto</b>. Tocca Finita, 1/4, 2/4 o 3/4 (o leggi il cartellino qui sotto): ti dice dove riporla e stampa l'etichetta.</li>
 <li>Poi premi <b>Simula storico Xeikon</b> qui sotto: il consumo stimato diventa quello "letto dalla macchina" (+7%, simulato).</li></ol>
 <p><button onclick="sim(this)" style="width:auto;padding:10px 16px">Simula storico Xeikon</button> <span id=simres></span></p>
 {sec("Commesse e codici fornitore", [card("4515", "Commessa 4515", "Cacovich · 650 pz"), card("AA335", "Codice fornitore EPIQUE", "identifica solo l'articolo"),
     card("01" + "08012345678907" + "3111005000" + "10LOTDEMO", "Etichetta GS1 fornitore", "EPIQUE · 500 m · lotto LOTDEMO")])}
+{sec("Cartellino fine lavoro (da tenere in macchina) — <a href=/cartellino-quarti target=_blank>stampalo</a>", [card("UPQ0", "Finita", "bobina vuota"), card("UPQ1", "1/4", "resta circa un quarto"),
+    card("UPQ2", "2/4", "resta circa metà"), card("UPQ3", "3/4", "resta circa tre quarti")])}
 {sec("Bobine", [card(r["barcode"], r["descrizione"], f"{r['larghezza_mm']:g} mm · {r['metri_residui']:g} m · {r['stato'].lower()}") for r in rolls])}
 {sec("Ubicazioni", [card(l["barcode"], l["codice"]) for l in locs])}
 {sec("Colli e spedizioni", [card(p["barcode"], "Collo", f"{p['quantita']} pz · {p['stato'].lower()}") for p in pk]

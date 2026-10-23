@@ -6,6 +6,7 @@ Regole:
   simboli che una pistola in modalità tastiera US su PC italiano trasformerebbe):
       UPR000123  bobina        UPC000045  collo
       UPS000007  spedizione    UPL...     ubicazione (codice libero dopo il prefisso)
+      UPQ0..UPQ3 quanto resta sulla bobina a fine lavoro (finita, 1/4, 2/4, 3/4): cartellino in macchina
 - I codici numerici esterni (commessa Madiwor, articolo, codice fornitore) NON sono riconosciuti
   dalla lunghezza: si cercano nel database. Se lo stesso codice corrisponde a più entità il
   risultato è AMBIGUO e serve contesto + conferma.
@@ -30,6 +31,8 @@ INTERNAL = {
     "UPB": "BADGE",
 }
 INTERNAL_RE = re.compile(r"^(UPR|UPC|UPS)(\d{6})$|^(UPL|UPB)([A-Z0-9]{1,30})$")
+QUARTI_RE = re.compile(r"^UPQ([0-4])$")
+QUARTI_LABEL = {0: "Finita", 1: "1/4", 2: "2/4", 3: "3/4", 4: "Intera"}
 GS = "\x1d"
 
 
@@ -163,11 +166,15 @@ def recognize(conn, raw: str) -> Recognition:
         return rec
 
     su = s.upper()
+    q = QUARTI_RE.match(su)
+    if q:
+        n = int(q.group(1))
+        return Recognition(raw, su, "RICONOSCIUTO", candidati=[Candidate("QUARTI", n, QUARTI_LABEL[n], "INTERNO")])
     m = INTERNAL_RE.match(su)
     if m:
         prefix = m.group(1) or m.group(3)
         return _internal(conn, raw, su, INTERNAL[prefix])
-    if su.startswith(("UPR", "UPC", "UPS", "UPL", "UPB")):
+    if su.startswith(("UPR", "UPC", "UPS", "UPL", "UPB", "UPQ")):
         return Recognition(raw, su, "NON_VALIDO", motivo="Codice interno malformato")
 
     gs1 = parse_gs1(s)

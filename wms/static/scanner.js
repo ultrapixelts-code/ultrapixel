@@ -110,7 +110,9 @@
     $("facts").innerHTML = out.map(([i, l, v]) => `<div class="fact"><span class="ic">${FI[i]}</span><span><small>${esc(l)}</small><b title="${esc(v)}">${esc(v)}</b></span></div>`).join("");
   }
   // ---------- ultime scansioni ----------
+  const QUARTI = { UPQ0: "Finita", UPQ1: "1/4", UPQ2: "2/4", UPQ3: "3/4", UPQ4: "Intera" };
   function pushHistory(code, cls, title) {
+    code = QUARTI[String(code).trim().toUpperCase()] || code;
     const h = store.get("history", []); h.unshift({ t: new Date().toISOString(), code, cls, title }); store.set("history", h.slice(0, 8)); renderHistory();
   }
   function renderHistory() {
@@ -119,7 +121,7 @@
       <time>${new Date(x.t).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}</time>
       <span class="c">${esc(x.code)}</span><span class="t">${esc(x.title)}</span></li>`).join("");
   }
-  function clearExtras() { $("facts").hidden = true; $("facts").innerHTML = ""; $("ask").hidden = true; $("ask").innerHTML = ""; $("choices").hidden = true; $("choices").innerHTML = "";
+  function clearExtras() { $("opts").hidden = true; $("opts").innerHTML = ""; $("facts").hidden = true; $("facts").innerHTML = ""; $("ask").hidden = true; $("ask").innerHTML = ""; $("choices").hidden = true; $("choices").innerHTML = "";
     $("detail").innerHTML = ""; askState = null; choiceState = null; }
 
   function render(r) {
@@ -140,6 +142,7 @@
     if (r.esito === "LOGIN" && r.badge) { if (senzaBadge) { show("info", "Badge non necessario", "Questa postazione lavora già a nome dell'operatore"); return; } return doLogin(r.badge); }
     if (r.chiedi) buildAsk(r.chiedi);
     if (r.scelte) buildChoices(r.scelte);
+    if (r.opzioni) buildOptions(r.opzioni);
     if (r.prossimo) showNext(r.prossimo, true);
     if (r.commessa) $("detail").innerHTML = jobHtml(r.commessa);
     if (r.spedizione) $("detail").innerHTML = shipHtml(r.spedizione);
@@ -203,6 +206,16 @@
       else { show("err", (e.data && e.data.messaggio) || e.message, ""); beep("errore"); }
     }
     focusScan();
+  }
+
+  // ---------- risposta a un tocco (fine lavoro: quanto è rimasto) ----------
+  function buildOptions(list) {
+    $("opts").innerHTML = list.map((o) => {
+      const q = Number(o.codice.slice(-1));
+      return `<button type="button" data-code="${esc(o.codice)}" class="${q === 0 ? "end" : ""}">${esc(o.etichetta)}<span class="tank"><i style="width:${q * 25}%"></i></span></button>`;
+    }).join("");
+    $("opts").hidden = false;
+    for (const b of $("opts").querySelectorAll("button")) b.addEventListener("click", () => { const c = b.dataset.code; clearExtras(); doScan(c); });
   }
 
   // ---------- scelta tra codici ambigui ----------

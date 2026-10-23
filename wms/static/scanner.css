@@ -126,3 +126,11 @@ kbd{font:600 13px Inter,sans-serif;background:#f1f5f9;color:var(--ink);border-ra
   .keys{display:none}
 }
 @media (prefers-reduced-motion:no-preference){.r-icon{transition:background-color .2s,box-shadow .2s}}
+
+.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.opts button{height:96px;border:1px solid var(--line);border-radius:16px;background:#fff;font:700 30px/1 Inter,system-ui,sans-serif;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.opts button:hover,.opts button:focus-visible{border-color:var(--blue);background:#f3f7ff;outline:none}
+.opts button .tank{width:46px;height:12px;border-radius:6px;background:#eef2f7;overflow:hidden}
+.opts button .tank i{display:block;height:100%;background:var(--blue)}
+.opts button.end{font-size:22px}
+@media (max-width:560px){.opts{grid-template-columns:repeat(2,1fr)}}
