@@ -220,3 +220,15 @@ def test_quarti_senza_bobina_o_dopo_altra_lettura(conn, ids, actors):
     assert scan_(conn, actors["prod"], "UPQ2", ts=later(34))["esito"] == "ERRORE"
     assert roll(conn, b["id"])["stato"] == "IN_PRODUZIONE"
     assert scan_(conn, actors["prod"], "UPQ9")["esito"] == "ERRORE"
+
+
+def test_bobine_in_fila_ognuna_alla_sua_commessa(conn, ids, actors):
+    """In macchina si montano bobine diverse una dopo l'altra: la commessa scelta per una non resta 'appiccicata'."""
+    a = receive(conn, actors, ids, 300)[0]
+    w = receive(conn, actors, ids, 200, mat="MATT-WINE-FSC")[0]
+    madiwor.import_job(conn, seed.load_job_fixture(), "FIXTURE", auto_reserve=False)
+    j = seed.load_job_fixture(); j.external_id = "9902"; j.materiali[0].descrizione = "MATT WINE FSC S2047N - BG45WH"
+    madiwor.import_job(conn, j, "FIXTURE", auto_reserve=False)
+    assert scan_(conn, actors["prod"], a["barcode"])["titolo"] == "Commessa 4515"
+    assert finish(conn, actors["prod"], a["barcode"], 3, later(30))["esito"] == "OK"
+    assert scan_(conn, actors["prod"], w["barcode"], ts=later(60))["titolo"] == "Commessa 9902"

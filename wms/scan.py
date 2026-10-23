@@ -258,15 +258,22 @@ def _on_roll(conn, actor, ctx, roll_id, scan_id) -> dict:
                              f"{s['materiale']} {D(s['larghezza_mm']):g} mm: nessun lavoro aperto per questa macchina", bobina=s)
             job_id = str(auto["id"])
         r = _cmd(conn, actor, scan_id, "ASSEGNA_BOBINA", {"job_id": job_id, "roll_id": str(roll_id)})
-        ctx["job_id"] = job_id
+        # la commessa letta a mano vale per la postazione; quella scelta dal sistema vale solo per questa bobina
+        if auto:
+            ctx.pop("job_id", None)
+        else:
+            ctx["job_id"] = job_id
         summary = job_summary(conn, job_id)
-        extra = f" · altre {auto['altre']} commesse possono usarla" if auto and auto["altre"] else ""
+        n_alt = auto["altre"] if auto else 0
+        extra = "" if not n_alt else (" · anche un'altra commessa può usarla" if n_alt == 1 else f" · altre {n_alt} commesse possono usarla")
         return _resp("AVVISO" if r.get("avvisi") else "OK", f"Commessa {summary['commessa']}",
                      f"Monta {s['barcode']} — a fine lavoro rileggila" + extra + ("" if not r.get("avvisi") else " · " + " · ".join(r["avvisi"])),
                      comando={"event_id": r["event_id"], "tipo": r["comando"]}, commessa=summary)
     if ctx.get("target"):
         r = _cmd(conn, actor, scan_id, "SPOSTA_BOBINA", {"roll_id": str(roll_id), "destinazione_id": ctx["target"]["id"]})
         return _ok_from(r, bobina=roll_summary(conn, roll_id))
+    if s["stato"] == "ESAURITA":
+        return _resp("INFO", f"{s['barcode']}: bobina finita", "Non è più a magazzino", bobina=s)
     ctx["pending"] = {"tipo": "ROLL", "id": str(roll_id), "barcode": s["barcode"]}
     return _resp("INFO", f"{s['barcode']} — {s['materiale']}",
                  f"{s['metri_fisici']} m ({s['metri_disponibili']} liberi) in {s['ubicazione'] or '-'} · "

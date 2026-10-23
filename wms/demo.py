@@ -65,8 +65,25 @@ def bootstrap(conn) -> bool:
                    {"code": "08012345678907", "namespace": "GTIN", "material_id": epique})
     three_scan_setup(conn)
     madiwor.import_job(conn, seed.load_job_fixture(), "FIXTURE")
+    practice_jobs(conn)
     single_operator(conn)
     return True
+
+
+def practice_jobs(conn):
+    """Commesse di esercitazione, inventate (clienti "di prova"): servono solo a fare più giri di prova in macchina."""
+    import datetime as dt
+    from decimal import Decimal
+    oggi = dt.date.today()
+    for num, cliente, descr, metri, giorni in [
+            ("9901", "Cliente di prova A", "EPIQUE FSC S2047N - BG45WH IMP FSC", 250, 2),
+            ("9902", "Cliente di prova B", "MATT WINE FSC S2047N - BG45WH", 150, 3),
+            ("9903", "Cliente di prova C", "EPIQUE FSC S2047N - BG45WH IMP FSC", 120, 5)]:
+        madiwor.import_job(conn, madiwor.MadiworJob(
+            num, cliente, articolo="PROVA", descrizione="Commessa di esercitazione", quantita=1000,
+            data_consegna=oggi + dt.timedelta(days=giorni),
+            materiali=[madiwor.MaterialeRichiesto(descr, Decimal("170"), Decimal(metri))],
+            fasi=[{"fase": "STAMPA", "macchina": "CX3S"}]), "FIXTURE")
 
 
 def page(conn) -> str:
@@ -100,9 +117,11 @@ Se hai una pistola, leggi i codici dallo schermo; altrimenti clicca un codice pe
 <li><b>Arrivo</b> — postazione ricevimento: leggi <b>AA335</b> (etichetta fornitore). La bobina viene registrata con la metratura nominale, il sistema sceglie il posto e stampa l'etichetta.</li>
 <li><b>Prima di stampare</b> — postazione Xeikon: leggi la bobina (es. <b>UPR000002</b>). La commessa la trova il sistema.</li>
 <li><b>Fine</b> — rileggi la stessa bobina dopo qualche secondo: chiede <b>quanto è rimasto</b>. Tocca Finita, 1/4, 2/4 o 3/4 (o leggi il cartellino qui sotto): ti dice dove riporla e stampa l'etichetta.</li>
-<li>Poi premi <b>Simula storico Xeikon</b> qui sotto: il consumo stimato diventa quello "letto dalla macchina" (+7%, simulato).</li></ol>
+<li>Poi premi <b>Simula storico Xeikon</b> qui sotto: il consumo stimato diventa quello "letto dalla macchina" (simulato: 3% in meno della stima).</li></ol>
 <p><button onclick="sim(this)" style="width:auto;padding:10px 16px">Simula storico Xeikon</button> <span id=simres></span></p>
-{sec("Commesse e codici fornitore", [card("4515", "Commessa 4515", "Cacovich · 650 pz"), card("AA335", "Codice fornitore EPIQUE", "identifica solo l'articolo"),
+<p><button onclick="reset(this)" style="width:auto;padding:10px 16px;background:#fff">Ricomincia da capo</button> <span id=resetres>cancella tutte le prove e ricarica i dati iniziali</span></p>
+{sec("Commesse e codici fornitore", [card("4515", "Commessa 4515", "Cacovich · 54 m"), card("9901", "Commessa di prova A", "EPIQUE · 250 m"),
+    card("9902", "Commessa di prova B", "MATT WINE · 150 m"), card("9903", "Commessa di prova C", "EPIQUE · 120 m"), card("AA335", "Codice fornitore EPIQUE", "identifica solo l'articolo"),
     card("01" + "08012345678907" + "3111005000" + "10LOTDEMO", "Etichetta GS1 fornitore", "EPIQUE · 500 m · lotto LOTDEMO")])}
 {sec("Cartellino fine lavoro (da tenere in macchina) — <a href=/cartellino-quarti target=_blank>stampalo</a>", [card("UPQ0", "Finita", "bobina vuota"), card("UPQ1", "1/4", "resta circa un quarto"),
     card("UPQ2", "2/4", "resta circa metà"), card("UPQ3", "3/4", "resta circa tre quarti")])}
@@ -111,6 +130,9 @@ Se hai una pistola, leggi i codici dallo schermo; altrimenti clicca un codice pe
 {sec("Colli e spedizioni", [card(p["barcode"], "Collo", f"{p['quantita']} pz · {p['stato'].lower()}") for p in pk]
     + [card(s["barcode"], "Spedizione", s["cliente_nome"]) for s in sh]) if (pk or sh) else ""}
 </main><script>
+async function reset(b){{if(!confirm('Cancellare tutte le prove e ripartire dai dati iniziali?'))return;b.disabled=true;
+const r=await fetch('/api/demo/ricomincia',{{method:'POST',headers:{{'X-Device-Token':'demo-magazzino'}}}});
+const d=await r.json();document.getElementById('resetres').textContent=d.messaggio||d.errore||'';setTimeout(()=>location.reload(),800);}}
 async function sim(b){{b.disabled=true;const r=await fetch('/api/demo/simula-storico',{{method:'POST',headers:{{'X-Device-Token':'demo-magazzino'}}}});
 document.getElementById('simres').textContent=(await r.json()).messaggio||'fatto';b.disabled=false;}}
 function go(t){{localStorage.setItem('wms.device',JSON.stringify(t));localStorage.removeItem('wms.session');location.href='/';}}

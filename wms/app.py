@@ -13,6 +13,7 @@ import datetime as dt
 import os
 import pathlib
 import threading
+conn_lock = threading.Lock()
 
 from flask import Flask, Response, g, jsonify, request, send_from_directory
 
@@ -192,7 +193,7 @@ def create_app(dsn: str | None = None) -> Flask:
 
     @app.post("/api/demo/simula-storico")
     def simula_storico():
-        """SOLO istanza di prova: crea uno storico Xeikon finto (stima +7%) per mostrare la verifica dei consumi."""
+        """SOLO istanza di prova: crea uno storico Xeikon finto (stima −3%) per mostrare la verifica dei consumi."""
         if os.environ.get("WMS_DEMO") != "1":
             return Response("Non disponibile", status=404)
         a = actor(fonte="UI")
@@ -203,11 +204,26 @@ def create_app(dsn: str | None = None) -> Flask:
             return jsonify({"messaggio": "Nessun consumo stimato da verificare"})
         righe = [{"job_name": "SIMULAZIONE", "medium": "simulato", "stato": "Completed",
                   "fine_at": (x["inizio_at"] + (x["fine_at"] - x["inizio_at"]) / 2).isoformat(), "durata_s": 60,
-                  "metri": str((engine.D(x["metri_utilizzati"]) * engine.D("1.07")).quantize(engine.D("0.01")))} for x in rows]
+                  "metri": str((engine.D(x["metri_utilizzati"]) * engine.D("0.97")).quantize(engine.D("0.01")))} for x in rows]
         righe.append({"job_name": "SIMULAZIONE", "medium": "", "stato": "Completed", "durata_s": 0, "metri": "0",
                       "fine_at": (max(x["fine_at"] for x in rows) + __import__("datetime").timedelta(seconds=1)).isoformat()})
         return jsonify(_jsonable(engine.execute(_conn(), a, _u.uuid4(), "IMPORTA_STORICO_MACCHINA",
                                                 {"macchina": "CX3S", "righe": righe, "file": "simulazione"})))
+
+    @app.post("/api/demo/ricomincia")
+    def demo_ricomincia():
+        """SOLO istanza di prova: cancella tutto lo schema wms e ricarica i dati demo da zero."""
+        if os.environ.get("WMS_DEMO") != "1":
+            return Response("Non disponibile", status=404)
+        actor(fonte="UI")
+        from . import demo
+        c = _conn()
+        with conn_lock:
+            c.execute("DROP SCHEMA IF EXISTS wms CASCADE")
+            c.execute("DROP TABLE IF EXISTS public.wms_schema_migrations")
+            db.apply_migrations(c)
+            demo.bootstrap(c)
+        return jsonify({"messaggio": "Dati di prova ricaricati da zero"})
 
     @app.get("/api/metriche")
     def metriche():
