@@ -494,17 +494,29 @@ def about_ml(C, P):
     return shell_ml(C, P, f"{P}about/", p["meta"], body)
 
 
+FILE_ACCEPT = ".pdf,.ai,.eps,.svg,.jpg,.jpeg,.png,.webp,.heic,.heif,.tif,.tiff,.zip,image/*,application/pdf"
+HIDDEN = lambda extra=(): "".join(f'<input type="hidden" name="{n}">' for n in ("website", "lang", "timestamp", "source_page", "landing_page", "referrer", "utm_source", "utm_medium", "utm_campaign") + tuple(extra))
+
+
+def form_data(C, sent=None):
+    """Attributes read by assets/lead.js: where to send, and the messages it shows."""
+    s, ui = C["site"], C["ui"]
+    return (f'data-endpoint="{e(s["formEndpoint"])}" data-email="{e(s["email"])}" data-none="{e(ui["formNotConnected"])}" data-sent="{e(sent or ui["formSent"])}" '
+            f'data-error="{e(ui["formError"])}" data-mail="{e(ui["formMail"])}" data-big="{e(ui["fileTooBig"])}" data-sending="{e(ui["sending"])}"')
+
+
 def form_ml(C, P, key, topic):
     """Request form. Besides the visible fields it records timestamp, source page, landing page, referrer and UTM values (assets/lead.js)."""
     p, f, s, ui = C["pages"][key], C["form"], C["site"], C["ui"]
     opts = "".join(f'<option value="{k}"{" selected" if k == topic else ""}>{e(v)}</option>' for k, v in f["topics"].items())
     secs = "".join(f"<option value=\"{x['key']}\">{e(x['title'])}</option>" for x in C["sectors"]) + f"<option value=\"other\">{e(ui['other'])}</option>"
-    hidden = "".join(f'<input type="hidden" name="{n}">' for n in ("website", "lang", "timestamp", "source_page", "landing_page", "referrer", "utm_source", "utm_medium", "utm_campaign"))
-    form = (f'<form class="form" data-form data-endpoint="{e(s["formEndpoint"])}" data-email="{e(s["email"])}" data-none="{e(ui["formNotConnected"])}" data-sent="{e(ui["formSent"])}" data-error="{e(ui["formError"])}" data-mail="{e(ui["formMail"])}">'
+    hidden = HIDDEN()
+    upload = (f'<label class="full">{e(f["file"])}<input id="f-file" name="file" type="file" accept="{FILE_ACCEPT}"><small class="mi dim">{e(f["fileHint"])}</small></label>' if s["formEndpoint"] else "")
+    form = (f'<form class="form" data-form {form_data(C)}>'
             f'<label>{e(f["name"])}<input id="f-name" name="name" autocomplete="name" required></label><label>{e(f["company"])}<input id="f-company" name="company" autocomplete="organization" required></label>'
             f'<label>{e(f["country"])}<input id="f-country" name="country" autocomplete="country-name" required></label><label>{e(f["email"])}<input id="f-email" name="email" type="email" autocomplete="email" required></label>'
             f'<label>{e(f["sector"])}<select id="f-sector" name="sector">{secs}</select></label><label>{e(f["topic"])}<select id="f-topic" name="request_type">{opts}</select></label>'
-            f'<label class="full">{e(f["message"])}<textarea id="f-message" name="message" required></textarea></label>{hidden}'
+            f'<label class="full">{e(f["message"])}<textarea id="f-message" name="message" required></textarea></label>{upload}{hidden}'
             f'<div class="full"><button class="cta pill" type="submit">{e(ui["send"])} ↗</button></div><p class="form-msg mi" hidden></p></form>')
     direct = f'<div class="direct"><span class="mi">{e(s["legalName"])}</span>{"".join(f"<p>{e(n) + '<br>' if n != s['legalName'] else ''}{e(a)}</p>" for n, a in offices(C))}<p><a href="mailto:{e(s["email"])}">{e(s["email"])}</a></p><p><a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a></p></div>'
     return shell_ml(C, P, f"{P}{key}/", p["meta"], phead(ui["contact"], p["h1"], p["lead"], mega=False) + f'<hr class="spl"><section class="sec w"><div class="split"><div class="a">{form}</div><div class="b">{direct}</div></div></section>')
@@ -523,6 +535,17 @@ def quote_ml(C, P):
             '<path class="dm" pathLength="1" d="M135 272h130M135 267v10M265 267v10M290 42v216M285 42h10M285 258h10"/>'
             '<path class="ld l2" pathLength="1" d="M135 150H92"/><path class="ld l3" pathLength="1" d="M226 104h66"/><path class="ld l4" pathLength="1" d="M242 186h50"/></svg>'
             f'<span class="tag t1 mi">80 × 130 mm</span><span class="tag t2 mi">{e(t["m_wine"])}</span><span class="tag t3 mi">{e(t["foil"])}</span><span class="tag t4 mi">{e(t["relief"])}</span><i class="beam"></i></div>')
+    f = C["form"]
+    if s["formEndpoint"]:   # the file already chosen above leaves with the request: nothing to upload twice
+        request = (f'<form class="form qreq" id="q-req" data-form data-here {form_data(C, t["rq_sent"])}>'
+                   f'<div class="full qreq-h"><span class="mi">{e(t["rq_h"])}</span><p>{e(t["rq_p"])}</p></div>'
+                   f'<label>{e(f["name"])}<input name="name" autocomplete="name" required></label><label>{e(f["company"])}<input name="company" autocomplete="organization" required></label>'
+                   f'<label>{e(f["email"])}<input name="email" type="email" autocomplete="email" required></label><label>{e(f["country"])}<input name="country" autocomplete="country-name"></label>'
+                   f'<label class="full">{e(t["rq_notes"])}<textarea name="message" placeholder="{e(t["rq_ph"])}"></textarea></label>'
+                   f'<input type="hidden" name="request_type" value="quote">{HIDDEN()}'
+                   f'<div class="full ctas"><button class="cta pill" type="submit">{e(t["rq_send"])} ↗</button>{tel}</div><p class="form-msg mi" hidden></p></form>')
+    else:
+        request = f'<div class="ctas"><a class="cta pill" id="q-cta" href="{P}contact/?topic=quote">{e(t["cta"])} ↗</a>{tel}</div>'
     scan = "".join(f'<li class="mi"><i class="dot"></i>{e(t[k])}<b></b></li>' for k in ("scan1", "scan2", "scan3"))
     head = (f'<section class="phead qhero"><span class="mi">{e(p["eyebrow"])}</span><h1 class="mega rv">{e(p["h1a"])}<span>{e(p["h1b"])}</span></h1>'
             f'<p class="lead">{e(p["lead"])}</p></section>')
@@ -556,7 +579,7 @@ def quote_ml(C, P):
       <p class="qcfg"><span class="mi">{e(t["for"])}</span> <span id="q-cfg"></span></p>
       <div class="qtab"><span class="mi">{e(t["others"])}</span><dl class="facts" id="q-table"></dl></div>
       <p class="qnote">{e(t["note"])}</p>
-      <div class="ctas"><a class="cta pill" id="q-cta" href="{P}contact/?topic=quote">{e(t["cta"])} ↗</a>{tel}</div>
+      {request}
     </div>
   </div>
 </div></div></section>""")
@@ -599,7 +622,8 @@ NO_TR = {"slug", "key", "image", "img", "id", "url", "lang", "macro", "fx", "sho
 def translate(o, T, k=None):
     """Replace every English string that has an entry in the language map; anything missing stays in English."""
     if isinstance(o, dict):
-        return {a: (b if a in NO_TR and not isinstance(b, (dict, list)) else translate(b, T, a)) for a, b in o.items()}
+        keep = NO_TR if k != "form" else set()   # form field labels (name, email, country) are words to translate, not data
+        return {a: (b if a in keep and not isinstance(b, (dict, list)) else translate(b, T, a)) for a, b in o.items()}
     if isinstance(o, list):
         return [translate(x, T, k) for x in o]
     return T.get(o, o) if isinstance(o, str) else o

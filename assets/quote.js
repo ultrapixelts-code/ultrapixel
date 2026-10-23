@@ -1,5 +1,6 @@
 /* UltraPixel — "What does your label cost?"
    Sends the photo or file to the server to read size, material and finishes, then asks the server for the price.
+   The request form under the price sends the same file, untouched, with the visitor's details (assets/lead.js).
    Nothing is calculated here: the browser only shows what the server returns. */
 (function(){
   var d=document,$=function(i){return d.getElementById(i)},S=$('quote');if(!S)return;
@@ -42,7 +43,8 @@
     show($('q-pick'),false);show($('q-prev'),true);show($('q-form'),false);show($('q-dim'),false);$('q-prev').classList.remove('done');show($('q-reading'),true);scanning(true);
     if(!S.classList.contains('mouse')){try{$('q-drop').scrollIntoView({behavior:rm?'auto':'smooth',block:'start'})}catch(e){}}
     var min=wait(rm?0:1900);
-    shrink(file).then(function(b){var fd=new FormData();fd.append('file',b,isPdf?'label.pdf':'label.jpg');return fetch(API+'/api/quote/analyze',{method:'POST',body:fd})})
+    st.file=file;st.small=null;st.pdf=isPdf;
+    shrink(file).then(function(b){st.small=b;var fd=new FormData();fd.append('file',b,isPdf?'label.pdf':'label.jpg');return fetch(API+'/api/quote/analyze',{method:'POST',body:fd})})
       .then(function(r){return r.json().then(function(j){return{ok:r.ok,status:r.status,j:j}})})
       .then(function(x){if(x.ok&&x.j.preview){$('q-img').src=x.j.preview;$('q-prev').classList.remove('pdf')}return min.then(function(){return x})})
       .then(function(x){
@@ -90,12 +92,21 @@
     $('q-per').textContent=eur(j.per1000,2)+' '+T.per;$('q-cfg').textContent=cfg(j.config);
     var t=$('q-table');t.textContent='';j.table.forEach(function(r,i){var a=d.createElement('dt'),b=d.createElement('dd'),sm=d.createElement('small');a.textContent=nf.format(r.qty)+' '+T.labels;b.textContent=eur(r.total);sm.textContent=eur(r.per1000,2)+' '+T.per;b.appendChild(sm);
       a.style.setProperty('--i',i);b.style.setProperty('--i',i);if(r.qty===j.config.qty){a.className=b.className='cur'}t.appendChild(a);t.appendChild(b)});
-    $('q-cta').href=S.dataset.contact+'?topic=quote&msg='+encodeURIComponent(T.msg+'\n'+cfg(j.config)+'\n'+T.from+' '+eur(j.total)+' '+T.vat);
+    st.cfg=cfg(j.config);
+    var cta=$('q-cta');if(cta)cta.href=S.dataset.contact+'?topic=quote&msg='+encodeURIComponent(T.msg+'\n'+cfg(j.config)+'\n'+T.from+' '+eur(j.total)+' '+T.vat);
     if(first){P.classList.remove('in');show(P,true);void P.offsetWidth;P.classList.add('in')}
     tween(first?0:from,j.total,first?1300:700,function(v){$('q-total').textContent=eur(Math.round(v))});
     if(first&&!S.classList.contains('mouse')){try{P.scrollIntoView({behavior:rm?'auto':'smooth',block:'start'})}catch(e){}}
     window.upTrack&&upTrack('quote_price',{qty:j.config.qty,material:j.config.material,total:j.total});
   }
+  /* the request form under the price sends the configuration and the label file already chosen above */
+  var R=$('q-req');
+  if(R)R.upExtra=function(fd){
+    var notes=String(fd.get('message')||'').trim();
+    fd.set('message',T.msg+'\n'+(st.cfg||'')+'\n'+T.from+' '+eur(st.shown)+' '+T.vat+(notes?'\n\n'+notes:''));
+    var f=st.file;
+    if(f){if(f.size>24*1048576&&st.small&&st.small.size<f.size)f=st.small;fd.set('file',f,(f.name||(st.pdf?'label.pdf':'label.jpg')))}
+  };
   $('q-bphoto').addEventListener('click',function(){$('q-photo').click()});$('q-bfile').addEventListener('click',function(){$('q-file').click()});
   ['q-photo','q-file'].forEach(function(i){$(i).addEventListener('change',function(e){take(e.target.files[0])})});
   $('q-again').addEventListener('click',function(){err();reset()});

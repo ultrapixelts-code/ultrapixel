@@ -931,7 +931,6 @@
  "Take a photo": "Foto aufnehmen",
  "Upload a file": "Datei hochladen",
  "or drop the file here": "oder Datei hier ablegen",
- "Photo, image or PDF. We use it only to read the label: it is not stored.": "Foto, Bild oder PDF. Wir verwenden es nur, um das Etikett zu lesen: Es wird nicht gespeichert.",
  "Use another label": "Anderes Etikett verwenden",
  "Reading your label…": "Ihr Etikett wird gelesen…",
  "02 / What we see": "02 / Was wir sehen",
@@ -980,5 +979,18 @@
  "Price": "Preis",
  "Read from the die line in your file": "Aus der Stanzkontur der Datei gelesen",
  "Label price calculator": "Preisberechnung für Etiketten",
- "When you use the price page, the photo or file you upload and the values you enter (size, material, finishes and quantity) are sent to our server to read the label and calculate the price. The image is used only for this reading and is not stored. Nothing in this step identifies you, unless you then choose to send us a request. The reading of the image may be carried out by an external provider acting as data processor.": "Wenn Sie die Preisseite nutzen, werden das hochgeladene Foto oder die Datei und die eingegebenen Werte (Format, Material, Veredelungen und Menge) an unseren Server gesendet, um das Etikett zu lesen und den Preis zu berechnen. Das Bild wird nur für diese Erkennung verwendet und nicht gespeichert. In diesem Schritt identifiziert Sie nichts, es sei denn, Sie senden uns anschließend eine Anfrage. Die Bilderkennung kann von einem externen Dienstleister als Auftragsverarbeiter durchgeführt werden."
+ "When you use the price page, the photo or file you upload and the values you enter (size, material, finishes and quantity) are sent to our server to read the label and calculate the price. The image is used only for this reading and is not stored. Nothing in this step identifies you, unless you then choose to send us a request. The reading of the image may be carried out by an external provider acting as data processor.": "Wenn Sie die Preisseite nutzen, werden das hochgeladene Foto oder die Datei und die eingegebenen Werte (Format, Material, Veredelungen und Menge) an unseren Server gesendet, um das Etikett zu lesen und den Preis zu berechnen. Das Bild wird nur für diese Erkennung verwendet und nicht gespeichert. In diesem Schritt identifiziert Sie nichts, es sei denn, Sie senden uns anschließend eine Anfrage. Die Bilderkennung kann von einem externen Dienstleister als Auftragsverarbeiter durchgeführt werden.",
+ "Get the confirmed quote": "Bestätigtes Angebot erhalten",
+ "Label file or artwork (optional)": "Etikettendatei oder Druckvorlage (optional)",
+ "Leave your details and we send you the confirmed quote. Your label file comes with the request: no need to send it again.": "Hinterlassen Sie Ihre Daten, und wir senden Ihnen das bestätigte Angebot. Die Datei Ihres Etiketts wird mit der Anfrage übermittelt: Sie müssen sie nicht erneut senden.",
+ "Notes (optional)": "Anmerkungen (optional)",
+ "Other quantities, matching labels, questions…": "Weitere Mengen, passende Etiketten, Fragen…",
+ "PDF, AI, EPS, image or ZIP, up to 25 MB.": "PDF, AI, EPS, Bild oder ZIP, bis 25 MB.",
+ "Photo, image or PDF. We use it to read the label, and we keep it only if you send us the request.": "Foto, Bild oder PDF. Wir verwenden es, um das Etikett zu lesen, und speichern es nur, wenn Sie uns die Anfrage senden.",
+ "Send me the confirmed quote": "Bestätigtes Angebot anfordern",
+ "Sending…": "Wird gesendet…",
+ "Thank you. We received your request and your label file. We will reply by email.": "Vielen Dank. Wir haben Ihre Anfrage und die Datei Ihres Etiketts erhalten. Wir antworten Ihnen per E-Mail.",
+ "The file is larger than 25 MB: please send it to info@ultrapixel.it.": "Die Datei ist größer als 25 MB: Bitte senden Sie sie an info@ultrapixel.it.",
+ "Email": "E-Mail",
+ "Country": "Land"
 }

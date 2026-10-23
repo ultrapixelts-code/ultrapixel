@@ -101,3 +101,12 @@
 @media(max-width:900px){.quote .split>.b{margin-top:34px;scroll-margin-top:70px}.qdrop{min-height:200px;scroll-margin-top:66px}.qshot img{max-height:46vh}}
 @media(max-width:600px){.qdemo .tag{font-size:9px;line-height:1.35}.qdemo .t2,.qdemo .t3,.qdemo .t4{white-space:normal;max-width:24%}.qdemo .t2{text-align:right;top:44%}.qdemo .t3{top:29%}.qdemo .t4{top:56%}}
 @media(prefers-reduced-motion:reduce){.qdemo .tag,.qdemo .t1{opacity:1}.qdemo .dm,.qdemo .ld{stroke-dashoffset:0}.qline{transform:none}.cn{opacity:1}}
+
+/* request under the price: the label file chosen above goes with it */
+.qreq{margin-top:34px;padding-top:26px;border-top:1px solid var(--hair)}
+.qreq-h p{margin:10px 0 0;line-height:1.55;color:var(--gra)}
+.qreq textarea{min-height:84px}
+.qreq .ctas{margin-top:4px}
+.qreq button:disabled{opacity:.55;cursor:progress}
+.qreq.sent>:not(.form-msg){display:none}
+.qreq.sent .form-msg{font:500 clamp(18px,1.8vw,24px)/1.35 var(--display);font-stretch:90%;letter-spacing:-.005em;text-transform:none}

@@ -9,7 +9,7 @@
     "phone": "+39 040 817222",
     "linkedin": "",
     "instagram": "",
-    "formEndpoint": "",
+    "formEndpoint": "https://ultrapixel.it/backend/api/lead.php",
     "legalName": "UltraPixel Srl",
     "launchUrl": "https://ultrapixel.it",
     "mainLang": "it",
@@ -94,7 +94,9 @@
     "vat": "VAT",
     "priceNav": "What does your label cost?",
     "priceCta": "Get your price",
-    "priceShort": "Price"
+    "priceShort": "Price",
+    "fileTooBig": "The file is larger than 25 MB: please send it to info@ultrapixel.it.",
+    "sending": "Sending…"
   },
   "form": {
     "name": "Name",
@@ -109,7 +111,9 @@
       "quote": "Request a quote",
       "specialist": "Talk to a label specialist",
       "partner": "Become a commercial partner"
-    }
+    },
+    "file": "Label file or artwork (optional)",
+    "fileHint": "PDF, AI, EPS, image or ZIP, up to 25 MB."
   },
   "home": {
     "meta": {
@@ -2288,7 +2292,7 @@
         "photo": "Take a photo",
         "file": "Upload a file",
         "drop": "or drop the file here",
-        "hint": "Photo, image or PDF. We use it only to read the label: it is not stored.",
+        "hint": "Photo, image or PDF. We use it to read the label, and we keep it only if you send us the request.",
         "again": "Use another label",
         "reading": "Reading your label…",
         "s2": "02 / What we see",
@@ -2332,7 +2336,13 @@
         "scan2": "Paper or film",
         "scan3": "Finishes",
         "demo": "How it works: we read size, material and finishes from your label.",
-        "sizeDie": "Read from the die line in your file"
+        "sizeDie": "Read from the die line in your file",
+        "rq_h": "Get the confirmed quote",
+        "rq_p": "Leave your details and we send you the confirmed quote. Your label file comes with the request: no need to send it again.",
+        "rq_notes": "Notes (optional)",
+        "rq_ph": "Other quantities, matching labels, questions…",
+        "rq_send": "Send me the confirmed quote",
+        "rq_sent": "Thank you. We received your request and your label file. We will reply by email."
       },
       "h1a": "What does",
       "h1b": "your label cost?"
