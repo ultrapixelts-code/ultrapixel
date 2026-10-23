@@ -1,6 +1,6 @@
 // Service worker: tiene in cache la schermata, così lo scanner si apre anche senza rete.
 // Le chiamate /api non passano mai dalla cache: se la rete manca falliscono e la pagina le mette in coda.
-const CACHE = "wms-scanner-v3";
+const CACHE = "wms-scanner-v4";
 const SHELL = ["/", "/static/scanner.css", "/static/scanner.js", "/static/manifest.json"];
 self.addEventListener("install", (e) => e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener("activate", (e) => e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())));

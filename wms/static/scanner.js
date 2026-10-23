@@ -302,7 +302,15 @@
   }
   function setStation(r) { const st = r.dispositivo.replace(/^Postazione /, ""); $("station").textContent = st.charAt(0).toUpperCase() + st.slice(1); $("opname").textContent = r.operatore;
     baseSub = SUB[r.postazione] || null; if (baseSub) document.querySelector(".sub").textContent = baseSub;
-    if (r.prossimo) showNext(r.prossimo, false); }
+    if (r.prossimo) showNext(r.prossimo, false);
+    if (r.demo_postazioni) {   // solo istanza di prova: cambio postazione senza tornare alla pagina demo
+      const cur = store.get("device", "");
+      $("demobar").innerHTML = "<small>Prova · postazione:</small>" + r.demo_postazioni.map((p) =>
+        `<button type="button" data-t="${esc(p.token)}" class="${p.token === cur ? "on" : ""}">${esc(p.nome.charAt(0).toUpperCase() + p.nome.slice(1))}</button>`).join("");
+      $("demobar").hidden = false;
+      for (const b of $("demobar").querySelectorAll("button")) b.addEventListener("click", () => {
+        store.set("device", b.dataset.t); store.set("session", null); location.reload(); });
+    } }
   function tick() { const d = new Date(); $("clock").textContent = d.toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "short" }) + "  " + d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }); }
   tick(); setInterval(tick, 20000);
   $("clearhist").addEventListener("click", () => { store.set("history", []); renderHistory(); focusScan(); });

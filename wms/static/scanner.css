@@ -134,3 +134,8 @@ kbd{font:600 13px Inter,sans-serif;background:#f1f5f9;color:var(--ink);border-ra
 .opts button .tank i{display:block;height:100%;background:var(--blue)}
 .opts button.end{font-size:22px}
 @media (max-width:560px){.opts{grid-template-columns:repeat(2,1fr)}}
+
+.demobar{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap;padding:10px 16px;background:#fff;border-bottom:1px solid var(--line);font-size:14px}
+.demobar small{color:var(--ink3);margin-right:6px}
+.demobar button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font:500 14px Inter,system-ui,sans-serif;color:var(--ink2);cursor:pointer}
+.demobar button.on{background:var(--blue);border-color:var(--blue);color:#fff}

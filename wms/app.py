@@ -123,6 +123,10 @@ def create_app(dsn: str | None = None) -> Flask:
         u = _conn().execute("SELECT display_name FROM wms.users WHERE id=%s", (a.user_id,)).fetchone()
         out = {"operatore": u["display_name"], "ruolo": a.role_code, "postazione": a.postazione,
                "dispositivo": g.device["nome"], "senza_badge": bool(g.device.get("utente_predefinito"))}
+        if os.environ.get("WMS_DEMO") == "1":
+            from .demo import POSTAZIONI
+            out["demo_postazioni"] = [{"nome": n.replace("Postazione ", ""), "token": t} for n, t in POSTAZIONI.items()
+                                      if "(2)" not in n]
         if a.postazione == "MACCHINA" and a.device_location_id:
             mc = _conn().execute("SELECT machine_code FROM wms.warehouse_locations WHERE id=%s", (a.device_location_id,)).fetchone()
             out["prossimo"] = machine.next_job(_conn(), mc["machine_code"] if mc else None)
