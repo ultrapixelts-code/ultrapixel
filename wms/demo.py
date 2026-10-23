@@ -75,14 +75,16 @@ def practice_jobs(conn):
     import datetime as dt
     from decimal import Decimal
     oggi = dt.date.today()
-    for num, cliente, descr, metri, giorni in [
+    for num, cliente, descr, metri, giorni, *_ in [
             ("9901", "Cliente di prova A", "EPIQUE FSC S2047N - BG45WH IMP FSC", 250, 2),
             ("9902", "Cliente di prova B", "MATT WINE FSC S2047N - BG45WH", 150, 3),
-            ("9903", "Cliente di prova C", "EPIQUE FSC S2047N - BG45WH IMP FSC", 120, 5)]:
+            ("9903", "Cliente di prova C", "EPIQUE FSC S2047N - BG45WH IMP FSC", 120, 5),
+            ("9904", "Cliente di prova D", "EPIQUE FSC S2047N - BG45WH IMP FSC", 900, 1, 330)]:
+        larg = 330 if num == "9904" else 170
         madiwor.import_job(conn, madiwor.MadiworJob(
             num, cliente, articolo="PROVA", descrizione="Commessa di esercitazione", quantita=1000,
             data_consegna=oggi + dt.timedelta(days=giorni),
-            materiali=[madiwor.MaterialeRichiesto(descr, Decimal("170"), Decimal(metri))],
+            materiali=[madiwor.MaterialeRichiesto(descr, Decimal(larg), Decimal(metri))],
             fasi=[{"fase": "STAMPA", "macchina": "CX3S"}]), "FIXTURE")
 
 
@@ -114,15 +116,17 @@ ol li{{margin:4px 0}}
 Se hai una pistola, leggi i codici dallo schermo; altrimenti clicca un codice per copiarlo, incollalo nel campo e premi Invio.</p>
 <h2>1. Scegli la postazione</h2>{post}
 <h2>Le tre letture dell'operatore</h2><ol>
-<li><b>Arrivo</b> — postazione ricevimento: leggi <b>AA335</b> (etichetta fornitore). La bobina viene registrata con la metratura nominale, il sistema sceglie il posto e stampa l'etichetta.</li>
+<li><b>Arrivo</b> — postazione ricevimento: leggi <b>AA335</b> (etichetta fornitore) una volta per ogni bobina. Alla prima chiede la larghezza (un tocco), le successive la prendono uguale. Il sistema sceglie il posto e stampa l'etichetta; se una commessa è scoperta, la bobina va subito accanto alla macchina.</li>
 <li><b>Prima di stampare</b> — postazione Xeikon: leggi la bobina (es. <b>UPR000002</b>). La commessa la trova il sistema.</li>
 <li><b>Fine</b> — rileggi la stessa bobina dopo qualche secondo: chiede <b>quanto è rimasto</b>. Tocca Finita, 1/4, 2/4 o 3/4 (o leggi il cartellino qui sotto): ti dice dove riporla e stampa l'etichetta.</li>
 <li>Poi premi <b>Simula storico Xeikon</b> qui sotto: il consumo stimato diventa quello "letto dalla macchina" (simulato: 3% in meno della stima).</li></ol>
 <p><button onclick="sim(this)" style="width:auto;padding:10px 16px">Simula storico Xeikon</button> <span id=simres></span></p>
 <p><button onclick="reset(this)" style="width:auto;padding:10px 16px;background:#fff">Ricomincia da capo</button> <span id=resetres>cancella tutte le prove e ricarica i dati iniziali</span></p>
 {sec("Commesse e codici fornitore", [card("4515", "Commessa 4515", "Cacovich · 54 m"), card("9901", "Commessa di prova A", "EPIQUE · 250 m"),
-    card("9902", "Commessa di prova B", "MATT WINE · 150 m"), card("9903", "Commessa di prova C", "EPIQUE · 120 m"), card("AA335", "Codice fornitore EPIQUE", "identifica solo l'articolo"),
+    card("9902", "Commessa di prova B", "MATT WINE · 150 m"), card("9903", "Commessa di prova C", "EPIQUE · 120 m"),
+    card("9904", "Commessa di prova D", "EPIQUE 330 mm · 900 m · consegna domani"), card("AA335", "Codice fornitore EPIQUE", "identifica solo l'articolo"),
     card("01" + "08012345678907" + "3111005000" + "10LOTDEMO", "Etichetta GS1 fornitore", "EPIQUE · 500 m · lotto LOTDEMO")])}
+{sec("Cartellino ricevimento: larghezza", [card("UPW170", "170 mm", "risposta a 'che larghezza?'"), card("UPW330", "330 mm", "risposta a 'che larghezza?'")])}
 {sec("Cartellino fine lavoro (da tenere in macchina) — <a href=/cartellino-quarti target=_blank>stampalo</a>", [card("UPQ0", "Finita", "bobina vuota"), card("UPQ1", "1/4", "resta circa un quarto"),
     card("UPQ2", "2/4", "resta circa metà"), card("UPQ3", "3/4", "resta circa tre quarti")])}
 {sec("Bobine", [card(r["barcode"], r["descrizione"], f"{r['larghezza_mm']:g} mm · {r['metri_residui']:g} m · {r['stato'].lower()}") for r in rolls])}

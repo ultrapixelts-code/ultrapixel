@@ -98,7 +98,7 @@
   }
   function facts(r) {
     const f = [], b = r.bobina, c = r.commessa, k = r.collo, res = r.risultato || r;
-    if (b) f.push(["roll", "Bobina", b.barcode], ["layers", "Materiale", b.materiale], ["ruler", b.metri_stimati != null ? "Metri (stima)" : "Metri", (b.metri_stimati != null ? "≈ " + n(b.metri_stimati) : n(b.metri_fisici)) + " m"], ["pin", "Ubicazione", b.ubicazione || "—"]);
+    if (b) f.push(["roll", "Bobina", b.barcode], ["layers", "Materiale", (b.larghezza_mm != null ? n(b.larghezza_mm) + " mm · " : "") + b.materiale], ["ruler", b.metri_stimati != null ? "Metri (stima)" : "Metri", (b.metri_stimati != null ? "≈ " + n(b.metri_stimati) : n(b.metri_fisici)) + " m"], ["pin", "Ubicazione", b.ubicazione || "—"]);
     else if (res.bobine && res.bobine.length) f.push(["roll", "Bobina", res.bobine[0].barcode + (res.bobine.length > 1 ? " +" + (res.bobine.length - 1) : "")],
       ["ruler", "Metri", n(res.bobine[0].metri) + " m"], ["pin", "Ubicazione suggerita", (res.ubicazione_suggerita || {}).codice || "leggi uno scaffale"]);
     if (c) f.push(["doc", "Commessa", c.commessa], ["user", "Cliente", c.cliente], ["tag", "Etichette", n(c.quantita)], ["cal", "Consegna", fmtDate(c.consegna)]);
@@ -112,7 +112,8 @@
   // ---------- ultime scansioni ----------
   const QUARTI = { UPQ0: "Finita", UPQ1: "1/4", UPQ2: "2/4", UPQ3: "3/4", UPQ4: "Intera" };
   function pushHistory(code, cls, title) {
-    code = QUARTI[String(code).trim().toUpperCase()] || code;
+    const cu = String(code).trim().toUpperCase();
+    code = QUARTI[cu] || (/^UPW\d+$/.test(cu) ? cu.slice(3) + " mm" : code);
     const h = store.get("history", []); h.unshift({ t: new Date().toISOString(), code, cls, title }); store.set("history", h.slice(0, 8)); renderHistory();
   }
   function renderHistory() {
@@ -211,8 +212,8 @@
   // ---------- risposta a un tocco (fine lavoro: quanto è rimasto) ----------
   function buildOptions(list) {
     $("opts").innerHTML = list.map((o) => {
-      const q = Number(o.codice.slice(-1));
-      return `<button type="button" data-code="${esc(o.codice)}" class="${q === 0 ? "end" : ""}">${esc(o.etichetta)}<span class="tank"><i style="width:${q * 25}%"></i></span></button>`;
+      const isQ = /^UPQ\d$/.test(o.codice), q = Number(o.codice.slice(-1));
+      return `<button type="button" data-code="${esc(o.codice)}" class="${isQ && q === 0 ? "end" : ""}">${esc(o.etichetta)}${isQ ? `<span class="tank"><i style="width:${q * 25}%"></i></span>` : ""}</button>`;
     }).join("");
     $("opts").hidden = false;
     for (const b of $("opts").querySelectorAll("button")) b.addEventListener("click", () => { const c = b.dataset.code; clearExtras(); doScan(c); });

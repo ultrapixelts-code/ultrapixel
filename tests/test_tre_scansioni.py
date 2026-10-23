@@ -232,3 +232,64 @@ def test_bobine_in_fila_ognuna_alla_sua_commessa(conn, ids, actors):
     assert scan_(conn, actors["prod"], a["barcode"])["titolo"] == "Commessa 4515"
     assert finish(conn, actors["prod"], a["barcode"], 3, later(30))["esito"] == "OK"
     assert scan_(conn, actors["prod"], w["barcode"], ts=later(60))["titolo"] == "Commessa 9902"
+
+
+def test_arrivo_sei_bobine_larghezza_con_un_tocco(conn, ids, actors):
+    """Arrivano 6 bobine EPIQUE da 330: il materiale esiste in più larghezze, la prima chiede, le altre seguono."""
+    conn.execute("UPDATE wms.materials SET larghezza_mm=170, metri_nominali=500 WHERE codice_interno='EPIQUE-FSC-S2047N'")
+    run(conn, actors["resp"], "ASSOCIA_CODICE", {"code": "AA335", "material_id": str(ids["mat"]["EPIQUE-FSC-S2047N"])})
+    receive(conn, actors, ids, 500, larghezza=330)              # in passato è già arrivata anche da 330
+    q = scan_(conn, actors["ric"], "AA335")
+    assert q["esito"] == "CHIEDI" and [o["etichetta"] for o in q["opzioni"]] == ["170 mm", "330 mm"]
+    first = scan_(conn, actors["ric"], "UPW330")
+    assert first["esito"] == "OK" and first["titolo"].startswith("Metti in") and first["stampa"]
+    out = [first]
+    for k in range(5):
+        r = scan_(conn, actors["ric"], "AA335", ts=later(5 * (k + 1)))
+        assert r["esito"] == "OK" and "come la precedente" in r["messaggio"], r
+        out.append(r)
+    larg = [x["larghezza_mm"] for x in conn.execute("SELECT larghezza_mm FROM wms.material_rolls ORDER BY barcode")]
+    assert larg == [Decimal("330.00")] * 7
+    # posti rispettano la capienza (A-01-01 e A-01-02 tengono 6 bobine ciascuno nella prova)
+    occ = {r["codice"]: r["n"] for r in conn.execute(
+        """SELECT l.codice, count(*) n FROM wms.material_rolls b JOIN wms.warehouse_locations l ON l.id=b.ubicazione_id
+           GROUP BY 1""")}
+    caps = {r["codice"]: r["capacita_bobine"] for r in conn.execute("SELECT codice, capacita_bobine FROM wms.warehouse_locations")}
+    assert all(caps[c] is None or n <= caps[c] for c, n in occ.items()), occ
+
+
+def test_larghezza_scritta_a_mano_e_correzione(conn, ids, actors):
+    conn.execute("UPDATE wms.materials SET larghezza_mm=170, metri_nominali=500 WHERE codice_interno='EPIQUE-FSC-S2047N'")
+    run(conn, actors["resp"], "ASSOCIA_CODICE", {"code": "AA335", "material_id": str(ids["mat"]["EPIQUE-FSC-S2047N"])})
+    receive(conn, actors, ids, 500, larghezza=330)
+    assert scan_(conn, actors["ric"], "AA335")["esito"] == "CHIEDI"
+    r = scan_(conn, actors["ric"], "250")                       # larghezza nuova, scritta a mano
+    assert r["esito"] == "OK" and r["bobina"]["larghezza_mm"] == Decimal("250")
+    r2 = scan_(conn, actors["ric"], "AA335", ts=later(5))
+    assert r2["bobina"]["larghezza_mm"] == Decimal("250")
+    fix = scan_(conn, actors["ric"], "UPW330", ts=later(10))   # era sbagliata: si corregge l'ultima
+    assert fix["esito"] == "OK" and fix["bobina"]["larghezza_mm"] == Decimal("330.00") and fix["stampa"]
+    assert scan_(conn, actors["ric"], "AA335", ts=later(15))["bobina"]["larghezza_mm"] == Decimal("330.00")
+
+
+def test_larghezza_da_etichetta_gs1(conn, ids, actors):
+    conn.execute("UPDATE wms.materials SET larghezza_mm=170 WHERE codice_interno='EPIQUE-FSC-S2047N'")
+    run(conn, actors["resp"], "ASSOCIA_CODICE", {"code": "08012345678907", "namespace": "GTIN",
+                                                 "material_id": str(ids["mat"]["EPIQUE-FSC-S2047N"])})
+    receive(conn, actors, ids, 500, larghezza=330)
+    r = scan_(conn, actors["ric"], "01080123456789073111005000" + "3123000330")
+    assert r["esito"] == "OK" and r["bobina"]["larghezza_mm"] == Decimal("330.00") and r["bobina"]["metri_fisici"] == Decimal("500.00")
+
+
+def test_bobina_in_arrivo_copre_la_commessa_scoperta(conn, ids, actors):
+    conn.execute("UPDATE wms.materials SET larghezza_mm=170, metri_nominali=500 WHERE codice_interno='EPIQUE-FSC-S2047N'")
+    run(conn, actors["resp"], "ASSOCIA_CODICE", {"code": "AA335", "material_id": str(ids["mat"]["EPIQUE-FSC-S2047N"])})
+    j = seed.load_job_fixture(); j.data_consegna = dt.date.today() + dt.timedelta(days=1)
+    r = madiwor.import_job(conn, j, "FIXTURE")                   # nessuna bobina: commessa scoperta
+    assert r["prenotazione"]["mancanze"]
+    a = scan_(conn, actors["ric"], "AA335")
+    assert a["titolo"] == "Metti in P-XEIKON", a                 # serve domani: subito accanto alla macchina
+    jm = conn.execute("SELECT metri_prenotati FROM wms.production_job_materials").fetchone()
+    assert jm["metri_prenotati"] == Decimal("54.00")
+    b = scan_(conn, actors["ric"], "AA335", ts=later(5))
+    assert b["titolo"] == "Metti in A-01-01"                     # la seconda non serve: scorta

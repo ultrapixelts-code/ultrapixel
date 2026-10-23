@@ -102,6 +102,10 @@ def _ok_from(r: dict, titolo: str | None = None, **kw) -> dict:
 
 
 def _dispatch(conn, actor: Actor, ctx: dict, rec, scan_id, scelta) -> dict:
+    # al ricevimento, con la domanda "che larghezza?" aperta, un numero scritto a mano è la risposta
+    if (not scelta and ctx.get("ricevimento") and actor.postazione == "RICEVIMENTO"
+            and rec.normalized.isdigit() and 2 <= len(rec.normalized) <= 4):
+        return _on_larghezza(conn, actor, ctx, int(rec.normalized), scan_id)
     if scelta:
         cand = Candidate(scelta["tipo"], engine.as_uuid(scelta["id"]), scelta.get("etichetta", ""), "SCELTA")
     elif rec.stato == "NON_VALIDO":
@@ -123,7 +127,10 @@ def _dispatch(conn, actor: Actor, ctx: dict, rec, scan_id, scelta) -> dict:
     t = cand.tipo
     if t == "QUARTI":
         return _on_quarti(conn, actor, ctx, cand.id, scan_id)
-    ctx.pop("chiusura", None)   # letto altro: la domanda di fine lavoro decade (rileggendo la bobina si ripropone)
+    if t == "LARGHEZZA":
+        return _on_larghezza(conn, actor, ctx, cand.id, scan_id)
+    ctx.pop("chiusura", None)
+    ctx.pop("ricevimento", None)   # letto altro: la domanda di fine lavoro decade (rileggendo la bobina si ripropone)
     if t == "USER":
         return _resp("LOGIN", f"Badge di {cand.etichetta}", "Cambio operatore", badge=rec.normalized)
     if t == "JOB":
@@ -417,24 +424,83 @@ def _on_material(conn, actor, ctx, cand: Candidate, rec, scan_id) -> dict:
         dati["origine_metratura"] = "FORNITORE"
     else:
         campi.append({"nome": "metri", "etichetta": "Metri della bobina", "tipo": "numero", "obbligatorio": True})
-    if mat["larghezza_mm"] is not None:
-        dati["larghezza_mm"] = mat["larghezza_mm"]
-    else:
-        campi.append({"nome": "larghezza_mm", "etichetta": "Larghezza (mm)", "tipo": "numero", "obbligatorio": True})
     if rec.gs1 and rec.gs1.get("10"):
         dati["lotto_fornitore"] = rec.gs1["10"]
+    # larghezza: dall'etichetta GS1 (312n), poi dall'arrivo in corso (stessa larghezza della bobina precedente),
+    # poi dal materiale se ha una sola larghezza; altrimenti una domanda a un tocco
+    nota_l = ""
+    larghe = _larghezze_note(conn, mat)
+    arr = ctx.get("arrivo") or {}
+    if rec.gs1 and rec.gs1.get("312") is not None:
+        dati["larghezza_mm"] = (D(rec.gs1["312"]) * 1000).quantize(Decimal("1"))
+    elif arr.get("material_id") == str(mat["id"]) and _fresh(arr.get("at"), ARRIVO_MINUTI):
+        dati["larghezza_mm"] = D(arr["larghezza"])
+        nota_l = f" · {_m(arr['larghezza'])} mm come la precedente"
+    elif len(larghe) == 1:
+        dati["larghezza_mm"] = larghe[0]
+    if not campi and dati.get("larghezza_mm") is None:
+        ctx["ricevimento"] = {"dati": _jsonable(dati), "at": dt.datetime.now(dt.timezone.utc).isoformat()}
+        return _resp("CHIEDI", "Che larghezza?", f"{mat['descrizione']} · tocca la larghezza o scrivi i mm e premi Invio",
+                     opzioni=[{"codice": f"UPW{int(w)}", "etichetta": f"{int(w)} mm"} for w in larghe][:6])
     if not campi:
         # tutto noto: si registra subito, si sceglie il posto e si stampa l'etichetta
-        r = _cmd(conn, actor, scan_id, "RICEVI_BOBINA", dati)
-        b = r["bobine"][0]
-        titolo, istr = _place_text(b.get("collocazione"))
-        nota = " · metratura nominale del fornitore" if dati.get("metratura_nominale") else ""
-        return _resp("OK", titolo, istr + nota, comando={"event_id": r["event_id"], "tipo": r["comando"]},
-                     bobina=roll_summary(conn, b["id"]), stampa=r.get("stampa"),
-                     collocazione=b.get("collocazione"))
+        return _receive(conn, actor, ctx, scan_id, dati, nota_l)
+    if dati.get("larghezza_mm") is None:
+        campi.append({"nome": "larghezza_mm", "etichetta": "Larghezza (mm)", "tipo": "numero", "obbligatorio": True})
     return _resp("CHIEDI", f"Ricevimento: {mat['descrizione']}",
                  "Inserisci solo i dati mancanti" if any(c.get("obbligatorio") for c in campi) else "Conferma con Invio",
                  chiedi={"azione": "RICEVI_BOBINA", "dati": dati, "campi": campi})
+
+
+ARRIVO_MINUTI = 30
+
+
+def _fresh(iso, minutes) -> bool:
+    try:
+        return dt.datetime.now(dt.timezone.utc) - dt.datetime.fromisoformat(iso) < dt.timedelta(minutes=minutes)
+    except (TypeError, ValueError):
+        return False
+
+
+def _larghezze_note(conn, mat) -> list:
+    """Larghezze in cui questo materiale è già arrivato (più quella di anagrafica), dalla più usata."""
+    rows = conn.execute("""SELECT larghezza_mm AS w, count(*) AS n FROM wms.material_rolls WHERE material_id=%s
+                           AND stato<>'ANNULLATA' GROUP BY 1 ORDER BY 2 DESC, 1""", (mat["id"],)).fetchall()
+    out = [D(r["w"]) for r in rows]
+    if mat["larghezza_mm"] is not None and D(mat["larghezza_mm"]) not in out:
+        out.append(D(mat["larghezza_mm"]))
+    return sorted(out)
+
+
+def _receive(conn, actor, ctx, scan_id, dati, nota_l="") -> dict:
+    r = _cmd(conn, actor, scan_id, "RICEVI_BOBINA", dati)
+    b = r["bobine"][0]
+    ctx["arrivo"] = {"material_id": str(dati["material_id"]), "larghezza": str(D(dati["larghezza_mm"])),
+                     "at": dt.datetime.now(dt.timezone.utc).isoformat(), "ultima": str(b["id"])}
+    titolo, istr = _place_text(b.get("collocazione"))
+    nota = " · metratura nominale del fornitore" if dati.get("metratura_nominale") else ""
+    return _resp("OK", titolo, istr + nota_l + nota, comando={"event_id": r["event_id"], "tipo": r["comando"]},
+                 bobina=roll_summary(conn, b["id"]), stampa=r.get("stampa"), collocazione=b.get("collocazione"))
+
+
+def _on_larghezza(conn, actor, ctx, mm, scan_id) -> dict:
+    """Risposta 'che larghezza?' (pulsante, cartellino UPWnnn o mm scritti). Senza domanda aperta corregge
+    l'ultima bobina dell'arrivo in corso e vale per le successive."""
+    mm = D(mm)
+    if not (D(20) <= mm <= D(2000)):
+        return _resp("ERRORE", "Larghezza non valida", f"{_m(mm)} mm")
+    pend = ctx.pop("ricevimento", None)
+    if pend:
+        dati = dict(pend["dati"])
+        dati["larghezza_mm"] = mm
+        return _receive(conn, actor, ctx, scan_id, dati)
+    arr = ctx.get("arrivo") or {}
+    if arr.get("ultima") and _fresh(arr.get("at"), ARRIVO_MINUTI):
+        r = _cmd(conn, actor, scan_id, "CORREGGI_LARGHEZZA", {"roll_id": arr["ultima"], "larghezza_mm": mm})
+        arr["larghezza"] = str(mm)
+        ctx["arrivo"] = arr
+        return _ok_from(r, f"Larghezza {_m(mm)} mm", bobina=roll_summary(conn, engine.as_uuid(arr["ultima"])))
+    return _resp("ERRORE", "Nessun ricevimento in corso", "Leggi prima l'etichetta della bobina")
 
 
 def _ctx_summary(conn, ctx) -> dict:

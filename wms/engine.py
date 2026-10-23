@@ -332,6 +332,7 @@ def cmd_ricevi_bobina(tx: Tx, p: dict) -> dict:
         out.append({"id": r["id"], "barcode": r["barcode"], "metri": metri, "larghezza_mm": larghezza})
     if p.get("colloca"):
         for b in out:
+            b["prenotazioni"] = _copri_mancanze(tx, b["id"])
             b["collocazione"] = _colloca(tx, b["id"])
     sugg = suggest_location(conn, mat["id"], exclude=loc["id"])
     return {"messaggio": f"Ricevut{'a' if n == 1 else 'e'} {n} bobin{'a' if n == 1 else 'e'} {mat['descrizione']}",
@@ -356,6 +357,26 @@ def suggest_location(conn, material_id, exclude=None) -> dict | None:
 # ---------------------------------------------------------------------------
 # Spostamenti
 # ---------------------------------------------------------------------------
+@command("CORREGGI_LARGHEZZA", roles=ALL_OPS)
+def cmd_correggi_larghezza(tx: Tx, p: dict) -> dict:
+    """La larghezza indicata al ricevimento era sbagliata: si corregge solo se la bobina non è ancora stata usata."""
+    conn = tx.conn
+    roll = get_roll(conn, p.get("roll_id"))
+    nuova = D(p.get("larghezza_mm"))
+    if nuova <= 0:
+        raise BusinessRuleError("Larghezza non valida", code="DATO_NON_VALIDO")
+    usata = conn.execute("SELECT 1 FROM wms.roll_assignments WHERE roll_id=%s LIMIT 1", (roll["id"],)).fetchone()
+    if roll["stato"] != "DISPONIBILE" or usata or D(roll["metri_riservati"]) > 0:
+        raise BusinessRuleError(f"{roll['barcode']} è già stata prenotata o usata: la larghezza non si corregge qui",
+                                code="STATO_NON_VALIDO")
+    if D(roll["larghezza_mm"]) == nuova:
+        return {"esito": "INVARIATO", "messaggio": f"{roll['barcode']} è già da {nuova:g} mm"}
+    conn.execute("UPDATE wms.material_rolls SET larghezza_mm=%s WHERE id=%s", (nuova, roll["id"]))
+    tx.audit("CORREGGI_LARGHEZZA", "ROLL", roll["id"], prima={"larghezza_mm": roll["larghezza_mm"]},
+             dopo={"larghezza_mm": nuova})
+    return {"messaggio": f"{roll['barcode']}: larghezza corretta a {nuova:g} mm", "stampa": [{"tipo": "bobina", "id": str(roll["id"])}]}
+
+
 @command("SPOSTA_BOBINA", roles=ALL_OPS)
 def cmd_sposta_bobina(tx: Tx, p: dict) -> dict:
     roll = get_roll(tx.conn, p.get("roll_id"))
@@ -832,6 +853,30 @@ def cmd_taglia_bobina(tx: Tx, p: dict) -> dict:
         out.append({"id": r["id"], "barcode": r["barcode"], "larghezza_mm": w, "metri": l})
     return {"messaggio": f"{parent['barcode']} tagliata in {len(out)} bobine", "figlie": out,
             "sfrido_mm_x_m": sfrido_mm_m, "stampa": [{"tipo": "bobina", "id": o["id"]} for o in out]}
+
+
+def _copri_mancanze(tx: Tx, roll_id) -> list[dict]:
+    """Bobina appena arrivata: copre subito le commesse aperte rimaste senza materiale, dalla consegna più vicina.
+    Così il posto tiene conto del lavoro in arrivo (es. pronta accanto alla macchina)."""
+    conn = tx.conn
+    roll = get_roll(conn, roll_id)
+    rows = conn.execute(
+        """SELECT jm.*, j.data_consegna, j.cliente_ref FROM wms.production_job_materials jm
+           JOIN wms.production_jobs j ON j.id=jm.job_id
+           WHERE jm.attiva AND jm.material_id IS NOT NULL AND j.stato IN ('APERTA','IN_PRODUZIONE')
+           ORDER BY j.data_consegna NULLS LAST, j.external_madiwor_id FOR UPDATE OF jm""").fetchall()
+    out = []
+    for jm in rows:
+        if roll_available(get_roll(conn, roll["id"])) <= 0:
+            break
+        if to_reserve(jm) <= 0 or not width_ok(conn, roll["larghezza_mm"], jm["larghezza_richiesta_mm"]):
+            continue
+        if material_compatibility(conn, jm["material_id"], roll["material_id"], jm["cliente_ref"]) is None:
+            continue
+        job = get_job(conn, jm["job_id"])
+        q = min(roll_available(get_roll(conn, roll["id"])), to_reserve(jm))
+        out.append(_reserve(tx, job, jm, get_roll(conn, roll["id"]), q, causale="Copertura all'arrivo"))
+    return out
 
 
 def _colloca(tx: Tx, roll_id) -> dict | None:

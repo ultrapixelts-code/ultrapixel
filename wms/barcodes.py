@@ -6,6 +6,7 @@ Regole:
   simboli che una pistola in modalità tastiera US su PC italiano trasformerebbe):
       UPR000123  bobina        UPC000045  collo
       UPS000007  spedizione    UPL...     ubicazione (codice libero dopo il prefisso)
+      UPW330     larghezza in mm (risposta al ricevimento, pulsante o cartellino)
       UPQ0..UPQ3 quanto resta sulla bobina a fine lavoro (finita, 1/4, 2/4, 3/4): cartellino in macchina
 - I codici numerici esterni (commessa Madiwor, articolo, codice fornitore) NON sono riconosciuti
   dalla lunghezza: si cercano nel database. Se lo stesso codice corrisponde a più entità il
@@ -32,6 +33,7 @@ INTERNAL = {
 }
 INTERNAL_RE = re.compile(r"^(UPR|UPC|UPS)(\d{6})$|^(UPL|UPB)([A-Z0-9]{1,30})$")
 QUARTI_RE = re.compile(r"^UPQ([0-4])$")
+LARGHEZZA_RE = re.compile(r"^UPW(\d{2,4})$")
 QUARTI_LABEL = {0: "Finita", 1: "1/4", 2: "2/4", 3: "3/4", 4: "Intera"}
 GS = "\x1d"
 
@@ -104,12 +106,13 @@ def parse_gs1(s: str) -> dict | None:
                     return None
                 out[ai2] = val
                 i = j
-            elif s[i:i + 3] == "311" and i + 4 <= len(s):
+            elif s[i:i + 3] in ("311", "312") and i + 4 <= len(s):
                 dec = int(s[i + 3])
                 val = s[i + 4:i + 10]
                 if len(val) != 6 or not val.isdigit():
                     return None
-                out["311"] = Decimal(val) / (Decimal(10) ** dec)   # lunghezza in metri
+                # 311n lunghezza, 312n larghezza: entrambe in metri
+                out[s[i:i + 3]] = Decimal(val) / (Decimal(10) ** dec)
                 i += 10
             else:
                 return None
@@ -170,11 +173,15 @@ def recognize(conn, raw: str) -> Recognition:
     if q:
         n = int(q.group(1))
         return Recognition(raw, su, "RICONOSCIUTO", candidati=[Candidate("QUARTI", n, QUARTI_LABEL[n], "INTERNO")])
+    w = LARGHEZZA_RE.match(su)
+    if w:
+        mm = int(w.group(1))
+        return Recognition(raw, su, "RICONOSCIUTO", candidati=[Candidate("LARGHEZZA", mm, f"{mm} mm", "INTERNO")])
     m = INTERNAL_RE.match(su)
     if m:
         prefix = m.group(1) or m.group(3)
         return _internal(conn, raw, su, INTERNAL[prefix])
-    if su.startswith(("UPR", "UPC", "UPS", "UPL", "UPB", "UPQ")):
+    if su.startswith(("UPR", "UPC", "UPS", "UPL", "UPB", "UPQ", "UPW")):
         return Recognition(raw, su, "NON_VALIDO", motivo="Codice interno malformato")
 
     gs1 = parse_gs1(s)
