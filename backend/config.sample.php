@@ -5,7 +5,7 @@ return [
   'db_user'     => 'zbduzvpf_ultrapixel',
   'db_pass'     => 'DATABASE_PASSWORD',
   // Site origins allowed to send requests (no trailing slash).
-  'origins'     => ['https://ultrapixel.it', 'https://www.ultrapixel.it', 'https://ultrapixel-homepage.onrender.com'],
+  'origins'     => ['https://ultrapixel.it', 'https://www.ultrapixel.it', 'https://ultrapixel.fr', 'https://www.ultrapixel.fr', 'https://ultrapixel-homepage.onrender.com'],
   'notify_to'   => 'info@ultrapixel.it',
   'mail_from'   => 'sito@ultrapixel.it',          // a mailbox of the same domain
   'admin_user'  => 'admin',

@@ -108,6 +108,18 @@ def offices(C):
     return [(x["name"], x["address"]) for x in lead] + [x for x in o if x[0] not in [y["name"] for y in lead]]
 
 
+def office_cards(C):
+    """Each site as a clear block: role and country, company name, street, postcode and town, country (one per line)."""
+    s, ui = C["site"], C["ui"]
+    hq = {"name": s["legalName"], "street": s["street"], "postalCode": s["postalCode"], "locality": s["locality"] + (f' ({s["region"]})' if s.get("region") else ""),
+          "country": s["country"], "role": ui["hqRole"]}
+    rest = [dict(x, role="") for x in s.get("offices", [])]
+    lead = [x for x in rest if x.get("lang") == HOME]
+    out = lead + [hq] + [x for x in rest if x not in lead]
+    country = lambda c: ui.get("country" + c, c)
+    return [(" · ".join(t for t in (x["role"], country(x["country"])) if t), x["name"], [x["street"], f'{x["postalCode"]} {x["locality"]}', country(x["country"])]) for x in out]
+
+
 LANG_HINT = {   # banner shown on root-language pages to a browser set to another language: text, button, "stay" link
     "en": ("This site is also available in English.", "Switch to English", "Stay"),
     "fr": ("Ce site existe aussi en français.", "Passer au français", "Rester"),
@@ -205,7 +217,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
     ui = dict(ui, sustain=C["sustainability"]["nav"])
     nav = f'<a class="price" href="{P}quote/">{e(ui["priceNav"])}</a>' + "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("sustain", f"{P}sustainability/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
     contact = "".join(f"<li>{x}</li>" for x in (
-        *[(f'{e(n)}<br>' if i or n != s["legalName"] else "") + e(a) for i, (n, a) in enumerate(offices(C))], f'{e(ui["vat"])} {e(s["vatID"][2:] if C["lang"] == "it" else s["vatID"])}', f'<a href="mailto:{e(s["email"])}">{e(s["email"])}</a>' if s["email"] else "", f'<a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a>' if s["phone"] else "",
+        *[f'<strong>{e(n)}</strong><br>' + "<br>".join(e(l) for l in ls) + (f'<br>{e(ui["vat"])} {e(s["vatID"][2:] if C["lang"] == "it" else s["vatID"])}' if n == s["legalName"] else "") for _, n, ls in office_cards(C)], f'<a href="mailto:{e(s["email"])}">{e(s["email"])}</a>' if s["email"] else "", f'<a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a>' if s["phone"] else "",
         f'<a href="{e(wa_url(C))}" target="_blank" rel="noopener">WhatsApp</a>' if s.get("whatsapp") else "",
         f'<a href="{e(s["linkedin"])}" rel="noopener">LinkedIn</a>' if s["linkedin"] else "", f'<a href="{e(s["instagram"])}" rel="noopener">Instagram</a>' if s["instagram"] else "") if x)
     secs = "".join(f'<li><a href="{P}{x["slug"]}/">{e(x["title"])}</a></li>' for x in C["sectors"])
@@ -558,7 +570,9 @@ def form_ml(C, P, key, topic):
             f'<label>{e(f["sector"])}<select id="f-sector" name="sector">{secs}</select></label><label>{e(f["topic"])}<select id="f-topic" name="request_type">{opts}</select></label>'
             f'<label class="full">{e(f["message"])}<textarea id="f-message" name="message" required></textarea></label>{upload}{hidden}'
             f'<div class="full"><button class="cta pill" type="submit">{e(ui["send"])} ↗</button></div><p class="form-msg mi" hidden></p></form>')
-    direct = f'<div class="direct"><span class="mi">{e(s["legalName"])}</span>{"".join(f"<p>{e(n) + '<br>' if n != s['legalName'] else ''}{e(a)}</p>" for n, a in offices(C))}<p><a href="mailto:{e(s["email"])}">{e(s["email"])}</a></p><p><a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a></p>'
+    cards = "".join(f'<div class="office"><span class="mi">{e(r)}</span><strong>{e(n)}</strong><address>{"<br>".join(e(l) for l in ls)}</address></div>' for r, n, ls in office_cards(C))
+    direct = (f'<div class="direct"><div class="offices">{cards}</div>'
+              f'<div class="reach"><p><a href="mailto:{e(s["email"])}">{e(s["email"])}</a></p><p><a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a></p></div>')
     if s.get("whatsapp"):
         direct += (f'<div class="wa"><strong>{e(ui["whatsappH"])}</strong><p class="lead">{e(ui["whatsappP"])}</p>'
                    f'<a class="wa-btn" href="{e(wa_url(C))}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.5 3.5A11 11 0 0 0 2 18.6L1 23l4.6-1.2A11 11 0 1 0 20.5 3.5Zm-8.7 2a9 9 0 0 1 7.8 13.5l-.3.5-.8.2a9 9 0 0 1-8-1.3l-.5-.3-2.8.7.7-2.7-.3-.6a9 9 0 0 1 3.5-11Z"/></svg>WhatsApp</a></div>')

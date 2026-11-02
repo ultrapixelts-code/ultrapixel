@@ -105,7 +105,10 @@
     "fileTooBig": "The file is larger than 25 MB: please send it to info@ultrapixel.it.",
     "sending": "Sending…",
     "sectorAlt": "{}: illustrative label image",
-    "conceptAlt": "UltraPixel concept wine label with hot foil and embossing"
+    "conceptAlt": "UltraPixel concept wine label with hot foil and embossing",
+    "hqRole": "Headquarters and production",
+    "countryIT": "Italy",
+    "countryFR": "France"
   },
   "form": {
     "name": "Name",
