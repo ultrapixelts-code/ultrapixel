@@ -9,6 +9,7 @@ To change a work tile, a case study or a social tile, edit content/en.json
 (image file name in /assets, title, finishes) and run this script again.
 The scroll sequence on the homepage lives in src/film.* and is not generated.
 """
+import re, urllib.parse
 import html, json, os, random
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -145,6 +146,11 @@ def seo_extra(C, P, path, meta):
     return alts + '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False) + "</script>"
 
 
+def wa_url(C):
+    """WhatsApp chat link with a short prefilled message in the page language."""
+    return "https://wa.me/" + re.sub(r"\D", "", C["site"]["whatsapp"]) + "?text=" + urllib.parse.quote(C["ui"]["whatsappMsg"])
+
+
 # ---------------------------------------------------------------- MATERIAL INTELLIGENCE design system
 def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
     s, ui = C["site"], C["ui"]; url = pub(C, C["lang"], path[len(P) - 1:]) if path.endswith("/") else s["url"].rstrip("/") + path
@@ -152,6 +158,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
     nav = "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("sustain", f"{P}sustainability/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
     contact = "".join(f"<li>{x}</li>" for x in (
         *[(f'{e(n)}<br>' if i or n != s["legalName"] else "") + e(a) for i, (n, a) in enumerate(offices(C))], f'{e(ui["vat"])} {e(s["vatID"][2:] if C["lang"] == "it" else s["vatID"])}', f'<a href="mailto:{e(s["email"])}">{e(s["email"])}</a>' if s["email"] else "", f'<a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a>' if s["phone"] else "",
+        f'<a href="{e(wa_url(C))}" target="_blank" rel="noopener">WhatsApp</a>' if s.get("whatsapp") else "",
         f'<a href="{e(s["linkedin"])}" rel="noopener">LinkedIn</a>' if s["linkedin"] else "", f'<a href="{e(s["instagram"])}" rel="noopener">Instagram</a>' if s["instagram"] else "") if x)
     secs = "".join(f'<li><a href="{P}{x["slug"]}/">{e(x["title"])}</a></li>' for x in C["sectors"])
     return f'''<!doctype html>
@@ -245,7 +252,7 @@ def net_map(C):
 def home_ml(C, P):
     h, ui = C["home"], C["ui"]; he = h["hero"]
     hero = (f'<div class="panel hero on" data-c="0"><span class="mono">{e(he["tag"])}</span><h1>{e(he["h1a"])} <em>{e(he["h1b"])}</em></h1><p>{e(he["sub"])}</p>'
-            f'<div class="ctas"><a class="cta pill" href="{P}work/">{e(ui["exploreWork"])} ↗</a><a class="cta pill ghost" href="{P}samples/">{e(ui["requestSamples"])} ↗</a><a class="cta" href="{P}contact/">{e(ui["talkToUs"])} →</a></div>'
+            f'<div class="ctas"><a class="cta pill" href="{P}contact/">{e(ui["talkToUs"])} →</a><a class="cta pill ghost" href="{P}samples/">{e(ui["requestSamples"])} ↗</a><a class="cta" href="{P}work/">{e(ui["exploreWork"])} ↗</a></div>'
             f'<div class="sys"><span class="mi">{e(he["chain"])}</span><span class="mi dim">{e(he["sectors"])}</span></div></div>')
     rail = '<div class="rail" id="rail">' + "".join(f'<span data-c="{i+1}">{i+1:02d} {e(n.upper())}</span>' for i, n in enumerate(h["rail"])) + '</div><span class="mi tag-sys">UP / SEQ 01–08</span>'
     fm = C["film"]; panels = ""
@@ -491,7 +498,11 @@ def form_ml(C, P, key, topic):
             f'<label>{e(f["sector"])}<select id="f-sector" name="sector">{secs}</select></label><label>{e(f["topic"])}<select id="f-topic" name="request_type">{opts}</select></label>'
             f'<label class="full">{e(f["message"])}<textarea id="f-message" name="message" required></textarea></label>{hidden}'
             f'<div class="full"><button class="cta pill" type="submit">{e(ui["send"])} ↗</button></div><p class="form-msg mi" hidden></p></form>')
-    direct = f'<div class="direct"><span class="mi">{e(s["legalName"])}</span>{"".join(f"<p>{e(n) + '<br>' if n != s['legalName'] else ''}{e(a)}</p>" for n, a in offices(C))}<p><a href="mailto:{e(s["email"])}">{e(s["email"])}</a></p><p><a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a></p></div>'
+    direct = f'<div class="direct"><span class="mi">{e(s["legalName"])}</span>{"".join(f"<p>{e(n) + '<br>' if n != s['legalName'] else ''}{e(a)}</p>" for n, a in offices(C))}<p><a href="mailto:{e(s["email"])}">{e(s["email"])}</a></p><p><a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a></p>'
+    if s.get("whatsapp"):
+        direct += (f'<div class="wa"><strong>{e(ui["whatsappH"])}</strong><p class="lead">{e(ui["whatsappP"])}</p>'
+                   f'<a class="wa-btn" href="{e(wa_url(C))}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.5 3.5A11 11 0 0 0 2 18.6L1 23l4.6-1.2A11 11 0 1 0 20.5 3.5Zm-8.7 2a9 9 0 0 1 7.8 13.5l-.3.5-.8.2a9 9 0 0 1-8-1.3l-.5-.3-2.8.7.7-2.7-.3-.6a9 9 0 0 1 3.5-11Z"/></svg>WhatsApp</a></div>')
+    direct += '</div>'
     return shell_ml(C, P, f"{P}{key}/", p["meta"], phead(ui["contact"], p["h1"], p["lead"], mega=False) + f'<hr class="spl"><section class="sec w"><div class="split"><div class="a">{form}</div><div class="b">{direct}</div></div></section>')
 
 
@@ -523,7 +534,7 @@ def legal_ml(C, P, key):
     return shell_ml(C, P, f"{P}{key}/", d["meta"], body)
 
 
-NO_TR = {"slug", "key", "image", "img", "id", "url", "lang", "macro", "fx", "shot", "heroImg", "launchUrl", "email", "phone", "linkedin", "instagram", "formEndpoint", "analyticsEndpoint",
+NO_TR = {"slug", "key", "image", "img", "id", "url", "lang", "macro", "fx", "shot", "heroImg", "launchUrl", "email", "phone", "whatsapp", "linkedin", "instagram", "formEndpoint", "analyticsEndpoint",
          "vatID", "street", "postalCode", "locality", "region", "country", "address", "name", "legalName", "founded"}
 
 
