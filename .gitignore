@@ -1,3 +1,2 @@
 __pycache__/
-backend/config.php
 backend/data/*.sqlite
