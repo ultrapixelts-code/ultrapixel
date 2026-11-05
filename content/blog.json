@@ -1,0 +1,1034 @@
+{
+  "ui": {
+    "en": {
+      "nav": "Guides",
+      "eyebrow": "Guides",
+      "title": "Label buying guides: materials, finishes, rules | UltraPixel",
+      "description": "Practical guides for brand owners and buyers of self-adhesive labels: choosing a supplier, specifying a quote, premium finishes, ice-bucket labels, PPWR and EU wine e-labels.",
+      "h1": "Guides for label buyers.",
+      "lead": "Straight answers on materials, finishes, specifications and EU rules, written by a label manufacturer in Trieste, Italy.",
+      "read": "Read the guide",
+      "published": "Published",
+      "updated": "Updated",
+      "by": "UltraPixel, Trieste",
+      "min": "min read",
+      "short": "Short answer",
+      "keys": "Key points",
+      "faq": "Frequently asked questions",
+      "sources": "Sources",
+      "notLegal": "This guide summarises public sources for information. It is not legal advice: check the official text and your own regulatory advisers."
+    },
+    "it": {
+      "nav": "Guide",
+      "eyebrow": "Guide",
+      "title": "Guide all'acquisto di etichette: materiali, nobilitazioni, norme | UltraPixel",
+      "description": "Guide pratiche per brand owner e buyer di etichette adesive: scegliere il fornitore, chiedere un preventivo, nobilitazioni, etichette da secchiello, PPWR ed e-label del vino.",
+      "h1": "Guide per chi compra etichette.",
+      "lead": "Risposte chiare su materiali, nobilitazioni, specifiche e norme europee, scritte da un etichettificio di Trieste.",
+      "read": "Leggi la guida",
+      "published": "Pubblicato il",
+      "updated": "Aggiornato il",
+      "by": "UltraPixel, Trieste",
+      "min": "min di lettura",
+      "short": "In breve",
+      "keys": "Punti chiave",
+      "faq": "Domande frequenti",
+      "sources": "Fonti",
+      "notLegal": "Questa guida riassume fonti pubbliche a scopo informativo. Non è una consulenza legale: verifica il testo ufficiale e i tuoi consulenti normativi."
+    }
+  },
+  "posts": [
+    {
+      "slug": "how-to-choose-a-label-supplier",
+      "date": "2026-11-05",
+      "updated": "2026-11-05",
+      "image": "c-register.webp",
+      "en": {
+        "kicker": "Buying",
+        "title": "How to choose a label supplier in Europe: a buyer's checklist | UltraPixel",
+        "description": "A practical checklist for brand owners and procurement teams choosing a self-adhesive label supplier in Europe: materials, finishes, colour control, versions, samples and red flags.",
+        "h1": "How to choose a label supplier in Europe: a checklist for brands and buyers",
+        "about": "Choosing a self-adhesive label supplier",
+        "keywords": ["label supplier Europe", "label manufacturer", "self-adhesive labels", "label printer selection", "procurement checklist"],
+        "answer": "Judge a label supplier on five things you can verify before the first order: the **materials and adhesives** they propose for your container and conditions, the **finishes** they can apply in register in one workflow, how they **control colour** between runs, how they handle **versions and variable data**, and whether they send **samples you can test on your own packs**. Price per thousand matters, but a label that lifts in an ice bucket or drifts in colour across a range costs more than it saves.",
+        "takeaways": [
+          "Ask for a material and adhesive proposal based on your container, surface and storage conditions, not a generic catalogue.",
+          "Check which finishes are done in-house and in register: foil, screen varnish, embossing, die-cutting.",
+          "Ask how colour is measured and kept consistent from one run to the next.",
+          "Test samples on your own bottles, jars or drums before ordering.",
+          "Compare total cost: reprints, waste, obsolete stock and line stoppages, not only the unit price."
+        ],
+        "sections": [
+          {
+            "h": "What should a label supplier show you before the first order?",
+            "blocks": [
+              "A serious supplier starts from your product, not from their price list. Before quoting, they should ask what the label goes on, how the product is filled, stored and used, and how the label is applied. The answer to those questions decides the facestock, the adhesive and the finishing, and therefore whether the label performs.",
+              "At minimum you should receive: a written material proposal (facestock + adhesive + liner), a description of each finish and how it is applied, a proof of the artwork with the die line, and physical samples you can test."
+            ]
+          },
+          {
+            "h": "Which questions reveal real capability?",
+            "blocks": [
+              {"ol": [
+                "Which material and adhesive would you use on my container, and why?",
+                "Which finishes do you apply in-house, and can they be combined in register on the same detail?",
+                "How do you measure colour, and what happens when a run drifts from the target?",
+                "Can several versions, languages or vintages be printed in the same job?",
+                "Can codes, numbers or QR codes change on every label?",
+                "Which roll specifications do you need for my applicator (winding direction, core, outer diameter)?",
+                "Will you send samples I can test on my own line before I order?"
+              ]},
+              "Vague answers to the first three questions are the clearest warning sign. They are the ones that decide whether the label works on the shelf."
+            ]
+          },
+          {
+            "h": "What to check, why it matters, what to ask for",
+            "blocks": [
+              {"table": {
+                "head": ["What to check", "Why it matters", "What to ask for"],
+                "rows": [
+                  ["Material + adhesive", "Wrong combinations wrinkle, lift or flag on cold, wet, curved or oily surfaces.", "A proposal tied to your container and conditions, plus samples."],
+                  ["Finishing in register", "Foil, varnish and relief that drift from the print look cheap.", "Examples where finishes are combined on the same detail."],
+                  ["Colour control", "Ranges and reorders must match each other.", "How colour is measured and checked against the target on every run."],
+                  ["Versions and variable data", "Vintages, languages, batches and QR codes multiply references.", "How many versions fit in one job; how variable data is supplied."],
+                  ["Roll specification", "Wrong winding or core stops the labelling machine.", "A roll spec sheet confirmed before production."],
+                  ["Samples and proofs", "Testing on your packs is cheaper than a failed run.", "Physical samples and an artwork proof with the die line."]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Does it matter where in Europe the supplier is?",
+            "blocks": [
+              "Within the EU, a label printed in another member state moves under the same single-market rules as a domestic one, so location matters less than many buyers assume. What does matter is clear communication in your language, realistic delivery planning and a supplier that understands the regulatory context of your market, such as EU packaging rules or wine labelling rules.",
+              "For brands with ranges sold in several countries, one supplier able to print all language versions with the same colour and finishing keeps the range consistent."
+            ]
+          },
+          {
+            "h": "Red flags",
+            "blocks": [
+              {"ul": [
+                "A price before anyone has asked what the label goes on.",
+                "No samples, or samples on a different material from the one quoted.",
+                "Certifications or capacities claimed but not documented for your material or process.",
+                "No answer on how colour is measured.",
+                "Every finish outsourced, with no one owning register between them."
+              ]}
+            ]
+          },
+          {
+            "h": "Where UltraPixel fits",
+            "blocks": [
+              "UltraPixel is a self-adhesive label manufacturer founded in 2013 in Trieste, Italy, delivering across Europe, with an office in Lyon, France. It combines digital printing (up to 8 colours in its workflow) with hot foil, screen printing, embossing, debossing, tactile varnish, die-cutting, variable data and spectral colour measurement. The fastest way to judge the fit is to [request samples](/samples/) and test them on your own packs, or to get an [indicative price](/quote/) from a photo of your current label."
+            ]
+          }
+        ],
+        "faq": [
+          ["How many label suppliers should I compare?", "Two or three is usually enough if you give all of them the same specification: size, material, finishes, quantities, versions and roll data. Different specifications make prices impossible to compare."],
+          ["Is the cheapest price per thousand the best deal?", "Not necessarily. Reprints, waste, obsolete stock and line stoppages caused by the wrong material or roll specification often cost more than the difference in unit price."],
+          ["Should I test labels before ordering?", "Yes. Apply samples to your own containers in the real conditions of use (cold, humidity, oil, handling) before approving a material."],
+          ["Can a European supplier print labels for several countries?", "Yes. Language and market versions can be printed in the same job, keeping colour and finishing consistent across the range."]
+        ],
+        "related": [["Request samples", "/samples/"], ["What does your label cost?", "/quote/"], ["Label manufacturer in Italy", "/label-manufacturer-italy/"], ["Technologies", "/technologies/"]]
+      },
+      "it": {
+        "kicker": "Acquisti",
+        "title": "Come scegliere un fornitore di etichette: la checklist per buyer | UltraPixel",
+        "description": "Checklist pratica per brand owner e uffici acquisti che scelgono un fornitore di etichette adesive in Europa: materiali, nobilitazioni, controllo colore, versioni, campioni e segnali d'allarme.",
+        "h1": "Come scegliere un fornitore di etichette: la checklist per brand e buyer",
+        "about": "Scelta di un fornitore di etichette adesive",
+        "keywords": ["fornitore etichette", "etichettificio", "etichette adesive", "scegliere tipografia etichette", "checklist acquisti"],
+        "answer": "Valuta un fornitore di etichette su cinque cose verificabili prima del primo ordine: i **materiali e gli adesivi** che propone per il tuo contenitore e le tue condizioni, le **nobilitazioni** che applica a registro in un unico flusso, come **controlla il colore** tra una tiratura e l'altra, come gestisce **versioni e dati variabili**, e se ti manda **campioni da provare sui tuoi contenitori**. Il prezzo al migliaio conta, ma un'etichetta che si stacca nel secchiello o cambia colore lungo una gamma costa più di quanto fa risparmiare.",
+        "takeaways": [
+          "Chiedi una proposta di materiale e adesivo basata su contenitore, superficie e condizioni di conservazione, non un catalogo generico.",
+          "Verifica quali nobilitazioni sono fatte internamente e a registro: lamina, serigrafia, rilievo, fustellatura.",
+          "Chiedi come viene misurato il colore e come resta costante da una tiratura all'altra.",
+          "Prova i campioni sulle tue bottiglie, vasetti o fusti prima di ordinare.",
+          "Confronta il costo totale: ristampe, scarti, magazzino obsoleto e fermi linea, non solo il prezzo unitario."
+        ],
+        "sections": [
+          {
+            "h": "Cosa deve mostrarti un fornitore prima del primo ordine?",
+            "blocks": [
+              "Un fornitore serio parte dal tuo prodotto, non dal suo listino. Prima di quotare deve chiederti su cosa va l'etichetta, come il prodotto viene riempito, conservato e usato, e come viene applicata l'etichetta. Da queste risposte dipendono il frontale, l'adesivo e le nobilitazioni, cioè se l'etichetta funziona.",
+              "Come minimo dovresti ricevere: una proposta scritta del materiale (frontale + adesivo + supporto siliconato), la descrizione di ogni nobilitazione e di come viene applicata, una bozza della grafica con la fustella e campioni fisici da provare."
+            ]
+          },
+          {
+            "h": "Quali domande rivelano le capacità reali?",
+            "blocks": [
+              {"ol": [
+                "Quale materiale e quale adesivo useresti sul mio contenitore, e perché?",
+                "Quali nobilitazioni fate internamente, e si possono combinare a registro sullo stesso dettaglio?",
+                "Come misurate il colore, e cosa succede se una tiratura si allontana dal riferimento?",
+                "Si possono stampare più versioni, lingue o annate nello stesso lavoro?",
+                "Codici, numeri o QR code possono cambiare su ogni etichetta?",
+                "Quali specifiche del rotolo servono per la mia etichettatrice (senso di avvolgimento, anima, diametro esterno)?",
+                "Mi mandate campioni da provare sulla mia linea prima dell'ordine?"
+              ]},
+              "Risposte vaghe alle prime tre domande sono il segnale d'allarme più chiaro: sono quelle che decidono se l'etichetta funziona sullo scaffale."
+            ]
+          },
+          {
+            "h": "Cosa verificare, perché conta, cosa chiedere",
+            "blocks": [
+              {"table": {
+                "head": ["Cosa verificare", "Perché conta", "Cosa chiedere"],
+                "rows": [
+                  ["Materiale + adesivo", "Combinazioni sbagliate fanno grinze o si staccano su superfici fredde, bagnate, curve o unte.", "Una proposta legata al tuo contenitore e alle condizioni, più i campioni."],
+                  ["Nobilitazioni a registro", "Lamina, vernice e rilievo fuori registro fanno sembrare il prodotto economico.", "Esempi di nobilitazioni combinate sullo stesso dettaglio."],
+                  ["Controllo colore", "Gamme e riordini devono corrispondere tra loro.", "Come il colore viene misurato e verificato sul riferimento a ogni tiratura."],
+                  ["Versioni e dati variabili", "Annate, lingue, lotti e QR code moltiplicano le referenze.", "Quante versioni stanno in un lavoro; come si forniscono i dati variabili."],
+                  ["Specifica del rotolo", "Avvolgimento o anima sbagliati fermano l'etichettatrice.", "Una scheda rotolo confermata prima della produzione."],
+                  ["Campioni e bozze", "Provare sui tuoi contenitori costa meno di una tiratura sbagliata.", "Campioni fisici e bozza della grafica con la fustella."]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Conta dove si trova il fornitore in Europa?",
+            "blocks": [
+              "Dentro l'UE un'etichetta stampata in un altro Stato membro circola con le stesse regole del mercato unico di una stampata in casa, quindi la posizione conta meno di quanto molti buyer pensino. Contano invece una comunicazione chiara nella tua lingua, una pianificazione realistica delle consegne e un fornitore che conosca il contesto normativo del tuo mercato, come le regole UE sugli imballaggi o sull'etichettatura del vino.",
+              "Per i brand con gamme vendute in più paesi, un solo fornitore che stampa tutte le versioni linguistiche con lo stesso colore e le stesse nobilitazioni mantiene la gamma coerente."
+            ]
+          },
+          {
+            "h": "Segnali d'allarme",
+            "blocks": [
+              {"ul": [
+                "Un prezzo prima che qualcuno abbia chiesto su cosa va l'etichetta.",
+                "Nessun campione, o campioni su un materiale diverso da quello quotato.",
+                "Certificazioni o capacità dichiarate ma non documentate per il tuo materiale o processo.",
+                "Nessuna risposta su come viene misurato il colore.",
+                "Tutte le nobilitazioni affidate a terzi, senza nessuno che risponda del registro."
+              ]}
+            ]
+          },
+          {
+            "h": "Dove si colloca UltraPixel",
+            "blocks": [
+              "UltraPixel è un etichettificio di etichette adesive fondato nel 2013 a Trieste, che consegna in tutta Europa e ha una sede a Lione, in Francia. Unisce la stampa digitale (fino a 8 colori nel suo flusso) a lamina a caldo, serigrafia, rilievo, debossing, vernici tattili, fustellatura, dati variabili e misura spettrale del colore. Il modo più rapido per capire se fa per te è [chiedere i campioni](/samples/) e provarli sui tuoi contenitori, oppure ottenere un [prezzo indicativo](/quote/) dalla foto della tua etichetta attuale."
+            ]
+          }
+        ],
+        "faq": [
+          ["Quanti fornitori di etichette conviene confrontare?", "Di solito due o tre bastano, se dai a tutti la stessa specifica: formato, materiale, nobilitazioni, quantità, versioni e dati del rotolo. Con specifiche diverse i prezzi non sono confrontabili."],
+          ["Il prezzo al migliaio più basso è l'affare migliore?", "Non necessariamente. Ristampe, scarti, magazzino obsoleto e fermi linea causati dal materiale o dal rotolo sbagliato spesso costano più della differenza di prezzo unitario."],
+          ["Conviene provare le etichette prima di ordinare?", "Sì. Applica i campioni sui tuoi contenitori nelle condizioni reali d'uso (freddo, umidità, olio, manipolazione) prima di approvare un materiale."],
+          ["Un fornitore europeo può stampare etichette per più paesi?", "Sì. Le versioni per lingua e mercato si stampano nello stesso lavoro, mantenendo colore e nobilitazioni coerenti su tutta la gamma."]
+        ],
+        "related": [["Richiedi campioni", "/samples/"], ["Quanto costa la tua etichetta?", "/quote/"], ["Etichettificio in Italia", "/label-manufacturer-italy/"], ["Tecnologie", "/technologies/"]]
+      }
+    },
+    {
+      "slug": "label-quote-specification-checklist",
+      "date": "2026-11-05",
+      "updated": "2026-11-05",
+      "image": "c-numbered.webp",
+      "en": {
+        "kicker": "Specification",
+        "title": "How to request a label quote: the specification checklist | UltraPixel",
+        "description": "The information a label printer needs for an exact quote: size and shape, quantities and versions, material, container and conditions, finishes, roll data for the applicator, variable data and artwork.",
+        "h1": "How to request a label quote: the specification checklist that gets you an exact price",
+        "about": "Label request for quotation (RFQ) specification",
+        "keywords": ["label quote", "label RFQ", "label specification", "winding direction", "core diameter", "label printing price"],
+        "answer": "An exact label quote needs eleven pieces of information: **size and shape**, **quantity per version and number of versions**, **material** (or the container and conditions so the printer can propose one), **finishes**, **colours**, **how the label is applied** with roll data (**winding direction, core, outer diameter, labels per roll**), **variable data**, **artwork format** and **delivery**. Missing items are the main reason quotes from different printers cannot be compared.",
+        "takeaways": [
+          "Quote per version: 10,000 labels in one design and 10,000 split across ten designs are different jobs.",
+          "Describe the container and conditions; let the printer propose the material and adhesive.",
+          "For machine application, winding direction, core and outer diameter are not optional.",
+          "Send vector artwork with the die line on its own layer.",
+          "Send the same specification to every supplier you compare."
+        ],
+        "sections": [
+          {
+            "h": "The checklist",
+            "blocks": [
+              {"table": {
+                "head": ["Item", "What to give", "Why the printer needs it"],
+                "rows": [
+                  ["Size and shape", "Width × height in mm; rectangle, oval or custom shape", "Decides the die-cutting tool and how many labels fit across the web."],
+                  ["Quantities", "Total quantity and quantity per version; expected reorders", "Set-up and waste are spread over the run; versions add changeovers."],
+                  ["Container and surface", "Glass, PET, HDPE, metal, cardboard; flat, curved or squeezable", "Decides the facestock and adhesive."],
+                  ["Conditions", "Ambient, chilled, frozen, ice bucket, humid, oil or chemical contact", "Some materials and adhesives fail in cold, wet or oily conditions."],
+                  ["Material preference", "Paper, textured paper, film, transparent, metallised, or open", "Changes cost and look; a printer can propose options."],
+                  ["Finishes", "Hot foil, screen varnish, embossing, tactile varnish, lamination", "Each finish adds a pass or a tool."],
+                  ["Colours", "Brand colour references and any physical master sample", "Colour is measured against a target; a reference avoids guesswork."],
+                  ["Application", "By hand or by machine; applicator model if known", "Machine application needs an exact roll specification."],
+                  ["Roll data", "Winding direction, core diameter, maximum outer diameter, labels per roll", "A wrong roll stops the line."],
+                  ["Variable data", "What changes on each label: numbers, batch, dates, QR codes", "Decides the workflow and the data file format."],
+                  ["Artwork and delivery", "Vector PDF with the die line on a separate layer; delivery address and date", "Avoids redraws and plans production."]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Why quantity per version matters",
+            "blocks": [
+              "Two orders of 10,000 labels can have very different prices. One design printed 10,000 times has one set-up. Ten designs of 1,000 each, such as ten wines or ten fragrances, have ten. Digital printing reduces the cost of switching between versions, which is why short runs, vintages, languages and limited editions are usually printed digitally. Always state the number of versions and the quantity of each."
+            ]
+          },
+          {
+            "h": "Roll data for automatic labelling machines",
+            "blocks": [
+              "If your labels are applied by a machine, the roll must match it. Ask your production team or the applicator's manual for:",
+              {"ul": [
+                "**Winding direction**: which edge of the label comes off the roll first, and whether labels face out or in. Printers usually refer to a standard set of numbered winding positions; a photo of a current roll on the machine is the safest reference.",
+                "**Core diameter**: the inner diameter of the cardboard core.",
+                "**Maximum outer diameter**: the largest roll the unwinder accepts.",
+                "**Labels per roll** or maximum roll length, and the gap between labels if the machine requires a specific one."
+              ]}
+            ]
+          },
+          {
+            "h": "Artwork that saves a round of corrections",
+            "blocks": [
+              {"ul": [
+                "Vector PDF with fonts outlined or embedded.",
+                "The die line drawn on its own layer or as a named spot colour, not merged into the artwork.",
+                "Each finish (foil, varnish, relief, white) on its own layer or spot colour.",
+                "Bleed beyond the die line, and important text kept away from the edge.",
+                "Images at a resolution suited to the printed size."
+              ]}
+            ]
+          },
+          {
+            "h": "Getting an indicative price first",
+            "blocks": [
+              "If you only need an order of magnitude, UltraPixel's [price page](/quote/) gives an indicative 'from' price from a photo or file of your current label and a quantity. The final quote is confirmed after checking the specification above. For a full quote, use the [quote request form](/contact/?topic=quote) and attach your artwork."
+            ]
+          }
+        ],
+        "faq": [
+          ["Why are label quotes from different printers so different?", "Usually because they are quoting different specifications: another material, fewer finishes, a different roll format or a different number of versions. Send every supplier the same checklist."],
+          ["Do I need to choose the label material myself?", "No. Describe the container, surface and conditions of use and ask the printer to propose material and adhesive, then test samples."],
+          ["What is winding direction?", "It describes how the labels sit on the roll: which edge comes off first and whether the printed side faces out or in. Automatic applicators need the right one to work."],
+          ["Which file format should I send?", "A vector PDF, with the die line and each finish on separate layers or spot colours."]
+        ],
+        "related": [["What does your label cost?", "/quote/"], ["Request a quote", "/contact/?topic=quote"], ["Variable-data labels", "/variable-data-labels/"], ["Short-run wine labels", "/short-run-wine-labels/"]]
+      },
+      "it": {
+        "kicker": "Specifiche",
+        "title": "Come chiedere un preventivo per etichette: la checklist delle specifiche | UltraPixel",
+        "description": "Le informazioni che servono a un etichettificio per un preventivo esatto: formato e forma, quantità e versioni, materiale, contenitore e condizioni, nobilitazioni, dati del rotolo, dati variabili e grafica.",
+        "h1": "Come chiedere un preventivo per etichette: la checklist per avere un prezzo esatto",
+        "about": "Specifiche per la richiesta di preventivo di etichette",
+        "keywords": ["preventivo etichette", "prezzo etichette adesive", "specifiche etichette", "senso di avvolgimento", "diametro anima", "stampa etichette"],
+        "answer": "Per un preventivo esatto servono undici informazioni: **formato e forma**, **quantità per versione e numero di versioni**, **materiale** (o il contenitore e le condizioni, così l'etichettificio può proporlo), **nobilitazioni**, **colori**, **modalità di applicazione** con i dati del rotolo (**senso di avvolgimento, anima, diametro esterno, etichette per rotolo**), **dati variabili**, **formato della grafica** e **consegna**. Le voci mancanti sono il motivo principale per cui i preventivi di fornitori diversi non sono confrontabili.",
+        "takeaways": [
+          "Quota per versione: 10.000 etichette di un solo soggetto e 10.000 divise su dieci soggetti sono lavori diversi.",
+          "Descrivi contenitore e condizioni; lascia che sia l'etichettificio a proporre materiale e adesivo.",
+          "Per l'applicazione automatica, senso di avvolgimento, anima e diametro esterno sono indispensabili.",
+          "Invia la grafica vettoriale con la fustella su un livello separato.",
+          "Manda la stessa specifica a tutti i fornitori che confronti."
+        ],
+        "sections": [
+          {
+            "h": "La checklist",
+            "blocks": [
+              {"table": {
+                "head": ["Voce", "Cosa indicare", "Perché serve"],
+                "rows": [
+                  ["Formato e forma", "Larghezza × altezza in mm; rettangolare, ovale o sagomata", "Decide la fustella e quante etichette stanno in larghezza sul materiale."],
+                  ["Quantità", "Quantità totale e per versione; riordini previsti", "Avviamento e scarti si dividono sulla tiratura; le versioni aggiungono cambi."],
+                  ["Contenitore e superficie", "Vetro, PET, HDPE, metallo, cartone; piano, curvo o comprimibile", "Decide frontale e adesivo."],
+                  ["Condizioni", "Ambiente, frigo, surgelato, secchiello, umidità, contatto con olio o chimici", "Alcuni materiali e adesivi cedono al freddo, al bagnato o all'unto."],
+                  ["Materiale preferito", "Carta, carta goffrata, film, trasparente, metallizzato, oppure da proporre", "Cambia costo e resa; l'etichettificio può proporre alternative."],
+                  ["Nobilitazioni", "Lamina a caldo, serigrafia, rilievo, vernice tattile, plastificazione", "Ogni nobilitazione aggiunge un passaggio o un impianto."],
+                  ["Colori", "Riferimenti colore del brand ed eventuale campione fisico di riferimento", "Il colore si misura su un riferimento: averlo evita interpretazioni."],
+                  ["Applicazione", "A mano o a macchina; modello dell'etichettatrice se noto", "L'applicazione automatica richiede un rotolo esatto."],
+                  ["Dati del rotolo", "Senso di avvolgimento, diametro anima, diametro esterno massimo, etichette per rotolo", "Un rotolo sbagliato ferma la linea."],
+                  ["Dati variabili", "Cosa cambia su ogni etichetta: numeri, lotto, date, QR code", "Decide il flusso di lavoro e il formato del file dati."],
+                  ["Grafica e consegna", "PDF vettoriale con la fustella su livello separato; indirizzo e data di consegna", "Evita rifacimenti e permette di pianificare."]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Perché conta la quantità per versione",
+            "blocks": [
+              "Due ordini da 10.000 etichette possono avere prezzi molto diversi. Un soggetto stampato 10.000 volte ha un solo avviamento; dieci soggetti da 1.000, come dieci vini o dieci profumi, ne hanno dieci. La stampa digitale riduce il costo del cambio versione, ed è per questo che tirature brevi, annate, lingue ed edizioni limitate si stampano di solito in digitale. Indica sempre il numero di versioni e la quantità di ciascuna."
+            ]
+          },
+          {
+            "h": "I dati del rotolo per le etichettatrici automatiche",
+            "blocks": [
+              "Se le etichette vengono applicate a macchina, il rotolo deve essere adatto alla macchina. Chiedi alla produzione o al manuale dell'etichettatrice:",
+              {"ul": [
+                "**Senso di avvolgimento**: quale lato dell'etichetta esce per primo dal rotolo e se le etichette sono all'esterno o all'interno. Gli etichettifici usano di solito una serie di posizioni di avvolgimento numerate; una foto di un rotolo attuale montato in macchina è il riferimento più sicuro.",
+                "**Diametro dell'anima**: il diametro interno del cilindro di cartone.",
+                "**Diametro esterno massimo**: il rotolo più grande accettato dallo svolgitore.",
+                "**Etichette per rotolo** o lunghezza massima, e la distanza tra le etichette se la macchina ne richiede una precisa."
+              ]}
+            ]
+          },
+          {
+            "h": "Una grafica che fa risparmiare un giro di correzioni",
+            "blocks": [
+              {"ul": [
+                "PDF vettoriale con font convertiti in tracciati o incorporati.",
+                "La fustella disegnata su un livello proprio o come colore speciale nominato, non fusa nella grafica.",
+                "Ogni nobilitazione (lamina, vernice, rilievo, bianco) su un livello o colore speciale separato.",
+                "Abbondanza oltre la fustella e testi importanti lontani dal bordo.",
+                "Immagini a una risoluzione adatta al formato stampato."
+              ]}
+            ]
+          },
+          {
+            "h": "Avere prima un prezzo indicativo",
+            "blocks": [
+              "Se ti serve solo un ordine di grandezza, la [pagina prezzo](/quote/) di UltraPixel dà un prezzo indicativo 'a partire da' partendo dalla foto o dal file della tua etichetta e dalla quantità. Il preventivo definitivo si conferma dopo aver verificato le specifiche qui sopra. Per un preventivo completo usa il [modulo di richiesta](/contact/?topic=quote) e allega la grafica."
+            ]
+          }
+        ],
+        "faq": [
+          ["Perché i preventivi di etichettifici diversi sono così diversi?", "Di solito perché quotano specifiche diverse: un altro materiale, meno nobilitazioni, un rotolo diverso o un numero diverso di versioni. Manda a tutti la stessa checklist."],
+          ["Devo scegliere io il materiale dell'etichetta?", "No. Descrivi contenitore, superficie e condizioni d'uso e chiedi all'etichettificio di proporre materiale e adesivo, poi prova i campioni."],
+          ["Cos'è il senso di avvolgimento?", "Descrive come stanno le etichette sul rotolo: quale lato esce per primo e se il lato stampato è all'esterno o all'interno. Le etichettatrici automatiche funzionano solo con quello giusto."],
+          ["In che formato mando la grafica?", "Un PDF vettoriale, con la fustella e ogni nobilitazione su livelli o colori speciali separati."]
+        ],
+        "related": [["Quanto costa la tua etichetta?", "/quote/"], ["Richiedi un preventivo", "/contact/?topic=quote"], ["Etichette a dati variabili", "/variable-data-labels/"], ["Etichette vino in piccole tirature", "/short-run-wine-labels/"]]
+      }
+    },
+    {
+      "slug": "premium-label-finishes-compared",
+      "date": "2026-11-05",
+      "updated": "2026-11-05",
+      "image": "c-tactile.webp",
+      "en": {
+        "kicker": "Finishes",
+        "title": "Hot foil vs screen printing vs embossing: premium label finishes compared | UltraPixel",
+        "description": "Which premium label finish for which effect: hot foil, screen printing, embossing, debossing, tactile varnish, microtextures and die-cutting compared, with what each is best for and what to watch.",
+        "h1": "Hot foil, screen printing, embossing or tactile varnish: which premium label finish for which effect",
+        "about": "Premium label finishing techniques",
+        "keywords": ["hot foil labels", "screen printed labels", "embossed labels", "tactile varnish", "premium label finishes", "wine label embellishment"],
+        "answer": "Choose the finish by the effect you want: **hot foil** for metallic shine that catches light, **screen printing** for dense opaque colour and thick varnish you can feel, **embossing** for relief raised from the paper, **debossing** for an engraved, quieter detail, **tactile varnish** for texture on selected areas, and **shaped die-cutting** for a silhouette. The strongest labels combine two or three finishes in register on the same detail rather than adding every effect.",
+        "takeaways": [
+          "Foil is about light; embossing is about shadow; tactile varnish is about touch.",
+          "Foil and embossing combined in register on the same element is the classic premium wine and spirits effect.",
+          "Textured papers make relief and foil more visible; smooth stocks make fine detail sharper.",
+          "Each finish adds a pass or a tool, so choose finishes on purpose, not by default.",
+          "Judge finishes on samples under raking light, not on a screen."
+        ],
+        "sections": [
+          {
+            "h": "Premium finishes compared",
+            "blocks": [
+              {"table": {
+                "head": ["Finish", "What it does", "Best for", "Watch out for"],
+                "rows": [
+                  ["Hot foil", "Metallic foil transferred with heat and pressure: gold, silver, coloured, holographic", "Logos, borders, brand names that must catch light", "Very fine lines and small text need a suitable stock and a sharp tool"],
+                  ["Screen printing", "Dense, opaque ink or thick varnish deposited through a mesh", "Opaque white on clear film, high-build varnish, strong solid colour", "Thickness changes how fine the detail can be"],
+                  ["Embossing", "Relief raised from the material with a male/female tool", "Crests, names and patterns you see in shadow", "Works best on papers with some thickness and texture"],
+                  ["Debossing", "Detail pressed into the surface", "Quiet, engraved looks; minimal brands", "Subtle under flat light; plan the lighting of product photos"],
+                  ["Tactile varnish", "Thick clear varnish raised on selected areas", "Texture on illustrations, Braille-like dots, grip", "Not a substitute for official Braille where that is required"],
+                  ["Microtextures", "Fine relief patterns that change how the surface catches light", "Subtle movement without metal", "Effect depends strongly on lighting"],
+                  ["Shaped die-cutting", "Custom profiles, points, curves and windows", "A silhouette that recognises the brand from a distance", "Very sharp corners and narrow bridges need care in application"]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Which finish for which sector?",
+            "blocks": [
+              {"ul": [
+                "**Wine and spirits**: textured papers with hot foil and embossing in register; numbering for limited editions. See [wine and spirits labels](/wine-spirits/).",
+                "**Cosmetics**: clear films with opaque white printed by screen, tactile varnish and restrained foil. See [clear labels with opaque white](/clear-labels-opaque-white/).",
+                "**Gourmet food**: textured papers and a single strong finish, such as foil on the brand name.",
+                "**Supplements and nutraceuticals**: clean print with a tactile or foil accent and variable data for batches."
+              ]}
+            ]
+          },
+          {
+            "h": "Why combining finishes in register matters",
+            "blocks": [
+              "A foil logo that is 0.3 mm off its embossed relief looks like a mistake. When print, foil, varnish, relief and die-cut are applied in register, the label reads as one designed object. Ask your printer for examples where at least two finishes sit on the same detail, and check them with a loupe and under a lamp held at a low angle."
+            ]
+          },
+          {
+            "h": "Finishes and sustainability",
+            "blocks": [
+              "Every finish adds material or a production pass. That is not a reason to avoid them, but it is a reason to use them where they add value: on the brand name, the crest, the detail the hand looks for. With EU packaging rules putting more attention on how packs are recycled, it makes sense to discuss finishes, facestock and adhesive together with the container from the start. More on this in our guide to [PPWR and labels](/blog/ppwr-and-labels/)."
+            ]
+          },
+          {
+            "h": "How UltraPixel works",
+            "blocks": [
+              "In UltraPixel's digital workflow the full colour artwork is printed first (up to 8 colours), then the finishes are applied on top: hot foil, screen varnish, embossing and tactile effects, and finally die-cutting. See the [technologies](/technologies/) and ask for a [sample kit](/samples/) to judge the finishes in your hands."
+            ]
+          }
+        ],
+        "faq": [
+          ["What is the difference between hot foil and cold foil?", "Hot foil is transferred with a heated tool and pressure and is typically chosen for raised, crisp metallic details and combination with embossing. Cold foil is applied with an adhesive and cured; it is often used inline for large areas. The right choice depends on the design and the stock."],
+          ["Can foil and embossing be combined on the same detail?", "Yes. Foil can be applied flat or raised, in register with the print and the die-cut."],
+          ["What is the difference between embossing and debossing?", "Embossing raises the detail above the surface; debossing presses it into the surface."],
+          ["Which paper shows embossing best?", "Papers with some thickness and texture, such as cotton-feel and felt-marked stocks, hold relief better than thin smooth papers."]
+        ],
+        "related": [["Hot foil labels", "/hot-foil-labels/"], ["Embossed labels", "/embossed-labels/"], ["Screen printed labels", "/screen-printed-labels/"], ["Premium labels", "/premium-labels/"]]
+      },
+      "it": {
+        "kicker": "Nobilitazioni",
+        "title": "Lamina a caldo, serigrafia, rilievo: le nobilitazioni per etichette a confronto | UltraPixel",
+        "description": "Quale nobilitazione per quale effetto: lamina a caldo, serigrafia, rilievo, debossing, vernice tattile, microtexture e fustellatura sagomata a confronto, con a cosa servono e cosa tenere d'occhio.",
+        "h1": "Lamina a caldo, serigrafia, rilievo o vernice tattile: quale nobilitazione per quale effetto",
+        "about": "Tecniche di nobilitazione delle etichette",
+        "keywords": ["etichette lamina a caldo", "etichette serigrafate", "etichette in rilievo", "vernice tattile", "nobilitazioni etichette", "etichette vino premium"],
+        "answer": "La nobilitazione si sceglie in base all'effetto: **lamina a caldo** per una lucentezza metallica che cattura la luce, **serigrafia** per colori pieni e coprenti e vernici spesse al tatto, **rilievo** (embossing) per dettagli in rilievo sulla carta, **debossing** per un dettaglio inciso e più sobrio, **vernice tattile** per dare texture ad aree precise, **fustellatura sagomata** per una silhouette. Le etichette più forti combinano due o tre nobilitazioni a registro sullo stesso dettaglio invece di sommarle tutte.",
+        "takeaways": [
+          "La lamina lavora con la luce, il rilievo con l'ombra, la vernice tattile con il tatto.",
+          "Lamina e rilievo a registro sullo stesso elemento sono l'effetto premium classico di vino e distillati.",
+          "Le carte goffrate rendono più evidenti rilievo e lamina; le carte lisce rendono più nitidi i dettagli fini.",
+          "Ogni nobilitazione aggiunge un passaggio o un impianto: va scelta con intenzione, non per abitudine.",
+          "Le nobilitazioni si valutano sui campioni a luce radente, non a schermo."
+        ],
+        "sections": [
+          {
+            "h": "Le nobilitazioni a confronto",
+            "blocks": [
+              {"table": {
+                "head": ["Nobilitazione", "Cosa fa", "Ideale per", "Da tenere d'occhio"],
+                "rows": [
+                  ["Lamina a caldo", "Lamina metallica trasferita con calore e pressione: oro, argento, colorata, olografica", "Loghi, cornici, nomi che devono catturare la luce", "Linee molto sottili e testi piccoli richiedono carta adatta e cliché preciso"],
+                  ["Serigrafia", "Inchiostro coprente o vernice spessa depositati attraverso un telaio", "Bianco coprente su film trasparente, vernici a spessore, pieni intensi", "Lo spessore limita la finezza del dettaglio"],
+                  ["Rilievo (embossing)", "Rilievo alzato dal materiale con stampo maschio/femmina", "Stemmi, nomi e pattern che si leggono nell'ombra", "Rende al meglio su carte con spessore e texture"],
+                  ["Debossing", "Dettaglio impresso nella superficie", "Look incisi e sobri; brand minimali", "Discreto a luce piatta: pensa alla luce delle foto prodotto"],
+                  ["Vernice tattile", "Vernice trasparente spessa in rilievo su aree scelte", "Texture su illustrazioni, punti, presa", "Non sostituisce il Braille ufficiale dove è obbligatorio"],
+                  ["Microtexture", "Pattern in rilievo fine che cambia come la superficie prende la luce", "Movimento sottile senza metallo", "L'effetto dipende molto dalla luce"],
+                  ["Fustellatura sagomata", "Profili su misura, punte, curve e finestre", "Una silhouette che riconosce il brand da lontano", "Angoli molto vivi e ponti stretti richiedono cura in applicazione"]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Quale nobilitazione per quale settore?",
+            "blocks": [
+              {"ul": [
+                "**Vino e distillati**: carte goffrate con lamina a caldo e rilievo a registro; numerazione per le edizioni limitate. Vedi le [etichette per vino e distillati](/wine-spirits/).",
+                "**Cosmetica**: film trasparenti con bianco coprente in serigrafia, vernice tattile e lamina misurata. Vedi le [etichette trasparenti con bianco coprente](/clear-labels-opaque-white/).",
+                "**Food gourmet**: carte goffrate e una sola nobilitazione forte, come la lamina sul nome.",
+                "**Integratori e nutraceutici**: stampa pulita con un accento tattile o in lamina e dati variabili per i lotti."
+              ]}
+            ]
+          },
+          {
+            "h": "Perché conta il registro tra le nobilitazioni",
+            "blocks": [
+              "Un logo in lamina spostato di 0,3 mm rispetto al suo rilievo sembra un errore. Quando stampa, lamina, vernice, rilievo e fustella sono a registro, l'etichetta si legge come un unico oggetto progettato. Chiedi al tuo etichettificio esempi con almeno due nobilitazioni sullo stesso dettaglio e controllali con un contafili e con una lampada tenuta bassa."
+            ]
+          },
+          {
+            "h": "Nobilitazioni e sostenibilità",
+            "blocks": [
+              "Ogni nobilitazione aggiunge materiale o un passaggio produttivo. Non è un motivo per evitarle, ma per usarle dove aggiungono valore: sul nome, sullo stemma, sul dettaglio che la mano cerca. Con le regole UE sugli imballaggi sempre più attente a come i pack vengono riciclati, conviene discutere nobilitazioni, frontale e adesivo insieme al contenitore fin dall'inizio. Approfondisci nella guida [PPWR ed etichette](/blog/ppwr-and-labels/)."
+            ]
+          },
+          {
+            "h": "Come lavora UltraPixel",
+            "blocks": [
+              "Nel flusso digitale di UltraPixel la grafica a colori viene stampata per prima (fino a 8 colori), poi si applicano sopra le nobilitazioni: lamina a caldo, vernice serigrafica, rilievo ed effetti tattili, e infine la fustellatura. Scopri le [tecnologie](/technologies/) e chiedi un [kit campioni](/samples/) per valutare le nobilitazioni in mano."
+            ]
+          }
+        ],
+        "faq": [
+          ["Che differenza c'è tra lamina a caldo e lamina a freddo?", "La lamina a caldo si trasferisce con un cliché riscaldato e pressione e si sceglie di solito per dettagli metallici nitidi e in rilievo, anche combinati con l'embossing. La lamina a freddo si applica con un adesivo che poi polimerizza ed è spesso usata in linea su aree ampie. La scelta dipende da grafica e carta."],
+          ["Lamina e rilievo si possono combinare sullo stesso dettaglio?", "Sì. La lamina può essere piana o in rilievo, a registro con la stampa e la fustella."],
+          ["Che differenza c'è tra embossing e debossing?", "L'embossing alza il dettaglio sopra la superficie; il debossing lo imprime nella superficie."],
+          ["Quale carta valorizza di più il rilievo?", "Le carte con un certo spessore e texture, come le carte effetto cotone o feltrate, tengono il rilievo meglio delle carte sottili e lisce."]
+        ],
+        "related": [["Etichette con lamina a caldo", "/hot-foil-labels/"], ["Etichette in rilievo", "/embossed-labels/"], ["Etichette serigrafate", "/screen-printed-labels/"], ["Etichette premium", "/premium-labels/"]]
+      }
+    },
+    {
+      "slug": "ice-bucket-labels",
+      "date": "2026-11-05",
+      "updated": "2026-11-05",
+      "image": "c-icebucket.webp",
+      "en": {
+        "kicker": "Wine & Spirits",
+        "title": "Ice-bucket labels: why wine labels fail in water and how to specify them | UltraPixel",
+        "description": "Why wine and spirits labels wrinkle, peel or lose their finish in ice buckets and fridges, and how to specify facestock, adhesive and protection so they survive. Includes a simple test protocol.",
+        "h1": "Labels for ice buckets and chilled bottles: why they fail and how to specify them",
+        "about": "Wine labels resistant to ice buckets and condensation",
+        "keywords": ["ice bucket labels", "wet strength paper labels", "wine labels water resistant", "labels for chilled bottles", "condensation labels"],
+        "answer": "Labels fail in ice buckets for three reasons: the **paper absorbs water** and loses strength, the **adhesive** is not suited to cold or wet glass, or the label was **applied to a bottle that was cold or damp** at bottling. To avoid it, specify a **wet-strength paper or a film**, an **adhesive selected for chilled and wet conditions**, a protective **varnish or lamination** where scuffing matters, and test samples on your own bottles in iced water before approving.",
+        "takeaways": [
+          "Tell the printer how the bottle is served: ice bucket, fridge, or cellar only.",
+          "Wet-strength papers keep their look; standard papers wrinkle and tear when soaked.",
+          "Adhesive choice matters as much as paper: cold, condensation and wet application need a suitable one.",
+          "Let the adhesive build its bond before testing, then test in iced water on your own bottles.",
+          "White and sparkling wines, rosé and many spirits served chilled all need this specification."
+        ],
+        "sections": [
+          {
+            "h": "Why labels fail in ice buckets",
+            "blocks": [
+              {"table": {
+                "head": ["What you see", "Likely cause", "What to change"],
+                "rows": [
+                  ["Wrinkles and bubbles after a few minutes in ice", "Paper absorbs water and swells", "Wet-strength paper, or a film facestock"],
+                  ["Label slides or peels at the edges", "Adhesive not suited to cold or wet glass", "Adhesive selected for chilled and wet conditions"],
+                  ["Label never fully bonded", "Bottle cold or damp at labelling (condensation at bottling)", "Adhesive for wet or cold application, and check the bottling conditions"],
+                  ["Print or foil scuffed", "Abrasion from ice and handling", "Protective varnish or lamination where the design allows"],
+                  ["Paper tears when the bottle is lifted", "Low wet strength", "Wet-strength paper with a suitable thickness"]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Paper or film?",
+            "blocks": [
+              "**Wet-strength papers** keep the natural, textured look many wineries want and are designed to resist water. They are the usual choice for wines that may meet an ice bucket. **Films** (such as PP or PE) do not absorb water at all and suit products that live in ice or humidity, at the cost of a different look and feel. Textured and cotton-feel papers exist in wet-strength versions, so premium finishing such as hot foil and embossing is still possible."
+            ]
+          },
+          {
+            "h": "A simple test before approving the label",
+            "blocks": [
+              {"ol": [
+                "Apply samples to your own bottles in conditions as close as possible to your bottling line.",
+                "Leave them to rest so the adhesive can build its bond, typically a day.",
+                "Put the bottles in a bucket of iced water for the time a bottle might realistically spend there.",
+                "Check for wrinkles, lifting edges, scuffed print or foil, and whether the label tears when you lift the bottle.",
+                "Repeat with condensation: take a bottle from the fridge and leave it at room temperature."
+              ]},
+              "Testing on your own bottles matters, because glass shape, surface treatment and the bottling line all influence the result."
+            ]
+          },
+          {
+            "h": "What to tell your label printer",
+            "blocks": [
+              {"ul": [
+                "How the wine is served: ice bucket, fridge, or ambient only.",
+                "Whether bottles can be cold or damp when labelled.",
+                "The bottle shape and any curved or conical areas.",
+                "The finishes you want (foil, embossing, tactile varnish), so the paper is chosen to hold them.",
+                "Whether labels are applied by hand or by machine, with the roll data."
+              ]}
+            ]
+          },
+          {
+            "h": "How UltraPixel approaches it",
+            "blocks": [
+              "UltraPixel proposes materials and adhesives selected for wet and chilled conditions and sends samples to test on your own bottles. See [labels for chilled bottles and ice buckets](/labels-for-chilled-bottles/) or [request a sample kit](/samples/?sector=Wine+%26+Spirits)."
+            ]
+          }
+        ],
+        "faq": [
+          ["Which wine labels need to be ice-bucket resistant?", "Any wine or spirit that may be served chilled in a bucket: white, rosé, sparkling, and many aperitifs and spirits."],
+          ["Can a premium textured paper be ice-bucket resistant?", "Yes. Wet-strength versions of textured papers exist and can carry hot foil and embossing."],
+          ["Is a film label always better in ice?", "A film does not absorb water, but the adhesive and application still matter, and the look is different from paper. The choice depends on the brand and how the bottle is served."],
+          ["How long should I wait before testing labels in water?", "Let the adhesive build its bond first, typically about a day, then test on your own bottles."]
+        ],
+        "related": [["Labels for chilled bottles", "/labels-for-chilled-bottles/"], ["Wine & Spirits", "/wine-spirits/"], ["Premium labels for spirits", "/spirits-labels/"], ["Request samples", "/samples/"]]
+      },
+      "it": {
+        "kicker": "Vino e distillati",
+        "title": "Etichette da secchiello: perché le etichette del vino cedono in acqua e come specificarle | UltraPixel",
+        "description": "Perché le etichette di vino e distillati fanno grinze, si staccano o perdono le nobilitazioni nel secchiello e in frigo, e come specificare carta, adesivo e protezione perché resistano. Con un test semplice.",
+        "h1": "Etichette per secchiello e bottiglie refrigerate: perché cedono e come specificarle",
+        "about": "Etichette del vino resistenti al secchiello e alla condensa",
+        "keywords": ["etichette resistenti al secchiello", "carta wet strength etichette", "etichette vino resistenti all'acqua", "etichette bottiglie refrigerate", "etichette condensa"],
+        "answer": "Le etichette cedono nel secchiello per tre motivi: la **carta assorbe l'acqua** e perde resistenza, l'**adesivo** non è adatto al vetro freddo o bagnato, oppure l'etichetta è stata **applicata su una bottiglia fredda o umida** in imbottigliamento. Per evitarlo specifica una **carta wet strength o un film**, un **adesivo scelto per condizioni fredde e bagnate**, una **vernice protettiva o plastificazione** dove conta l'abrasione, e prova i campioni sulle tue bottiglie in acqua e ghiaccio prima di approvare.",
+        "takeaways": [
+          "Di' all'etichettificio come viene servita la bottiglia: secchiello, frigo o solo cantina.",
+          "Le carte wet strength mantengono l'aspetto; le carte normali fanno grinze e si strappano quando sono fradice.",
+          "L'adesivo conta quanto la carta: freddo, condensa e applicazione su bagnato richiedono quello adatto.",
+          "Lascia che l'adesivo faccia presa prima del test, poi prova in acqua e ghiaccio sulle tue bottiglie.",
+          "Bianchi, bollicine, rosati e molti distillati serviti freddi hanno tutti bisogno di questa specifica."
+        ],
+        "sections": [
+          {
+            "h": "Perché le etichette cedono nel secchiello",
+            "blocks": [
+              {"table": {
+                "head": ["Cosa vedi", "Causa probabile", "Cosa cambiare"],
+                "rows": [
+                  ["Grinze e bolle dopo pochi minuti nel ghiaccio", "La carta assorbe acqua e si gonfia", "Carta wet strength, oppure un film"],
+                  ["L'etichetta scivola o si stacca ai bordi", "Adesivo non adatto a vetro freddo o bagnato", "Adesivo scelto per condizioni fredde e bagnate"],
+                  ["L'etichetta non ha mai fatto presa", "Bottiglia fredda o umida all'etichettatura (condensa in imbottigliamento)", "Adesivo per applicazione su freddo o bagnato, e verifica delle condizioni di imbottigliamento"],
+                  ["Stampa o lamina rovinate", "Abrasione di ghiaccio e manipolazione", "Vernice protettiva o plastificazione dove la grafica lo consente"],
+                  ["La carta si strappa quando si solleva la bottiglia", "Bassa resistenza a umido", "Carta wet strength con spessore adeguato"]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Carta o film?",
+            "blocks": [
+              "Le **carte wet strength** mantengono l'aspetto naturale e goffrato che molte cantine vogliono e sono progettate per resistere all'acqua: sono la scelta abituale per i vini che possono finire nel secchiello. I **film** (come PP o PE) non assorbono acqua e sono adatti a prodotti che vivono nel ghiaccio o nell'umidità, con un aspetto e una mano diversi. Esistono versioni wet strength anche delle carte goffrate ed effetto cotone, quindi lamina a caldo e rilievo restano possibili."
+            ]
+          },
+          {
+            "h": "Un test semplice prima di approvare l'etichetta",
+            "blocks": [
+              {"ol": [
+                "Applica i campioni sulle tue bottiglie in condizioni il più possibile simili alla tua linea di imbottigliamento.",
+                "Lasciale riposare perché l'adesivo faccia presa, di solito un giorno.",
+                "Metti le bottiglie in un secchiello di acqua e ghiaccio per il tempo che una bottiglia ci passerebbe davvero.",
+                "Controlla grinze, bordi sollevati, stampa o lamina rovinate e se l'etichetta si strappa sollevando la bottiglia.",
+                "Ripeti con la condensa: togli una bottiglia dal frigo e lasciala a temperatura ambiente."
+              ]},
+              "Provare sulle tue bottiglie è importante, perché forma del vetro, trattamento superficiale e linea di imbottigliamento influiscono sul risultato."
+            ]
+          },
+          {
+            "h": "Cosa dire al tuo etichettificio",
+            "blocks": [
+              {"ul": [
+                "Come viene servito il vino: secchiello, frigo o solo a temperatura ambiente.",
+                "Se le bottiglie possono essere fredde o umide quando vengono etichettate.",
+                "La forma della bottiglia ed eventuali zone curve o coniche.",
+                "Le nobilitazioni che vuoi (lamina, rilievo, vernice tattile), perché la carta sia scelta per reggerle.",
+                "Se le etichette si applicano a mano o a macchina, con i dati del rotolo."
+              ]}
+            ]
+          },
+          {
+            "h": "Come lavora UltraPixel",
+            "blocks": [
+              "UltraPixel propone materiali e adesivi scelti per condizioni bagnate e refrigerate e manda campioni da provare sulle tue bottiglie. Vedi le [etichette per bottiglie refrigerate e secchiello](/labels-for-chilled-bottles/) o [richiedi un kit campioni](/samples/?sector=Wine+%26+Spirits)."
+            ]
+          }
+        ],
+        "faq": [
+          ["Quali etichette del vino devono resistere al secchiello?", "Quelle di ogni vino o distillato che può essere servito freddo nel secchiello: bianchi, rosati, bollicine e molti aperitivi e distillati."],
+          ["Una carta goffrata premium può resistere al secchiello?", "Sì. Esistono versioni wet strength delle carte goffrate, che reggono lamina a caldo e rilievo."],
+          ["Un'etichetta in film è sempre migliore nel ghiaccio?", "Il film non assorbe acqua, ma adesivo e applicazione contano comunque, e l'aspetto è diverso dalla carta. La scelta dipende dal brand e da come viene servita la bottiglia."],
+          ["Quanto aspettare prima di provare le etichette in acqua?", "Lascia che l'adesivo faccia presa, di solito circa un giorno, poi prova sulle tue bottiglie."]
+        ],
+        "related": [["Etichette per bottiglie refrigerate", "/labels-for-chilled-bottles/"], ["Vino e distillati", "/wine-spirits/"], ["Etichette premium per distillati", "/spirits-labels/"], ["Richiedi campioni", "/samples/"]]
+      }
+    },
+    {
+      "slug": "ppwr-and-labels",
+      "date": "2026-11-05",
+      "updated": "2026-11-05",
+      "image": "c-paper.webp",
+      "legal": true,
+      "en": {
+        "kicker": "Regulation",
+        "title": "PPWR and labels: what the EU Packaging Regulation means for self-adhesive labels | UltraPixel",
+        "description": "What Regulation (EU) 2025/40 (PPWR) means for labels: key dates from August 2026 to 2030, harmonised sorting labels, compostable fruit stickers, recyclability, and what brand owners should ask their label printer.",
+        "h1": "PPWR and labels: what the EU Packaging Regulation means for self-adhesive labels (2026–2030)",
+        "about": "EU Packaging and Packaging Waste Regulation (EU) 2025/40 and labels",
+        "keywords": ["PPWR labels", "Regulation (EU) 2025/40", "EU packaging regulation labelling", "harmonised sorting label", "compostable fruit labels", "design for recycling labels"],
+        "answer": "The EU Packaging and Packaging Waste Regulation, **Regulation (EU) 2025/40 (PPWR)**, applies from **12 August 2026**. For labels the main milestones are: **harmonised material-sorting labels** on packaging from **12 August 2028** (or 24 months after the Commission's implementing act); **compostable sticky labels on fruit and vegetables** from **12 February 2028**; and **recyclability performance grades** from **2030**. Because recyclability is assessed on the pack as a whole, facestock, adhesive and decoration should be chosen together with the container.",
+        "takeaways": [
+          "PPWR is a regulation, so it applies directly in every EU member state.",
+          "Many PPWR obligations depend on implementing and delegated acts the Commission is still adopting: dates can shift.",
+          "Harmonised sorting labels will change label artwork on many packs: plan versions and stock.",
+          "Label material, adhesive and finishing all influence how a pack is recycled.",
+          "Avoid large stocks of pre-printed labels for packs whose artwork will have to change."
+        ],
+        "sections": [
+          {
+            "h": "PPWR key dates relevant to labels",
+            "blocks": [
+              {"table": {
+                "caption": "Status at November 2026; check the official text for updates.",
+                "head": ["Date", "What applies", "What it means for labels"],
+                "rows": [
+                  ["11 February 2025", "PPWR enters into force (published in the Official Journal on 22 January 2025)", "Preparation period starts."],
+                  ["12 August 2026", "General date of application", "Obligations without a later date start to apply; implementing acts on labelling due from the Commission."],
+                  ["12 February 2028", "Sticky labels attached to fruit and vegetables must be compostable", "Produce stickers need compostable materials and adhesives."],
+                  ["12 August 2028 (or 24 months after the implementing act)", "Harmonised labels with material composition for sorting", "New sorting pictograms in the artwork of many packs."],
+                  ["1 January 2030 (or later, linked to delegated acts)", "Packaging must be recyclable within performance grades A, B or C", "Label, adhesive and inks count in the design-for-recycling assessment."]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Why labels matter for recyclability",
+            "blocks": [
+              "Under PPWR, recyclability is assessed on the packaging unit. A label is small, but its facestock, adhesive, inks and finishes can affect how a bottle, jar or tray is sorted and recycled: for example, whether the label separates in the washing process or how it behaves with the container material. The detailed design-for-recycling criteria are set in delegated acts, so the practical rule today is to **choose the label together with the container** and to ask suppliers for documentation on each material, not general claims."
+            ]
+          },
+          {
+            "h": "Harmonised sorting labels: plan the artwork change",
+            "blocks": [
+              "Article 12 of PPWR introduces harmonised labels that tell consumers how to sort the packaging, based on its material composition. When the implementing act is in place, many brands will have to update the artwork of every reference. For label buyers this means:",
+              {"ul": [
+                "Keep label stocks low on references that will change, and plan reprints around the deadline.",
+                "Group artwork changes so that sorting labels, other regulatory updates and design changes go to print together.",
+                "Prefer production methods that make version changes inexpensive, such as digital printing for short and medium runs."
+              ]}
+            ]
+          },
+          {
+            "h": "Questions to ask your label printer",
+            "blocks": [
+              {"ol": [
+                "Which facestock and adhesive do you propose for my container, and what documentation exists for each?",
+                "Which recycled-content or certified materials are available for this application?",
+                "Which finishes are really needed, and which only add material?",
+                "How do you handle many artwork versions when regulatory changes arrive?",
+                "Can we test the proposed label on our containers and, where relevant, through our recycler's guidelines?"
+              ]}
+            ]
+          },
+          {
+            "h": "What UltraPixel does today",
+            "blocks": [
+              "UltraPixel evaluates label materials by application, packaging substrate and end-of-life objectives, states certifications per material only when they are documented, and uses digital production for suitable quantities to reduce obsolete stock. More on our [sustainability approach](/sustainability/)."
+            ]
+          }
+        ],
+        "faq": [
+          ["When does PPWR apply?", "Regulation (EU) 2025/40 entered into force on 11 February 2025 and generally applies from 12 August 2026. Several obligations have later dates or depend on implementing and delegated acts."],
+          ["Do labels have to change because of PPWR?", "Many packs will need harmonised sorting labels based on material composition, expected from 12 August 2028 or 24 months after the relevant implementing act. That usually means an artwork change on the label."],
+          ["Do fruit and vegetable stickers have to be compostable?", "Yes. PPWR requires sticky labels attached to fruit and vegetables to be compostable from 12 February 2028, subject to the conditions in the regulation."],
+          ["Does the label affect whether my packaging is recyclable?", "It can. Recyclability is assessed on the packaging as a whole, so label material, adhesive and decoration should be chosen with the container and the recycling stream in mind."]
+        ],
+        "sources": [
+          ["Regulation (EU) 2025/40 on packaging and packaging waste — EUR-Lex", "https://eur-lex.europa.eu/eli/reg/2025/40/oj"],
+          ["European Commission — Packaging waste", "https://environment.ec.europa.eu/topics/waste-and-recycling/packaging-waste_en"]
+        ],
+        "related": [["Sustainability", "/sustainability/"], ["Premium finishes compared", "/blog/premium-label-finishes-compared/"], ["Food labels", "/food-labels/"], ["Talk to a label specialist", "/contact/?topic=specialist"]]
+      },
+      "it": {
+        "kicker": "Normativa",
+        "title": "PPWR ed etichette: cosa cambia con il Regolamento UE imballaggi per le etichette adesive | UltraPixel",
+        "description": "Cosa significa il Regolamento (UE) 2025/40 (PPWR) per le etichette: date chiave da agosto 2026 al 2030, etichette armonizzate per la raccolta, bollini compostabili per frutta e verdura, riciclabilità e cosa chiedere all'etichettificio.",
+        "h1": "PPWR ed etichette: cosa cambia con il Regolamento UE sugli imballaggi per le etichette adesive (2026–2030)",
+        "about": "Regolamento (UE) 2025/40 sugli imballaggi e i rifiuti di imballaggio ed etichette",
+        "keywords": ["PPWR etichette", "Regolamento (UE) 2025/40", "regolamento imballaggi etichettatura", "etichetta ambientale armonizzata", "etichette compostabili frutta", "progettazione per il riciclo etichette"],
+        "answer": "Il Regolamento UE sugli imballaggi e i rifiuti di imballaggio, **Regolamento (UE) 2025/40 (PPWR)**, si applica dal **12 agosto 2026**. Per le etichette le tappe principali sono: **etichette armonizzate sulla composizione dei materiali** per la raccolta dal **12 agosto 2028** (o 24 mesi dopo l'atto di esecuzione della Commissione); **bollini adesivi compostabili su frutta e verdura** dal **12 febbraio 2028**; **classi di riciclabilità** dal **2030**. Poiché la riciclabilità si valuta sull'imballaggio nel suo insieme, frontale, adesivo e nobilitazioni vanno scelti insieme al contenitore.",
+        "takeaways": [
+          "Il PPWR è un regolamento: si applica direttamente in tutti gli Stati membri.",
+          "Molti obblighi dipendono da atti di esecuzione e delegati che la Commissione sta ancora adottando: le date possono slittare.",
+          "Le etichette armonizzate per la raccolta cambieranno la grafica di molti pack: pianifica versioni e scorte.",
+          "Materiale, adesivo e nobilitazioni dell'etichetta influiscono sul riciclo del pack.",
+          "Evita grandi scorte di etichette prestampate per i pack la cui grafica dovrà cambiare."
+        ],
+        "sections": [
+          {
+            "h": "Le date del PPWR che riguardano le etichette",
+            "blocks": [
+              {"table": {
+                "caption": "Situazione a novembre 2026; verifica gli aggiornamenti sul testo ufficiale.",
+                "head": ["Data", "Cosa si applica", "Cosa significa per le etichette"],
+                "rows": [
+                  ["11 febbraio 2025", "Entrata in vigore del PPWR (pubblicato in Gazzetta ufficiale UE il 22 gennaio 2025)", "Inizia il periodo di preparazione."],
+                  ["12 agosto 2026", "Data generale di applicazione", "Si applicano gli obblighi senza data successiva; attesi gli atti di esecuzione sull'etichettatura."],
+                  ["12 febbraio 2028", "I bollini adesivi applicati su frutta e verdura devono essere compostabili", "Servono materiali e adesivi compostabili per i bollini ortofrutta."],
+                  ["12 agosto 2028 (o 24 mesi dopo l'atto di esecuzione)", "Etichette armonizzate con la composizione dei materiali per la raccolta", "Nuovi pittogrammi di raccolta nella grafica di molti pack."],
+                  ["1 gennaio 2030 (o più tardi, in base agli atti delegati)", "Gli imballaggi devono rientrare nelle classi di riciclabilità A, B o C", "Etichetta, adesivo e inchiostri contano nella valutazione di progettazione per il riciclo."]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Perché le etichette contano per la riciclabilità",
+            "blocks": [
+              "Con il PPWR la riciclabilità si valuta sull'unità di imballaggio. L'etichetta è piccola, ma frontale, adesivo, inchiostri e nobilitazioni possono influire su come una bottiglia, un vasetto o una vaschetta vengono selezionati e riciclati: per esempio se l'etichetta si separa nel lavaggio o come si comporta con il materiale del contenitore. I criteri dettagliati sono fissati da atti delegati, quindi la regola pratica oggi è **scegliere l'etichetta insieme al contenitore** e chiedere ai fornitori documentazione per ogni materiale, non dichiarazioni generiche."
+            ]
+          },
+          {
+            "h": "Etichette armonizzate per la raccolta: pianifica il cambio grafica",
+            "blocks": [
+              "L'articolo 12 del PPWR introduce etichette armonizzate che indicano al consumatore come conferire l'imballaggio, in base alla composizione dei materiali. Quando l'atto di esecuzione sarà in vigore, molti brand dovranno aggiornare la grafica di ogni referenza. Per chi compra etichette significa:",
+              {"ul": [
+                "Tenere basse le scorte delle referenze che cambieranno e pianificare le ristampe in vista della scadenza.",
+                "Raggruppare i cambi di grafica, così etichetta di raccolta, altri aggiornamenti normativi e restyling vanno in stampa insieme.",
+                "Preferire metodi di produzione che rendono economico il cambio versione, come la stampa digitale per tirature brevi e medie."
+              ]}
+            ]
+          },
+          {
+            "h": "Domande da fare al tuo etichettificio",
+            "blocks": [
+              {"ol": [
+                "Quale frontale e quale adesivo proponi per il mio contenitore, e che documentazione esiste per ciascuno?",
+                "Quali materiali con contenuto riciclato o certificati sono disponibili per questa applicazione?",
+                "Quali nobilitazioni servono davvero, e quali aggiungono solo materiale?",
+                "Come gestisci molte versioni di grafica quando arrivano cambi normativi?",
+                "Possiamo provare l'etichetta proposta sui nostri contenitori e, dove serve, rispetto alle linee guida del nostro riciclatore?"
+              ]}
+            ]
+          },
+          {
+            "h": "Cosa fa UltraPixel oggi",
+            "blocks": [
+              "UltraPixel valuta i materiali per etichette in base ad applicazione, contenitore e obiettivi di fine vita, indica le certificazioni per singolo materiale solo quando sono documentate e usa la produzione digitale per le quantità adatte, per ridurre il magazzino obsoleto. Approfondisci il nostro [approccio alla sostenibilità](/sustainability/)."
+            ]
+          }
+        ],
+        "faq": [
+          ["Da quando si applica il PPWR?", "Il Regolamento (UE) 2025/40 è entrato in vigore l'11 febbraio 2025 e si applica in generale dal 12 agosto 2026. Diversi obblighi hanno date successive o dipendono da atti di esecuzione e delegati."],
+          ["Le etichette devono cambiare per il PPWR?", "Molti pack dovranno riportare etichette armonizzate per la raccolta basate sulla composizione dei materiali, attese dal 12 agosto 2028 o 24 mesi dopo il relativo atto di esecuzione. Di solito significa un cambio di grafica in etichetta."],
+          ["I bollini per frutta e verdura devono essere compostabili?", "Sì. Il PPWR prevede che i bollini adesivi applicati su frutta e verdura siano compostabili dal 12 febbraio 2028, alle condizioni previste dal regolamento."],
+          ["L'etichetta influisce sulla riciclabilità del mio imballaggio?", "Può influire. La riciclabilità si valuta sull'imballaggio nel suo insieme, quindi materiale, adesivo e decorazione dell'etichetta vanno scelti pensando al contenitore e alla filiera di riciclo."]
+        ],
+        "sources": [
+          ["Regolamento (UE) 2025/40 sugli imballaggi e i rifiuti di imballaggio — EUR-Lex", "https://eur-lex.europa.eu/eli/reg/2025/40/oj"],
+          ["Commissione europea — Rifiuti di imballaggio", "https://environment.ec.europa.eu/topics/waste-and-recycling/packaging-waste_en"]
+        ],
+        "related": [["Sostenibilità", "/sustainability/"], ["Le nobilitazioni a confronto", "/blog/premium-label-finishes-compared/"], ["Etichette alimentari", "/food-labels/"], ["Parla con uno specialista", "/contact/?topic=specialist"]]
+      }
+    },
+    {
+      "slug": "eu-wine-label-e-label-qr-code",
+      "date": "2026-11-05",
+      "updated": "2026-11-05",
+      "image": "final.webp",
+      "legal": true,
+      "en": {
+        "kicker": "Wine & Spirits",
+        "title": "EU wine labels: ingredients, nutrition and the e-label QR code | UltraPixel",
+        "description": "What EU wine labelling rules (Regulation (EU) 2021/2117) require on the physical label and what can go in an e-label via QR code, and how to print a QR code that scans on textured paper and foil.",
+        "h1": "EU wine labels: ingredients, nutrition and the e-label QR code (Regulation (EU) 2021/2117)",
+        "about": "EU wine labelling: ingredients, nutrition declaration and e-label",
+        "keywords": ["EU wine label requirements", "wine e-label QR code", "Regulation 2021/2117", "wine ingredients label", "wine nutrition declaration", "QR code on wine label"],
+        "answer": "For wines produced from **8 December 2023** and sold in the EU, Regulation (EU) 2021/2117 requires a **list of ingredients** and a **nutrition declaration**. The **energy value** and **allergens** must appear on the physical label; the **full ingredient list and nutrition declaration can be given electronically** through an e-label reached by a QR code, provided that page carries no marketing content and does not track users. For the printer, the critical point is a QR code that **scans reliably** on textured paper, near foil and on a curved bottle.",
+        "takeaways": [
+          "Energy value per 100 ml (which may be shown with the symbol E) and allergens stay on the bottle.",
+          "Ingredients and full nutrition can move to an e-label via QR code.",
+          "The e-label must not contain marketing or collect personal data.",
+          "Each wine and vintage may need its own QR code: plan versions and variable data.",
+          "Never print the QR code in foil or over texture; test scanning on the finished bottle."
+        ],
+        "sections": [
+          {
+            "h": "What goes on the bottle and what can go online",
+            "blocks": [
+              {"table": {
+                "caption": "Summary for information; check the regulation and national guidance for your product.",
+                "head": ["Information", "Physical label", "E-label via QR code"],
+                "rows": [
+                  ["Energy value per 100 ml", "Required", "Can be repeated"],
+                  ["Allergens (e.g. sulphites)", "Required", "Can be repeated"],
+                  ["Full list of ingredients", "Optional", "Allowed instead of the physical label"],
+                  ["Full nutrition declaration", "Optional", "Allowed instead of the physical label"],
+                  ["Usual mandatory particulars (category, alcohol, provenance, bottler, lot, volume)", "Required", "Not a substitute"],
+                  ["Marketing content", "As usual", "Not allowed on the e-label page"]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Rules for the e-label page",
+            "blocks": [
+              {"ul": [
+                "It must show only the mandatory information, not sales or marketing content, and it must not be your general brand website.",
+                "It must not collect or track user data.",
+                "It must be available in a language easily understood by consumers in the countries where the wine is sold.",
+                "The QR code on the label should be clearly identified as leading to ingredient and nutrition information; check the Commission guidance and your national rules for the accepted wording."
+              ]}
+            ]
+          },
+          {
+            "h": "Printing a QR code that scans on a premium label",
+            "blocks": [
+              {"table": {
+                "head": ["Risk", "Why it fails", "What to do"],
+                "rows": [
+                  ["QR in foil", "Metallic reflections confuse phone cameras", "Print the QR in dark ink on a light, flat area"],
+                  ["QR on textured paper", "Felt or embossed texture breaks the modules", "Keep the QR on a smooth area or check the stock with your printer"],
+                  ["Too small", "Modules too small to resolve on a curved bottle", "Agree a minimum size with the printer and test on the bottle"],
+                  ["No quiet zone", "The scanner cannot find the code's edges", "Leave a clear margin around the code"],
+                  ["Low contrast", "Coloured or tinted backgrounds reduce readability", "Dark code on a light background, never the reverse on dark stock without testing"],
+                  ["Curvature", "The code bends on narrow bottles", "Place it on the widest part, oriented to minimise curvature"]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Versions, vintages and variable data",
+            "blocks": [
+              "Ingredients and nutrition values can change between wines and vintages, so a winery with several references may need a different QR code on each label. With digital printing, different codes, vintages and versions can be printed in the same job. If the link is the same and only the destination page changes, a single code can serve several vintages, but the content must remain correct for each bottle on the market. See [variable-data labels](/variable-data-labels/) and [short-run wine labels](/short-run-wine-labels/)."
+            ]
+          }
+        ],
+        "faq": [
+          ["Which wines must carry ingredient and nutrition information?", "Wines produced from 8 December 2023 and sold in the EU. Wines produced before that date can be sold until stocks run out."],
+          ["Can the QR code replace the whole wine label?", "No. Energy value, allergens and the usual mandatory particulars must stay on the physical label; only the full ingredient list and nutrition declaration can be provided electronically."],
+          ["Can the e-label page link to my shop or brand website?", "The e-label must not contain marketing or sales content and must not track users. Keep it separate from your brand website."],
+          ["Can a QR code be printed in gold foil?", "It is not recommended: metallic reflections make scanning unreliable. Print it in dark ink on a flat, light area and test it on the finished bottle."]
+        ],
+        "sources": [
+          ["Regulation (EU) 2021/2117 — EUR-Lex", "https://eur-lex.europa.eu/eli/reg/2021/2117/oj"],
+          ["Regulation (EU) No 1308/2013 (common market organisation), as amended — EUR-Lex", "https://eur-lex.europa.eu/eli/reg/2013/1308/oj"]
+        ],
+        "related": [["Wine & Spirits", "/wine-spirits/"], ["Variable-data labels", "/variable-data-labels/"], ["Short-run wine labels", "/short-run-wine-labels/"], ["Request samples", "/samples/"]]
+      },
+      "it": {
+        "kicker": "Vino e distillati",
+        "title": "Etichette del vino UE: ingredienti, valori nutrizionali e QR code dell'e-label | UltraPixel",
+        "description": "Cosa richiedono le regole UE sull'etichettatura del vino (Regolamento (UE) 2021/2117) sull'etichetta fisica, cosa può andare nell'e-label tramite QR code, e come stampare un QR code leggibile su carta goffrata e lamina.",
+        "h1": "Etichette del vino UE: ingredienti, valori nutrizionali e QR code dell'e-label (Regolamento (UE) 2021/2117)",
+        "about": "Etichettatura del vino UE: ingredienti, dichiarazione nutrizionale ed e-label",
+        "keywords": ["etichetta vino ingredienti", "e-label vino QR code", "Regolamento 2021/2117", "dichiarazione nutrizionale vino", "QR code etichetta vino", "etichettatura vino UE"],
+        "answer": "Per i vini prodotti dall'**8 dicembre 2023** e venduti nell'UE, il Regolamento (UE) 2021/2117 richiede l'**elenco degli ingredienti** e la **dichiarazione nutrizionale**. Il **valore energetico** e gli **allergeni** devono stare sull'etichetta fisica; l'**elenco completo degli ingredienti e la dichiarazione nutrizionale possono essere forniti in forma elettronica** tramite un'e-label raggiungibile con un QR code, purché la pagina non contenga contenuti di marketing e non tracci gli utenti. Per l'etichettificio il punto critico è un QR code che **si legga sempre**, su carta goffrata, vicino alla lamina e su una bottiglia curva.",
+        "takeaways": [
+          "Valore energetico per 100 ml (che può essere indicato con il simbolo E) e allergeni restano sulla bottiglia.",
+          "Ingredienti e dichiarazione nutrizionale completa possono passare all'e-label via QR code.",
+          "L'e-label non deve contenere marketing né raccogliere dati personali.",
+          "Ogni vino e ogni annata possono richiedere il proprio QR code: pianifica versioni e dati variabili.",
+          "Mai stampare il QR code in lamina o su texture; prova la lettura sulla bottiglia finita."
+        ],
+        "sections": [
+          {
+            "h": "Cosa va sulla bottiglia e cosa può andare online",
+            "blocks": [
+              {"table": {
+                "caption": "Sintesi informativa; verifica il regolamento e le indicazioni nazionali per il tuo prodotto.",
+                "head": ["Informazione", "Etichetta fisica", "E-label via QR code"],
+                "rows": [
+                  ["Valore energetico per 100 ml", "Obbligatorio", "Può essere ripetuto"],
+                  ["Allergeni (es. solfiti)", "Obbligatori", "Possono essere ripetuti"],
+                  ["Elenco completo degli ingredienti", "Facoltativo", "Ammesso al posto dell'etichetta fisica"],
+                  ["Dichiarazione nutrizionale completa", "Facoltativa", "Ammessa al posto dell'etichetta fisica"],
+                  ["Indicazioni obbligatorie abituali (categoria, alcol, provenienza, imbottigliatore, lotto, volume)", "Obbligatorie", "Non sostituibili"],
+                  ["Contenuti di marketing", "Come sempre", "Non ammessi nella pagina e-label"]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Le regole della pagina e-label",
+            "blocks": [
+              {"ul": [
+                "Deve mostrare solo le informazioni obbligatorie, senza contenuti commerciali o di marketing, e non può essere il sito generale del brand.",
+                "Non deve raccogliere né tracciare dati degli utenti.",
+                "Deve essere disponibile in una lingua facilmente comprensibile dai consumatori dei paesi in cui il vino è venduto.",
+                "Il QR code in etichetta deve essere chiaramente indicato come accesso a ingredienti e valori nutrizionali; verifica la comunicazione della Commissione e le regole nazionali per la dicitura ammessa."
+              ]}
+            ]
+          },
+          {
+            "h": "Stampare un QR code che si legge su un'etichetta premium",
+            "blocks": [
+              {"table": {
+                "head": ["Rischio", "Perché non si legge", "Cosa fare"],
+                "rows": [
+                  ["QR in lamina", "I riflessi metallici confondono la fotocamera", "Stampa il QR con inchiostro scuro su una zona chiara e piana"],
+                  ["QR su carta goffrata", "La texture feltrata o in rilievo spezza i moduli", "Tieni il QR su una zona liscia o verifica la carta con l'etichettificio"],
+                  ["Troppo piccolo", "Moduli troppo piccoli per essere letti su una bottiglia curva", "Concorda una dimensione minima con l'etichettificio e prova sulla bottiglia"],
+                  ["Senza margine", "Il lettore non trova i bordi del codice", "Lascia un margine libero attorno al codice"],
+                  ["Contrasto basso", "Fondi colorati o tinti riducono la leggibilità", "Codice scuro su fondo chiaro; mai il contrario su carta scura senza prove"],
+                  ["Curvatura", "Il codice si piega sulle bottiglie strette", "Posizionalo nella parte più larga, orientato per ridurre la curvatura"]
+                ]
+              }}
+            ]
+          },
+          {
+            "h": "Versioni, annate e dati variabili",
+            "blocks": [
+              "Ingredienti e valori nutrizionali possono cambiare tra vini e annate, quindi una cantina con più referenze può avere bisogno di un QR code diverso su ogni etichetta. Con la stampa digitale codici, annate e versioni diverse si stampano nello stesso lavoro. Se il link resta uguale e cambia solo la pagina di destinazione, un solo codice può servire più annate, ma il contenuto deve restare corretto per ogni bottiglia in commercio. Vedi le [etichette a dati variabili](/variable-data-labels/) e le [etichette vino in piccole tirature](/short-run-wine-labels/)."
+            ]
+          }
+        ],
+        "faq": [
+          ["Quali vini devono riportare ingredienti e valori nutrizionali?", "I vini prodotti dall'8 dicembre 2023 e venduti nell'UE. I vini prodotti prima di quella data possono essere venduti fino a esaurimento scorte."],
+          ["Il QR code può sostituire tutta l'etichetta del vino?", "No. Valore energetico, allergeni e le indicazioni obbligatorie abituali devono restare sull'etichetta fisica; solo l'elenco completo degli ingredienti e la dichiarazione nutrizionale possono essere forniti in forma elettronica."],
+          ["La pagina e-label può rimandare al mio shop o al sito del brand?", "L'e-label non deve contenere marketing o contenuti di vendita e non deve tracciare gli utenti. Tienila separata dal sito del brand."],
+          ["Il QR code si può stampare in lamina oro?", "Non è consigliato: i riflessi metallici rendono la lettura inaffidabile. Stampalo con inchiostro scuro su una zona piana e chiara e provalo sulla bottiglia finita."]
+        ],
+        "sources": [
+          ["Regolamento (UE) 2021/2117 — EUR-Lex", "https://eur-lex.europa.eu/eli/reg/2021/2117/oj"],
+          ["Regolamento (UE) n. 1308/2013 (OCM), come modificato — EUR-Lex", "https://eur-lex.europa.eu/eli/reg/2013/1308/oj"]
+        ],
+        "related": [["Vino e distillati", "/wine-spirits/"], ["Etichette a dati variabili", "/variable-data-labels/"], ["Etichette vino in piccole tirature", "/short-run-wine-labels/"], ["Richiedi campioni", "/samples/"]]
+      }
+    }
+  ]
+}

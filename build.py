@@ -152,14 +152,14 @@ def lang_hint(C):
             ".lhint p{flex:1 1 220px;margin:0;font:400 15px/1.35 var(--body)}.lhint .cta.pill{padding:11px 18px}.lhint button.cta{background:none;border:0;cursor:pointer;color:var(--gra)}</style>\n")
 
 
-def seo_extra(C, P, path, meta):
+def seo_extra(C, P, path, meta, langs=None):
     """hreflang alternates (once more than one language exists) and JSON-LD: Organization everywhere,
     WebSite on the homepage, BreadcrumbList on inner pages, Service on sector and landing pages."""
     s = C["site"]; base = s["url"].rstrip("/"); rel = path[len(P) - 1:]
     alts = ""
-    if len(LANGS) > 1:
-        alts = "".join(f'<link rel="alternate" hreflang="{l}" href="{pub(C, l, rel)}">' for l in LANGS)
-        alts += f'<link rel="alternate" hreflang="x-default" href="{pub(C, XDEF, rel)}">'
+    if len(LANGS) > 1 and (langs is None or len(langs) > 1):
+        alts = "".join(f'<link rel="alternate" hreflang="{l}" href="{pub(C, l, rel)}">' for l in (langs or LANGS))
+        alts += f'<link rel="alternate" hreflang="x-default" href="{pub(C, XDEF if langs is None or XDEF in langs else langs[0], rel)}">'
     org = {"@type": "Organization", "@id": base + "/#organization", "name": s["name"], "legalName": s["legalName"], "url": base + "/",
            "description": s["description"], "foundingDate": s["founded"], "logo": base + "/assets/logo.png",
            "address": {"@type": "PostalAddress", "streetAddress": s["street"], "postalCode": s["postalCode"], "addressLocality": s["locality"],
@@ -212,7 +212,12 @@ def wa_url(C):
 
 
 # ---------------------------------------------------------------- MATERIAL INTELLIGENCE design system
-def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
+def lhref(l, path, P, langs=None):
+    """Same page in language l; the home of l when this page is not published in l (blog articles)."""
+    return ("/" if l == HOME else "/" + l + "/") + (path[len(P):] if langs is None or l in langs else "")
+
+
+def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls="", langs=None):
     s, ui = C["site"], C["ui"]; url = pub(C, C["lang"], path[len(P) - 1:]) if path.endswith("/") else s["url"].rstrip("/") + path
     ui = dict(ui, sustain=C["sustainability"]["nav"])
     nav = f'<a class="price" href="{P}quote/">{e(ui["priceNav"])}</a>' + "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("sustain", f"{P}sustainability/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
@@ -229,7 +234,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
 <title>{e(meta["title"])}</title>
 <meta name="description" content="{e(meta["description"])}">
 <link rel="canonical" href="{url}">
-{seo_extra(C, P, path, meta)}
+{seo_extra(C, P, path, meta, langs)}
 {'<meta name="robots" content="noindex">' if s["noindex"] else ""}
 <meta property="og:type" content="website"><meta property="og:title" content="{e(meta["title"])}"><meta property="og:description" content="{e(meta["description"])}"><meta property="og:url" content="{url}"><meta property="og:image" content="{s["url"].rstrip("/")}/assets/macro-1.webp">
 <meta name="theme-color" content="#F4F4F0">
@@ -243,7 +248,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
 <header class="nav2" id="nav2">
   <a class="logo" href="{P}" aria-label="UltraPixel"><img src="/assets/logo.png" alt="UltraPixel" width="370" height="133"></a>
   <nav id="nav">{nav}<a class="only-m" href="{P}samples/">{e(ui["requestSamples"])} ↗</a></nav>
-  <div class="right"><a class="pcta" href="{P}quote/"><span class="l">{e(ui["priceCta"])}</span><span class="s">{e(ui["priceShort"])}</span> ↗</a><div class="lsw" aria-label="{e(ui["language"])}">{"".join(f"""<a href="{"/" if l == HOME else "/" + l + "/"}{path[len(P):]}" hreflang="{l}" lang="{l}"{' aria-current="true"' if l == C["lang"] else ""}>{l.upper()}</a>""" for l in LANGS)}</div>
+  <div class="right"><a class="pcta" href="{P}quote/"><span class="l">{e(ui["priceCta"])}</span><span class="s">{e(ui["priceShort"])}</span> ↗</a><div class="lsw" aria-label="{e(ui["language"])}">{"".join(f"""<a href="{lhref(l, path, P, langs)}" hreflang="{l}" lang="{l}"{' aria-current="true"' if l == C["lang"] else ""}>{l.upper()}</a>""" for l in LANGS)}</div>
   <a class="cta" href="{P}samples/">{e(ui["requestSamples"])} ↗</a></div>
   <button class="burger" id="burger" aria-expanded="false" aria-controls="nav">{e(ui["menu"])}</button>
 </header>
@@ -257,12 +262,12 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls=""):
   <div class="cols">
     <div><span class="mi">{e(s["name"])}</span><ul>{contact}</ul></div>
     <div><span class="mi">{e(ui["sectors"])}</span><ul>{secs}</ul></div>
-    <div><span class="mi">{e(ui["index"])}</span><ul><li><a href="{P}technologies/">{e(ui["technologies"])}</a></li><li><a href="{P}work/">{e(ui["work"])}</a></li><li><a href="{P}sustainability/">{e(C["sustainability"]["nav"])}</a></li><li><a href="{P}about/">{e(ui["about"])}</a></li><li><a href="{P}contact/">{e(ui["contact"])}</a></li></ul></div>
+    <div><span class="mi">{e(ui["index"])}</span><ul><li><a href="{P}technologies/">{e(ui["technologies"])}</a></li><li><a href="{P}work/">{e(ui["work"])}</a></li><li><a href="{P}sustainability/">{e(C["sustainability"]["nav"])}</a></li><li><a href="{P}about/">{e(ui["about"])}</a></li>{f'<li><a href="{P}blog/">{e(C["blogNav"])}</a></li>' if C.get("blogNav") else ""}<li><a href="{P}contact/">{e(ui["contact"])}</a></li></ul></div>
     <div><span class="mi">{e(ui["contact"])}</span><ul><li><a href="{P}samples/">{e(ui["requestSamples"])}</a></li><li><a href="{P}contact/?topic=quote">{e(ui["requestQuote"])}</a></li><li><a href="{P}partners/">{e(ui["partners"])}</a></li></ul></div>
   </div>
   <img class="flogo" src="/assets/logo.png" alt="UltraPixel" width="370" height="133" loading="lazy">
   <p class="mi dim legal">© {e(s["legalName"])} / {e(s["address"])} / <a href="{P}privacy/">{e(ui["privacy"])}</a> / <a href="{P}cookies/">{e(ui["cookies"])}</a></p>
-  <p class="mi dim legal langs">{" / ".join(f"""<a href="{"/" if l == HOME else "/" + l + "/"}{path[len(P):]}" hreflang="{l}"{' aria-current="true"' if l == C["lang"] else ""}>{LANG_NAMES[l]}</a>""" for l in LANGS)}</p>
+  <p class="mi dim legal langs">{" / ".join(f"""<a href="{lhref(l, path, P, langs)}" hreflang="{l}"{' aria-current="true"' if l == C["lang"] else ""}>{LANG_NAMES[l]}</a>""" for l in LANGS)}</p>
 </footer>
 <script src="/assets/ml.js" defer></script><script src="/assets/lead.js" defer></script><script src="/assets/analytics.js" defer data-endpoint="{e(s["analyticsEndpoint"])}" data-lang="{C["lang"]}"></script>
 {extra_foot}
@@ -666,7 +671,21 @@ def sustain_ml(C, P):
     return shell_ml(C, P, f"{P}sustainability/", s["meta"], body)
 
 
-def llms_txt(C0, CE):
+def blog_sitemap(B, loc, site):
+    if not B:
+        return ""
+    out = ""
+    latest = max(p["updated"] for p in B["posts"])
+    for r, ls, d in [("/blog/", blog_langs(B), latest)] + [(f"/blog/{p['slug']}/", blog_langs(B, p["slug"]), p["updated"]) for p in B["posts"]]:
+        lm = f"<lastmod>{d}</lastmod>"
+        for l in ls:
+            if loc(l, r).startswith(site + "/"):
+                alt = "".join(f'<xhtml:link rel="alternate" hreflang="{a}" href="{loc(a, r)}"/>' for a in ls) if len(ls) > 1 else ""
+                out += f"  <url><loc>{loc(l, r)}</loc>{lm}{alt}</url>\n"
+    return out
+
+
+def llms_txt(C0, CE, B=None):
     """/llms.txt: a short plain-text profile of UltraPixel for AI assistants (llmstxt.org), with links to the key pages.
     Written in English from the site's own copy; links point to the root language of this domain and to English."""
     s = CE["site"]; L = [C0["lang"]] + ([DEFAULT] if C0["lang"] != DEFAULT else [])
@@ -682,6 +701,7 @@ def llms_txt(C0, CE):
     out += [f"- Website languages: {', '.join(LANG_NAMES[l] for l in LANGS)}", "",
             "## Sectors", "", *[link(x["title"] + " labels", f"/{x['slug']}/", x["copy"]) for x in CE["sectors"]], "",
             "## Label types and applications", "", *[link(x["h1"], f"/{x['slug']}/") for x in CE["landings"]], "",
+            *(["## Guides for label buyers", "", *["- " + " / ".join(f"[{p[l]['h1']}]({u(l, '/blog/' + p['slug'] + '/')})" for l in [x for x in LANGS if x in p] if l in L or l == DEFAULT) + f": {p[DEFAULT]['description']}" for p in B["posts"] if DEFAULT in p], ""] if B else []),
             "## Technologies", "", ", ".join(t["title"] for t in CE["technologies"]["items"]) + ".", "", link("All technologies", "/technologies/"), "",
             "## Contact and requests", "", link("Contact and quote requests", "/contact/"), link("Request samples", "/samples/"),
             link("Indicative label price", "/quote/"), link("Agents and distributors", "/partners/"), "",
@@ -694,6 +714,105 @@ def legal_ml(C, P, key):
     body = (phead(C["site"]["privacyVersion"], d["h1"], mega=False) + '<hr class="spl"><section class="sec w"><div class="legal-text">'
             + "".join(f"<h2>{e(a)}</h2><p>{e(b)}</p>" for a, b in d["sections"]) + "</div></section>")
     return shell_ml(C, P, f"{P}{key}/", d["meta"], body)
+
+
+# ---------------------------------------------------------------- blog (content/blog.json)
+# Each article is written per language (not through the i18n string map): an article is published only in the
+# languages it has, with hreflang between those, and the language switcher sends the other languages to their homepage.
+BLOG_CSS = ('<style>.post{max-width:76ch}.post>p,.post li{color:var(--gra);font-size:clamp(16px,1.15vw,18px);line-height:1.62}.post>p{margin:0 0 18px}'
+            '.post h2{font-size:clamp(26px,2.7vw,40px);line-height:1.08;margin:clamp(48px,6vw,80px) 0 18px}.post ul,.post ol{margin:0 0 20px;padding-left:1.2em;display:grid;gap:8px}'
+            '.post strong{color:var(--ink);font-weight:600}.post a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}'
+            '.ans{background:var(--white);border:1px solid var(--hair);border-left:3px solid var(--ink);padding:clamp(20px,2.4vw,30px);margin:0 0 30px}'
+            '.ans p{margin:10px 0 0;color:var(--ink);font-size:clamp(17px,1.4vw,21px);line-height:1.5}.keys{border-top:1px solid var(--hair);padding-top:20px;margin-bottom:10px}'
+            '.keys ul{margin-top:12px}.tw{overflow-x:auto;margin:6px 0 24px;border-top:1px solid var(--ink)}.tw table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px;line-height:1.45}'
+            '.tw th{font:400 11px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;text-align:left;color:var(--gra);padding:12px 14px 12px 0;border-bottom:1px solid var(--hair)}'
+            '.tw td{vertical-align:top;padding:12px 14px 12px 0;border-bottom:1px solid var(--hair);color:var(--gra)}.tw td:first-child{color:var(--ink);font-weight:500}'
+            '.pmeta{display:flex;flex-wrap:wrap;gap:6px 18px}.src{margin-top:clamp(40px,5vw,70px);border-top:1px solid var(--hair);padding-top:20px}.src ol{margin-top:12px;font-size:15px}'
+            '.blist{display:grid;max-width:1100px}.blist a{display:grid;grid-template-columns:minmax(0,150px) 1fr;gap:6px 30px;padding:clamp(22px,3vw,36px) 0;border-top:1px solid var(--hair);color:inherit;text-decoration:none}'
+            '.blist h2{font-size:clamp(24px,2.6vw,38px);line-height:1.08;margin-bottom:10px}.blist p{color:var(--gra);max-width:62ch;margin:0 0 14px}.blist a:hover h2{text-decoration:underline;text-underline-offset:4px}'
+            '@media(max-width:700px){.blist a{grid-template-columns:1fr}}</style>')
+
+
+def md(s, P):
+    """Inline text: **bold** and [text](/path/ or https://…); everything else is escaped."""
+    s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", e(s))
+    def a(m):
+        t, h = m.group(1), m.group(2)
+        if h.startswith("/"):
+            return f'<a href="{P}{h[1:]}">{t}</a>'
+        return f'<a href="{h}" target="_blank" rel="noopener">{t}</a>'
+    return re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", a, s)
+
+
+def blog_date(d, lang):
+    y, m, dd = d.split("-")
+    months = {"en": "January February March April May June July August September October November December",
+              "it": "gennaio febbraio marzo aprile maggio giugno luglio agosto settembre ottobre novembre dicembre",
+              "fr": "janvier février mars avril mai juin juillet août septembre octobre novembre décembre",
+              "de": "Januar Februar März April Mai Juni Juli August September Oktober November Dezember"}[lang].split()
+    return f"{months[int(m) - 1]} {int(dd)}, {y}" if lang == "en" else f"{int(dd)}{'.' if lang == 'de' else ''} {months[int(m) - 1]} {y}"
+
+
+def blog_langs(B, slug=None):
+    if slug is None:
+        return [l for l in LANGS if l in B["ui"] and any(l in p for p in B["posts"])]
+    return [l for l in LANGS if l in next(p for p in B["posts"] if p["slug"] == slug)]
+
+
+def blog_words(a):
+    t = " ".join([a["answer"], *a["takeaways"]] + [x if isinstance(x, str) else json.dumps(x, ensure_ascii=False) for s in a["sections"] for x in s["blocks"]])
+    return len(t.split())
+
+
+def blog_index(C, P, B):
+    l = C["lang"]; u = B["ui"][l]; base = C["site"]["url"].rstrip("/"); langs = blog_langs(B)
+    posts = [p for p in sorted(B["posts"], key=lambda p: p["date"], reverse=True) if l in p]
+    items = "".join(f'<a href="{P}blog/{p["slug"]}/"><span class="mi">{e(blog_date(p["updated"], l))}<br>{e(p[l]["kicker"])}</span><div><h2>{e(p[l]["h1"])}</h2><p>{e(p[l]["description"])}</p><span class="cta">{e(u["read"])} →</span></div></a>' for p in posts)
+    ld = {"@context": "https://schema.org", "@type": "Blog", "@id": pub(C, l, "/blog/") + "#blog", "name": u["h1"], "description": u["description"], "inLanguage": l,
+          "url": pub(C, l, "/blog/"), "publisher": {"@id": base + "/#organization"},
+          "blogPost": [{"@type": "BlogPosting", "headline": p[l]["h1"], "url": pub(C, l, f'/blog/{p["slug"]}/'), "datePublished": p["date"], "dateModified": p["updated"]} for p in posts]}
+    body = (phead(u["eyebrow"], u["h1"], u["lead"], mega=False) + f'<hr class="spl"><section class="sec w"><div class="blist">{items}</div></section>' + talk_ml(C, P))
+    return shell_ml(C, P, f"{P}blog/", {"title": u["title"], "description": u["description"]}, body,
+                    extra_head=BLOG_CSS + f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>', langs=langs)
+
+
+def blog_post(C, P, B, p):
+    l = C["lang"]; u = B["ui"][l]; a = p[l]; base = C["site"]["url"].rstrip("/"); rel = f'/blog/{p["slug"]}/'
+    out = ""
+    for s in a["sections"]:
+        out += f'<h2 id="{e(s.get("id", ""))}">{md(s["h"], P)}</h2>' if s.get("id") else f'<h2>{md(s["h"], P)}</h2>'
+        for b in s["blocks"]:
+            if isinstance(b, str):
+                out += f"<p>{md(b, P)}</p>"
+            elif "ul" in b or "ol" in b:
+                t = "ul" if "ul" in b else "ol"; out += f"<{t}>" + "".join(f"<li>{md(i, P)}</li>" for i in b[t]) + f"</{t}>"
+            elif "table" in b:
+                tb = b["table"]
+                out += ('<div class="tw"><table>' + (f'<caption class="mi" style="text-align:left;padding:10px 0">{e(tb["caption"])}</caption>' if tb.get("caption") else "")
+                        + "<thead><tr>" + "".join(f'<th scope="col">{e(h)}</th>' for h in tb["head"]) + "</tr></thead><tbody>"
+                        + "".join("<tr>" + "".join(f"<td>{md(c, P)}</td>" for c in r) + "</tr>" for r in tb["rows"]) + "</tbody></table></div>")
+    mins = max(2, round(blog_words(a) / 220))
+    when = f'{e(u["published"])} {e(blog_date(p["date"], l))}' + (f' · {e(u["updated"])} {e(blog_date(p["updated"], l))}' if p["updated"] != p["date"] else "")
+    head = (f'<section class="phead"><span class="mi"><a href="{P}blog/" style="color:inherit">{e(u["eyebrow"])}</a> / {e(a["kicker"])}</span><h1 class="h2">{e(a["h1"])}</h1>'
+            f'<div class="pmeta"><span class="mi">{when}</span><span class="mi">{e(u["by"])}</span><span class="mi">{mins} {e(u["min"])}</span></div></section>')
+    srcs = (f'<div class="src"><span class="mi">{e(u["sources"])}</span><ol>' + "".join(f'<li><a href="{e(h)}" target="_blank" rel="noopener">{e(t)}</a></li>' for t, h in a["sources"]) + "</ol>"
+            + (f'<p class="mi dim" style="margin-top:14px">{e(u["notLegal"])}</p>' if p.get("legal") else "") + "</div>") if a.get("sources") else ""
+    rel_links = '<div class="tl">' + "".join(f'<a class="cta" href="{P}{h.lstrip("/")}">{e(t)} →</a>' for t, h in a["related"]) + "</div>"
+    body = (head + '<hr class="spl"><section class="sec w"><article class="post">'
+            f'<div class="ans"><span class="mi">{e(u["short"])}</span><p>{md(a["answer"], P)}</p></div>'
+            f'<div class="keys"><span class="mi">{e(u["keys"])}</span><ul>' + "".join(f"<li>{md(k, P)}</li>" for k in a["takeaways"]) + "</ul></div>"
+            + out + f'<h2>{e(u["faq"])}</h2>' + faq_block(C, a["faq"]) + srcs + "</article>"
+            f'<div style="margin-top:clamp(40px,5vw,70px)"><span class="mi">{e(C["ui"]["related"])}</span>{rel_links}</div></section><hr class="spl">'
+            + kit(C, P) + talk_ml(C, P))
+    url = pub(C, l, rel)
+    ld = {"@context": "https://schema.org", "@type": "BlogPosting", "@id": url + "#article", "headline": a["h1"], "description": a["description"], "inLanguage": l,
+          "datePublished": p["date"], "dateModified": p["updated"], "mainEntityOfPage": url, "url": url, "image": base + "/assets/" + p.get("image", "macro-1.webp"),
+          "author": {"@id": base + "/#organization"}, "publisher": {"@id": base + "/#organization"}, "isPartOf": {"@id": pub(C, l, "/blog/") + "#blog"},
+          "about": a["about"], "keywords": ", ".join(a["keywords"]), "wordCount": blog_words(a)}
+    if a.get("sources"):
+        ld["citation"] = [h for _, h in a["sources"]]
+    return shell_ml(C, P, f"{P}blog/{p['slug']}/", {"title": a["title"], "description": a["description"]}, body,
+                    extra_head=BLOG_CSS + f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>' + faq_ld(a["faq"]), langs=blog_langs(B, p["slug"]))
 
 
 NO_TR = {"slug", "key", "image", "img", "id", "url", "lang", "macro", "fx", "shot", "heroImg", "launchUrl", "email", "phone", "whatsapp", "linkedin", "instagram", "formEndpoint", "analyticsEndpoint", "sameAs", "openingHours", "telephone",
@@ -712,7 +831,8 @@ def translate(o, T, k=None):
 
 def build(launch=False):
     """launch=True (python3 build.py --launch) removes noindex and switches every URL to site.launchUrl."""
-    paths = []
+    paths = []; blogp = []
+    B = json.loads(rd("content/blog.json")) if os.path.exists(os.path.join(ROOT, "content/blog.json")) else None
     for lang in LANGS:
         C = json.loads(rd(f"content/{DEFAULT}.json")); P = "/" if lang == HOME else f"/{lang}/"
         if lang != DEFAULT:
@@ -731,6 +851,8 @@ def build(launch=False):
             for l in LANGS:
                 PUB[l] = cd[l].rstrip("/") if l in cd else main + ("" if l == C["site"]["mainLang"] else "/" + l)
             C["site"]["noindex"] = False; C["site"]["url"] = PUB[HOME] if HOME in cd or HOME == C["site"]["mainLang"] else main
+        if B and lang in blog_langs(B):
+            C["blogNav"] = B["ui"][lang]["nav"]
         if lang == HOME:
             C0 = C
         if lang == DEFAULT:
@@ -743,21 +865,26 @@ def build(launch=False):
             out[f'{P}{x["slug"]}/'] = landing_ml(C, P, x)
         for path, s in out.items():
             wr(path.lstrip("/") + "index.html", s); paths.append(path)
+        if B and lang in blog_langs(B):
+            wr(f"{P}blog/index.html".lstrip("/"), blog_index(C, P, B)); blogp.append("/blog/")
+            for bp in B["posts"]:
+                if lang in bp:
+                    wr(f"{P}blog/{bp['slug']}/index.html".lstrip("/"), blog_post(C, P, B, bp)); blogp.append(f"/blog/{bp['slug']}/")
         site = C["site"]["url"].rstrip("/")
     wr("assets/film.css", rd("src/film.css")); wr("assets/film.js", rd("src/film.js"))
     rels = [p for p in paths if not any(p.startswith(f"/{l}/") for l in LANGS if l != HOME)]
     loc = lambda l, r: pub(C0, l, r)
     wr("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "".join(
         f"  <url><loc>{loc(l, r)}</loc>" + "".join(f'<xhtml:link rel="alternate" hreflang="{a}" href="{loc(a, r)}"/>' for a in LANGS) + f'<xhtml:link rel="alternate" hreflang="x-default" href="{loc(XDEF, r)}"/></url>\n'
-        for r in rels for l in LANGS if loc(l, r).startswith(site + "/")) + "</urlset>\n")
+        for r in rels for l in LANGS if loc(l, r).startswith(site + "/")) + blog_sitemap(B, loc, site) + "</urlset>\n")
     bots = "User-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\n"
     if C0["site"]["blockAiTraining"]:
         bots += "User-agent: GPTBot\nDisallow: /\n\n"
     wr("robots.txt", bots + f"User-agent: *\nAllow: /\n\nSitemap: {site}/sitemap.xml\n")
-    wr("llms.txt", llms_txt(C0, CE))
+    wr("llms.txt", llms_txt(C0, CE, B))
     wr("404.html", shell_ml(C0, "/", "/404.html", {"title": "Page not found | UltraPixel", "description": C0["ui"]["notFound"]},
                             phead("404", C0["ui"]["notFound"], mega=False) + f'<section class="sec"><a class="cta pill" href="/">{e(C0["ui"]["backHome"])} ↗</a></section>'))
-    print(f"built {len(paths)} pages")
+    print(f"built {len(paths)} pages" + (f" + {len(blogp)} blog pages" if blogp else ""))
 
 
 if __name__ == "__main__":
