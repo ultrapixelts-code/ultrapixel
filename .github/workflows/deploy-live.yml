@@ -3,8 +3,10 @@
 # Non vengono mai caricati: sorgenti, backend dei moduli (config del server), .htaccess del server.
 # Il caricamento sovrascrive solo i file del sito; file presenti solo sul server (vecchio sito, backend, posta) restano.
 #
-# Secrets richiesti (Settings > Secrets and variables > Actions):
-#   FTP_SERVER, FTP_USERNAME, FTP_PASSWORD, FTP_DIR_IT, FTP_DIR_FR  (cartelle con "/" finale, es. public_html/)
+# Secrets (Settings > Secrets and variables > Actions):
+#   ultrapixel.it: FTP_SERVER, FTP_USERNAME, FTP_PASSWORD, FTP_DIR_IT (cartella con "/" finale, "./" = radice dell'account FTP)
+#   ultrapixel.fr (hosting separato): FR_FTP_SERVER, FR_FTP_USERNAME, FR_FTP_PASSWORD, FTP_DIR_FR
+#   Se i secret di un sito mancano, quel sito viene saltato.
 name: Pubblica ultrapixel.it e ultrapixel.fr
 
 on:
@@ -29,20 +31,34 @@ jobs:
             url: https://ultrapixel.it
             build_args: --launch
             dir_secret: FTP_DIR_IT
+            prefix: ""
             extra_exclude: "__nessuno__/**"
           - site: fr
             url: https://ultrapixel.fr
             build_args: --launch --home=fr
             dir_secret: FTP_DIR_FR
+            prefix: "FR_"
             extra_exclude: "fr/**"
+    env:
+      HOST: ${{ secrets[format('{0}FTP_SERVER', matrix.prefix)] }}
+      USER: ${{ secrets[format('{0}FTP_USERNAME', matrix.prefix)] }}
+      PASS: ${{ secrets[format('{0}FTP_PASSWORD', matrix.prefix)] }}
+      DIR: ${{ secrets[matrix.dir_secret] }}
     steps:
+      - name: Credenziali presenti? (${{ matrix.site }})
+        run: |
+          if [ -z "$HOST" ] || [ -z "$USER" ] || [ -z "$PASS" ]; then echo "Secret FTP mancanti per ${{ matrix.site }}: sito saltato."; fi
+
       - uses: actions/checkout@v4
+        if: env.HOST != '' && env.USER != '' && env.PASS != ''
 
       - uses: actions/setup-python@v5
+        if: env.HOST != '' && env.USER != '' && env.PASS != ''
         with:
           python-version: "3.12"
 
       - name: Costruisci la versione di lancio (${{ matrix.site }})
+        if: env.HOST != '' && env.USER != '' && env.PASS != ''
         run: |
           python build.py ${{ matrix.build_args }}
           # su ultrapixel.fr il francese sta alla radice: la cartella /fr/ della versione .it non serve
@@ -51,13 +67,14 @@ jobs:
           if grep -rlq 'onrender.com' --include='*.html' --exclude-dir=src --exclude-dir=content --exclude-dir=backend --exclude-dir=server . ; then echo "Trovati link all'anteprima Render: stop."; exit 1; fi
 
       - name: Carica su Keliweb (${{ matrix.site }})
+        if: env.HOST != '' && env.USER != '' && env.PASS != ''
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          server: ${{ env.HOST }}
+          username: ${{ env.USER }}
+          password: ${{ env.PASS }}
           protocol: ftps
-          server-dir: ${{ secrets[matrix.dir_secret] }}
+          server-dir: ${{ env.DIR != '' && env.DIR || './' }}
           state-name: .ftp-deploy-sync-state.json
           exclude: |
             **/.git*
@@ -74,6 +91,7 @@ jobs:
             ${{ matrix.extra_exclude }}
 
       - name: Controlla che il sito risponda (${{ matrix.site }})
+        if: env.HOST != '' && env.USER != '' && env.PASS != ''
         run: |
           for p in / /blog/ /sitemap.xml /llms.txt; do
             code=$(curl -s -o /dev/null -w '%{http_code}' "${{ matrix.url }}$p")
