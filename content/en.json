@@ -46,7 +46,7 @@
         ]
       }
     ],
-    "blockAiTraining": true,
+    "blockAiTraining": false,
     "founded": "2013",
     "locality": "San Dorligo della Valle",
     "country": "IT",
