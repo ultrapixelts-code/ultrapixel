@@ -7,6 +7,8 @@
 #   ultrapixel.it: FTP_SERVER, FTP_USERNAME, FTP_PASSWORD, FTP_DIR_IT (cartella con "/" finale, "./" = radice dell'account FTP)
 #   ultrapixel.fr (hosting separato): FR_FTP_SERVER, FR_FTP_USERNAME, FR_FTP_PASSWORD, FTP_DIR_FR
 #   Se i secret di un sito mancano, quel sito viene saltato.
+# Dopo ogni pubblicazione gli URL della sitemap vengono segnalati a Bing/Yandex/Seznam via IndexNow
+# (chiave pubblica nel file <chiave>.txt alla radice del sito).
 name: Pubblica ultrapixel.it e ultrapixel.fr
 
 on:
@@ -97,3 +99,23 @@ jobs:
             code=$(curl -s -o /dev/null -w '%{http_code}' "${{ matrix.url }}$p")
             echo "$p -> $code"; [ "$code" = 200 ] || exit 1
           done
+
+      - name: Avvisa Bing e gli altri motori via IndexNow (${{ matrix.site }})
+        if: env.HOST != '' && env.USER != '' && env.PASS != ''
+        continue-on-error: true
+        env:
+          SITE_URL: ${{ matrix.url }}
+          INDEXNOW_KEY: 606665fff1f5df89fdb16273f5896eaa
+        run: |
+          python3 - <<'PY'
+          import json, os, re, urllib.request
+          site = os.environ["SITE_URL"].rstrip("/"); key = os.environ["INDEXNOW_KEY"]
+          urls = [u for u in re.findall(r"<loc>([^<]+)</loc>", open("sitemap.xml", encoding="utf-8").read()) if u.startswith(site + "/")]
+          body = json.dumps({"host": site.split("//")[1], "key": key, "keyLocation": f"{site}/{key}.txt", "urlList": urls}).encode()
+          req = urllib.request.Request("https://api.indexnow.org/indexnow", data=body, headers={"Content-Type": "application/json; charset=utf-8"})
+          try:
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  print(f"IndexNow: {len(urls)} URL inviati, risposta {r.status}")
+          except urllib.error.HTTPError as e:
+              print(f"IndexNow: risposta {e.code} {e.read()[:300]!r}")
+          PY
