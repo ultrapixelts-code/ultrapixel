@@ -685,7 +685,7 @@ def blog_sitemap(B, loc, site):
     return out
 
 
-def llms_txt(C0, CE, B=None):
+def llms_txt(C0, CE, B=None, TL=None):
     """/llms.txt: a short plain-text profile of UltraPixel for AI assistants (llmstxt.org), with links to the key pages.
     Written in English from the site's own copy; links point to the root language of this domain and to English."""
     s = CE["site"]; L = [C0["lang"]] + ([DEFAULT] if C0["lang"] != DEFAULT else [])
@@ -701,6 +701,7 @@ def llms_txt(C0, CE, B=None):
     out += [f"- Website languages: {', '.join(LANG_NAMES[l] for l in LANGS)}", "",
             "## Sectors", "", *[link(x["title"] + " labels", f"/{x['slug']}/", x["copy"]) for x in CE["sectors"]], "",
             "## Label types and applications", "", *[link(x["h1"], f"/{x['slug']}/") for x in CE["landings"]], "",
+            *(["## Tools", "", "- [" + TL["rollCalc"]["en"]["h1"] + "](" + u(DEFAULT, "/" + TL["rollCalc"]["slug"] + "/") + "): " + TL["rollCalc"]["en"]["description"], ""] if TL else []),
             *(["## Guides for label buyers", "", *["- " + " / ".join(f"[{p[l]['h1']}]({u(l, '/blog/' + p['slug'] + '/')})" for l in [x for x in LANGS if x in p] if l in L or l == DEFAULT) + f": {p[DEFAULT]['description']}" for p in B["posts"] if DEFAULT in p], ""] if B else []),
             "## Technologies", "", ", ".join(t["title"] for t in CE["technologies"]["items"]) + ".", "", link("All technologies", "/technologies/"), "",
             "## Contact and requests", "", link("Contact and quote requests", "/contact/"), link("Request samples", "/samples/"),
@@ -771,7 +772,8 @@ def blog_index(C, P, B):
     ld = {"@context": "https://schema.org", "@type": "Blog", "@id": pub(C, l, "/blog/") + "#blog", "name": u["h1"], "description": u["description"], "inLanguage": l,
           "url": pub(C, l, "/blog/"), "publisher": {"@id": base + "/#organization"},
           "blogPost": [{"@type": "BlogPosting", "headline": p[l]["h1"], "url": pub(C, l, f'/blog/{p["slug"]}/'), "datePublished": p["date"], "dateModified": p["updated"]} for p in posts]}
-    body = (phead(u["eyebrow"], u["h1"], u["lead"], mega=False) + f'<hr class="spl"><section class="sec w"><div class="blist">{items}</div></section>' + talk_ml(C, P))
+    tool = (f'<a href="{P}{C["calc"][1]}/"><span class="mi">{e(B["ui"][l].get("toolTag", "Tool"))}</span><div><h2>{e(C["calc"][0])}</h2><p>{e(C["calc"][2])}</p><span class="cta">{e(u["read"])} →</span></div></a>') if C.get("calc") else ""
+    body = (phead(u["eyebrow"], u["h1"], u["lead"], mega=False) + f'<hr class="spl"><section class="sec w"><div class="blist">{tool}{items}</div></section>' + talk_ml(C, P))
     return shell_ml(C, P, f"{P}blog/", {"title": u["title"], "description": u["description"]}, body,
                     extra_head=BLOG_CSS + f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>', langs=langs)
 
@@ -797,7 +799,10 @@ def blog_post(C, P, B, p):
             f'<div class="pmeta"><span class="mi">{when}</span><span class="mi">{e(u["by"])}</span><span class="mi">{mins} {e(u["min"])}</span></div></section>')
     srcs = (f'<div class="src"><span class="mi">{e(u["sources"])}</span><ol>' + "".join(f'<li><a href="{e(h)}" target="_blank" rel="noopener">{e(t)}</a></li>' for t, h in a["sources"]) + "</ol>"
             + (f'<p class="mi dim" style="margin-top:14px">{e(u["notLegal"])}</p>' if p.get("legal") else "") + "</div>") if a.get("sources") else ""
-    rel_links = '<div class="tl">' + "".join(f'<a class="cta" href="{P}{h.lstrip("/")}">{e(t)} →</a>' for t, h in a["related"]) + "</div>"
+    related = list(a["related"])
+    if C.get("calc") and p["slug"] in CALC_POSTS:
+        related = [(C["calc"][0], "/" + C["calc"][1] + "/")] + related[:3]
+    rel_links = '<div class="tl">' + "".join(f'<a class="cta" href="{P}{h.lstrip("/")}">{e(t)} →</a>' for t, h in related) + "</div>"
     body = (head + '<hr class="spl"><section class="sec w"><article class="post">'
             f'<div class="ans"><span class="mi">{e(u["short"])}</span><p>{md(a["answer"], P)}</p></div>'
             f'<div class="keys"><span class="mi">{e(u["keys"])}</span><ul>' + "".join(f"<li>{md(k, P)}</li>" for k in a["takeaways"]) + "</ul></div>"
@@ -813,6 +818,69 @@ def blog_post(C, P, B, p):
         ld["citation"] = [h for _, h in a["sources"]]
     return shell_ml(C, P, f"{P}blog/{p['slug']}/", {"title": a["title"], "description": a["description"]}, body,
                     extra_head=BLOG_CSS + f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>' + faq_ld(a["faq"]), langs=blog_langs(B, p["slug"]))
+
+
+# ---------------------------------------------------------------- tools (content/tools.json): label roll calculator
+CALC_CSS = ('<style>.calc{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(28px,4vw,60px);align-items:start;max-width:1100px}'
+            '.calc .form{grid-template-columns:repeat(2,minmax(0,1fr))}.calc fieldset{border:0;padding:0;margin:0;grid-column:1/-1;display:grid;gap:10px}'
+            '.calc fieldset label{display:flex;gap:10px;align-items:center;font:400 15px var(--body);letter-spacing:0;text-transform:none;color:var(--ink)}'
+            '.calc fieldset input{width:auto}.calc legend{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gra);margin-bottom:6px}'
+            '.calc .hide{display:none}.res{position:sticky;top:90px}.res dl{display:grid;gap:0;margin:14px 0 0}.res dt{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gra);padding-top:14px}'
+            '.res dd{margin:2px 0 0;font-size:clamp(26px,2.6vw,38px);line-height:1.1;color:var(--ink);padding-bottom:14px;border-bottom:1px solid var(--hair)}'
+            '.res .err{color:var(--ink);margin-top:12px}.res .cta{display:inline-block;margin-top:20px}'
+            '@media(max-width:820px){.calc{grid-template-columns:1fr}.res{position:static}}</style>')
+
+
+def roll_calc(C, P, T):
+    t = T["rollCalc"]; l = C["lang"]; u = t[l]; rel = f"/{t['slug']}/"; url = pub(C, l, rel); base = C["site"]["url"].rstrip("/")
+    num = lambda n, v, extra="": f'<input name="{n}" type="number" inputmode="decimal" min="0" step="any" value="{v}"{extra}>'
+    mats = "".join(f'<option value="{v}" data-k="{k}">{e(u["mat_" + k])}</option>' for k, v in t["presets"]) + f'<option value="custom">{e(u["mat_custom"])}</option>'
+    form = (f'<form class="form" id="rc" onsubmit="return false">'
+            f'<fieldset><legend>{e(u["modeLabel"])}</legend><label><input type="radio" name="mode" value="dia" checked> {e(u["modeDia"])}</label>'
+            f'<label><input type="radio" name="mode" value="qty"> {e(u["modeQty"])}</label></fieldset>'
+            f'<label>{e(u["labelLen"])}{num("len", 100)}</label><label>{e(u["gap"])}{num("gap", 3)}</label>'
+            f'<label>{e(u["across"])}{num("across", 1, " step=1 min=1")}</label><label>{e(u["core"])}{num("core", 76)}</label>'
+            f'<label class="full">{e(u["material"])}<select name="mat">{mats}</select></label>'
+            f'<label class="full hide" data-show="custom">{e(u["thick"])}{num("thick", 0.14)}</label>'
+            f'<label data-mode="dia">{e(u["maxDia"])}{num("maxdia", 300)}</label><label class="hide" data-mode="qty">{e(u["perRollIn"])}{num("perroll", 2000, " step=1")}</label>'
+            f'<label>{e(u["orderQty"])}{num("order", 20000, " step=1")}</label></form>')
+    res = (f'<div class="res ans" aria-live="polite"><span class="mi">{e(u["result"])}</span><dl>'
+           f'<dt>{e(u["rLabels"])}</dt><dd id="o-labels">–</dd><dt>{e(u["rLength"])}</dt><dd id="o-len">–</dd>'
+           f'<dt>{e(u["rDia"])}</dt><dd id="o-dia">–</dd><dt>{e(u["rRolls"])}</dt><dd id="o-rolls">–</dd></dl>'
+           f'<p class="err" id="o-err" hidden>{e(u["invalid"])}</p><p class="mi dim" style="margin-top:14px">{e(u["note"])}</p>'
+           f'<a class="cta" id="o-cta" href="{P}contact/?topic=quote">{e(u["cta"])} →</a></div>')
+    labels = {k: u[k] for k in ("labelLen", "gap", "across", "core", "material", "maxDia", "perRollIn", "orderQty", "rLabels", "rLength", "rDia", "rRolls", "msgIntro", "thick")}
+    js = ('<script>(function(){var f=document.getElementById("rc"),L=' + json.dumps(labels, ensure_ascii=False) + ',lang=document.documentElement.lang,'
+          'nf=function(v,d){return new Intl.NumberFormat(lang,{maximumFractionDigits:d||0}).format(v)},g=function(n){return parseFloat((f.elements[n].value||"").replace(",","."))},'
+          'cta=document.getElementById("o-cta"),base=cta.getAttribute("href");'
+          'function run(){var mode=f.querySelector("[name=mode]:checked").value,sel=f.elements.mat,custom=sel.value==="custom";'
+          'f.querySelector("[data-show=custom]").classList.toggle("hide",!custom);'
+          '[].forEach.call(f.querySelectorAll("[data-mode]"),function(x){x.classList.toggle("hide",x.getAttribute("data-mode")!==mode)});'
+          'var len=g("len"),gap=g("gap")||0,ac=Math.max(1,Math.round(g("across")||1)),d=g("core"),t=custom?g("thick"):parseFloat(sel.value),q=g("order"),pitch=len+gap,D,n,m;'
+          'var bad=!(len>0&&d>0&&t>0&&pitch>0);'
+          'if(!bad&&mode==="dia"){D=g("maxdia");bad=!(D>d);if(!bad){m=Math.PI*(D*D-d*d)/(4*t);n=Math.floor(m/pitch)*ac}}'
+          'if(!bad&&mode==="qty"){n=Math.round(g("perroll"));bad=!(n>0);if(!bad){m=Math.ceil(n/ac)*pitch;D=Math.sqrt(d*d+4*t*m/Math.PI)}}'
+          'document.getElementById("o-err").hidden=!bad;var o=function(i,v){document.getElementById(i).textContent=v};'
+          'if(bad){o("o-labels","–");o("o-len","–");o("o-dia","–");o("o-rolls","–");cta.href=base;return}'
+          'var rolls=q>0?Math.ceil(q/n):null;o("o-labels",nf(n));o("o-len",nf(m/1000,1)+" m");o("o-dia",nf(D)+" mm");o("o-rolls",rolls?nf(rolls):"–");'
+          'var msg=[L.msgIntro,"- "+L.labelLen+": "+nf(len,1),"- "+L.gap+": "+nf(gap,1),"- "+L.across+": "+ac,"- "+L.core+": "+nf(d,1),'
+          '"- "+L.thick+": "+nf(t,3),"- "+L.rLabels+": "+nf(n),"- "+L.rDia+": "+nf(D)+" mm"].concat(q>0?["- "+L.orderQty+": "+nf(q),"- "+L.rRolls+": "+nf(rolls)]:[]).join("\\n");'
+          'cta.href=base+"&msg="+encodeURIComponent(msg)}'
+          'f.addEventListener("input",run);f.addEventListener("change",run);run()})();</script>')
+    how = "".join(f"<p>{md(x, P)}</p>" for x in u["how"])
+    rel_links = '<div class="tl">' + "".join(f'<a class="cta" href="{P}{h.lstrip("/")}">{e(tx)} →</a>' for tx, h in u["related"]) + "</div>"
+    body = (phead(u["eyebrow"], u["h1"], u["lead"], mega=False) + '<hr class="spl"><section class="sec w"><div class="calc">' + form + res + "</div></section>"
+            f'<hr class="spl"><section class="sec w"><article class="post"><h2>{e(u["howH"])}</h2>{how}<h2>{e(BLOG_FAQ.get(l, "FAQ"))}</h2>' + faq_block(C, u["faq"]) + "</article>"
+            f'<div style="margin-top:clamp(40px,5vw,70px)"><span class="mi">{e(C["ui"]["related"])}</span>{rel_links}</div></section>' + talk_ml(C, P))
+    ld = {"@context": "https://schema.org", "@type": "WebApplication", "@id": url + "#app", "name": u["h1"], "description": u["description"], "url": url, "inLanguage": l,
+          "applicationCategory": "BusinessApplication", "operatingSystem": "Any", "isAccessibleForFree": True,
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "publisher": {"@id": base + "/#organization"}, "datePublished": t["date"]}
+    return shell_ml(C, P, f"{P}{t['slug']}/", {"title": u["title"], "description": u["description"]}, body,
+                    extra_head=BLOG_CSS + CALC_CSS + f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>' + faq_ld(u["faq"]), extra_foot=js)
+
+
+CALC_POSTS = {"label-roll-breaks-on-labelling-line", "label-quote-specification-checklist", "how-to-store-label-rolls", "reduce-label-costs"}
+BLOG_FAQ = {"en": "Frequently asked questions", "it": "Domande frequenti", "fr": "Questions fréquentes", "de": "Häufige Fragen"}
 
 
 NO_TR = {"slug", "key", "image", "img", "id", "url", "lang", "macro", "fx", "shot", "heroImg", "launchUrl", "email", "phone", "whatsapp", "linkedin", "instagram", "formEndpoint", "analyticsEndpoint", "sameAs", "openingHours", "telephone",
@@ -833,6 +901,7 @@ def build(launch=False):
     """launch=True (python3 build.py --launch) removes noindex and switches every URL to site.launchUrl."""
     paths = []; blogp = []
     B = json.loads(rd("content/blog.json")) if os.path.exists(os.path.join(ROOT, "content/blog.json")) else None
+    TL = json.loads(rd("content/tools.json")) if os.path.exists(os.path.join(ROOT, "content/tools.json")) else None
     for lang in LANGS:
         C = json.loads(rd(f"content/{DEFAULT}.json")); P = "/" if lang == HOME else f"/{lang}/"
         if lang != DEFAULT:
@@ -865,6 +934,9 @@ def build(launch=False):
             out[f'{P}{x["slug"]}/'] = landing_ml(C, P, x)
         for path, s in out.items():
             wr(path.lstrip("/") + "index.html", s); paths.append(path)
+        if TL and lang in TL["rollCalc"]:
+            C["calc"] = (TL["rollCalc"][lang]["h1"], TL["rollCalc"]["slug"], TL["rollCalc"][lang]["lead"])
+            wr(f"{P}{TL['rollCalc']['slug']}/index.html".lstrip("/"), roll_calc(C, P, TL)); blogp.append("/" + TL["rollCalc"]["slug"] + "/")
         if B and lang in blog_langs(B):
             wr(f"{P}blog/index.html".lstrip("/"), blog_index(C, P, B)); blogp.append("/blog/")
             for bp in B["posts"]:
@@ -873,6 +945,8 @@ def build(launch=False):
         site = C["site"]["url"].rstrip("/")
     wr("assets/film.css", rd("src/film.css")); wr("assets/film.js", rd("src/film.js"))
     rels = [p for p in paths if not any(p.startswith(f"/{l}/") for l in LANGS if l != HOME)]
+    if TL:
+        rels.append("/" + TL["rollCalc"]["slug"] + "/")
     loc = lambda l, r: pub(C0, l, r)
     wr("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "".join(
         f"  <url><loc>{loc(l, r)}</loc>" + "".join(f'<xhtml:link rel="alternate" hreflang="{a}" href="{loc(a, r)}"/>' for a in LANGS) + f'<xhtml:link rel="alternate" hreflang="x-default" href="{loc(XDEF, r)}"/></url>\n'
@@ -881,7 +955,7 @@ def build(launch=False):
     if C0["site"]["blockAiTraining"]:
         bots += "User-agent: GPTBot\nDisallow: /\n\n"
     wr("robots.txt", bots + f"User-agent: *\nAllow: /\n\nSitemap: {site}/sitemap.xml\n")
-    wr("llms.txt", llms_txt(C0, CE, B))
+    wr("llms.txt", llms_txt(C0, CE, B, TL))
     wr("404.html", shell_ml(C0, "/", "/404.html", {"title": "Page not found | UltraPixel", "description": C0["ui"]["notFound"]},
                             phead("404", C0["ui"]["notFound"], mega=False) + f'<section class="sec"><a class="cta pill" href="/">{e(C0["ui"]["backHome"])} ↗</a></section>'))
     print(f"built {len(paths)} pages" + (f" + {len(blogp)} blog pages" if blogp else ""))

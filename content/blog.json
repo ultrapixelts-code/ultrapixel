@@ -16,7 +16,8 @@
    "keys": "Key points",
    "faq": "Frequently asked questions",
    "sources": "Sources",
-   "notLegal": "This guide summarises public sources for information. It is not legal advice: check the official text and your own regulatory advisers."
+   "notLegal": "This guide summarises public sources for information. It is not legal advice: check the official text and your own regulatory advisers.",
+   "toolTag": "Free tool"
   },
   "it": {
    "nav": "Guide",
@@ -34,7 +35,8 @@
    "keys": "Punti chiave",
    "faq": "Domande frequenti",
    "sources": "Fonti",
-   "notLegal": "Questa guida riassume fonti pubbliche a scopo informativo. Non è una consulenza legale: verifica il testo ufficiale e i tuoi consulenti normativi."
+   "notLegal": "Questa guida riassume fonti pubbliche a scopo informativo. Non è una consulenza legale: verifica il testo ufficiale e i tuoi consulenti normativi.",
+   "toolTag": "Strumento gratuito"
   },
   "fr": {
    "nav": "Guides",
@@ -52,7 +54,8 @@
    "keys": "Points clés",
    "faq": "Questions fréquentes",
    "sources": "Sources",
-   "notLegal": "Ce guide résume des sources publiques à titre d'information. Il ne constitue pas un conseil juridique : vérifiez le texte officiel et consultez vos conseillers réglementaires."
+   "notLegal": "Ce guide résume des sources publiques à titre d'information. Il ne constitue pas un conseil juridique : vérifiez le texte officiel et consultez vos conseillers réglementaires.",
+   "toolTag": "Outil gratuit"
   },
   "de": {
    "nav": "Ratgeber",
@@ -70,7 +73,8 @@
    "keys": "Das Wichtigste",
    "faq": "Häufige Fragen",
    "sources": "Quellen",
-   "notLegal": "Dieser Ratgeber fasst öffentliche Quellen zur Information zusammen. Er ist keine Rechtsberatung: Prüfen Sie den amtlichen Text und Ihre regulatorischen Berater."
+   "notLegal": "Dieser Ratgeber fasst öffentliche Quellen zur Information zusammen. Er ist keine Rechtsberatung: Prüfen Sie den amtlichen Text und Ihre regulatorischen Berater.",
+   "toolTag": "Kostenloses Werkzeug"
   }
  },
  "posts": [

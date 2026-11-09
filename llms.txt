@@ -36,6 +36,10 @@ UltraPixel Srl (VAT IT01240410322) was founded in 2013. It designs, prints and f
 - [Multilayer and booklet labels](https://ultrapixel-homepage.onrender.com/multilayer-booklet-labels/) / [Multilayer and booklet labels (English)](https://ultrapixel-homepage.onrender.com/en/multilayer-booklet-labels/)
 - [Self-adhesive label manufacturer in Italy, delivering across Europe](https://ultrapixel-homepage.onrender.com/label-manufacturer-italy/) / [Self-adhesive label manufacturer in Italy, delivering across Europe (English)](https://ultrapixel-homepage.onrender.com/en/label-manufacturer-italy/)
 
+## Tools
+
+- [Label roll calculator](https://ultrapixel-homepage.onrender.com/en/label-roll-calculator/): Free label roll calculator: how many labels fit on a roll for your labeller's maximum diameter, the outer diameter for a given number of labels, metres of web and number of rolls for an order.
+
 ## Guides for label buyers
 
 - [Come scegliere un fornitore di etichette: la checklist per brand e buyer](https://ultrapixel-homepage.onrender.com/blog/how-to-choose-a-label-supplier/) / [How to choose a label supplier in Europe: a checklist for brands and buyers](https://ultrapixel-homepage.onrender.com/en/blog/how-to-choose-a-label-supplier/): A practical checklist for brand owners and procurement teams choosing a self-adhesive label supplier in Europe: materials, finishes, colour control, versions, samples and red flags.
