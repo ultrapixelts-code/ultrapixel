@@ -821,21 +821,55 @@ def blog_post(C, P, B, p):
 
 
 # ---------------------------------------------------------------- tools (content/tools.json): label roll calculator
-CALC_CSS = ('<style>.calc{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(28px,4vw,60px);align-items:start;max-width:1100px}'
-            '.calc .form{grid-template-columns:repeat(2,minmax(0,1fr))}.calc fieldset{border:0;padding:0;margin:0;grid-column:1/-1;display:grid;gap:10px}'
-            '.calc fieldset label{display:flex;gap:10px;align-items:center;font:400 15px var(--body);letter-spacing:0;text-transform:none;color:var(--ink)}'
-            '.calc fieldset input{width:auto}.calc legend{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gra);margin-bottom:6px}'
-            '.calc .hide{display:none}.res{position:sticky;top:90px}.res dl{display:grid;gap:0;margin:14px 0 0}.res dt{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gra);padding-top:14px}'
-            '.res dd{margin:2px 0 0;font-size:clamp(26px,2.6vw,38px);line-height:1.1;color:var(--ink);padding-bottom:14px;border-bottom:1px solid var(--hair)}'
-            '.res .err{color:var(--ink);margin-top:12px}.res .cta{display:inline-block;margin-top:20px}'
-            '@media(max-width:820px){.calc{grid-template-columns:1fr}.res{position:static}}</style>')
+CALC_CSS = ('<style>'
+ '.rhero .mega{font-size:clamp(38px,8.4vw,150px)}.rhero .mega span{display:block;color:var(--tgl)}'
+ '.rc{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,4vw,64px);align-items:start;max-width:1240px}'
+ '.rc .mi{display:block}'
+ '.rstage{position:relative;margin-top:18px;border:1px solid transparent;'
+ 'background:linear-gradient(var(--white),var(--white)) padding-box,linear-gradient(90deg,var(--hair) 0 30%,#22B8D6 38%,#6F5BE8 46%,#D9438F 54%,#EBA43A 62%,var(--hair) 70% 100%) 0 0/300% 100% border-box;animation:redge 9s linear infinite}'
+ '@keyframes redge{to{background-position:0 0,300% 0}}'
+ '.rstage svg{display:block;width:100%;height:auto;overflow:visible}'
+ '.rstage .ring{fill:none;stroke:var(--tg);stroke-width:.7;transition:r .7s cubic-bezier(.2,.7,.1,1)}'
+ '.rstage .rout{fill:none;stroke:var(--ink);stroke-width:1.4;transition:r .7s cubic-bezier(.2,.7,.1,1)}'
+ '.rstage .rcore{fill:var(--sheet);stroke:var(--ink);stroke-width:1.2;transition:r .7s cubic-bezier(.2,.7,.1,1)}'
+ '.rstage .web{fill:var(--sheet);stroke:var(--tg);stroke-width:.8}.rstage .lab{fill:var(--white);stroke:var(--ink);stroke-width:.9}'
+ '.rstage .lab.k{fill:url(#rspec);stroke:none}'
+ '.rstage .belt{animation:rbelt var(--sp,2.4s) linear infinite}@keyframes rbelt{to{transform:translateX(var(--p,40px))}}'
+ '.rstage .dim{stroke:var(--ink);stroke-width:.8;fill:none}.rstage text{font:400 9.5px var(--mono);letter-spacing:.08em;fill:var(--ink);text-transform:uppercase}'
+ '.rstage text.g{fill:var(--gra)}.rstage text.big{font:600 34px var(--body);letter-spacing:-.03em;fill:url(#rspec);text-transform:none}'
+ '.rstage .beam{position:absolute;top:6%;bottom:6%;width:2px;left:0;background:var(--spec);box-shadow:0 0 18px 2px rgba(111,91,232,.35);opacity:0;pointer-events:none}'
+ '.rstage.scan .beam{animation:rbeam .9s cubic-bezier(.45,0,.55,1)}@keyframes rbeam{0%{left:4%;opacity:0}15%{opacity:1}85%{opacity:1}100%{left:96%;opacity:0}}'
+ '.rcap{margin:10px 0 0;color:var(--gra);font-size:14px}'
+ '.rnums{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:clamp(22px,3vw,34px);border-top:1px solid var(--ink)}'
+ '.rnums div{padding:16px 16px 18px 0;border-bottom:1px solid var(--hair)}.rnums div:nth-child(2n){padding-left:16px;border-left:1px solid var(--hair)}'
+ '.rnums b{display:block;font-weight:600;font-stretch:80%;letter-spacing:-.03em;font-size:clamp(34px,4.4vw,64px);line-height:1;margin-top:8px;color:var(--ink)}'
+ '.rnums div:first-child b{background:var(--spec);-webkit-background-clip:text;background-clip:text;color:transparent}'
+ '.rerr{margin:12px 0 0;color:var(--ink)}.rnote{margin-top:14px}'
+ '.rform{position:sticky;top:90px}.rform .form{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:18px}'
+ '.rform fieldset{border:0;padding:0;margin:0;grid-column:1/-1;display:grid;gap:8px}'
+ '.rform fieldset label{display:flex;gap:10px;align-items:center;font:400 15px var(--body);letter-spacing:0;text-transform:none;color:var(--ink);cursor:pointer}'
+ '.rform fieldset input{width:auto;accent-color:var(--ink)}.rform legend{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gra);margin-bottom:6px}'
+ '.rform .hide{display:none}.rform .cta{display:inline-block;margin-top:26px}'
+ '@media(max-width:900px){.rc{grid-template-columns:1fr}.rform{position:static}}'
+ '@media(prefers-reduced-motion:reduce){.rstage .belt,.rstage{animation:none}}'
+ '</style>')
+
+
+STAGE_SVG = ('<svg viewBox="0 0 480 300" role="img" aria-hidden="true"><defs><linearGradient id="rspec" x1="0" x2="1">'
+             '<stop offset="0" stop-color="#22B8D6"/><stop offset=".35" stop-color="#6F5BE8"/><stop offset=".7" stop-color="#D9438F"/><stop offset="1" stop-color="#EBA43A"/></linearGradient>'
+             '<clipPath id="rclip"><rect id="r-cliprect" x="150" y="0" width="330" height="300"/></clipPath></defs>'
+             '<g id="r-web" clip-path="url(#rclip)"><rect class="web" id="r-strip" x="150" y="38" width="340" height="22"/><g class="belt" id="r-belt"></g></g>'
+             '<g id="r-rings"></g><circle class="rout" id="r-out" cx="150" cy="160" r="110"/><circle class="rcore" id="r-core" cx="150" cy="160" r="28"/>'
+             '<path class="dim" id="r-dimD" d=""/><path class="dim" id="r-dimp" d=""/>'
+             '<text id="r-tD" x="0" y="0"></text><text id="r-td" x="150" y="160" text-anchor="middle"></text><text id="r-td2" class="g" x="150" y="172" text-anchor="middle"></text>'
+             '<text id="r-tp" class="g" x="0" y="0" text-anchor="middle"></text><text id="r-tm" class="big" x="466" y="284" text-anchor="end"></text></svg>')
 
 
 def roll_calc(C, P, T):
     t = T["rollCalc"]; l = C["lang"]; u = t[l]; rel = f"/{t['slug']}/"; url = pub(C, l, rel); base = C["site"]["url"].rstrip("/")
     num = lambda n, v, extra="": f'<input name="{n}" type="number" inputmode="decimal" min="0" step="any" value="{v}"{extra}>'
-    mats = "".join(f'<option value="{v}" data-k="{k}">{e(u["mat_" + k])}</option>' for k, v in t["presets"]) + f'<option value="custom">{e(u["mat_custom"])}</option>'
-    form = (f'<form class="form" id="rc" onsubmit="return false">'
+    mats = "".join(f'<option value="{v}">{e(u["mat_" + k])}</option>' for k, v in t["presets"]) + f'<option value="custom">{e(u["mat_custom"])}</option>'
+    form = (f'<div class="rform"><span class="mi">02 / {e(u["inputs"])}</span><form class="form" id="rc" onsubmit="return false">'
             f'<fieldset><legend>{e(u["modeLabel"])}</legend><label><input type="radio" name="mode" value="dia" checked> {e(u["modeDia"])}</label>'
             f'<label><input type="radio" name="mode" value="qty"> {e(u["modeQty"])}</label></fieldset>'
             f'<label>{e(u["labelLen"])}{num("len", 100)}</label><label>{e(u["gap"])}{num("gap", 3)}</label>'
@@ -843,33 +877,54 @@ def roll_calc(C, P, T):
             f'<label class="full">{e(u["material"])}<select name="mat">{mats}</select></label>'
             f'<label class="full hide" data-show="custom">{e(u["thick"])}{num("thick", 0.14)}</label>'
             f'<label data-mode="dia">{e(u["maxDia"])}{num("maxdia", 300)}</label><label class="hide" data-mode="qty">{e(u["perRollIn"])}{num("perroll", 2000, " step=1")}</label>'
-            f'<label>{e(u["orderQty"])}{num("order", 20000, " step=1")}</label></form>')
-    res = (f'<div class="res ans" aria-live="polite"><span class="mi">{e(u["result"])}</span><dl>'
-           f'<dt>{e(u["rLabels"])}</dt><dd id="o-labels">–</dd><dt>{e(u["rLength"])}</dt><dd id="o-len">–</dd>'
-           f'<dt>{e(u["rDia"])}</dt><dd id="o-dia">–</dd><dt>{e(u["rRolls"])}</dt><dd id="o-rolls">–</dd></dl>'
-           f'<p class="err" id="o-err" hidden>{e(u["invalid"])}</p><p class="mi dim" style="margin-top:14px">{e(u["note"])}</p>'
-           f'<a class="cta" id="o-cta" href="{P}contact/?topic=quote">{e(u["cta"])} →</a></div>')
-    labels = {k: u[k] for k in ("labelLen", "gap", "across", "core", "material", "maxDia", "perRollIn", "orderQty", "rLabels", "rLength", "rDia", "rRolls", "msgIntro", "thick")}
+            f'<label>{e(u["orderQty"])}{num("order", 20000, " step=1")}</label></form>'
+            f'<a class="cta pill" id="o-cta" href="{P}contact/?topic=quote">{e(u["cta"])} ↗</a></div>')
+    stage = (f'<div class="rleft"><span class="mi">01 / {e(u["result"])}</span><div class="rstage" id="r-stage">{STAGE_SVG}<i class="beam"></i></div>'
+             f'<p class="rcap">{e(u["stageCap"])}</p>'
+             f'<div class="rnums" aria-live="polite"><div><span class="mi">{e(u["rLabels"])}</span><b id="o-labels">–</b></div>'
+             f'<div><span class="mi">{e(u["rRolls"])}</span><b id="o-rolls">–</b></div>'
+             f'<div><span class="mi">{e(u["rDia"])}</span><b id="o-dia">–</b></div><div><span class="mi">{e(u["rLength"])}</span><b id="o-len">–</b></div></div>'
+             f'<p class="rerr" id="o-err" hidden>{e(u["invalid"])}</p><p class="mi dim rnote">{e(u["note"])}</p></div>')
+    labels = {k: u[k] for k in ("labelLen", "gap", "across", "core", "orderQty", "rLabels", "rDia", "rRolls", "msgIntro", "thick", "tagCore", "tagOuter", "tagPitch")}
     js = ('<script>(function(){var f=document.getElementById("rc"),L=' + json.dumps(labels, ensure_ascii=False) + ',lang=document.documentElement.lang,'
           'nf=function(v,d){return new Intl.NumberFormat(lang,{maximumFractionDigits:d||0}).format(v)},g=function(n){return parseFloat((f.elements[n].value||"").replace(",","."))},'
-          'cta=document.getElementById("o-cta"),base=cta.getAttribute("href");'
-          'function run(){var mode=f.querySelector("[name=mode]:checked").value,sel=f.elements.mat,custom=sel.value==="custom";'
+          '$=function(i){return document.getElementById(i)},cta=$("o-cta"),base=cta.getAttribute("href"),stage=$("r-stage"),cur={},raf={},'
+          'red=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches,NS="http://www.w3.org/2000/svg";'
+          'function count(id,to,dec,suf){var el=$(id),from=cur[id]==null?to*.6:cur[id],t0=null;cur[id]=to;cancelAnimationFrame(raf[id]);'
+          'if(red){el.textContent=nf(to,dec)+(suf||"");return}'
+          'var step=function(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/650),e=1-Math.pow(1-k,3);el.textContent=nf(from+(to-from)*e,dec)+(suf||"");if(k<1)raf[id]=requestAnimationFrame(step)};raf[id]=requestAnimationFrame(step)}'
+          'function draw(D,d,pitch,len){var cx=150,cy=160,s=118/Math.max(D,320),R=Math.min(128,D*s),r=Math.max(6,d*s);'
+          '$("r-out").setAttribute("r",R);$("r-core").setAttribute("r",r);var rg=$("r-rings");rg.innerHTML="";'
+          'for(var x=r+3;x<R-1;x+=3.2){var c=document.createElementNS(NS,"circle");c.setAttribute("class","ring");c.setAttribute("cx",cx);c.setAttribute("cy",cy);c.setAttribute("r",x);rg.appendChild(c)}'
+          'var top=cy-R,wy=top-22;$("r-strip").setAttribute("y",wy);$("r-strip").setAttribute("x",cx);$("r-cliprect").setAttribute("x",cx);'
+          'var ps=Math.max(16,Math.min(70,pitch*.42)),lw=Math.max(10,ps*(len/pitch)),b=$("r-belt");b.innerHTML="";'
+          'for(var i=-1;i<Math.ceil(340/ps)+2;i++){var q=document.createElementNS(NS,"rect");q.setAttribute("class","lab"+(i%4===1?" k":""));q.setAttribute("x",cx+i*ps-ps);q.setAttribute("y",wy+3);q.setAttribute("width",lw);q.setAttribute("height",16);q.setAttribute("rx",1.5);b.appendChild(q)}'
+          'b.style.setProperty("--p",ps+"px");b.style.setProperty("--sp",(ps/26).toFixed(2)+"s");'
+          'var lx=cx-R-18;$("r-dimD").setAttribute("d","M"+lx+" "+(cy-R)+"V"+(cy+R)+"M"+(lx-5)+" "+(cy-R)+"h10M"+(lx-5)+" "+(cy+R)+"h10");'
+          'var tD=$("r-tD");tD.setAttribute("x",lx-8);tD.setAttribute("y",cy+R+16);tD.textContent="Ø "+nf(D)+" mm · "+L.tagOuter;'
+          'var td=$("r-td"),td2=$("r-td2"),big=r>=24,ty=big?cy-1:cy+R+32;td.setAttribute("y",ty);td2.setAttribute("y",ty+12);td.setAttribute("x",big?cx:lx-8);td2.setAttribute("x",big?cx:lx-8);'
+          'td.setAttribute("text-anchor",big?"middle":"start");td2.setAttribute("text-anchor",big?"middle":"start");td.textContent="Ø "+nf(d)+" mm";td2.textContent=L.tagCore;'
+          'var px=Math.max(cx+R+30,300),py=wy+32;$("r-dimp").setAttribute("d","M"+px+" "+py+"h"+ps+"M"+px+" "+(py-4)+"v8M"+(px+ps)+" "+(py-4)+"v8");'
+          'var tp=$("r-tp");tp.setAttribute("x",px+ps/2);tp.setAttribute("y",py+16);tp.textContent=nf(pitch,1)+" mm · "+L.tagPitch}'
+          'var last="";function run(){var mode=f.querySelector("[name=mode]:checked").value,sel=f.elements.mat,custom=sel.value==="custom";'
           'f.querySelector("[data-show=custom]").classList.toggle("hide",!custom);'
           '[].forEach.call(f.querySelectorAll("[data-mode]"),function(x){x.classList.toggle("hide",x.getAttribute("data-mode")!==mode)});'
           'var len=g("len"),gap=g("gap")||0,ac=Math.max(1,Math.round(g("across")||1)),d=g("core"),t=custom?g("thick"):parseFloat(sel.value),q=g("order"),pitch=len+gap,D,n,m;'
           'var bad=!(len>0&&d>0&&t>0&&pitch>0);'
           'if(!bad&&mode==="dia"){D=g("maxdia");bad=!(D>d);if(!bad){m=Math.PI*(D*D-d*d)/(4*t);n=Math.floor(m/pitch)*ac}}'
           'if(!bad&&mode==="qty"){n=Math.round(g("perroll"));bad=!(n>0);if(!bad){m=Math.ceil(n/ac)*pitch;D=Math.sqrt(d*d+4*t*m/Math.PI)}}'
-          'document.getElementById("o-err").hidden=!bad;var o=function(i,v){document.getElementById(i).textContent=v};'
-          'if(bad){o("o-labels","–");o("o-len","–");o("o-dia","–");o("o-rolls","–");cta.href=base;return}'
-          'var rolls=q>0?Math.ceil(q/n):null;o("o-labels",nf(n));o("o-len",nf(m/1000,1)+" m");o("o-dia",nf(D)+" mm");o("o-rolls",rolls?nf(rolls):"–");'
+          '$("o-err").hidden=!bad;if(bad){["o-labels","o-len","o-dia","o-rolls"].forEach(function(i){$(i).textContent="–";cur[i]=null});cta.href=base;return}'
+          'var rolls=q>0?Math.ceil(q/n):0;count("o-labels",n,0);count("o-len",m/1000,1," m");count("o-dia",D,0," mm");if(rolls)count("o-rolls",rolls,0);else $("o-rolls").textContent="–";'
+          'draw(D,d,pitch,len);$("r-tm").textContent="≈ "+nf(m/1000,1)+" m";var key=[n,Math.round(D)].join();if(key!==last&&last&&!red){stage.classList.remove("scan");void stage.offsetWidth;stage.classList.add("scan")}last=key;'
           'var msg=[L.msgIntro,"- "+L.labelLen+": "+nf(len,1),"- "+L.gap+": "+nf(gap,1),"- "+L.across+": "+ac,"- "+L.core+": "+nf(d,1),'
           '"- "+L.thick+": "+nf(t,3),"- "+L.rLabels+": "+nf(n),"- "+L.rDia+": "+nf(D)+" mm"].concat(q>0?["- "+L.orderQty+": "+nf(q),"- "+L.rRolls+": "+nf(rolls)]:[]).join("\\n");'
           'cta.href=base+"&msg="+encodeURIComponent(msg)}'
           'f.addEventListener("input",run);f.addEventListener("change",run);run()})();</script>')
     how = "".join(f"<p>{md(x, P)}</p>" for x in u["how"])
     rel_links = '<div class="tl">' + "".join(f'<a class="cta" href="{P}{h.lstrip("/")}">{e(tx)} →</a>' for tx, h in u["related"]) + "</div>"
-    body = (phead(u["eyebrow"], u["h1"], u["lead"], mega=False) + '<hr class="spl"><section class="sec w"><div class="calc">' + form + res + "</div></section>"
+    head = (f'<section class="phead rhero"><span class="mi">{e(u["eyebrow"])}</span><h1 class="mega rv">{e(u["h1a"])} <span>{e(u["h1b"])}</span></h1>'
+            f'<p class="lead">{e(u["lead"])}</p></section>')
+    body = (head + '<hr class="spl"><section class="sec w"><div class="rc">' + stage + form + "</div></section>"
             f'<hr class="spl"><section class="sec w"><article class="post"><h2>{e(u["howH"])}</h2>{how}<h2>{e(BLOG_FAQ.get(l, "FAQ"))}</h2>' + faq_block(C, u["faq"]) + "</article>"
             f'<div style="margin-top:clamp(40px,5vw,70px)"><span class="mi">{e(C["ui"]["related"])}</span>{rel_links}</div></section>' + talk_ml(C, P))
     ld = {"@context": "https://schema.org", "@type": "WebApplication", "@id": url + "#app", "name": u["h1"], "description": u["description"], "url": url, "inLanguage": l,
