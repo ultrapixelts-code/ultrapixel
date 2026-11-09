@@ -10,7 +10,16 @@
     "whatsapp": "+39 331 6436117",
     "linkedin": "",
     "instagram": "",
-    "sameAs": [],
+    "sameAs": [
+      "https://www.linkedin.com/company/25050764/",
+      "https://www.linkedin.com/company/110320369/",
+      "https://www.instagram.com/ultrapixel.it/",
+      "https://www.instagram.com/ultrapixel.fr/",
+      "https://www.facebook.com/profile.php?id=61584092080507",
+      "https://www.facebook.com/profile.php?id=61584300690740",
+      "https://www.google.com/search?kgmid=/g/1hc2y40wv",
+      "https://www.google.com/search?kgmid=/g/11zb4dd5cl"
+    ],
     "openingHours": "",
     "geo": [],
     "formEndpoint": "https://ultrapixel.it/backend/api/lead.php",
@@ -28,7 +37,11 @@
         "street": "11 Rue Pouteau",
         "postalCode": "69001",
         "locality": "Lyon",
-        "country": "FR"
+        "country": "FR",
+        "sameAs": [
+          "https://www.instagram.com/ultrapixel.fr/",
+          "https://www.google.com/search?kgmid=/g/11zb4dd5cl"
+        ]
       }
     ],
     "blockAiTraining": true,
@@ -42,7 +55,11 @@
     "region": "TS",
     "analyticsEndpoint": "",
     "privacyVersion": "Draft, 6 October 2026",
-    "quoteApi": ""
+    "quoteApi": "",
+    "sameAsHQ": [
+      "https://www.instagram.com/ultrapixel.it/",
+      "https://www.google.com/search?kgmid=/g/1hc2y40wv"
+    ]
   },
   "ui": {
     "requestSamples": "Request samples",

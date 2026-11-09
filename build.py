@@ -181,12 +181,12 @@ def seo_extra(C, P, path, meta, langs=None):
         for k, v in (extra or {}).items():
             if v: lb[k] = v
         return lb
-    hq = {"telephone": s["phone"], "email": s["email"], "sameAs": same or None}
+    hq = {"telephone": s["phone"], "email": s["email"], "sameAs": s.get("sameAsHQ") or same or None}
     if s.get("geo"): hq["geo"] = {"@type": "GeoCoordinates", "latitude": s["geo"][0], "longitude": s["geo"][1]}
     if s.get("openingHours"): hq["openingHours"] = s["openingHours"]
     graph.append(local("trieste", s["legalName"], s["street"], s["postalCode"], s["locality"], s["country"], s["region"], hq))
     for x in s.get("offices", []):
-        ex = {k: x.get(k) for k in ("telephone", "email")}
+        ex = {k: x.get(k) for k in ("telephone", "email", "sameAs")}
         if x.get("geo"): ex["geo"] = {"@type": "GeoCoordinates", "latitude": x["geo"][0], "longitude": x["geo"][1]}
         if x.get("openingHours"): ex["openingHours"] = x["openingHours"]
         graph.append(local(x["locality"].lower(), x["name"], x["street"], x["postalCode"], x["locality"], x["country"], None, ex))
@@ -938,7 +938,7 @@ CALC_POSTS = {"label-roll-breaks-on-labelling-line", "label-quote-specification-
 BLOG_FAQ = {"en": "Frequently asked questions", "it": "Domande frequenti", "fr": "Questions fréquentes", "de": "Häufige Fragen"}
 
 
-NO_TR = {"slug", "key", "image", "img", "id", "url", "lang", "macro", "fx", "shot", "heroImg", "launchUrl", "email", "phone", "whatsapp", "linkedin", "instagram", "formEndpoint", "analyticsEndpoint", "sameAs", "openingHours", "telephone",
+NO_TR = {"sameAs", "sameAsHQ", "slug", "key", "image", "img", "id", "url", "lang", "macro", "fx", "shot", "heroImg", "launchUrl", "email", "phone", "whatsapp", "linkedin", "instagram", "formEndpoint", "analyticsEndpoint", "sameAs", "openingHours", "telephone",
          "vatID", "street", "postalCode", "locality", "region", "country", "address", "name", "legalName", "founded"}
 
 
