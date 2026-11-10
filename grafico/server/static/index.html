@@ -39,6 +39,7 @@ header{position:sticky;top:0;z-index:8;display:flex;align-items:center;gap:22px;
 .brand .tag i{display:block;height:1px;background:var(--spec);background-size:200% 100%;animation:sl 3s linear infinite}
 .lgs{display:flex;gap:14px;margin-left:auto}.lgs a{font:400 11px var(--mono);letter-spacing:.14em;color:var(--tgt);text-decoration:none;padding-bottom:4px}.lgs a[aria-current]{color:var(--ink);box-shadow:inset 0 -1px 0 var(--ink)}
 .live{display:flex;align-items:center;gap:8px}
+.newc{margin-left:auto;border:1px solid var(--hair);background:none;border-radius:999px;padding:7px 12px;font:400 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--tgt);cursor:pointer;display:none}.newc:hover{border-color:var(--ink);color:var(--ink)}body.chat .newc{display:block}body.chat .newc+.lgs{margin-left:0}
 .dot{width:7px;height:7px;border-radius:50%;background:conic-gradient(var(--c1),var(--c2),var(--c3),var(--c4),var(--c1));animation:spin 2.4s linear infinite;flex:none}
 @keyframes spin{to{transform:rotate(1turn)}}
 @keyframes sl{to{background-position:-200% 0}}
@@ -309,16 +310,16 @@ var L={it:{
  privacy:'Die Texte und Bilder, die Sie senden, dienen nur zur Vorbereitung der Vorschläge und werden von einem KI-Dienst verarbeitet.',err:'Etwas ist schiefgelaufen. Bitte gleich noch einmal versuchen.'
 }};
 
-var X={it:{you:'Tu',ai:'UltraPixel AI',prop:'Proposta',indic:'AI · indicativa',work:'AI al lavoro',photo:'Foto',photoWait:'Sto fotografando il prodotto…',photoNote:'Foto simulata dall’AI: per testi e misure fa fede l’etichetta.',hintL:'Brief · foto · logo → proposte sul tuo contenitore',
+var X={it:{you:'Tu',ai:'UltraPixel AI',prop:'Proposta',indic:'AI · indicativa',work:'AI al lavoro',newc:'Nuova conversazione',photo:'Foto',photoWait:'Sto fotografando il prodotto…',photoNote:'Foto simulata dall’AI: per testi e misure fa fede l’etichetta.',hintL:'Brief · foto · logo → proposte sul tuo contenitore',
   rail:['Brief','Contenitore','Materiali','Layout','Illustrazioni','Controllo','Proposte'],gen:'Generazione',
   viz:[['Fustella a scudo 90 × 120','Foil oro a caldo','Carta avorio goffrata'],['Angoli tondi 70 × 110','Rilievo a secco sul rametto','Film bianco + vernice'],['Fustella tonda Ø 80','Illustrazione AI a tutta etichetta','Carta bianca patinata']]},
- en:{you:'You',ai:'UltraPixel AI',prop:'Proposal',indic:'AI · indicative',work:'AI at work',photo:'Photo',photoWait:'Shooting the product…',photoNote:'Photo simulated by AI: the label artwork is the reference for texts and sizes.',hintL:'Brief · photos · logo → proposals on your container',
+ en:{you:'You',ai:'UltraPixel AI',prop:'Proposal',indic:'AI · indicative',work:'AI at work',newc:'New conversation',photo:'Photo',photoWait:'Shooting the product…',photoNote:'Photo simulated by AI: the label artwork is the reference for texts and sizes.',hintL:'Brief · photos · logo → proposals on your container',
   rail:['Brief','Container','Materials','Layout','Illustrations','Check','Proposals'],gen:'Generation',
   viz:[['Shield die-cut 90 × 120','Gold hot foil','Ivory felt paper'],['Rounded corners 70 × 110','Blind embossing on the sprig','White film + varnish'],['Round die-cut Ø 80','Full-bleed AI illustration','White coated paper']]},
- fr:{you:'Vous',ai:'UltraPixel IA',prop:'Proposition',indic:'IA · indicative',work:'IA au travail',photo:'Photo',photoWait:'Je photographie le produit…',photoNote:'Photo simulée par l’IA : pour les textes et les mesures, l’étiquette fait foi.',hintL:'Brief · photos · logo → propositions sur votre contenant',
+ fr:{you:'Vous',ai:'UltraPixel IA',prop:'Proposition',indic:'IA · indicative',work:'IA au travail',newc:'Nouvelle conversation',photo:'Photo',photoWait:'Je photographie le produit…',photoNote:'Photo simulée par l’IA : pour les textes et les mesures, l’étiquette fait foi.',hintL:'Brief · photos · logo → propositions sur votre contenant',
   rail:['Brief','Contenant','Matières','Mise en page','Illustrations','Contrôle','Propositions'],gen:'Génération',
   viz:[['Découpe écusson 90 × 120','Dorure à chaud or','Papier ivoire vergé'],['Coins arrondis 70 × 110','Gaufrage à sec sur le brin','Film blanc + vernis'],['Découpe ronde Ø 80','Illustration IA pleine étiquette','Papier blanc couché']]},
- de:{you:'Sie',ai:'UltraPixel KI',prop:'Vorschlag',indic:'KI · unverbindlich',work:'KI arbeitet',photo:'Foto',photoWait:'Ich fotografiere das Produkt…',photoNote:'Von der KI simuliertes Foto: Für Texte und Maße gilt das Etikett.',hintL:'Briefing · Fotos · Logo → Vorschläge auf Ihrem Behälter',
+ de:{you:'Sie',ai:'UltraPixel KI',prop:'Vorschlag',indic:'KI · unverbindlich',work:'KI arbeitet',newc:'Neues Gespräch',photo:'Foto',photoWait:'Ich fotografiere das Produkt…',photoNote:'Von der KI simuliertes Foto: Für Texte und Maße gilt das Etikett.',hintL:'Briefing · Fotos · Logo → Vorschläge auf Ihrem Behälter',
   rail:['Briefing','Behälter','Material','Layout','Illustrationen','Prüfung','Vorschläge'],gen:'Generierung',
   viz:[['Wappen-Stanzung 90 × 120','Heißfolie Gold','Elfenbein-Strukturpapier'],['Runde Ecken 70 × 110','Blindprägung auf dem Zweig','Weißfolie + Lack'],['Runde Stanzung Ø 80','KI-Illustration vollflächig','Weiß gestrichenes Papier']]}};
 Object.keys(X).forEach(function(k){for(var j in X[k])L[k][j]=X[k][j]});
@@ -336,7 +337,8 @@ var $=function(s){return document.querySelector(s)};
 $('#in').placeholder=T.ph;setTimeout(grow,0);
 T.rail.forEach(function(r,i){var s=document.createElement('span');s.textContent=('0'+(i+1)).slice(-2)+' '+r;$('#rail').appendChild(s)});
 function rail(k){[].forEach.call($('#rail').children,function(s,i){s.className=k<0?'':i<k?'done':i===k?'on':''})}
-var sid='',busy=false,files=[],log=$('#log'),cur=null,hist=[],shown={},lastP=[],logoImg=null;
+var sid='',busy=false,files=[],log=$('#log'),cur=null,hist=[],shown={},lastP=[],logoImg=null,tl=[],KEY='up_conv';
+function persist(){try{localStorage.setItem(KEY,JSON.stringify({sid:sid,tl:tl.slice(-40),hist:hist.slice(-40),lastP:lastP,t:Date.now()}))}catch(e){}}
 function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 T.chips.forEach(function(c,i){var b=el('button','chip');b.type='button';b.appendChild(el('span','n',('0'+(i+1)).slice(-2)));b.appendChild(el('span',null,c));b.appendChild(el('span','a','↗'));
   b.onclick=function(){$('#in').value=c;$('#in').focus();grow()};$('#chips').appendChild(b)});
@@ -410,6 +412,15 @@ function generatore(box,compact){
   cycle();return{stop:stop};
 }
 generatore($('#gen'));
+setTimeout(function(){var s=null;try{s=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
+  if(!s||!s.sid||!s.tl||!s.tl.length||Date.now()-s.t>30*864e5)return;
+  sid=s.sid;hist=s.hist||[];lastP=s.lastP||[];tl=s.tl;$('#hero').style.display='none';document.body.classList.add('chat');
+  tl.forEach(function(e){if(e.k==='u')log.appendChild(bubble('me',T.you,e.t));
+    else if(e.k==='a'){var am=bubble('ai',T.ai);am.querySelector('.tx').innerHTML=e.t.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');log.appendChild(am)}
+    else if(e.k==='c')cards(e.l)});
+  setTimeout(function(){window.scrollTo(0,document.body.scrollHeight)},300)},0);
+(function(){var b=el('button','newc',T.newc);b.type='button';b.onclick=function(){try{localStorage.removeItem(KEY)}catch(e){}location.href=location.pathname+location.search};
+  var h=document.querySelector('header');h.insertBefore(b,h.querySelector('.lgs'))})();
 
 function grow(){var t=$('#in');t.style.height='auto';t.style.height=Math.min(180,t.scrollHeight)+'px'}
 $('#in').addEventListener('input',grow);
@@ -462,7 +473,7 @@ function consolle(){var w=el('div','console'),hd=el('div','hd'),l=el('span','mi'
   return{el:w,start:function(){if(!gen)gen=generatore(g,true)},stop:function(){clearInterval(iv);if(gen)gen.stop();w.remove()}}}
 $('#f').addEventListener('submit',function(e){e.preventDefault();if(busy)return;var text=$('#in').value.trim();if(!text&&!files.length)return;
   busy=true;$('#go').disabled=true;$('#f').classList.add('busy');$('#hero').style.display='none';document.body.classList.add('chat');
-  var m=bubble('me',T.you,text);if(files.length){var th=el('div','thumbs');files.forEach(function(f){var i=el('img');i.src=f.url;i.alt='';th.appendChild(i)});m.querySelector('.tx').appendChild(th)}log.appendChild(m);
+  tl.push({k:'u',t:text});var m=bubble('me',T.you,text);if(files.length){var th=el('div','thumbs');files.forEach(function(f){var i=el('img');i.src=f.url;i.alt='';th.appendChild(i)});m.querySelector('.tx').appendChild(th)}log.appendChild(m);
   var cs=consolle();log.appendChild(cs.el);cs.start();scroll();
   var body={sid:sid,lang:LG,text:text,images:files.map(function(f){return{type:f.type,data:f.data,logo:f.logo,ratio:f.ratio}})};
   files.forEach(function(f){if(f.logo)logoImg={type:f.type,data:f.data,ratio:f.ratio}});
@@ -471,13 +482,13 @@ $('#f').addEventListener('submit',function(e){e.preventDefault();if(busy)return;
   call(body).then(function(x){if(x.status!==410)return x;   // il servizio si è riavviato: rimandiamo la conversazione e si riparte da lì
       body.ripristino={storia:hist,proposte:lastP,logo:logoImg};return call(body)})
   .then(function(x){var j=x.j;if(j.sid)sid=j.sid;cs.stop();
-    if(j.rimappa)Object.keys(j.rimappa).forEach(function(o){if(shown[o]){shown[o].id=j.rimappa[o];shown[j.rimappa[o]]=shown[o]}lastP.forEach(function(q){if(q.id===o)q.id=j.rimappa[o]})});
+    if(j.rimappa)Object.keys(j.rimappa).forEach(function(o){if(shown[o]){shown[o].id=j.rimappa[o];shown[j.rimappa[o]]=shown[o]}lastP.forEach(function(q){if(q.id===o)q.id=j.rimappa[o]});tl.forEach(function(e){(e.l||[]).forEach(function(q){if(q.id===o)q.id=j.rimappa[o]})})});
     if(x.ok){hist.push({r:'u',t:text});if(j.reply)hist.push({r:'a',t:j.reply})}
     if(!x.ok){log.appendChild(bubble('ai err',T.ai,j.msg||T.err));rail(-1);return}
-    if(j.reply){var am=bubble('ai',T.ai);am.querySelector('.tx').innerHTML=j.reply.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');log.appendChild(am)}
-    if(j.proposte&&j.proposte.length){cards(j.proposte);rail(T.rail.length-1)}else rail(-1)})
+    if(j.reply){tl.push({k:'a',t:j.reply});var am=bubble('ai',T.ai);am.querySelector('.tx').innerHTML=j.reply.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');log.appendChild(am)}
+    if(j.proposte&&j.proposte.length){tl.push({k:'c',l:j.proposte.map(function(q){return{id:q.id,nome:q.nome,concetto:q.concetto,p:q.p}})});cards(j.proposte);rail(T.rail.length-1)}else rail(-1)})
   .catch(function(){cs.stop();rail(-1);log.appendChild(bubble('ai err',T.ai,T.err))})
-  .then(function(){busy=false;$('#go').disabled=false;$('#f').classList.remove('busy');scroll()})});
+  .then(function(){if(sid)persist();busy=false;$('#go').disabled=false;$('#f').classList.remove('busy');scroll()})});
 [].forEach.call(document.querySelectorAll('[data-close]'),function(b){b.onclick=function(){b.closest('dialog').close()}});
 [].forEach.call(document.querySelectorAll('dialog'),function(d){d.addEventListener('click',function(e){if(e.target===d)d.close()})});
 $('#pf').addEventListener('submit',function(e){e.preventDefault();if(!cur)return;var f=e.target,btn=$('#pgo'),msg=$('#pmsg');btn.disabled=true;msg.textContent=T.sending;

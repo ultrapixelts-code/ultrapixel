@@ -252,6 +252,28 @@ def foto(sid, pid):
     avvia_foto(sess, pid)
     return (jsonify(stato="corso"), 202) if pid in FOTO else (jsonify(stato="limite"), 404)
 
+# ——— accesso riservato a UltraPixel: elenco delle conversazioni salvate (per recuperare una proposta) ———
+ADMIN_SHA = os.environ.get("ADMIN_SHA", "db603ca7607c90b069f3427503cc827475c2970636a4b0060b905cc26a59f5b2")
+
+@app.get("/api/admin/sessioni")
+def admin_sessioni():
+    import hashlib
+    k = request.args.get("k", "")
+    if not k or hashlib.sha256(k.encode()).hexdigest() != ADMIN_SHA:
+        abort(404)
+    out = []
+    for fn in sorted(os.listdir(SESS_DIR) if SESS_DIR and os.path.isdir(SESS_DIR) else [], key=lambda f: -os.path.getmtime(os.path.join(SESS_DIR, f)))[:60]:
+        if not fn.endswith(".json"):
+            continue
+        try:
+            s = json.load(open(os.path.join(SESS_DIR, fn)))
+        except Exception:
+            continue
+        primo = next((b.get("text", "") for m in s.get("messages", []) if m.get("role") == "user" for b in (m["content"] if isinstance(m["content"], list) else [{"text": m["content"]}]) if isinstance(b, dict) and b.get("type", "text") == "text"), "")
+        out.append({"sid": fn[:-5], "agg": os.path.getmtime(os.path.join(SESS_DIR, fn)), "primo": primo[:300],
+                    "proposte": [{"pid": pid, "nome": v["p"].get("nome"), "t": v.get("t"), "foto": bool(_foto_path(pid) and os.path.exists(_foto_path(pid)))} for pid, v in s.get("proposte", {}).items()]})
+    return jsonify(out)
+
 def ip():
     return (request.headers.get("X-Forwarded-For") or request.remote_addr or "").split(",")[0].strip()
 
