@@ -410,7 +410,28 @@ def pacchetto():
         return jsonify(error="campi"), 400
     sess["inviate"] = sess.get("inviate", 0) + 1; salva(d.get("sid", ""), sess)
     nome = re.sub(r"[^a-z0-9]+", "-", str(pr["p"].get("nome", "proposta")).lower()).strip("-")[:40] or "proposta"
-    return jsonify(testo=riepilogo_testo(sess, pr), svg=pr["r"]["stampa"], filename=f"etichetta-{nome}.svg", endpoint=LEAD_ENDPOINT)
+    pid = d.get("pid", "")
+    for _ in range(45):   # la foto è ancora in preparazione: la aspettiamo un po', così arriva insieme al file
+        if (FOTO.get(pid) or {}).get("stato") != "corso":
+            break
+        time.sleep(2)
+    jpg = (FOTO.get(pid) or {}).get("jpg")
+    if not jpg and _foto_path(pid) and os.path.exists(_foto_path(pid)):
+        jpg = open(_foto_path(pid), "rb").read()
+    import zipfile
+    z = io.BytesIO()
+    with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr(f"etichetta-{nome}.svg", pr["r"]["stampa"])
+        if jpg:
+            zf.writestr(f"rendering-{nome}.jpg", jpg)
+        try:
+            zf.writestr(f"anteprima-contenitore-{nome}.png", _png(pr["r"]["contenitore"], width=800))
+            zf.writestr(f"anteprima-etichetta-{nome}.png", _png(pr["r"]["piatta"], width=1200))
+        except Exception as ex:
+            app.logger.error("anteprime zip: %s", ex)
+    testo = riepilogo_testo(sess, pr) + "\n\nNello ZIP: file di stampa (SVG a livelli)" + (", rendering realistico visto dal cliente (JPG)" if jpg else "") + ", anteprime PNG."
+    return jsonify(testo=testo, zip=base64.b64encode(z.getvalue()).decode(), zipname=f"ultrapixel-{nome}.zip",
+                   svg=pr["r"]["stampa"], filename=f"etichetta-{nome}.svg", endpoint=LEAD_ENDPOINT)
 
 def riepilogo_testo(sess, pr):
     brief = []

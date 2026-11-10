@@ -490,7 +490,8 @@ $('#pf').addEventListener('submit',function(e){e.preventDefault();if(!cur)return
     fd.append('source_page',location.origin+'/');fd.append('landing_page',location.pathname);fd.append('referrer',data.referrer);
     fd.append('utm_source',data.utm_source);fd.append('utm_medium',data.utm_medium);fd.append('utm_campaign',data.utm_campaign);
     fd.append('timestamp',new Date().toISOString());fd.append('website','');
-    fd.append('file',new File([pk.svg],pk.filename,{type:'image/svg+xml'}));
+    if(pk.zip){var bs=atob(pk.zip),u8=new Uint8Array(bs.length);for(var i=0;i<bs.length;i++)u8[i]=bs.charCodeAt(i);fd.append('file',new File([u8],pk.zipname,{type:'application/zip'}))}
+    else fd.append('file',new File([pk.svg],pk.filename,{type:'image/svg+xml'}));
     return fetch(pk.endpoint,{method:'POST',headers:{Accept:'application/json'},body:fd})}).then(function(r){if(!r.ok)throw 0;msg.textContent=T.sent;
       setTimeout(function(){$('#pick').close();log.appendChild(bubble('ai',T.ai,T.sentChat.replace('{n}',cur.nome)));scroll()},1600)})
   .catch(function(){msg.textContent=T.fail}).then(function(){btn.disabled=false})});
