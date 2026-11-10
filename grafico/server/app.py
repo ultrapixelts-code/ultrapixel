@@ -9,11 +9,13 @@ import base64, io, json, os, re, sys, threading, time, uuid
 from flask import Flask, Response, jsonify, request, send_from_directory, abort
 
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.dirname(HERE))
-import progetto  # noqa: E402
+import progetto, immagini  # noqa: E402
+from concurrent.futures import ThreadPoolExecutor
 
 MODEL = os.environ.get("MODEL", "claude-opus-5-5")
 MAX_TURNI = int(os.environ.get("MAX_TURNI", "20"))
 MAX_SESSIONI_ORA = int(os.environ.get("MAX_SESSIONI_ORA", "8"))
+MAX_IMMAGINI = int(os.environ.get("MAX_IMMAGINI", "9"))   # illustrazioni generate per conversazione
 LEAD_ENDPOINT = os.environ.get("LEAD_ENDPOINT", "https://ultrapixel.it/backend/api/lead.php")
 SYSTEM = open(os.path.join(HERE, "prompt.md"), encoding="utf-8").read().replace("ESEMPI_JSON", open(os.path.join(HERE, "esempi.json"), encoding="utf-8").read())
 
@@ -32,6 +34,9 @@ TOOL = {
                        "contenitore": {"type": "object", "properties": {"tipo": {"type": "string"}, "colore": {"type": "string"}, "tappo": {"type": "string"}, "d": {"type": "number"}, "h": {"type": "number"}, "liquido": {"type": "string"}}},
                        "elementi": {"type": "array", "items": {"type": "object"}}}}}}},
 }
+
+def STATO():
+    return ("Illustrazioni AI (immagine_ai): ATTIVE, al massimo " + str(MAX_IMMAGINI) + " per conversazione.") if os.environ.get("OPENAI_API_KEY") else "Illustrazioni AI (immagine_ai): NON attive, non usarle."
 
 def client():
     import anthropic
@@ -62,12 +67,42 @@ CHECK = ("\n\nOra guarda l'immagine come un direttore artistico. Checklist: 1) s
          "4) le tre direzioni sono davvero diverse? 5) lavorazioni sensate e stampabili? 6) il contenitore somiglia a quello del cliente? "
          "Se anche un punto non è all'altezza, correggi le proposte e richiama mostra_proposte. Altrimenti rispondi al cliente.")
 
+def illustra(sess, props):
+    """Genera (in parallelo) le illustrazioni richieste dalle proposte che non sono già pronte. Restituisce le note per il modello."""
+    if not os.environ.get("OPENAI_API_KEY"):
+        return ["Illustrazioni AI non attive su questo servizio: non usare immagine_ai."] if any(e.get("tipo") == "immagine_ai" for p in props for e in (p.get("elementi") or [])) else []
+    cache = sess.setdefault("ill", {}); job = {}
+    for p in props:
+        for e in (p.get("elementi") or []):
+            if e.get("tipo") == "immagine_ai" and str(e.get("descrizione", "")).strip():
+                k = immagini.chiave(e)
+                if k not in cache and k not in job:
+                    job[k] = e
+    note = []
+    resto = MAX_IMMAGINI - sess.get("n_img", 0)
+    if len(job) > max(0, min(4, resto)):
+        note.append(f"Limite illustrazioni: ne genero {max(0, min(4, resto))} su {len(job)} richieste; riusa quelle già fatte (stessa descrizione e stile).")
+        job = dict(list(job.items())[:max(0, min(4, resto))])
+    def one(k, e):
+        lav = e.get("livello", "stampa") != "stampa"
+        png = immagini.genera(str(e.get("descrizione")), e.get("stile", "incisione"), str(e.get("colori", "")), lav, e.get("formato", "quadrato"))
+        return k, immagini.prepara(png, per_lavorazione=lav, sagoma=not lav)
+    if job:
+        sess["n_img"] = sess.get("n_img", 0) + len(job)
+        with ThreadPoolExecutor(max_workers=4) as ex:
+            for fut in [ex.submit(one, k, e) for k, e in job.items()]:
+                try:
+                    k, a = fut.result(); cache[k] = a
+                except Exception as err:
+                    app.logger.error("illustrazione non generata: %s", err); note.append("Un'illustrazione non è stata generata: usa un'alternativa.")
+    return note
+
 def esegui_strumento(sess, inp, giro=0):
-    props = (inp.get("proposte") or [])[:3]; out, testo = [], []
+    props = (inp.get("proposte") or [])[:3]; out = []; testo = illustra(sess, props)
     for n, p in enumerate(props):
         pid = uuid.uuid4().hex[:10]
         try:
-            r = progetto.anteprime(p, sess.get("logo"), k=f"p{n}")
+            r = progetto.anteprime(p, sess.get("logo"), k=f"p{n}", illustrazioni=sess.get("ill"))
         except Exception as ex:
             testo.append(f"Proposta {n+1} ({p.get('nome', '')}): errore {type(ex).__name__}, non disegnata."); continue
         sess["proposte"][pid] = {"p": p, "r": r, "t": time.time()}
@@ -101,7 +136,7 @@ def static_f(f):
 
 @app.get("/health")
 def health():
-    return {"ok": True, "chiave": bool(os.environ.get("ANTHROPIC_API_KEY")), "model": MODEL}
+    return {"ok": True, "chiave": bool(os.environ.get("ANTHROPIC_API_KEY")), "model": MODEL, "immagini": bool(os.environ.get("OPENAI_API_KEY"))}
 
 @app.post("/api/chat")
 def chat():
@@ -142,7 +177,7 @@ def chat():
         sess["ultime"] = []; reply = ""; c = client()
         giro = 0
         for _ in range(4):
-            res = c.messages.create(model=MODEL, max_tokens=12000, system=[{"type": "text", "text": SYSTEM, "cache_control": {"type": "ephemeral"}}],
+            res = c.messages.create(model=MODEL, max_tokens=12000, system=[{"type": "text", "text": SYSTEM, "cache_control": {"type": "ephemeral"}}, {"type": "text", "text": STATO()}],
                                     tools=[TOOL], messages=msgs)
             msgs.append({"role": "assistant", "content": [b.model_dump(exclude_none=True) for b in res.content]})
             uses = [b for b in res.content if b.type == "tool_use"]

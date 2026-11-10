@@ -47,7 +47,7 @@ def _put(L, livelli, svg_fill, colore):
     for lv in livelli:
         L.add(lv, svg_fill.replace("FILL", f' fill="{colore}"' if lv == "stampa" else ""))
 
-def costruisci(p, logo=None):
+def costruisci(p, logo=None, illustrazioni=None):
     """p: dict proposta. logo: (data_url, rapporto w/h) o None. Restituisce (Label, avvisi, contenitore_kwargs)."""
     fm = p.get("formato") or {}; W = num(fm.get("w"), 20, 300, 90); H = num(fm.get("h"), 20, 300, 120)
     shape = fm.get("forma") if fm.get("forma") in FORME else "round"
@@ -131,6 +131,22 @@ def costruisci(p, logo=None):
                 for l_ in lv:
                     L.add(l_, g if l_ == "stampa" else re.sub(r' fill="#[0-9a-fA-F]+"', "", g))
                 scatole.append((i, "disegno", bx, by, bx + bw, by + bh))
+            elif t == "immagine_ai":   # illustrazione generata dal modello immagini (vedi immagini.py), già pronta in illustrazioni
+                import immagini
+                a = (illustrazioni or {}).get(immagini.chiave(el))
+                if not a:
+                    avvisi.append(f"elemento {i}: illustrazione non disponibile (limite raggiunto o generazione non riuscita): usa un'altra soluzione"); continue
+                bx, by, bw, bh = [num(v, -5, 320, d) for v, d in zip((el.get("box") or [W * .2, H * .2, W * .6, H * .4])[:4], (W * .2, H * .2, W * .6, H * .4))]
+                ratio = a["ratio"]; lw, lh = (bw, bw / ratio) if bw / ratio <= bh else (bh * ratio, bh); x, y = bx + (bw - lw) / 2, by + (bh - lh) / 2
+                if lv[0] == "stampa":
+                    L.add("stampa", f'<image href="{a["png"]}" x="{f2(x)}" y="{f2(y)}" width="{f2(lw)}" height="{f2(lh)}" preserveAspectRatio="xMidYMid meet"/>')
+                    if "rilievo" in lv[1:] and a.get("sagoma"):
+                        d, pw, ph = a["sagoma"]; L.add("rilievo", place(f'<path d="{d}" fill-rule="evenodd"/>', x, y, lw, lh, (0, 0, pw, ph)))
+                elif a.get("vettore"):
+                    d, pw, ph = a["vettore"]
+                    for l_ in lv:
+                        L.add(l_, place(f'<path d="{d}" fill-rule="evenodd"/>', x, y, lw, lh, (0, 0, pw, ph)))
+                scatole.append((i, "disegno", x, y, x + lw, y + lh))
             elif t == "logo":
                 if not logo:
                     avvisi.append(f"elemento {i}: il cliente non ha caricato un logo (usa un monogramma o il nome in testo)")
@@ -200,9 +216,9 @@ def costruisci(p, logo=None):
         avvisi.append(f"formato: {W:.0f} mm di larghezza coprono più di metà del contenitore (Ø {kw['d']:.0f} mm)")
     return L, avvisi[:30], kw
 
-def anteprime(p, logo=None, k="P"):
+def anteprime(p, logo=None, k="P", illustrazioni=None):
     """{'contenitore': svg, 'piatta': svg, 'stampa': svg file, 'spec': [...], 'avvisi': [...]}"""
-    L, avvisi, kw = costruisci(p, logo)
+    L, avvisi, kw = costruisci(p, logo, illustrazioni)
     tipo = kw.pop("tipo")
     if tipo in ("bordolese", "borgognotta", "champagnotta") and kw.get("tappo") in ("disco", "pompa", "coperchio"):
         kw["tappo"] = None

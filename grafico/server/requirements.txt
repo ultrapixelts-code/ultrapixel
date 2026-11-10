@@ -3,3 +3,5 @@ gunicorn==22.0.0
 anthropic>=0.40
 resvg-py>=0.1.5
 pillow>=10
+numpy>=1.26
+potracer>=0.0.4
