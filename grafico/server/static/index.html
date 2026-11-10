@@ -187,17 +187,9 @@ $('#f').addEventListener('submit',function(e){e.preventDefault();if(busy)return;
 [].forEach.call(document.querySelectorAll('[data-close]'),function(b){b.onclick=function(){b.closest('dialog').close()}});
 [].forEach.call(document.querySelectorAll('dialog'),function(d){d.addEventListener('click',function(e){if(e.target===d)d.close()})});
 $('#pf').addEventListener('submit',function(e){e.preventDefault();if(!cur)return;var f=e.target,btn=$('#pgo'),msg=$('#pmsg');btn.disabled=true;msg.textContent=T.sending;
-  var q=new URLSearchParams(location.search);
-  Promise.all([fetch('/api/riepilogo/'+sid+'/'+cur.id).then(function(r){return r.json()}),fetch(url(cur.id,'stampa')).then(function(r){return r.blob()})]).then(function(a){
-    var rp=a[0],fd=new FormData();
-    ['name','company','email','country'].forEach(function(k){fd.append(k,f.elements[k].value.trim())});
-    fd.append('sector','other');fd.append('request_type','label-design-ai');fd.append('lang',document.documentElement.lang);
-    fd.append('message',rp.testo+'\n\nQuantità: '+f.elements.qty.value+(f.elements.phone.value?'\nTelefono: '+f.elements.phone.value:'')+(f.elements.notes.value?'\nNote: '+f.elements.notes.value:''));
-    fd.append('source_page',location.href.split('?')[0]);fd.append('landing_page',location.pathname);fd.append('referrer',document.referrer||'');
-    fd.append('utm_source',q.get('utm_source')||'');fd.append('utm_medium',q.get('utm_medium')||'');fd.append('utm_campaign',q.get('utm_campaign')||'');
-    fd.append('timestamp',new Date().toISOString());fd.append('website','');
-    fd.append('file',new File([a[1]],'etichetta-'+cur.nome.toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,40)+'.svg',{type:'image/svg+xml'}));
-    return fetch(rp.endpoint,{method:'POST',headers:{Accept:'application/json'},body:fd})}).then(function(r){if(!r.ok)throw 0;msg.textContent=T.sent;
+  var q=new URLSearchParams(location.search),data={sid:sid,pid:cur.id,lang:document.documentElement.lang,referrer:document.referrer||'',utm_source:q.get('utm_source')||'',utm_medium:q.get('utm_medium')||'',utm_campaign:q.get('utm_campaign')||''};
+  ['name','company','email','country','qty','phone','notes'].forEach(function(k){data[k]=f.elements[k].value.trim()});
+  fetch('/api/invia',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).then(function(r){if(!r.ok)throw 0;msg.textContent=T.sent;
       setTimeout(function(){$('#pick').close();log.appendChild(el('div','msg ai',T.sentChat.replace('{n}',cur.nome)));scroll()},1600)})
   .catch(function(){msg.textContent=T.fail}).then(function(){btn.disabled=false})});
 })();

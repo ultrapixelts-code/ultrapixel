@@ -172,19 +172,46 @@ def chat():
 @app.get("/api/file/<sid>/<pid>/<kind>.svg")
 def file(sid, pid, kind):
     sess = S.get(sid); pr = sess and sess["proposte"].get(pid)
-    if not pr or kind not in ("contenitore", "piatta", "stampa"):
+    if not pr or kind not in ("contenitore", "piatta"):   # il file di stampa non si scarica: va solo a UltraPixel
         abort(404)
-    headers = {"Cache-Control": "private, max-age=3600"}
-    if kind == "stampa":
-        headers["Content-Disposition"] = f'attachment; filename="etichetta-{re.sub(r"[^a-z0-9]+", "-", pr["p"].get("nome", "proposta").lower())[:40]}.svg"'
-    return Response(pr["r"][kind], mimetype="image/svg+xml", headers=headers)
+    return Response(pr["r"][kind], mimetype="image/svg+xml", headers={"Cache-Control": "private, max-age=3600"})
 
-@app.get("/api/riepilogo/<sid>/<pid>")
-def riepilogo(sid, pid):
-    """Testo che accompagna la richiesta: proposta scelta, specifica e brief del cliente."""
-    sess = S.get(sid); pr = sess and sess["proposte"].get(pid)
+SELF_ORIGIN = os.environ.get("SELF_ORIGIN", "https://ultrapixel-grafico.onrender.com")
+
+@app.post("/api/invia")
+def invia():
+    """Il cliente sceglie una proposta: il server manda a UltraPixel (lead.php -> info@) dati, riepilogo e file di stampa."""
+    import urllib.request
+    d = request.get_json(force=True, silent=True) or {}
+    sess = S.get(d.get("sid", "")); pr = sess and sess["proposte"].get(d.get("pid", ""))
     if not pr:
-        abort(404)
+        return jsonify(error="sessione", msg="La conversazione è scaduta: ricarica la pagina."), 404
+    f = {k: str(d.get(k, "")).strip()[:300] for k in ("name", "company", "email", "country", "qty", "phone", "notes", "lang", "utm_source", "utm_medium", "utm_campaign", "referrer")}
+    if not f["name"] or not f["company"] or not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", f["email"]):
+        return jsonify(error="campi"), 400
+    if sess.get("inviate", 0) >= 3:
+        return jsonify(error="limite", msg="Hai già inviato le tue scelte: ti rispondiamo presto."), 429
+    testo = riepilogo_testo(sess, pr) + f"\n\nQuantità: {f['qty']}" + (f"\nTelefono: {f['phone']}" if f["phone"] else "") + (f"\nNote: {f['notes'][:1500]}" if f["notes"] else "")
+    fields = {"name": f["name"], "company": f["company"], "email": f["email"], "country": f["country"], "sector": "other", "request_type": "label-design-ai",
+              "message": testo[:4900], "lang": f["lang"] or "it", "source_page": SELF_ORIGIN + "/", "landing_page": "/", "referrer": f["referrer"],
+              "utm_source": f["utm_source"], "utm_medium": f["utm_medium"], "utm_campaign": f["utm_campaign"], "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "website": ""}
+    b = uuid.uuid4().hex; body = b""
+    for k, v in fields.items():
+        body += f'--{b}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode()
+    nome = re.sub(r"[^a-z0-9]+", "-", str(pr["p"].get("nome", "proposta")).lower()).strip("-")[:40] or "proposta"
+    body += (f'--{b}\r\nContent-Disposition: form-data; name="file"; filename="etichetta-{nome}.svg"\r\nContent-Type: image/svg+xml\r\n\r\n').encode() + pr["r"]["stampa"].encode() + f"\r\n--{b}--\r\n".encode()
+    req = urllib.request.Request(LEAD_ENDPOINT, data=body, method="POST", headers={"Content-Type": f"multipart/form-data; boundary={b}", "Origin": SELF_ORIGIN, "Accept": "application/json", "User-Agent": "UltraPixel-grafico"})
+    try:
+        with urllib.request.urlopen(req, timeout=40) as r:
+            ok = r.status == 200
+    except Exception as ex:
+        app.logger.error("invio lead fallito: %s", ex); ok = False
+    if not ok:
+        return jsonify(error="invio", msg="Invio non riuscito. Riprova o scrivici a info@ultrapixel.it."), 502
+    sess["inviate"] = sess.get("inviate", 0) + 1
+    return jsonify(ok=True)
+
+def riepilogo_testo(sess, pr):
     brief = []
     for m in sess["messages"]:
         if m["role"] == "user" and isinstance(m["content"], list):
@@ -194,7 +221,7 @@ def riepilogo(sid, pid):
     p = pr["p"]
     lines = ["[Grafico AI dal sito] Proposta scelta: " + str(p.get("nome", "")), "Concetto: " + str(p.get("concetto", "")), ""] + pr["r"]["spec"] + \
             ["Contenitore: " + json.dumps(p.get("contenitore", {}), ensure_ascii=False), "Logo caricato: " + ("sì" if sess.get("logo") else "no"), "", "Messaggi del cliente:"] + brief[:12]
-    return jsonify(testo="\n".join(lines)[:4800], endpoint=LEAD_ENDPOINT)
+    return "\n".join(lines)[:4000]
 
 if __name__ == "__main__":
     app.run(port=int(os.environ.get("PORT", 8080)), debug=False)
