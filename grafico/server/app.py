@@ -108,7 +108,10 @@ def esegui_strumento(sess, inp, giro=0):
         sess["proposte"][pid] = {"p": p, "r": r, "t": time.time()}
         out.append({"id": pid, "nome": str(p.get("nome", ""))[:60], "concetto": str(p.get("concetto", ""))[:300], "spec": r["spec"]})
         testo.append(f"Proposta {n+1} «{p.get('nome', '')}»: " + ("avvisi: " + "; ".join(r["avvisi"]) if r["avvisi"] else "nessun avviso") + ".")
-    sess["ultime"] = out
+    # una correzione può ridisegnare solo alcune proposte: le altre di questo turno restano visibili
+    nuovi = {o["nome"] for o in out}
+    sess["ultime"] = [o for o in sess.get("ultime", []) if o["nome"] not in nuovi] + out
+    sess["ultime"] = sess["ultime"][-3:]
     content = [{"type": "text", "text": ("\n".join(testo) or "Nessuna proposta disegnata.") + (CHECK if giro == 0 else "\n\nUltima revisione possibile: correggi solo errori evidenti, poi rispondi.")}]
     img = png_controllo([sess["proposte"][o["id"]]["r"] for o in out]) if out else None
     if img:
