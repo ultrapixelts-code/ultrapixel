@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>UltraPixel – Studio etichette</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F4F4F0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--cer:#F4F4F0;--white:#fff;--ink:#101214;--gra:#34383B;--tgt:#686D71;--hair:rgba(167,173,176,.5);--spec:linear-gradient(90deg,#22B8D6,#6F5BE8,#D9438F,#EBA43A);
+--body:"Archivo","Helvetica Neue",Arial,sans-serif;--mono:"DM Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cer);color:var(--ink);font:400 16px/1.5 var(--body)}
+button,input,textarea,select{font:inherit;color:inherit}
+.mi{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--tgt)}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(16px,4vw,48px);background:rgba(244,244,240,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--hair)}
+.brand{display:flex;align-items:baseline;gap:12px;text-decoration:none;color:var(--ink)}
+.brand b{font-weight:700;font-stretch:90%;letter-spacing:-.02em;font-size:20px}
+.brand i{display:block;width:44px;height:2px;background:var(--spec);align-self:center}
+main{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,48px) 200px}
+.hero{padding:clamp(40px,8vw,96px) 0 clamp(20px,4vw,36px);max-width:860px}
+.hero h1{margin:14px 0 16px;font-weight:600;font-stretch:80%;letter-spacing:-.035em;line-height:.95;font-size:clamp(40px,7.5vw,92px)}
+.hero h1 span{display:block;color:#858A8E}
+.hero p{margin:0;font-size:clamp(17px,1.6vw,20px);color:var(--gra);max-width:640px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chip{border:1px solid var(--hair);background:var(--white);padding:9px 14px;border-radius:999px;cursor:pointer;font-size:14px}
+.chip:hover{border-color:var(--ink)}
+.hero .note{margin-top:22px}
+.log{display:flex;flex-direction:column;gap:22px;padding-top:10px}
+.msg{max-width:760px;font-size:16.5px;line-height:1.55;white-space:pre-wrap}
+.msg.me{align-self:flex-end;background:var(--ink);color:var(--cer);padding:12px 16px;border-radius:18px 18px 4px 18px;max-width:min(620px,90%)}
+.msg.ai{padding-left:18px;border-left:2px solid transparent;border-image:var(--spec) 1}
+.msg .thumbs{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.msg .thumbs img{height:56px;border-radius:6px;background:#fff}
+.err{color:#9b1c1c}
+.props{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.card{background:var(--white);border:1px solid var(--hair);display:flex;flex-direction:column}
+.card .vw{position:relative;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;background:radial-gradient(120% 90% at 50% 20%,#fff 0,#EEECE6 75%);overflow:hidden;cursor:zoom-in}
+.card .vw img{width:100%;height:100%;object-fit:contain;padding:12px}
+.card .tb{display:flex;border-bottom:1px solid var(--hair)}
+.card .tb button{flex:1;background:none;border:0;padding:10px;font:400 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--tgt);cursor:pointer}
+.card .tb button[aria-pressed=true]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--ink)}
+.card .bd{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{margin:0;font-weight:600;font-size:20px;letter-spacing:-.01em}
+.card p{margin:0;color:var(--gra);font-size:14.5px}
+.card .act{display:flex;gap:8px;margin-top:auto;padding-top:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--ink);background:var(--ink);color:var(--cer);padding:11px 16px;border-radius:999px;font:500 11.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.wait{display:flex;align-items:center;gap:12px;color:var(--gra)}
+.wait i{width:38px;height:2px;background:var(--spec);background-size:200% 100%;animation:sl 1.2s linear infinite}@keyframes sl{to{background-position:-200% 0}}
+.note{font-size:13px;color:var(--tgt);max-width:760px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:6;background:linear-gradient(transparent,var(--cer) 30%);padding:24px clamp(16px,4vw,48px) calc(14px + env(safe-area-inset-bottom))}
+.box{max-width:1080px;margin:0 auto;background:var(--white);border:1px solid var(--ink);border-radius:18px;padding:10px 10px 10px 16px;display:flex;flex-direction:column;gap:8px;box-shadow:0 12px 40px -18px rgba(16,18,20,.35)}
+.row{display:flex;gap:10px;align-items:flex-end}
+.box textarea{flex:1;border:0;outline:0;resize:none;min-height:26px;max-height:180px;padding:8px 0;background:transparent;font-size:16px}
+.ico{flex:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--hair);background:#fff;display:grid;place-items:center;cursor:pointer}
+.ico svg{width:20px;height:20px}
+.send{background:var(--ink);border-color:var(--ink);color:var(--cer)}
+.att{display:flex;gap:8px;flex-wrap:wrap}.att:empty{display:none}
+.att figure{margin:0;position:relative;display:flex;flex-direction:column;align-items:center;gap:4px}
+.att img{height:62px;width:62px;object-fit:cover;border-radius:8px;border:1px solid var(--hair);background:#fafafa}
+.att label{font-size:11px;display:flex;gap:4px;align-items:center;color:var(--gra)}
+.att .x{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;border:0;background:var(--ink);color:#fff;font-size:12px;cursor:pointer}
+dialog{border:0;padding:0;max-width:min(980px,96vw);width:100%;background:var(--cer);border-radius:6px}
+dialog::backdrop{background:rgba(16,18,20,.55)}
+.dlg{padding:clamp(18px,3vw,32px);display:grid;gap:18px}
+.dlg h2{margin:0;font-weight:600;font-stretch:85%;font-size:28px;letter-spacing:-.02em}
+.zoom{display:grid;grid-template-columns:1fr 1fr;gap:12px}.zoom img{width:100%;max-height:70vh;object-fit:contain;background:#fff;border:1px solid var(--hair)}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
+.form label{display:grid;gap:6px;font:400 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gra)}
+.form input,.form textarea{border:0;border-bottom:1px solid var(--ink);background:transparent;padding:8px 0;font:400 16px var(--body);text-transform:none;letter-spacing:0;outline:0;color:var(--ink)}
+.form .full{grid-column:1/-1}
+.form textarea{border:1px solid var(--hair);padding:10px;min-height:80px}
+.close{position:absolute;right:12px;top:10px;border:0;background:none;font-size:26px;cursor:pointer;color:var(--ink)}
+@media(max-width:640px){.zoom,.form{grid-template-columns:1fr}.props{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><a class="brand" href="https://ultrapixel.it/"><b>UltraPixel</b><i></i><span class="mi" data-t="studio"></span></a><span class="mi" data-t="beta"></span></header>
+<main>
+  <section class="hero" id="hero">
+    <span class="mi" data-t="eyebrow"></span>
+    <h1><span data-t="h1a" style="color:inherit"></span><span data-t="h1b"></span></h1>
+    <p data-t="lead"></p>
+    <div class="chips" id="chips"></div>
+  </section>
+  <div class="log" id="log" aria-live="polite"></div>
+</main>
+<div class="bar">
+  <form class="box" id="f">
+    <div class="att" id="att"></div>
+    <div class="row">
+      <label class="ico" title=""><input type="file" id="file" accept="image/*" multiple hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 12.5 12.6 21a5.5 5.5 0 0 1-7.8-7.8l8.9-8.9a3.7 3.7 0 0 1 5.2 5.2l-8.9 8.9a1.8 1.8 0 0 1-2.6-2.6l8.2-8.2"/></svg><span hidden data-t="attach"></span></label>
+      <textarea id="in" rows="1" maxlength="3000"></textarea>
+      <button class="ico send" id="go" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span hidden data-t="sendBtn"></span></button>
+    </div>
+  </form>
+</div>
+<dialog id="zoom"><div class="dlg" style="position:relative"><button class="close" data-close aria-label="×">×</button><h2 id="zt"></h2><div class="zoom"><img id="z1" alt=""><img id="z2" alt=""></div></div></dialog>
+<dialog id="pick"><div class="dlg" style="position:relative"><button class="close" data-close aria-label="×">×</button>
+  <span class="mi" data-t="pickEyebrow"></span><h2 id="pt"></h2><p class="note" data-t="pickNote" style="margin:0"></p>
+  <form class="form" id="pf">
+    <label><span data-t="fName"></span><input name="name" autocomplete="name" required></label>
+    <label><span data-t="fCompany"></span><input name="company" autocomplete="organization" required></label>
+    <label><span data-t="fEmail"></span><input name="email" type="email" autocomplete="email" required></label>
+    <label><span data-t="fCountry"></span><input name="country" autocomplete="country-name" required></label>
+    <label><span data-t="fQty"></span><input name="qty" type="number" min="1" inputmode="numeric" required></label>
+    <label><span data-t="fPhone"></span><input name="phone" type="tel" autocomplete="tel"></label>
+    <label class="full"><span data-t="fNotes"></span><textarea name="notes"></textarea></label>
+    <div class="full"><button class="btn" type="submit" id="pgo" data-t="fSend"></button> <span class="note" id="pmsg"></span></div>
+  </form>
+</div></dialog>
+<script>
+(function(){
+var IT=/^it/i.test(navigator.language||''), T=IT?{
+ studio:'Studio etichette',beta:'Beta · AI',eyebrow:'Il tuo grafico, adesso',h1a:'Raccontaci il prodotto.',h1b:'Ti disegniamo l’etichetta.',
+ lead:'Scrivi come lo diresti a un grafico: cosa vendi, che contenitore usi, che stile ti piace. Carica foto del flacone, il logo o una bozza. In un paio di minuti vedi le proposte sul tuo contenitore.',
+ chips:['Etichetta per il mio primo vino, bordolese, stile classico con oro','Body wash al rosmarino in flacone ambrato 250 ml, minimal con rilievo','Barattolo di miele di acacia da 500 g, artigianale','Olio extravergine in bottiglia da 500 ml, moderno'],
+ ph:'Descrivi il prodotto e l’etichetta che vorresti…',attach:'Allega foto o logo',sendBtn:'Invia',isLogo:'logo',
+ wait:['Leggo il brief…','Scelgo carta e lavorazioni…','Disegno le proposte…','Controllo l’impaginazione…'],
+ onBottle:'Sul contenitore',flat:'Etichetta',pick:'Scelgo questa',change:'Modifica',changeTxt:'Nella proposta «{n}» vorrei ',
+ note:'Proposte indicative create con l’intelligenza artificiale: prima della stampa ricevi da UltraPixel la bozza definitiva da approvare, con il prezzo.',
+ pickEyebrow:'Ultimo passo',pickNote:'Ti mandiamo prezzo e bozza di stampa definitiva. Il file di questa proposta arriva al nostro grafico insieme alla conversazione.',
+ fName:'Nome e cognome',fCompany:'Azienda',fEmail:'Email',fCountry:'Paese',fQty:'Quantità di etichette',fPhone:'Telefono (facoltativo)',fNotes:'Note (facoltativo)',fSend:'Invia a UltraPixel',
+ sending:'Invio in corso…',sent:'Ricevuto! Ti rispondiamo entro un giorno lavorativo con prezzo e bozza.',sentChat:'Hai inviato «{n}» a UltraPixel. Ti scriviamo entro un giorno lavorativo.',fail:'Invio non riuscito. Riprova o scrivici a info@ultrapixel.it.',
+ privacy:'I testi e le immagini che invii servono solo a preparare le proposte e sono elaborati da un servizio di intelligenza artificiale.',err:'Qualcosa non ha funzionato. Riprova tra poco.'
+}:{
+ studio:'Label studio',beta:'Beta · AI',eyebrow:'Your label designer, right now',h1a:'Tell us about your product.',h1b:'We design the label.',
+ lead:'Write it as you would to a designer: what you sell, which container, the style you like. Upload photos of the bottle, your logo or a sketch. In a couple of minutes you see the proposals on your own container.',
+ chips:['A label for my first wine, Bordeaux bottle, classic with gold','Rosemary body wash in a 250 ml amber bottle, minimal with embossing','A 500 g jar of acacia honey, artisanal','Extra virgin olive oil in a 500 ml bottle, modern'],
+ ph:'Describe your product and the label you have in mind…',attach:'Attach photos or logo',sendBtn:'Send',isLogo:'logo',
+ wait:['Reading your brief…','Choosing paper and finishes…','Drawing the proposals…','Checking the layout…'],
+ onBottle:'On the container',flat:'Label',pick:'I choose this',change:'Change',changeTxt:'In «{n}» I would like ',
+ note:'Indicative proposals made with artificial intelligence: before printing, UltraPixel sends you the final proof to approve, with the price.',
+ pickEyebrow:'Last step',pickNote:'We send you the price and the final print proof. The file of this proposal reaches our designer together with the conversation.',
+ fName:'Name',fCompany:'Company',fEmail:'Email',fCountry:'Country',fQty:'Number of labels',fPhone:'Phone (optional)',fNotes:'Notes (optional)',fSend:'Send to UltraPixel',
+ sending:'Sending…',sent:'Received! We reply within one working day with price and proof.',sentChat:'You sent «{n}» to UltraPixel. We will write to you within one working day.',fail:'Sending failed. Try again or write to info@ultrapixel.it.',
+ privacy:'The texts and images you send are used only to prepare the proposals and are processed by an artificial intelligence service.',err:'Something went wrong. Please try again shortly.'};
+document.documentElement.lang=IT?'it':'en';
+var $=function(s){return document.querySelector(s)};
+[].forEach.call(document.querySelectorAll('[data-t]'),function(e){e.textContent=T[e.getAttribute('data-t')]});
+$('#in').placeholder=T.ph;
+var sid='',busy=false,files=[],log=$('#log'),cur=null;
+T.chips.forEach(function(c){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=c;b.onclick=function(){$('#in').value=c;$('#in').focus();grow()};$('#chips').appendChild(b)});
+var priv=document.createElement('p');priv.className='note';priv.innerHTML=T.privacy+' <a href="https://ultrapixel.it/privacy/" target="_blank" rel="noopener">Privacy</a>';$('#hero').appendChild(priv);
+function grow(){var t=$('#in');t.style.height='auto';t.style.height=Math.min(180,t.scrollHeight)+'px'}
+$('#in').addEventListener('input',grow);
+$('#in').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();$('#f').requestSubmit()}});
+function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+function scroll(){window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})}
+// immagini: ridimensionate nel browser prima dell'invio
+function prep(file){return new Promise(function(ok,ko){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){
+  var max=1400,s=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);
+  var png=/png|webp|svg/.test(file.type),x=c.getContext('2d');if(!png){x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height)}x.drawImage(im,0,0,c.width,c.height);
+  var mt=png?'image/png':'image/jpeg',url=c.toDataURL(mt,.85);ok({type:mt,data:url.split(',')[1],url:url,ratio:im.width/im.height,logo:/logo/i.test(file.name)})};im.onerror=ko;im.src=fr.result};fr.onerror=ko;fr.readAsDataURL(file)})}
+$('#file').addEventListener('change',function(){var fs=[].slice.call(this.files).slice(0,4-files.length);this.value='';
+  Promise.all(fs.map(prep)).then(function(r){files=files.concat(r);drawAtt()}).catch(function(){})});
+function drawAtt(){var a=$('#att');a.innerHTML='';files.forEach(function(f,i){var fg=el('figure'),im=el('img');im.src=f.url;im.alt='';fg.appendChild(im);
+  var lb=el('label'),cb=el('input');cb.type='checkbox';cb.checked=!!f.logo;cb.onchange=function(){f.logo=cb.checked};lb.appendChild(cb);lb.appendChild(document.createTextNode(T.isLogo));fg.appendChild(lb);
+  var x=el('button','x','×');x.type='button';x.setAttribute('aria-label','×');x.onclick=function(){files.splice(i,1);drawAtt()};fg.appendChild(x);a.appendChild(fg)})}
+function url(pid,k){return '/api/file/'+sid+'/'+pid+'/'+k+'.svg'}
+function cards(list){var w=el('div','props');list.forEach(function(p){var c=el('article','card'),tb=el('div','tb'),vw=el('div','vw'),img=el('img');
+  img.src=url(p.id,'contenitore');img.alt=p.nome;vw.appendChild(img);
+  [['contenitore',T.onBottle],['piatta',T.flat]].forEach(function(t,i){var b=el('button',null,t[1]);b.type='button';b.setAttribute('aria-pressed',i===0);b.onclick=function(){img.src=url(p.id,t[0]);[].forEach.call(tb.children,function(x){x.setAttribute('aria-pressed',x===b)})};tb.appendChild(b)});
+  vw.onclick=function(){$('#zt').textContent=p.nome;$('#z1').src=url(p.id,'contenitore');$('#z2').src=url(p.id,'piatta');$('#zoom').showModal()};
+  var bd=el('div','bd');bd.appendChild(el('h3',null,p.nome));bd.appendChild(el('p',null,p.concetto));
+  var act=el('div','act'),b1=el('button','btn',T.pick),b2=el('button','btn ghost',T.change);b1.type=b2.type='button';
+  b1.onclick=function(){cur=p;$('#pt').textContent=p.nome;$('#pmsg').textContent='';$('#pick').showModal()};
+  b2.onclick=function(){$('#in').value=T.changeTxt.replace('{n}',p.nome);$('#in').focus();grow()};
+  act.appendChild(b1);act.appendChild(b2);bd.appendChild(act);c.appendChild(tb);c.appendChild(vw);c.appendChild(bd);w.appendChild(c)});
+  log.appendChild(w);log.appendChild(el('p','note',T.note))}
+$('#f').addEventListener('submit',function(e){e.preventDefault();if(busy)return;var text=$('#in').value.trim();if(!text&&!files.length)return;
+  busy=true;$('#go').disabled=true;$('#hero').style.display='none';
+  var m=el('div','msg me',text);if(files.length){var th=el('div','thumbs');files.forEach(function(f){var i=el('img');i.src=f.url;i.alt='';th.appendChild(i)});m.appendChild(th)}log.appendChild(m);
+  var wt=el('div','wait'),wi=el('i'),ws=el('span',null,T.wait[0]),k=0;wt.appendChild(wi);wt.appendChild(ws);log.appendChild(wt);scroll();
+  var tick=setInterval(function(){k=Math.min(T.wait.length-1,k+1);ws.textContent=T.wait[k]},9000);
+  var body={sid:sid,text:text,images:files.map(function(f){return{type:f.type,data:f.data,logo:f.logo,ratio:f.ratio}})};
+  $('#in').value='';grow();files=[];drawAtt();
+  fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})
+  .then(function(x){var j=x.j;if(j.sid)sid=j.sid;wt.remove();
+    if(!x.ok){log.appendChild(el('div','msg ai err',j.msg||T.err));return}
+    if(j.reply)log.appendChild(el('div','msg ai',j.reply));if(j.proposte&&j.proposte.length)cards(j.proposte)})
+  .catch(function(){wt.remove();log.appendChild(el('div','msg ai err',T.err))})
+  .then(function(){clearInterval(tick);busy=false;$('#go').disabled=false;scroll()})});
+[].forEach.call(document.querySelectorAll('[data-close]'),function(b){b.onclick=function(){b.closest('dialog').close()}});
+[].forEach.call(document.querySelectorAll('dialog'),function(d){d.addEventListener('click',function(e){if(e.target===d)d.close()})});
+$('#pf').addEventListener('submit',function(e){e.preventDefault();if(!cur)return;var f=e.target,btn=$('#pgo'),msg=$('#pmsg');btn.disabled=true;msg.textContent=T.sending;
+  var q=new URLSearchParams(location.search);
+  Promise.all([fetch('/api/riepilogo/'+sid+'/'+cur.id).then(function(r){return r.json()}),fetch(url(cur.id,'stampa')).then(function(r){return r.blob()})]).then(function(a){
+    var rp=a[0],fd=new FormData();
+    ['name','company','email','country'].forEach(function(k){fd.append(k,f.elements[k].value.trim())});
+    fd.append('sector','other');fd.append('request_type','label-design-ai');fd.append('lang',document.documentElement.lang);
+    fd.append('message',rp.testo+'\n\nQuantità: '+f.elements.qty.value+(f.elements.phone.value?'\nTelefono: '+f.elements.phone.value:'')+(f.elements.notes.value?'\nNote: '+f.elements.notes.value:''));
+    fd.append('source_page',location.href.split('?')[0]);fd.append('landing_page',location.pathname);fd.append('referrer',document.referrer||'');
+    fd.append('utm_source',q.get('utm_source')||'');fd.append('utm_medium',q.get('utm_medium')||'');fd.append('utm_campaign',q.get('utm_campaign')||'');
+    fd.append('timestamp',new Date().toISOString());fd.append('website','');
+    fd.append('file',new File([a[1]],'etichetta-'+cur.nome.toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,40)+'.svg',{type:'image/svg+xml'}));
+    return fetch(rp.endpoint,{method:'POST',headers:{Accept:'application/json'},body:fd})}).then(function(r){if(!r.ok)throw 0;msg.textContent=T.sent;
+      setTimeout(function(){$('#pick').close();log.appendChild(el('div','msg ai',T.sentChat.replace('{n}',cur.nome)));scroll()},1600)})
+  .catch(function(){msg.textContent=T.fail}).then(function(){btn.disabled=false})});
+})();
+</script>
+</body>
+</html>

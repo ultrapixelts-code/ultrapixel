@@ -34,8 +34,9 @@ def smooth(pts, close=True):
     return out + ("Z" if close else "")
 
 class Sprig:
-    def __init__(self, seed=3):
-        self.r = random.Random(seed)
+    def __init__(self, seed=3, foglia=1.0, larghezza=.13, fiori=True, frutti=False):
+        self.r = random.Random(seed); self.fl_len, self.fl_w, self.with_fl, self.with_fr = foglia, larghezza, fiori, frutti
+        self.fruit = []
         self.ink, self.hair, self.color, self.color2, self.tint, self.emb, self.calyx = [], [], [], [], [], [], []
 
     def leaf(self, P, d, L, W, side, bend=.18, tint=True):
@@ -117,11 +118,14 @@ class Sprig:
                 for side in ((1, -1) if i % 2 == 0 else (-1, 1)):   # opposite pairs
                     if r.random() < .12: continue
                     a = math.radians(34 - 22 * t + r.uniform(-8, 8))
-                    L = (12.5 - 8 * t) * r.uniform(.8, 1.1) * (.88 if bi else 1); W = L * .13
+                    L = (12.5 - 8 * t) * r.uniform(.8, 1.1) * (.88 if bi else 1) * self.fl_len; W = L * self.fl_w
                     if r.random() < .2: L *= .6
                     d = rot(tg, -a * side)
                     self.leaf(P, d, L, W, -side)
-                if .4 < t < .88 and i % 4 == 1 and r.random() < fl * .75:
+                if self.with_fr and .3 < t < .85 and i % 3 == 1 and r.random() < .6:
+                    side = 1 if i % 2 else -1; d = rot(tg, -math.radians(55) * side); fp = (P[0] + d[0]*2.6, P[1] + d[1]*2.6)
+                    self.fruit.append(f'M{f(fp[0]-1.5)} {f(fp[1])}a1.5 2.1 {f(math.degrees(math.atan2(d[1], d[0])) + 90)} 1 0 3 0a1.5 2.1 0 1 0 -3 0Z'); self.ink.append((self.fruit[-1], .2))
+                if self.with_fl and .4 < t < .88 and i % 4 == 1 and r.random() < fl * .75:
                     for k in range(r.choice((1, 1, 2))):
                         side = 1 if (i + k) % 2 else -1
                         d = rot(tg, -math.radians(r.uniform(35, 70)) * side)
@@ -134,12 +138,15 @@ class Sprig:
         return self
 
 
-def livelli(kind="full", seed=7, fiore="#9FAEEB", gola="#6C7BD0", inchiostro="#24302A", calice="#B9C3AE", sfalsa=True):
-    """Restituisce dict: tratto (linee), colore (fiori + calici, leggermente sfalsato come un acquerello), colore_piatto, masse (per il rilievo)."""
-    s = Sprig(seed).build(kind)
+def livelli(kind="full", seed=7, fiore="#9FAEEB", gola="#6C7BD0", inchiostro="#24302A", calice="#B9C3AE", sfalsa=True, pianta="rosmarino", frutto="#3F4A2A"):
+    """Restituisce dict: tratto (linee), colore (fiori/frutti + calici, leggermente sfalsato come un acquerello), colore_piatto, masse (per il rilievo).
+    pianta: rosmarino (foglie aghiformi, fiori), lavanda (foglie strette, fiori), olivo (foglie lanceolate, olive), timo (foglie piccole, fiori), alloro (foglie larghe)."""
+    P = {"rosmarino": dict(), "lavanda": dict(foglia=1.1, larghezza=.09), "olivo": dict(foglia=1.25, larghezza=.2, fiori=False, frutti=True),
+         "timo": dict(foglia=.5, larghezza=.3), "alloro": dict(foglia=1.5, larghezza=.3, fiori=False)}.get(pianta, {})
+    s = Sprig(seed, **P).build(kind)
     lines = "".join(f'<path d="{d}" stroke-width="{w}"/>' for d, w in s.ink + s.hair)
     off = ' transform="translate(.45 .35)"' if sfalsa else ""
     return {"tratto": f'<g fill="none" stroke="{inchiostro}" stroke-linecap="round" stroke-linejoin="round">{lines}</g>',
-            "colore": f'<g{off}><g fill="{fiore}">' + "".join(f'<path d="{d}"/>' for d in s.color) + f'</g><g fill="{gola}" opacity=".75">' + "".join(f'<path d="{d}"/>' for d in s.color2) + f'</g></g><g fill="{calice}">' + "".join(f'<path d="{d}"/>' for d in s.calyx) + '</g>',
-            "colore_piatto": f'<g fill="{fiore}">' + "".join(f'<path d="{d}"/>' for d in s.color + s.color2) + '</g>',
+            "colore": f'<g{off}><g fill="{fiore}">' + "".join(f'<path d="{d}"/>' for d in s.color) + f'</g><g fill="{gola}" opacity=".75">' + "".join(f'<path d="{d}"/>' for d in s.color2) + f'</g></g><g fill="{calice}">' + "".join(f'<path d="{d}"/>' for d in s.calyx) + '</g>' + (f'<g fill="{frutto}"{off}>' + "".join(f'<path d="{d}"/>' for d in s.fruit) + '</g>' if s.fruit else ""),
+            "colore_piatto": f'<g fill="{fiore}">' + "".join(f'<path d="{d}"/>' for d in s.color + s.color2) + '</g>' + (f'<g fill="{frutto}">' + "".join(f'<path d="{d}"/>' for d in s.fruit) + '</g>' if s.fruit else ""),
             "masse": "".join(f'<path d="{d}"/>' for d in s.emb)}
