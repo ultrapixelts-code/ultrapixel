@@ -8,4 +8,4 @@ COPY server/requirements.txt server/requirements.txt
 RUN pip install --no-cache-dir -r server/requirements.txt
 COPY . .
 ENV PYTHONUNBUFFERED=1
-CMD gunicorn --chdir server app:app --workers 1 --threads 8 --timeout 240 --bind 0.0.0.0:${PORT:-8080}
+CMD gunicorn --chdir server app:app --workers 1 --threads 8 --timeout 600 --bind 0.0.0.0:${PORT:-8080}

@@ -11,11 +11,11 @@ from flask import Flask, Response, jsonify, request, send_from_directory, abort
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.dirname(HERE))
 import progetto  # noqa: E402
 
-MODEL = os.environ.get("MODEL", "claude-sonnet-5-5")
+MODEL = os.environ.get("MODEL", "claude-opus-5-5")
 MAX_TURNI = int(os.environ.get("MAX_TURNI", "20"))
 MAX_SESSIONI_ORA = int(os.environ.get("MAX_SESSIONI_ORA", "8"))
 LEAD_ENDPOINT = os.environ.get("LEAD_ENDPOINT", "https://ultrapixel.it/backend/api/lead.php")
-SYSTEM = open(os.path.join(HERE, "prompt.md"), encoding="utf-8").read()
+SYSTEM = open(os.path.join(HERE, "prompt.md"), encoding="utf-8").read().replace("ESEMPI_JSON", open(os.path.join(HERE, "esempi.json"), encoding="utf-8").read())
 
 app = Flask(__name__, static_folder=None)
 app.config["MAX_CONTENT_LENGTH"] = 14 * 1024 * 1024
@@ -37,13 +37,13 @@ def client():
     import anthropic
     return anthropic.Anthropic()
 
-def png_controllo(items):
+def png_controllo(items):  # piatte grandi per poter giudicare i dettagli
     """Etichette piatte affiancate (e il contenitore della prima) in un PNG per lo sguardo del modello."""
     import resvg_py
     from PIL import Image
     ims = []
     for it in items:
-        for key, w in (("piatta", 520), ("contenitore", 300)):
+        for key, w in (("piatta", 640), ("contenitore", 300)):
             try:
                 ims.append(Image.open(io.BytesIO(bytes(resvg_py.svg_to_bytes(svg_string=it[key], width=w)))).convert("RGB"))
             except Exception:
@@ -53,11 +53,16 @@ def png_controllo(items):
     H = max(i.height for i in ims); out = Image.new("RGB", (sum(i.width for i in ims) + 16 * (len(ims) + 1), H + 32), (233, 231, 225)); x = 16
     for i in ims:
         out.paste(i, (x, 16 + H - i.height)); x += i.width + 16
-    if out.width > 2400:
-        out = out.resize((2400, int(out.height * 2400 / out.width)))
+    if out.width > 2800:
+        out = out.resize((2800, int(out.height * 2800 / out.width)))
     b = io.BytesIO(); out.save(b, "JPEG", quality=80); return base64.b64encode(b.getvalue()).decode()
 
-def esegui_strumento(sess, inp):
+CHECK = ("\n\nOra guarda l'immagine come un direttore artistico. Checklist: 1) sembra il lavoro di un grafico professionista o una clipart? "
+         "2) gerarchia chiara (marchio, prodotto, diciture) e corpi leggibili? 3) allineamenti e spazi coerenti, niente vuoti casuali o elementi schiacciati? "
+         "4) le tre direzioni sono davvero diverse? 5) lavorazioni sensate e stampabili? 6) il contenitore somiglia a quello del cliente? "
+         "Se anche un punto non è all'altezza, correggi le proposte e richiama mostra_proposte. Altrimenti rispondi al cliente.")
+
+def esegui_strumento(sess, inp, giro=0):
     props = (inp.get("proposte") or [])[:3]; out, testo = [], []
     for n, p in enumerate(props):
         pid = uuid.uuid4().hex[:10]
@@ -69,7 +74,7 @@ def esegui_strumento(sess, inp):
         out.append({"id": pid, "nome": str(p.get("nome", ""))[:60], "concetto": str(p.get("concetto", ""))[:300], "spec": r["spec"]})
         testo.append(f"Proposta {n+1} «{p.get('nome', '')}»: " + ("avvisi: " + "; ".join(r["avvisi"]) if r["avvisi"] else "nessun avviso") + ".")
     sess["ultime"] = out
-    content = [{"type": "text", "text": "\n".join(testo) or "Nessuna proposta disegnata."}]
+    content = [{"type": "text", "text": ("\n".join(testo) or "Nessuna proposta disegnata.") + (CHECK if giro == 0 else "\n\nUltima revisione possibile: correggi solo errori evidenti, poi rispondi.")}]
     img = png_controllo([sess["proposte"][o["id"]]["r"] for o in out]) if out else None
     if img:
         content.append({"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": img}})
@@ -135,6 +140,7 @@ def chat():
         content.append({"type": "text", "text": text or "(immagini allegate)"})
         msgs = sess["messages"]; msgs.append({"role": "user", "content": content})
         sess["ultime"] = []; reply = ""; c = client()
+        giro = 0
         for _ in range(4):
             res = c.messages.create(model=MODEL, max_tokens=12000, system=[{"type": "text", "text": SYSTEM, "cache_control": {"type": "ephemeral"}}],
                                     tools=[TOOL], messages=msgs)
@@ -143,7 +149,7 @@ def chat():
             reply = "\n".join(b.text for b in res.content if b.type == "text").strip()
             if not uses:
                 break
-            results = [{"type": "tool_result", "tool_use_id": u.id, "content": esegui_strumento(sess, u.input)} for u in uses]
+            results = [{"type": "tool_result", "tool_use_id": u.id, "content": esegui_strumento(sess, u.input, giro)} for u in uses]; giro += 1
             msgs.append({"role": "user", "content": results})
         else:
             msgs.append({"role": "user", "content": [{"type": "text", "text": "(Rispondi ora al cliente in poche frasi, senza altri strumenti.)"}]})
