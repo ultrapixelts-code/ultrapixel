@@ -117,3 +117,59 @@ def prepara(png, per_lavorazione=False, sagoma=False, riempi=False):
     b = io.BytesIO(); im.save(b, "PNG", optimize=True)
     return {"png": "data:image/png;base64," + base64.b64encode(b.getvalue()).decode(), "ratio": im.width / im.height,
             "vettore": vettorializza(im) if per_lavorazione else None, "sagoma": vettorializza(im, modo="sagoma") if sagoma else None}
+
+# ——— foto realistica del prodotto: l'etichetta vera applicata al contenitore ———
+CONT_EN = {"bordolese": "Bordeaux-style wine bottle", "borgognotta": "Burgundy-style wine bottle", "champagnotta": "champagne / sparkling wine bottle",
+           "longneck": "longneck beer bottle", "steinie": "short steinie beer bottle", "flacone": "cosmetic bottle", "cilindro": "cylindrical bottle",
+           "vaso": "glass jar", "lattina": "aluminium beverage can"}
+
+def _multipart(fields, files):
+    import uuid as _u
+    b = "----up" + _u.uuid4().hex; out = io.BytesIO()
+    for k, v in fields.items():
+        out.write(f'--{b}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode())
+    for k, (fn, data, mt) in files:
+        out.write(f'--{b}\r\nContent-Disposition: form-data; name="{k}"; filename="{fn}"\r\nContent-Type: {mt}\r\n\r\n'.encode() + data + b"\r\n")
+    out.write(f"--{b}--\r\n".encode())
+    return out.getvalue(), "multipart/form-data; boundary=" + b
+
+def prompt_foto(cont, spec):
+    c = cont or {}
+    tipo = CONT_EN.get(c.get("tipo", ""), c.get("tipo") or "bottle")
+    dettagli = ", ".join(x for x in [f"glass/body colour: {c['colore']}" if c.get("colore") else "", f"closure: {c['tappo']}" if c.get("tappo") else "",
+                                     f"contents: {c['liquido']}" if c.get("liquido") else ""] if x)
+    return ("Photorealistic high-end studio packaging photograph of a " + tipo + (f" ({dettagli})" if dettagli else "") + " with the label applied on it.\n"
+            "IMAGE 1 is the exact flat label artwork. Reproduce it on the container faithfully: same layout, proportions, colours, typography and graphics, "
+            "every word spelled exactly as in the artwork, nothing added, nothing removed, nothing restyled.\n"
+            "IMAGE 2 is only a schematic reference for the container shape, closure and where the label sits (position and size on the container): "
+            "keep that placement, but make everything look real, not like a drawing.\n"
+            "Label technical data (Italian): " + "; ".join(spec or [])[:600] + ".\n"
+            "Show the real label material texture. Hot-foil areas must look like real reflective metallic foil, embossed parts as raised relief catching the light, "
+            "white or clear materials as they really look on the container. The label follows the curvature of the container with realistic soft highlights.\n"
+            "Soft directional window light, warm neutral grey seamless backdrop, subtle reflection and contact shadow on the surface, product centred and fully visible, "
+            "vertical framing, sharp focus. No other objects, no hands, no extra text, no watermark.")
+
+def foto(label_png, mockup_png, cont, spec):
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise RuntimeError("manca OPENAI_API_KEY")
+    p = prompt_foto(cont, spec); err = None
+    modelli = [m for m in [os.environ.get("FOTO_MODEL", "").strip()] + MODELLI if m]
+    for m in dict.fromkeys(modelli):
+        for extra in ({"input_fidelity": "high", "output_format": "jpeg"}, {}):
+            fields = {"model": m, "prompt": p, "size": "1024x1536", "n": "1", "quality": os.environ.get("FOTO_QUALITY", "medium"), **extra}
+            body, ct = _multipart(fields, [("image[]", ("etichetta.png", label_png, "image/png")), ("image[]", ("contenitore.png", mockup_png, "image/png"))])
+            req = urllib.request.Request("https://api.openai.com/v1/images/edits", data=body,
+                                         headers={"Authorization": "Bearer " + os.environ["OPENAI_API_KEY"], "Content-Type": ct})
+            try:
+                with urllib.request.urlopen(req, timeout=240) as r:
+                    d = json.load(r)["data"][0]
+                raw = base64.b64decode(d["b64_json"]) if d.get("b64_json") else urllib.request.urlopen(d["url"], timeout=60).read()
+                im = Image.open(io.BytesIO(raw)).convert("RGB"); out = io.BytesIO(); im.save(out, "JPEG", quality=88)
+                return out.getvalue()
+            except urllib.error.HTTPError as e:
+                err = f"{m}: {e.code} {e.read()[:300]!r}"
+                if e.code in (401, 429):
+                    raise RuntimeError(err)
+            except Exception as e:
+                err = f"{m}: {e}"
+    raise RuntimeError(err or "foto non riuscita")

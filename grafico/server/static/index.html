@@ -142,6 +142,12 @@ main{position:relative;z-index:2;max-width:1320px;margin:0 auto;padding:0 var(--
 .card .tb{display:flex;border-bottom:1px solid var(--hair)}
 .card .tb button{flex:1;background:none;border:0;padding:10px;font:400 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--tgt);cursor:pointer}
 .card .tb button[aria-pressed=true]{color:var(--ink);box-shadow:inset 0 -1px 0 var(--ink)}
+.card .tb button:disabled{cursor:default;opacity:.75}.card .tb button .dot{display:inline-block;vertical-align:1px}
+.card .vw.isfoto{background:#d9d4cd}.card .vw.isfoto::before,.card .vw.isfoto::after{display:none}.card .vw.isfoto img{object-fit:cover;padding:0}
+.phw{position:absolute;z-index:2;left:12px;bottom:12px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.88);padding:6px 10px;border-radius:999px;backdrop-filter:blur(4px)}
+.phw .mi{font-size:9.5px;color:var(--ink)}
+.card .phn{position:absolute;z-index:2;left:0;right:0;bottom:0;margin:0;padding:18px 12px 8px;font:400 10px/1.4 var(--mono);letter-spacing:.06em;color:#fff;background:linear-gradient(transparent,rgba(16,18,20,.55));display:none}
+.card .vw.isfoto .phn{display:block}
 .card .bd{padding:16px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
 .card h3{margin:0;font-weight:700;font-stretch:80%;font-size:24px;letter-spacing:-.02em;text-transform:uppercase;line-height:1}
 .card p{margin:0;color:var(--gra);font-size:14.5px}
@@ -303,16 +309,16 @@ var L={it:{
  privacy:'Die Texte und Bilder, die Sie senden, dienen nur zur Vorbereitung der Vorschläge und werden von einem KI-Dienst verarbeitet.',err:'Etwas ist schiefgelaufen. Bitte gleich noch einmal versuchen.'
 }};
 
-var X={it:{you:'Tu',ai:'UltraPixel AI',prop:'Proposta',indic:'AI · indicativa',work:'AI al lavoro',hintL:'Brief · foto · logo → proposte sul tuo contenitore',
+var X={it:{you:'Tu',ai:'UltraPixel AI',prop:'Proposta',indic:'AI · indicativa',work:'AI al lavoro',photo:'Foto',photoWait:'Sto fotografando il prodotto…',photoNote:'Foto simulata dall’AI: per testi e misure fa fede l’etichetta.',hintL:'Brief · foto · logo → proposte sul tuo contenitore',
   rail:['Brief','Contenitore','Materiali','Layout','Illustrazioni','Controllo','Proposte'],gen:'Generazione',
   viz:[['Fustella a scudo 90 × 120','Foil oro a caldo','Carta avorio goffrata'],['Angoli tondi 70 × 110','Rilievo a secco sul rametto','Film bianco + vernice'],['Fustella tonda Ø 80','Illustrazione AI a tutta etichetta','Carta bianca patinata']]},
- en:{you:'You',ai:'UltraPixel AI',prop:'Proposal',indic:'AI · indicative',work:'AI at work',hintL:'Brief · photos · logo → proposals on your container',
+ en:{you:'You',ai:'UltraPixel AI',prop:'Proposal',indic:'AI · indicative',work:'AI at work',photo:'Photo',photoWait:'Shooting the product…',photoNote:'Photo simulated by AI: the label artwork is the reference for texts and sizes.',hintL:'Brief · photos · logo → proposals on your container',
   rail:['Brief','Container','Materials','Layout','Illustrations','Check','Proposals'],gen:'Generation',
   viz:[['Shield die-cut 90 × 120','Gold hot foil','Ivory felt paper'],['Rounded corners 70 × 110','Blind embossing on the sprig','White film + varnish'],['Round die-cut Ø 80','Full-bleed AI illustration','White coated paper']]},
- fr:{you:'Vous',ai:'UltraPixel IA',prop:'Proposition',indic:'IA · indicative',work:'IA au travail',hintL:'Brief · photos · logo → propositions sur votre contenant',
+ fr:{you:'Vous',ai:'UltraPixel IA',prop:'Proposition',indic:'IA · indicative',work:'IA au travail',photo:'Photo',photoWait:'Je photographie le produit…',photoNote:'Photo simulée par l’IA : pour les textes et les mesures, l’étiquette fait foi.',hintL:'Brief · photos · logo → propositions sur votre contenant',
   rail:['Brief','Contenant','Matières','Mise en page','Illustrations','Contrôle','Propositions'],gen:'Génération',
   viz:[['Découpe écusson 90 × 120','Dorure à chaud or','Papier ivoire vergé'],['Coins arrondis 70 × 110','Gaufrage à sec sur le brin','Film blanc + vernis'],['Découpe ronde Ø 80','Illustration IA pleine étiquette','Papier blanc couché']]},
- de:{you:'Sie',ai:'UltraPixel KI',prop:'Vorschlag',indic:'KI · unverbindlich',work:'KI arbeitet',hintL:'Briefing · Fotos · Logo → Vorschläge auf Ihrem Behälter',
+ de:{you:'Sie',ai:'UltraPixel KI',prop:'Vorschlag',indic:'KI · unverbindlich',work:'KI arbeitet',photo:'Foto',photoWait:'Ich fotografiere das Produkt…',photoNote:'Von der KI simuliertes Foto: Für Texte und Maße gilt das Etikett.',hintL:'Briefing · Fotos · Logo → Vorschläge auf Ihrem Behälter',
   rail:['Briefing','Behälter','Material','Layout','Illustrationen','Prüfung','Vorschläge'],gen:'Generierung',
   viz:[['Wappen-Stanzung 90 × 120','Heißfolie Gold','Elfenbein-Strukturpapier'],['Runde Ecken 70 × 110','Blindprägung auf dem Zweig','Weißfolie + Lack'],['Runde Stanzung Ø 80','KI-Illustration vollflächig','Weiß gestrichenes Papier']]}};
 Object.keys(X).forEach(function(k){for(var j in X[k])L[k][j]=X[k][j]});
@@ -427,8 +433,16 @@ function cards(list){lastP=list.map(function(p){return{id:p.id,p:p.p}});var w=el
   var c=el('article','card'),top=el('div','top'),tb=el('div','tb'),vw=el('div','vw'),img=el('img');
   top.appendChild(el('span','mi',num));var ai=el('span','ai');ai.appendChild(el('span','dot'));ai.appendChild(el('span','mi',T.indic));top.appendChild(ai);
   img.src=url(p.id,'contenitore');img.alt=p.nome;vw.appendChild(img);
-  [['contenitore',T.onBottle],['piatta',T.flat]].forEach(function(t,i){var b=el('button',null,t[1]);b.type='button';b.setAttribute('aria-pressed',i===0);b.onclick=function(){img.src=url(p.id,t[0]);[].forEach.call(tb.children,function(x){x.setAttribute('aria-pressed',x===b)})};tb.appendChild(b)});
-  vw.onclick=function(){$('#zk').textContent=num;$('#zt').textContent=p.nome;$('#z1').src=url(p.id,'contenitore');$('#z2').src=url(p.id,'piatta');$('#zoom').showModal()};
+  var ph=el('div','phw'),cap=el('p','phn',T.photoNote),touched=false,fotoUrl=null;ph.appendChild(el('span','dot'));ph.appendChild(el('span','mi',T.photoWait));vw.appendChild(ph);
+  function show(k){img.src=k==='foto'?fotoUrl:url(p.id,k);vw.classList.toggle('isfoto',k==='foto');[].forEach.call(tb.children,function(x){x.setAttribute('aria-pressed',x.dataset.k===k)})}
+  [['foto',T.photo],['contenitore',T.onBottle],['piatta',T.flat]].forEach(function(t){var b=el('button');b.type='button';b.dataset.k=t[0];
+    if(t[0]==='foto'){b.appendChild(el('span','dot'));b.appendChild(document.createTextNode(' '+t[1]));b.disabled=true}else b.textContent=t[1];
+    b.setAttribute('aria-pressed',t[0]==='contenitore');b.onclick=function(){touched=true;show(t[0])};tb.appendChild(b)});
+  (function poll(n){if(!c.isConnected&&n>0)return;fetch('/api/foto/'+sid+'/'+p.id+'.jpg').then(function(r){
+      if(r.status===200)return r.blob().then(function(bl){fotoUrl=URL.createObjectURL(bl);var fb=tb.children[0];fb.disabled=false;fb.textContent=T.photo;ph.remove();vw.appendChild(cap);if(!touched)show('foto')});
+      if(r.status===202&&n<70)return setTimeout(function(){poll(n+1)},5000);
+      tb.children[0].remove();ph.remove()}).catch(function(){if(n<70)setTimeout(function(){poll(n+1)},8000)})})(0);
+  vw.onclick=function(){$('#zk').textContent=num;$('#zt').textContent=p.nome;$('#z1').src=fotoUrl||url(p.id,'contenitore');$('#z2').src=url(p.id,'piatta');$('#zoom').showModal()};
   var bd=el('div','bd');bd.appendChild(el('h3',null,p.nome));bd.appendChild(el('p',null,p.concetto));
   var act=el('div','act'),b1=el('button','btn',T.pick),b2=el('button','btn ghost',T.change);b1.type=b2.type='button';
   b1.onclick=function(){cur=p;$('#pt').textContent=p.nome;$('#pmsg').textContent='';$('#pick').showModal()};

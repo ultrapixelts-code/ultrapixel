@@ -197,6 +197,61 @@ def ripristina(sess, r):
              "Le illustrazioni AI già generate non sono più disponibili: se servono, rigenerale con la stessa descrizione.)\n" + json.dumps([x["p"] for x in props], ensure_ascii=False)[:40000])
     return testo, rimappa
 
+# ——— foto realistiche: generate in sottofondo dopo le proposte, il browser le chiede finché non sono pronte ———
+MAX_FOTO = int(os.environ.get("MAX_FOTO", "12"))   # foto per conversazione
+FOTO_POOL = ThreadPoolExecutor(3)
+FOTO = {}   # pid -> {"stato": "corso"|"ok"|"errore", "jpg": bytes}
+
+def _foto_path(pid):
+    return os.path.join(SESS_DIR, "foto", pid + ".jpg") if SESS_DIR else ""
+
+def _png(svg, **kw):
+    import resvg_py
+    return bytes(resvg_py.svg_to_bytes(svg_string=svg, **kw))
+
+def avvia_foto(sess, pid):
+    if pid in FOTO or not os.environ.get("OPENAI_API_KEY") or (_foto_path(pid) and os.path.exists(_foto_path(pid))):
+        return
+    if sess.get("n_foto", 0) >= MAX_FOTO:
+        return
+    pr = proposta(sess, pid)
+    if not pr:
+        return
+    sess["n_foto"] = sess.get("n_foto", 0) + 1; FOTO[pid] = {"stato": "corso"}
+    def lavora():
+        try:
+            jpg = immagini.foto(_png(pr["r"]["piatta"], width=1024), _png(pr["r"]["contenitore"], width=640), pr["p"].get("contenitore"), pr["r"].get("spec"))
+            FOTO[pid] = {"stato": "ok", "jpg": jpg}
+            if SESS_DIR:
+                os.makedirs(os.path.dirname(_foto_path(pid)), exist_ok=True)
+                with open(_foto_path(pid), "wb") as f:
+                    f.write(jpg)
+        except Exception as ex:
+            app.logger.error("foto %s: %s", pid, ex); FOTO[pid] = {"stato": "errore"}
+    FOTO_POOL.submit(lavora)
+
+@app.get("/api/foto/<sid>/<pid>.jpg")
+def foto(sid, pid):
+    if not re.match(r"^[0-9a-f]{10}$", pid or ""):
+        abort(404)
+    f = FOTO.get(pid) or {}
+    if f.get("stato") == "ok":
+        return Response(f["jpg"], mimetype="image/jpeg", headers={"Cache-Control": "private, max-age=86400"})
+    fp = _foto_path(pid)
+    if fp and os.path.exists(fp):
+        return send_from_directory(os.path.dirname(fp), pid + ".jpg", mimetype="image/jpeg", max_age=86400)
+    if f.get("stato") == "corso":
+        return jsonify(stato="corso"), 202
+    if f.get("stato") == "errore":
+        return jsonify(stato="errore"), 404
+    sess = S.get(sid) or carica(sid)
+    if sess and sid not in S:
+        S[sid] = sess
+    if not sess or pid not in sess["proposte"]:
+        abort(404)
+    avvia_foto(sess, pid)
+    return (jsonify(stato="corso"), 202) if pid in FOTO else (jsonify(stato="limite"), 404)
+
 def ip():
     return (request.headers.get("X-Forwarded-For") or request.remote_addr or "").split(",")[0].strip()
 
@@ -283,6 +338,8 @@ def chat():
             reply = "\n".join(b.text for b in res.content if b.type == "text").strip()
         pota(msgs)
         salva(sid, sess)
+        for o in sess["ultime"]:
+            avvia_foto(sess, o["id"])
         return jsonify(sid=sid, reply=reply, proposte=sess["ultime"], turni_rimasti=MAX_TURNI - sess["turni"], rimappa=rimappa)
     except Exception as ex:
         app.logger.exception("chat")
