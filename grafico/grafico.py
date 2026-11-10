@@ -196,7 +196,30 @@ class Label:
                 o += f'<g id="{lv}" inkscape:groupmode="layer" inkscape:label="{lab[lv]}"{fill}>{"".join(self.L[lv]).replace("@", "X")}</g>\n'
         o += (f'<g id="fustella" inkscape:groupmode="layer" inkscape:label="Fustella" fill="none" stroke="#00A651" stroke-width=".1"><path d="{self.fustella()}"/></g>\n'
               f'<g id="abbondanza" inkscape:groupmode="layer" inkscape:label="Abbondanza {f2(B)} mm (riferimento)" fill="none" stroke="#A7ADB0" stroke-width=".1" stroke-dasharray="1 1"><rect x="{-B}" y="{-B}" width="{f2(W+2*B)}" height="{f2(H+2*B)}"/></g>\n</svg>\n')
-        return o
+        return per_illustrator(o)
+
+# ---------------------------------------------------------------- compatibilità con Illustrator
+import re as _re
+def per_illustrator(svg):
+    """Illustrator legge le immagini incorporate solo con xlink:href (SVG 1.1) e non gestisce bene gli <svg> annidati:
+    le immagini prendono xlink:href e i riquadri annidati 'a tutta etichetta' diventano immagine + tracciato di ritaglio."""
+    n = [0]
+    def piatto(m):
+        x, y, w, h, vw, vh, par, href = m.group(1, 2, 3, 4, 5, 6, 7, 8)
+        x, y, w, h, vw, vh = map(float, (x, y, w, h, vw, vh)); r = vw / vh
+        if par.endswith("slice"):
+            iw, ih = (w, w / r) if w / h > r else (h * r, h)
+        else:
+            iw, ih = (w, w / r) if w / h < r else (h * r, h)
+        ix, iy = x + (w - iw) / 2, y + (h - ih) / 2; n[0] += 1; cid = f"clipimg{n[0]}"
+        return (f'<clipPath id="{cid}"><rect x="{x:.3f}" y="{y:.3f}" width="{w:.3f}" height="{h:.3f}"/></clipPath>'
+                f'<g clip-path="url(#{cid})"><image xlink:href="{href}" x="{ix:.3f}" y="{iy:.3f}" width="{iw:.3f}" height="{ih:.3f}" preserveAspectRatio="none"/></g>')
+    svg = _re.sub(r'<svg x="([-\d.]+)" y="([-\d.]+)" width="([\d.]+)" height="([\d.]+)" viewBox="0 0 ([\d.]+) ([\d.]+)" preserveAspectRatio="(xMidYMid (?:slice|meet))">'
+                  r'<image href="([^"]+)" width="[\d.]+" height="[\d.]+"/></svg>', piatto, svg)
+    svg = svg.replace('<image href="', '<image xlink:href="')
+    if 'xmlns:xlink' not in svg:
+        svg = svg.replace('<svg xmlns="http://www.w3.org/2000/svg"', '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"', 1)
+    return svg
 
 # ---------------------------------------------------------------- impaginazione
 def place(svg, bx, by, bw, bh, vb, align="center"):
