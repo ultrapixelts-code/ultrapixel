@@ -211,6 +211,22 @@ def invia():
     sess["inviate"] = sess.get("inviate", 0) + 1
     return jsonify(ok=True)
 
+@app.post("/api/pacchetto")
+def pacchetto():
+    """Il firewall di Keliweb blocca le richieste che partono dai server di Render: l'invio a lead.php lo fa il browser del cliente.
+    Dopo che il cliente ha lasciato i suoi dati, il server gli consegna una volta sola testo di riepilogo e file di stampa da inoltrare."""
+    d = request.get_json(force=True, silent=True) or {}
+    sess = S.get(d.get("sid", "")); pr = sess and sess["proposte"].get(d.get("pid", ""))
+    if not pr:
+        return jsonify(error="sessione", msg="La conversazione è scaduta: ricarica la pagina."), 404
+    if sess.get("inviate", 0) >= 3:
+        return jsonify(error="limite", msg="Hai già inviato le tue scelte: ti rispondiamo presto."), 429
+    if not str(d.get("name", "")).strip() or not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", str(d.get("email", ""))):
+        return jsonify(error="campi"), 400
+    sess["inviate"] = sess.get("inviate", 0) + 1
+    nome = re.sub(r"[^a-z0-9]+", "-", str(pr["p"].get("nome", "proposta")).lower()).strip("-")[:40] or "proposta"
+    return jsonify(testo=riepilogo_testo(sess, pr), svg=pr["r"]["stampa"], filename=f"etichetta-{nome}.svg", endpoint=LEAD_ENDPOINT)
+
 def riepilogo_testo(sess, pr):
     brief = []
     for m in sess["messages"]:
