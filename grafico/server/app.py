@@ -281,6 +281,40 @@ def ip():
 def home():
     return send_from_directory(os.path.join(HERE, "static"), "index.html")
 
+@app.get("/prova")
+def prova():   # versione di prova con il brief guidato (stessa pagina: lo script vede /prova e mostra le schede)
+    return send_from_directory(os.path.join(HERE, "static"), "index.html")
+
+# ——— brief guidato: dalle risposte a schede l'AI scrive il brief come lo scriverebbe un grafico ———
+BRIEF_MODEL = os.environ.get("BRIEF_MODEL", "claude-sonnet-5-5")
+BRIEF_IPS = {}
+SETTORI = open(os.path.join(os.path.dirname(HERE), "settori.md"), encoding="utf-8").read()
+LINGUA = {"it": "italiano", "en": "English", "fr": "français", "de": "Deutsch"}
+
+@app.post("/api/brief")
+def brief():
+    d = request.get_json(force=True, silent=True) or {}
+    now = time.time(); a = [t for t in BRIEF_IPS.get(ip(), []) if now - t < 3600]
+    if len(a) >= 20:
+        return jsonify(error="limite"), 429
+    BRIEF_IPS[ip()] = a + [now]
+    risposte = json.dumps(d.get("risposte") or {}, ensure_ascii=False)[:6000]
+    lg = d.get("lang") if d.get("lang") in LINGUA else "it"
+    istr = ("Sei l'art director di UltraPixel, stampatore di etichette premium. Un cliente ha compilato un brief guidato a schede. "
+            "Scrivi il brief di progetto per il grafico, in " + LINGUA[lg] + ", chiaro e professionale, in testo semplice (niente markdown, niente #, niente asterischi): ogni sezione inizia con un titoletto in MAIUSCOLO, gli elenchi con il trattino. Sezioni: "
+            "Prodotto e cliente; Contenitore e formato; Testi obbligatori (riportali ESATTAMENTE come scritti dal cliente, tra virgolette; non inventare nomi, annate, gradazioni o volumi); "
+            "Testi mancanti (le diciture obbligatorie per il settore che il cliente non ha dato: elencale come 'da definire', senza inventarle); "
+            "Stile e atmosfera (traduci le scelte in indicazioni visive concrete: riferimenti, tipografia, palette, composizione, cosa evitare); "
+            "Materiale e lavorazioni (solo quelle fattibili da UltraPixel); Allegati. "
+            "Massimo 250 parole. Niente premesse, niente saluti: solo il brief.\n\nRegole di settore e limiti di stampa:\n" + SETTORI)
+    try:
+        res = client().messages.create(model=BRIEF_MODEL, max_tokens=1200, system=istr,
+                                       messages=[{"role": "user", "content": "Risposte del cliente (JSON):\n" + risposte}])
+        return jsonify(brief="\n".join(b.text for b in res.content if b.type == "text").strip())
+    except Exception as ex:
+        app.logger.exception("brief")
+        return jsonify(error="server", msg=str(ex)[:200]), 500
+
 @app.get("/static/<path:f>")
 def static_f(f):
     return send_from_directory(os.path.join(HERE, "static"), f)

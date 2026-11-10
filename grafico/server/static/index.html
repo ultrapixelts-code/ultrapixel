@@ -507,6 +507,8 @@ $('#pf').addEventListener('submit',function(e){e.preventDefault();if(!cur)return
       setTimeout(function(){$('#pick').close();log.appendChild(bubble('ai',T.ai,T.sentChat.replace('{n}',cur.nome)));scroll()},1600)})
   .catch(function(){msg.textContent=T.fail}).then(function(){btn.disabled=false})});
 
+window.UP={T:T,LG:LG,el:el,prep:prep,setFiles:function(a){files=a;drawAtt()},send:function(t){$('#in').value=t;grow();$('#f').requestSubmit()}};
+if(location.pathname==='/prova'){var bjs=document.createElement('script');bjs.src='/static/brief.js?v=1';document.body.appendChild(bjs)}
 })();
 </script>
 </body>
