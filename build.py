@@ -934,6 +934,66 @@ def roll_calc(C, P, T):
                     extra_head=BLOG_CSS + CALC_CSS + f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>' + faq_ld(u["faq"]), extra_foot=js)
 
 
+# ---------------------------------------------------------------- tools: wine label designer (prototype, kept out of the sitemap and noindex)
+def label_designer(C, P, TL):
+    """Free wine label designer: the visitor builds a draft (assets/designer.js) and sends it with the request as one layered SVG."""
+    t = TL["labelDesigner"]; l = C["lang"]; u = t[l]; f = C["form"]; langs = [x for x in LANGS if x in t]
+    C = dict(C, site=dict(C["site"], noindex=True))
+    radio = lambda n, items, cur: "".join(f'<label class="ld-r"><input type="radio" name="{n}" value="{k}"{" checked" if k == cur else ""}><span>{e(v)}</span></label>' for k, v in items)
+    sw = lambda n, items, cur, cols: "".join(f'<label class="ld-sw"><input type="radio" name="{n}" value="{k}"{" checked" if k == cur else ""}><i style="background:{c}"></i><span>{e(v)}</span></label>' for (k, v), c in zip(items, cols))
+    J = u["js"]; inp = lambda n, lab, extra="": f'<label>{e(lab)}<input name="{n}"{extra}></label>'
+    styles = "".join(f'<button type="button" class="ld-st" data-style="{k}" aria-pressed="false"><span class="th"></span><span class="mi">{e(v)}</span></button>' for k, v in J["styles"].items())
+    form = (f'<form class="form ld-form" id="ld-f" onsubmit="return false">'
+            f'<fieldset><legend class="mi">01 / {e(u["s1"])}</legend><div class="ld-styles">{styles}</div></fieldset>'
+            f'<fieldset><legend class="mi">02 / {e(u["s2"])}</legend><label>{e(u["logoFile"])}<input name="logo" type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp"><small>{e(u["logoHint"])}</small></label>'
+            f'<p class="mi ld-lmsg" id="ld-lmsg" hidden></p><div id="ld-lm" class="ld-row" hidden><span class="mi">{e(u["logoMode"])}</span>{radio("lmode", [("ink", u["lmInk"]), ("orig", u["lmOrig"])], "ink")}</div>'
+            f'<button type="button" class="cta" id="ld-lx" hidden>{e(u["logoRemove"])} ×</button></fieldset>'
+            f'<fieldset class="ld-2"><legend class="mi">03 / {e(u["s3"])}</legend>{inp("winery", u["winery"], " maxlength=60")}{inp("wine", u["wine"], " maxlength=50")}'
+            f'{inp("vintage", u["vintage"], " maxlength=12 inputmode=numeric")}<label>{e(u["den"])}<select name="den">' + "".join(f'<option value="{k}">{e(v)}</option>' for k, v in u["dens"].items()) + '</select></label>'
+            f'<label class="full">{e(u["denText"])}<input name="denText" maxlength="70"></label>{inp("area", u["area"], " maxlength=40")}'
+            f'{inp("alc", u["alc"], " maxlength=5 inputmode=decimal")}<label>{e(u["vol"])}<select name="vol">' + "".join(f"<option>{v}</option>" for v in ("75 cl", "37,5 cl", "50 cl", "150 cl")) + '</select></label></fieldset>'
+            f'<fieldset class="ld-2"><legend class="mi">04 / {e(u["s4"])}</legend><div class="full ld-row"><span class="mi">{e(u["bottle"])}</span>{radio("bottle", J["bottles"].items(), "bordolese")}</div>'
+            f'<div class="full"><span class="mi">{e(u["sizeL"])}</span><div class="ld-sizes" id="ld-sizes"></div></div>'
+            f'{inp("w", u["w"], " type=number inputmode=decimal min=20 max=320 step=1")}{inp("h", u["h"], " type=number inputmode=decimal min=20 max=320 step=1")}'
+            f'<div class="full ld-row"><span class="mi">{e(u["shape"])}</span>{radio("shape", J["shapes"].items(), "round")}</div></fieldset>'
+            f'<fieldset><legend class="mi">05 / {e(u["s5"])}</legend><div class="ld-row"><span class="mi">{e(u["paper"])}</span>'
+            + sw("paper", J["papers"].items(), "ivory", ("#F1E6CE", "#F6F4EE", "#F2EAD8", "#FBFBF8")) +
+            f'</div><div class="ld-row"><span class="mi">{e(u["ink"])}</span>'
+            + sw("ink", J["inks"].items(), "burgundy", ("linear-gradient(135deg,#6B1F2E 55%,#41583B 55%)", "linear-gradient(135deg,#1C1B1A 55%,#7A6A55 55%)", "linear-gradient(135deg,#1F2C48 55%,#8C6A3E 55%)", "linear-gradient(135deg,#2E4A33 55%,#7A1F2B 55%)")) +
+            f'</div><div class="ld-row"><span class="mi">{e(u["foil"])}</span>'
+            + sw("foil", [("none", J["spec"]["none"])] + list(J["foils"].items()), "gold", ("#fff", "linear-gradient(135deg,#7d5d1a,#f4dc8a,#b8902f)", "linear-gradient(135deg,#6d7377,#f2f4f5,#a3a9ad)", "linear-gradient(135deg,#6b3a1f,#f0b48c,#a2552d)")) +
+            f'</div><div class="ld-row" id="ld-ftg"><span class="mi">{e(u["foilT"])}</span>'
+            + "".join(f'<label class="ld-r"><input type="checkbox" name="foilOn" value="{k}"><span>{e(J["targets"][k])}</span></label>' for k in ("name", "wine", "vintage", "frame", "logo")) +
+            f'</div><div class="ld-2 ld-sel"><label>{e(u["emb"])}<select name="emb"><option value="none">{e(J["spec"]["none"])}</option>'
+            + "".join(f'<option value="{k}">{e(J["targets"][k])}</option>' for k in ("logo", "name", "wine", "frame")) +
+            f'</select></label><label>{e(u["varnish"])}<select name="varnish">' + "".join(f'<option value="{k}">{e(v)}</option>' for k, v in J["varnishes"].items()) + '</select></label></div></fieldset></form>'
+            f'<div class="ld-chk"><span class="mi">06 / {e(u["s6"])}</span><p>{e(u["chkLead"])}</p><ul id="ld-chk"></ul>'
+            f'<p class="mi">{e(u["backH"])}</p><ul class="ld-back">' + "".join(f"<li>{e(x)}</li>" for x in u["back"]) + f'</ul><p class="mi dim">{e(u["legal"])}</p></div>')
+    stage = (f'<div class="ld-stage"><div class="ld-tabs" role="tablist"><button type="button" data-v="bottle" aria-selected="true">{e(u["vBottle"])}</button>'
+             f'<button type="button" data-v="flat" aria-selected="false">{e(u["vFlat"])}</button><button type="button" data-v="sep" aria-selected="false">{e(u["vSep"])}</button></div>'
+             f'<div class="ld-view" id="ld-view"><p class="mi ld-load">{e(u["loading"])}</p></div><p class="mi ld-dim" id="ld-dim"></p><ul class="ld-warn" id="ld-warn"></ul>'
+             f'<p class="mi dim">{e(u["illustrative"])}</p></div>')
+    steps = "".join(f'<li><span class="mi">0{i + 1}</span><strong>{e(a)}</strong><p>{e(b)}</p></li>' for i, (a, b) in enumerate(u["how"]))
+    secs = "".join(f"<option value=\"{x['key']}\"{' selected' if x['key'] == 'wine' else ''}>{e(x['title'])}</option>" for x in C["sectors"])
+    req = (f'<form class="form" id="ld-rq" data-form data-here {form_data(C, u["sent"])}>'
+           f'<label>{e(f["name"])}<input name="name" autocomplete="name" required></label><label>{e(f["company"])}<input name="company" autocomplete="organization" required></label>'
+           f'<label>{e(f["country"])}<input name="country" autocomplete="country-name" required></label><label>{e(f["email"])}<input name="email" type="email" autocomplete="email" required></label>'
+           f'<label>{e(u["qty"])}<input name="qty" type="number" inputmode="numeric" min="1" step="1" required></label>'
+           f'<label>{e(u["apply"])}<select name="apply"><option>{e(u["applyHand"])}</option><option>{e(u["applyMachine"])}</option></select></label>'
+           f'<label class="full">{e(u["notes"])}<textarea name="notes"></textarea></label><select name="sector" hidden>{secs}</select>'
+           f'<input type="hidden" name="request_type" value="label-design"><input type="hidden" name="message">{HIDDEN()}'
+           f'<div class="full"><button class="cta pill" type="submit">{e(u["send"])} ↗</button></div><p class="form-msg mi" hidden></p></form>')
+    head = (f'<section class="phead rhero"><span class="mi">{e(u["eyebrow"])}</span><h1 class="mega rv">{e(u["h1a"])} <span>{e(u["h1b"])}</span></h1>'
+            f'<p class="lead">{e(u["lead"])}</p></section>')
+    body = (head + f'<hr class="spl"><section class="sec w"><div class="ld" id="ld">{stage}<div class="ld-steps">{form}</div></div></section>'
+            f'<hr class="spl"><section class="sec w ld-send"><div class="split"><div class="a"><span class="mi">{e(u["sendEyebrow"])}</span><h2 class="h2">{e(u["sendH"])}</h2>'
+            f'<p class="lead">{e(u["sendP"])}</p><ol class="ld-how">{steps}</ol></div><div class="b">{req}</div></div></section>')
+    foot = ('<script type="application/json" id="ld-t">' + json.dumps(J, ensure_ascii=False).replace("</", "<\\/") + '</script>'
+            '<script src="/assets/designer/opentype.min.js" defer></script><script src="/assets/designer.js" defer></script>')
+    return shell_ml(C, P, f"{P}{t['slug']}/", {"title": u["title"], "description": u["description"]}, body,
+                    extra_head='<link rel="stylesheet" href="/assets/designer.css"><style>.rhero .mega{font-size:clamp(38px,8.4vw,150px)}.rhero .mega span{display:block;color:var(--tgl)}</style>', extra_foot=foot, langs=langs)
+
+
 CALC_POSTS = {"label-roll-breaks-on-labelling-line", "label-quote-specification-checklist", "how-to-store-label-rolls", "reduce-label-costs"}
 BLOG_FAQ = {"en": "Frequently asked questions", "it": "Domande frequenti", "fr": "Questions fréquentes", "de": "Häufige Fragen"}
 
@@ -992,6 +1052,8 @@ def build(launch=False):
         if TL and lang in TL["rollCalc"]:
             C["calc"] = (TL["rollCalc"][lang]["h1"], TL["rollCalc"]["slug"], TL["rollCalc"][lang]["lead"])
             wr(f"{P}{TL['rollCalc']['slug']}/index.html".lstrip("/"), roll_calc(C, P, TL)); blogp.append("/" + TL["rollCalc"]["slug"] + "/")
+        if TL and "labelDesigner" in TL and lang in TL["labelDesigner"]:   # prototype: not in the sitemap, always noindex
+            wr(f"{P}{TL['labelDesigner']['slug']}/index.html".lstrip("/"), label_designer(C, P, TL))
         if B and lang in blog_langs(B):
             wr(f"{P}blog/index.html".lstrip("/"), blog_index(C, P, B)); blogp.append("/blog/")
             for bp in B["posts"]:

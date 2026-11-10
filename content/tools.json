@@ -356,5 +356,401 @@
    "tagPitch": "Etikett + Abstand",
    "inputs": "Ihre Rolle"
   }
+ },
+ "labelDesigner": {
+  "slug": "wine-label-designer",
+  "date": "2026-11-10",
+  "it": {
+   "title": "Disegna la tua etichetta vino – UltraPixel",
+   "description": "Configuratore gratuito per etichette vino: scegli lo stile, carica il logo, scrivi i testi e vedi l'etichetta sulla bottiglia con foil e rilievo. UltraPixel la rende pronta per la stampa.",
+   "eyebrow": "Strumento gratuito · Etichette vino",
+   "h1a": "Disegna la tua etichetta.",
+   "h1b": "Noi la rendiamo stampabile.",
+   "lead": "Non serve un grafico per partire. Scegli uno stile, carica il logo e scrivi i testi: vedi subito l'etichetta sulla bottiglia, con carta, foil e rilievo. Quando ti piace, ce la mandi e la prepariamo per la stampa.",
+   "loading": "Preparazione del configuratore…",
+   "vBottle": "Sulla bottiglia",
+   "vFlat": "Etichetta e fustella",
+   "vSep": "Livelli di stampa",
+   "illustrative": "Anteprima indicativa: colori, carta e foil reali si valutano sui campioni e sulla bozza di stampa.",
+   "s1": "Stile",
+   "s2": "Logo",
+   "s3": "Testi",
+   "s4": "Bottiglia e formato",
+   "s5": "Carta e lavorazioni",
+   "s6": "Diciture obbligatorie",
+   "logoFile": "Carica il logo (PNG, JPG, SVG · max 4 MB)",
+   "logoHint": "Senza logo usiamo un monogramma con le iniziali della cantina.",
+   "logoMode": "Colore del logo",
+   "lmInk": "Nel colore dell'etichetta",
+   "lmOrig": "Colori originali",
+   "logoRemove": "Togli il logo",
+   "winery": "Nome della cantina",
+   "wine": "Nome del vino",
+   "vintage": "Annata",
+   "den": "Tipo di denominazione",
+   "denText": "Denominazione o tipologia (es. Barbera d'Asti, Vino Rosso)",
+   "area": "Zona o località",
+   "alc": "Alcol (% vol)",
+   "vol": "Volume",
+   "dens": {
+    "docg": "DOCG",
+    "doc": "DOC",
+    "dop": "DOP",
+    "igt": "IGT",
+    "igp": "IGP",
+    "vino": "Vino senza indicazione geografica"
+   },
+   "bottle": "Bottiglia",
+   "sizeL": "Formato consigliato (mm, larghezza × altezza)",
+   "w": "Larghezza (mm)",
+   "h": "Altezza (mm)",
+   "shape": "Forma della fustella",
+   "paper": "Carta",
+   "ink": "Colori di stampa",
+   "foil": "Foil a caldo",
+   "foilT": "Dove mettere il foil",
+   "emb": "Rilievo (embossing)",
+   "varnish": "Protezione",
+   "chkLead": "Nell'etichetta frontale devono stare nello stesso campo visivo: denominazione, titolo alcolometrico e volume.",
+   "backH": "Di solito vanno sulla retroetichetta (la prepariamo noi nella messa a punto):",
+   "back": [
+    "Contiene solfiti (e altri allergeni, se presenti)",
+    "Imbottigliato da… (nome e comune)",
+    "Lotto",
+    "Valore energetico e QR o link a ingredienti e valori nutrizionali",
+    "Etichettatura ambientale di bottiglia e chiusura",
+    "Provenienza, se richiesta (es. Prodotto in Italia)"
+   ],
+   "legal": "Promemoria, non sostituisce la verifica con il vostro consulente o ente di controllo.",
+   "sendEyebrow": "Il passo successivo",
+   "sendH": "Mandaci la bozza. Noi la rendiamo pronta per la stampa.",
+   "sendP": "Ricevi una risposta con il prezzo delle etichette e della messa a punto. Il file che ci arriva ha già fustella, abbondanza e livelli separati per foil e rilievo.",
+   "how": [
+    [
+     "Bozza",
+     "La fai tu qui, gratis."
+    ],
+    [
+     "Messa a punto",
+     "Sistemiamo impaginazione, logo vettoriale, colori, foil, rilievo e diciture. Prezzo fisso, scalabile dall'ordine."
+    ],
+    [
+     "Bozza di stampa",
+     "Ricevi la bozza definitiva con tutte le specifiche da approvare."
+    ],
+    [
+     "Campioni e stampa",
+     "Se vuoi, prima ti mandiamo carte e lavorazioni da toccare."
+    ]
+   ],
+   "qty": "Quantità di etichette",
+   "apply": "Applicazione",
+   "applyHand": "A mano",
+   "applyMachine": "Con etichettatrice",
+   "notes": "Note (facoltativo)",
+   "send": "Invia la bozza",
+   "sent": "Grazie. Abbiamo ricevuto la bozza: ti rispondiamo entro un giorno lavorativo.",
+   "js": {
+    "def": {
+     "winery": "Tenuta del Colle",
+     "wine": "Rosso di Collina",
+     "vintage": "2025",
+     "den": "doc",
+     "denText": "Monferrato Rosso",
+     "area": "Piemonte",
+     "alc": "13,5",
+     "vol": "75 cl"
+    },
+    "ariaBottle": "Anteprima dell'etichetta sulla bottiglia",
+    "ariaFlat": "Etichetta piatta con fustella e abbondanza",
+    "suggested": "consigliato",
+    "styles": {
+     "classico": "Classico",
+     "nobile": "Nobile",
+     "moderno": "Moderno",
+     "minimal": "Minimal"
+    },
+    "shapes": {
+     "rect": "rettangolare",
+     "round": "angoli arrotondati",
+     "oval": "ovale",
+     "arch": "ad arco"
+    },
+    "papers": {
+     "ivory": "Carta avorio goffrata",
+     "white": "Carta bianca goffrata",
+     "cream": "Carta crema liscia",
+     "bright": "Carta bianca liscia"
+    },
+    "inks": {
+     "burgundy": "bordeaux e verde",
+     "black": "nero e tortora",
+     "navy": "blu notte e ocra",
+     "green": "verde bosco e bordeaux"
+    },
+    "foils": {
+     "gold": "oro",
+     "silver": "argento",
+     "copper": "rame"
+    },
+    "targets": {
+     "name": "nome cantina",
+     "wine": "nome del vino",
+     "vintage": "annata",
+     "frame": "cornice e decori",
+     "logo": "logo",
+     "den": "denominazione"
+    },
+    "varnishes": {
+     "none": "nessuna (carta naturale)",
+     "matte": "vernice opaca protettiva"
+    },
+    "bottles": {
+     "bordolese": "Bordolese",
+     "borgognotta": "Borgognotta",
+     "champagnotta": "Champagnotta"
+    },
+    "sep": {
+     "print": "Stampa CMYK",
+     "foil": "Foil",
+     "emb": "Rilievo",
+     "die": "Fustella e abbondanza"
+    },
+    "spec": {
+     "title": "[Configuratore etichetta vino]",
+     "format": "Formato",
+     "material": "Materiale",
+     "print": "Stampa",
+     "finish": "Finitura",
+     "foil": "foil",
+     "emb": "rilievo",
+     "varnish": "protezione",
+     "none": "nessuno",
+     "bottle": "Bottiglia",
+     "style": "Stile",
+     "texts": "Testi",
+     "logo": "Logo",
+     "logoRaster": "caricato a pixel, da ridisegnare in vettoriale",
+     "logoVector": "vettoriale (SVG)",
+     "logoNone": "nessuno, monogramma",
+     "qty": "Quantità",
+     "apply": "Applicazione",
+     "notes": "Note cliente"
+    },
+    "w": {
+     "tall": "{h} mm di altezza sono tanti per questa bottiglia: oltre circa {max} mm l'etichetta esce dalla parte cilindrica e non aderisce bene sulla spalla.",
+     "wide": "Con {w} mm l'etichetta copre più di metà bottiglia (circa {half} mm): a mano si applica storta facilmente.",
+     "small": "Formato molto piccolo: i testi obbligatori rischiano di diventare illeggibili.",
+     "foilNone": "Hai scelto il foil ma nessun elemento su cui applicarlo.",
+     "emb": "Il rilievo richiede uno stampo dedicato: su piccole quantità pesa sul prezzo per etichetta. Te lo quotiamo a parte.",
+     "raster": "Il logo è a pixel: nella messa a punto lo ridisegniamo in vettoriale per foil e rilievo nitidi.",
+     "monogram": "Nessun logo caricato: stiamo usando un monogramma con le iniziali."
+    },
+    "chk": {
+     "den": "Denominazione o tipologia",
+     "alc": "Titolo alcolometrico",
+     "vol": "Volume nominale",
+     "field": "Tutti e tre nello stesso campo visivo"
+    },
+    "logoBad": "File non valido: usa PNG, JPG o SVG fino a 4 MB.",
+    "fontErr": "Il configuratore non si è caricato. Ricarica la pagina."
+   }
+  },
+  "en": {
+   "title": "Design your wine label – UltraPixel",
+   "description": "Free wine label designer: pick a style, upload your logo, write the texts and see the label on the bottle with foil and embossing. UltraPixel makes it print-ready.",
+   "eyebrow": "Free tool · Wine labels",
+   "h1a": "Design your label.",
+   "h1b": "We make it print-ready.",
+   "lead": "You don't need a designer to start. Pick a style, upload your logo and write the texts: you see the label on the bottle straight away, with paper, foil and embossing. When you like it, send it to us and we prepare it for print.",
+   "loading": "Loading the designer…",
+   "vBottle": "On the bottle",
+   "vFlat": "Label and die line",
+   "vSep": "Print layers",
+   "illustrative": "Indicative preview: real colours, paper and foil are judged on samples and on the print proof.",
+   "s1": "Style",
+   "s2": "Logo",
+   "s3": "Texts",
+   "s4": "Bottle and size",
+   "s5": "Paper and finishes",
+   "s6": "Mandatory information",
+   "logoFile": "Upload your logo (PNG, JPG, SVG · max 4 MB)",
+   "logoHint": "Without a logo we use a monogram with the winery's initials.",
+   "logoMode": "Logo colour",
+   "lmInk": "In the label colour",
+   "lmOrig": "Original colours",
+   "logoRemove": "Remove logo",
+   "winery": "Winery name",
+   "wine": "Wine name",
+   "vintage": "Vintage",
+   "den": "Designation type",
+   "denText": "Designation or type (e.g. Barbera d'Asti, Vino Rosso)",
+   "area": "Area or village",
+   "alc": "Alcohol (% vol)",
+   "vol": "Volume",
+   "dens": {
+    "docg": "DOCG",
+    "doc": "DOC",
+    "dop": "PDO (DOP)",
+    "igt": "IGT",
+    "igp": "PGI (IGP)",
+    "vino": "Wine without geographical indication"
+   },
+   "bottle": "Bottle",
+   "sizeL": "Suggested size (mm, width × height)",
+   "w": "Width (mm)",
+   "h": "Height (mm)",
+   "shape": "Die shape",
+   "paper": "Paper",
+   "ink": "Print colours",
+   "foil": "Hot foil",
+   "foilT": "Where the foil goes",
+   "emb": "Embossing",
+   "varnish": "Protection",
+   "chkLead": "On the front label these must be in the same field of vision: designation, alcoholic strength and volume.",
+   "backH": "These usually go on the back label (we prepare it during the fine-tuning):",
+   "back": [
+    "Contains sulphites (and other allergens, if any)",
+    "Bottled by… (name and town)",
+    "Lot number",
+    "Energy value and a QR code or link to ingredients and nutrition",
+    "Environmental labelling for bottle and closure",
+    "Origin, where required (e.g. Product of Italy)"
+   ],
+   "legal": "A reminder, not a substitute for checking with your consultant or control body.",
+   "sendEyebrow": "Next step",
+   "sendH": "Send us the draft. We make it print-ready.",
+   "sendP": "You get a reply with the price of the labels and of the fine-tuning. The file we receive already has die line, bleed and separate layers for foil and embossing.",
+   "how": [
+    [
+     "Draft",
+     "You make it here, free."
+    ],
+    [
+     "Fine-tuning",
+     "We fix layout, vector logo, colours, foil, embossing and legal texts. Fixed price, deductible from the order."
+    ],
+    [
+     "Print proof",
+     "You get the final proof with every specification to approve."
+    ],
+    [
+     "Samples and print",
+     "If you wish, we first send papers and finishes to touch."
+    ]
+   ],
+   "qty": "Number of labels",
+   "apply": "Application",
+   "applyHand": "By hand",
+   "applyMachine": "With a labelling machine",
+   "notes": "Notes (optional)",
+   "send": "Send the draft",
+   "sent": "Thank you. We have received your draft and will reply within one working day.",
+   "js": {
+    "def": {
+     "winery": "Tenuta del Colle",
+     "wine": "Rosso di Collina",
+     "vintage": "2025",
+     "den": "doc",
+     "denText": "Monferrato Rosso",
+     "area": "Piemonte",
+     "alc": "13,5",
+     "vol": "75 cl"
+    },
+    "ariaBottle": "Preview of the label on the bottle",
+    "ariaFlat": "Flat label with die line and bleed",
+    "suggested": "suggested",
+    "styles": {
+     "classico": "Classic",
+     "nobile": "Noble",
+     "moderno": "Modern",
+     "minimal": "Minimal"
+    },
+    "shapes": {
+     "rect": "rectangular",
+     "round": "rounded corners",
+     "oval": "oval",
+     "arch": "arched"
+    },
+    "papers": {
+     "ivory": "Ivory felt-textured paper",
+     "white": "White felt-textured paper",
+     "cream": "Smooth cream paper",
+     "bright": "Smooth white paper"
+    },
+    "inks": {
+     "burgundy": "burgundy and green",
+     "black": "black and taupe",
+     "navy": "midnight blue and ochre",
+     "green": "forest green and burgundy"
+    },
+    "foils": {
+     "gold": "gold",
+     "silver": "silver",
+     "copper": "copper"
+    },
+    "targets": {
+     "name": "winery name",
+     "wine": "wine name",
+     "vintage": "vintage",
+     "frame": "frame and ornaments",
+     "logo": "logo",
+     "den": "designation"
+    },
+    "varnishes": {
+     "none": "none (natural paper)",
+     "matte": "protective matte varnish"
+    },
+    "bottles": {
+     "bordolese": "Bordeaux",
+     "borgognotta": "Burgundy",
+     "champagnotta": "Champagne"
+    },
+    "sep": {
+     "print": "CMYK print",
+     "foil": "Foil",
+     "emb": "Embossing",
+     "die": "Die line and bleed"
+    },
+    "spec": {
+     "title": "[Wine label designer]",
+     "format": "Size",
+     "material": "Material",
+     "print": "Print",
+     "finish": "Finish",
+     "foil": "foil",
+     "emb": "embossing",
+     "varnish": "protection",
+     "none": "none",
+     "bottle": "Bottle",
+     "style": "Style",
+     "texts": "Texts",
+     "logo": "Logo",
+     "logoRaster": "bitmap, to be redrawn as vector",
+     "logoVector": "vector (SVG)",
+     "logoNone": "none, monogram",
+     "qty": "Quantity",
+     "apply": "Application",
+     "notes": "Customer notes"
+    },
+    "w": {
+     "tall": "{h} mm is tall for this bottle: above about {max} mm the label leaves the straight part and does not sit well on the shoulder.",
+     "wide": "At {w} mm the label covers more than half the bottle (about {half} mm): by hand it easily goes on crooked.",
+     "small": "Very small size: the mandatory texts may become hard to read.",
+     "foilNone": "You chose foil but no element to apply it to.",
+     "emb": "Embossing needs a dedicated die: on small runs it weighs on the price per label. We quote it separately.",
+     "raster": "Your logo is a bitmap: during the fine-tuning we redraw it as vector for crisp foil and embossing.",
+     "monogram": "No logo uploaded: we are using a monogram with the initials."
+    },
+    "chk": {
+     "den": "Designation or type",
+     "alc": "Alcoholic strength",
+     "vol": "Nominal volume",
+     "field": "All three in the same field of vision"
+    },
+    "logoBad": "Invalid file: use PNG, JPG or SVG up to 4 MB.",
+    "fontErr": "The designer did not load. Please reload the page."
+   }
+  }
  }
 }
