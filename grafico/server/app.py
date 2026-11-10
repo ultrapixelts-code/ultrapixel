@@ -308,7 +308,7 @@ def brief():
             "Materiale e lavorazioni (solo quelle fattibili da UltraPixel); Allegati. "
             "Massimo 250 parole. Niente premesse, niente saluti: solo il brief.\n\nRegole di settore e limiti di stampa:\n" + SETTORI)
     try:
-        res = client().messages.create(model=BRIEF_MODEL, max_tokens=1200, system=istr,
+        res = client().messages.create(model=BRIEF_MODEL, max_tokens=4000, system=istr,
                                        messages=[{"role": "user", "content": "Risposte del cliente (JSON):\n" + risposte}])
         return jsonify(brief="\n".join(b.text for b in res.content if b.type == "text").strip())
     except Exception as ex:
