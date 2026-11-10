@@ -90,6 +90,7 @@ jobs:
             content/**
             backend/**
             server/**
+            grafico/**
             ${{ matrix.extra_exclude }}
 
       - name: Controlla che il sito risponda (${{ matrix.site }})
