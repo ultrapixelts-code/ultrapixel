@@ -127,6 +127,18 @@ def pota(messages):
                 if c.get("type") == "tool_result" and isinstance(c.get("content"), list):
                     c["content"] = [x for x in c["content"] if x.get("type") != "image"] or [{"type": "text", "text": "ok"}]
 
+MSG = {
+    "troppe": {"it": "Hai aperto molte conversazioni nell'ultima ora: riprova più tardi o scrivici a info@ultrapixel.it.", "en": "You have opened many conversations in the last hour: please try later or write to info@ultrapixel.it.",
+               "fr": "Vous avez ouvert beaucoup de conversations ces dernières heures : réessayez plus tard ou écrivez à info@ultrapixel.it.", "de": "Sie haben in der letzten Stunde viele Gespräche gestartet: bitte später erneut versuchen oder an info@ultrapixel.it schreiben."},
+    "occupato": {"it": "Sto ancora lavorando alla risposta precedente.", "en": "I am still working on the previous answer.", "fr": "Je travaille encore sur la réponse précédente.", "de": "Ich arbeite noch an der vorherigen Antwort."},
+    "limite": {"it": "Abbiamo raggiunto il limite di questa conversazione: scegli una proposta o scrivici a info@ultrapixel.it.", "en": "This conversation has reached its limit: choose a proposal or write to info@ultrapixel.it.",
+               "fr": "Cette conversation a atteint sa limite : choisissez une proposition ou écrivez à info@ultrapixel.it.", "de": "Dieses Gespräch hat sein Limit erreicht: wählen Sie einen Vorschlag oder schreiben Sie an info@ultrapixel.it."},
+    "server": {"it": "Qualcosa non ha funzionato. Riprova tra poco.", "en": "Something went wrong. Please try again shortly.", "fr": "Un problème est survenu. Réessayez dans un instant.", "de": "Etwas ist schiefgelaufen. Bitte gleich noch einmal versuchen."},
+}
+def msg(k, d):
+    l = str(d.get("lang", "it"))[:2]
+    return MSG[k].get(l, MSG[k]["en"])
+
 def ip():
     return (request.headers.get("X-Forwarded-For") or request.remote_addr or "").split(",")[0].strip()
 
@@ -154,13 +166,13 @@ def chat():
         if not sess:
             a = [t for t in IPS.get(ip(), []) if now - t < 3600]
             if len(a) >= MAX_SESSIONI_ORA:
-                return jsonify(error="troppe", msg="Hai aperto molte conversazioni nell'ultima ora: riprova più tardi o scrivici a info@ultrapixel.it."), 429
+                return jsonify(error="troppe", msg=msg("troppe", d)), 429
             IPS[ip()] = a + [now]; sid = uuid.uuid4().hex
             sess = S[sid] = {"messages": [], "logo": None, "proposte": {}, "ultime": [], "turni": 0, "t": now, "busy": False}
         if sess["busy"]:
-            return jsonify(error="occupato", msg="Sto ancora lavorando alla risposta precedente."), 409
+            return jsonify(error="occupato", msg=msg("occupato", d)), 409
         if sess["turni"] >= MAX_TURNI:
-            return jsonify(error="limite", msg="Abbiamo raggiunto il limite di questa conversazione: scegli una proposta o scrivici a info@ultrapixel.it."), 429
+            return jsonify(error="limite", msg=msg("limite", d)), 429
         sess["busy"] = True; sess["turni"] += 1; sess["t"] = now
     try:
         text = str(d.get("text", ""))[:3000].strip()
@@ -181,7 +193,7 @@ def chat():
         sess["ultime"] = []; reply = ""; c = client()
         giro = 0
         for _ in range(4):
-            res = c.messages.create(model=MODEL, max_tokens=12000, system=[{"type": "text", "text": SYSTEM, "cache_control": {"type": "ephemeral"}}, {"type": "text", "text": STATO()}],
+            res = c.messages.create(model=MODEL, max_tokens=12000, system=[{"type": "text", "text": SYSTEM, "cache_control": {"type": "ephemeral"}}, {"type": "text", "text": STATO() + " Lingua della pagina del cliente: " + str(d.get("lang", "it"))[:2] + " (rispondi comunque nella lingua in cui scrive il cliente)."}],
                                     tools=[TOOL], messages=msgs)
             msgs.append({"role": "assistant", "content": [b.model_dump(exclude_none=True) for b in res.content]})
             uses = [b for b in res.content if b.type == "tool_use"]
@@ -204,7 +216,7 @@ def chat():
             sess["messages"].pop()
         if sess["messages"]:
             sess["messages"].pop()
-        return jsonify(sid=sid, error="server", msg="Qualcosa non ha funzionato. Riprova tra poco."), 500
+        return jsonify(sid=sid, error="server", msg=msg("server", d)), 500
     finally:
         sess["busy"] = False
 

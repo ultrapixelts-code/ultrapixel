@@ -19,6 +19,9 @@ header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-c
 .brand{display:flex;align-items:baseline;gap:12px;text-decoration:none;color:var(--ink)}
 .brand b{font-weight:700;font-stretch:90%;letter-spacing:-.02em;font-size:20px}
 .brand i{display:block;width:44px;height:2px;background:var(--spec);align-self:center}
+.lgs{display:flex;gap:12px;margin-left:auto}.lgs a{font:400 11px var(--mono);letter-spacing:.14em;color:var(--tgt);text-decoration:none}.lgs a[aria-current]{color:var(--ink);box-shadow:inset 0 -1px 0 var(--ink)}
+.wait .mi{margin-left:6px}
+@media(max-width:560px){header>.mi:last-child{display:none}.brand .mi{display:none}}
 main{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,48px) 200px}
 .hero{padding:clamp(40px,8vw,96px) 0 clamp(20px,4vw,36px);max-width:860px}
 .hero h1{margin:14px 0 16px;font-weight:600;font-stretch:80%;letter-spacing:-.035em;line-height:.95;font-size:clamp(40px,7.5vw,92px)}
@@ -114,36 +117,75 @@ dialog::backdrop{background:rgba(16,18,20,.55)}
 </div></dialog>
 <script>
 (function(){
-var IT=/^it/i.test(navigator.language||''), T=IT?{
+var L={it:{
  studio:'Studio etichette',beta:'Beta · AI',eyebrow:'Il tuo grafico, adesso',h1a:'Raccontaci il prodotto.',h1b:'Ti disegniamo l’etichetta.',
- lead:'Scrivi come lo diresti a un grafico: cosa vendi, che contenitore usi, che stile ti piace. Carica foto del flacone, il logo o una bozza. In un paio di minuti vedi le proposte sul tuo contenitore.',
- chips:['Etichetta per il mio primo vino, bordolese, stile classico con oro','Body wash al rosmarino in flacone ambrato 250 ml, minimal con rilievo','Barattolo di miele di acacia da 500 g, artigianale','Olio extravergine in bottiglia da 500 ml, moderno'],
+ lead:'Scrivi come lo diresti a un grafico: cosa vendi, che contenitore usi, che stile ti piace. Carica foto del flacone, il logo o una bozza. Vedrai le proposte sul tuo contenitore.',
+ time:'Ci vogliono 2–3 minuti: il grafico studia il brief, disegna ogni proposta e la ricontrolla prima di mostrartela.',
+ chips:['Etichetta per il mio primo vino, bordolese, stile classico con oro','Body wash al rosmarino in flacone ambrato 250 ml, minimal con rilievo','Barattolo di miele di acacia da 500 g, artigianale','IPA in bottiglia longneck da 33 cl, che si noti sullo scaffale'],
  ph:'Descrivi il prodotto e l’etichetta che vorresti…',attach:'Allega foto o logo',sendBtn:'Invia',isLogo:'logo',
- wait:['Leggo il brief…','Scelgo carta e lavorazioni…','Disegno le proposte…','Controllo l’impaginazione…'],
+ wait:['Leggo il brief…','Studio il contenitore e il formato…','Scelgo carta e lavorazioni…','Disegno le proposte…','Preparo le illustrazioni…','Controllo l’impaginazione come un direttore artistico…','Ultimi ritocchi…'],
+ waitTime:'di solito 2–3 minuti',
  onBottle:'Sul contenitore',flat:'Etichetta',pick:'Scelgo questa',change:'Modifica',changeTxt:'Nella proposta «{n}» vorrei ',
  note:'Proposte indicative create con l’intelligenza artificiale: prima della stampa ricevi da UltraPixel la bozza definitiva da approvare, con il prezzo.',
  pickEyebrow:'Ultimo passo',pickNote:'Ti mandiamo prezzo e bozza di stampa definitiva. Il file di questa proposta arriva al nostro grafico insieme alla conversazione.',
  fName:'Nome e cognome',fCompany:'Azienda',fEmail:'Email',fCountry:'Paese',fQty:'Quantità di etichette',fPhone:'Telefono (facoltativo)',fNotes:'Note (facoltativo)',fSend:'Invia a UltraPixel',
  sending:'Invio in corso…',sent:'Ricevuto! Ti rispondiamo entro un giorno lavorativo con prezzo e bozza.',sentChat:'Hai inviato «{n}» a UltraPixel. Ti scriviamo entro un giorno lavorativo.',fail:'Invio non riuscito. Riprova o scrivici a info@ultrapixel.it.',
  privacy:'I testi e le immagini che invii servono solo a preparare le proposte e sono elaborati da un servizio di intelligenza artificiale.',err:'Qualcosa non ha funzionato. Riprova tra poco.'
-}:{
+},en:{
  studio:'Label studio',beta:'Beta · AI',eyebrow:'Your label designer, right now',h1a:'Tell us about your product.',h1b:'We design the label.',
- lead:'Write it as you would to a designer: what you sell, which container, the style you like. Upload photos of the bottle, your logo or a sketch. In a couple of minutes you see the proposals on your own container.',
- chips:['A label for my first wine, Bordeaux bottle, classic with gold','Rosemary body wash in a 250 ml amber bottle, minimal with embossing','A 500 g jar of acacia honey, artisanal','Extra virgin olive oil in a 500 ml bottle, modern'],
+ lead:'Write it as you would to a designer: what you sell, which container, the style you like. Upload photos of the bottle, your logo or a sketch. You will see the proposals on your own container.',
+ time:'It takes 2–3 minutes: the designer studies your brief, draws each proposal and checks it again before showing it to you.',
+ chips:['A label for my first wine, Bordeaux bottle, classic with gold','Rosemary body wash in a 250 ml amber bottle, minimal with embossing','A 500 g jar of acacia honey, artisanal','An IPA in a 33 cl longneck bottle that stands out on the shelf'],
  ph:'Describe your product and the label you have in mind…',attach:'Attach photos or logo',sendBtn:'Send',isLogo:'logo',
- wait:['Reading your brief…','Choosing paper and finishes…','Drawing the proposals…','Checking the layout…'],
+ wait:['Reading your brief…','Studying the container and the size…','Choosing paper and finishes…','Drawing the proposals…','Preparing the illustrations…','Checking the layout like an art director…','Final touches…'],
+ waitTime:'usually 2–3 minutes',
  onBottle:'On the container',flat:'Label',pick:'I choose this',change:'Change',changeTxt:'In «{n}» I would like ',
  note:'Indicative proposals made with artificial intelligence: before printing, UltraPixel sends you the final proof to approve, with the price.',
  pickEyebrow:'Last step',pickNote:'We send you the price and the final print proof. The file of this proposal reaches our designer together with the conversation.',
  fName:'Name',fCompany:'Company',fEmail:'Email',fCountry:'Country',fQty:'Number of labels',fPhone:'Phone (optional)',fNotes:'Notes (optional)',fSend:'Send to UltraPixel',
  sending:'Sending…',sent:'Received! We reply within one working day with price and proof.',sentChat:'You sent «{n}» to UltraPixel. We will write to you within one working day.',fail:'Sending failed. Try again or write to info@ultrapixel.it.',
- privacy:'The texts and images you send are used only to prepare the proposals and are processed by an artificial intelligence service.',err:'Something went wrong. Please try again shortly.'};
-document.documentElement.lang=IT?'it':'en';
+ privacy:'The texts and images you send are used only to prepare the proposals and are processed by an artificial intelligence service.',err:'Something went wrong. Please try again shortly.'
+},fr:{
+ studio:'Studio étiquettes',beta:'Bêta · IA',eyebrow:'Votre graphiste, tout de suite',h1a:'Parlez-nous de votre produit.',h1b:'Nous dessinons l’étiquette.',
+ lead:'Écrivez comme vous le diriez à un graphiste : ce que vous vendez, le contenant, le style qui vous plaît. Ajoutez des photos du flacon, votre logo ou une esquisse. Vous verrez les propositions sur votre propre contenant.',
+ time:'Comptez 2 à 3 minutes : le graphiste étudie votre brief, dessine chaque proposition et la vérifie avant de vous la montrer.',
+ chips:['Une étiquette pour mon premier vin, bouteille bordelaise, classique avec de l’or','Gel douche au romarin en flacon ambré de 250 ml, minimaliste avec gaufrage','Un pot de miel d’acacia de 500 g, artisanal','Une IPA en bouteille longneck de 33 cl qui se remarque en rayon'],
+ ph:'Décrivez votre produit et l’étiquette que vous imaginez…',attach:'Joindre des photos ou le logo',sendBtn:'Envoyer',isLogo:'logo',
+ wait:['Je lis votre brief…','J’étudie le contenant et le format…','Je choisis le papier et les finitions…','Je dessine les propositions…','Je prépare les illustrations…','Je contrôle la mise en page comme un directeur artistique…','Dernières retouches…'],
+ waitTime:'en général 2 à 3 minutes',
+ onBottle:'Sur le contenant',flat:'Étiquette',pick:'Je choisis celle-ci',change:'Modifier',changeTxt:'Dans « {n} » je voudrais ',
+ note:'Propositions indicatives créées avec l’intelligence artificielle : avant l’impression, UltraPixel vous envoie le BAT définitif à valider, avec le prix.',
+ pickEyebrow:'Dernière étape',pickNote:'Nous vous envoyons le prix et le BAT définitif. Le fichier de cette proposition arrive à notre graphiste avec la conversation.',
+ fName:'Nom et prénom',fCompany:'Société',fEmail:'E-mail',fCountry:'Pays',fQty:'Nombre d’étiquettes',fPhone:'Téléphone (facultatif)',fNotes:'Notes (facultatif)',fSend:'Envoyer à UltraPixel',
+ sending:'Envoi en cours…',sent:'Bien reçu ! Nous vous répondons sous un jour ouvré avec le prix et le BAT.',sentChat:'Vous avez envoyé « {n} » à UltraPixel. Nous vous écrivons sous un jour ouvré.',fail:'L’envoi a échoué. Réessayez ou écrivez-nous à info@ultrapixel.it.',
+ privacy:'Les textes et images que vous envoyez servent uniquement à préparer les propositions et sont traités par un service d’intelligence artificielle.',err:'Un problème est survenu. Réessayez dans un instant.'
+},de:{
+ studio:'Etiketten-Studio',beta:'Beta · KI',eyebrow:'Ihr Grafiker, jetzt sofort',h1a:'Erzählen Sie uns von Ihrem Produkt.',h1b:'Wir gestalten das Etikett.',
+ lead:'Schreiben Sie es so, wie Sie es einem Grafiker sagen würden: was Sie verkaufen, welcher Behälter, welcher Stil Ihnen gefällt. Laden Sie Fotos der Flasche, Ihr Logo oder einen Entwurf hoch. Sie sehen die Vorschläge auf Ihrem eigenen Behälter.',
+ time:'Das dauert 2–3 Minuten: Der Grafiker studiert Ihr Briefing, zeichnet jeden Vorschlag und prüft ihn, bevor er ihn Ihnen zeigt.',
+ chips:['Ein Etikett für meinen ersten Wein, Bordeauxflasche, klassisch mit Gold','Rosmarin-Duschgel in 250-ml-Braunglasflasche, minimalistisch mit Prägung','Ein 500-g-Glas Akazienhonig, handwerklich','Ein IPA in der 33-cl-Longneck-Flasche, das im Regal auffällt'],
+ ph:'Beschreiben Sie Ihr Produkt und das gewünschte Etikett…',attach:'Fotos oder Logo anhängen',sendBtn:'Senden',isLogo:'Logo',
+ wait:['Ich lese Ihr Briefing…','Ich prüfe Behälter und Format…','Ich wähle Papier und Veredelungen…','Ich zeichne die Vorschläge…','Ich bereite die Illustrationen vor…','Ich prüfe das Layout wie ein Art Director…','Letzter Feinschliff…'],
+ waitTime:'meist 2–3 Minuten',
+ onBottle:'Auf dem Behälter',flat:'Etikett',pick:'Diesen wähle ich',change:'Ändern',changeTxt:'Bei „{n}“ hätte ich gern ',
+ note:'Unverbindliche, mit künstlicher Intelligenz erstellte Vorschläge: Vor dem Druck erhalten Sie von UltraPixel den endgültigen Druckproof zur Freigabe, mit Preis.',
+ pickEyebrow:'Letzter Schritt',pickNote:'Wir senden Ihnen Preis und endgültigen Druckproof. Die Datei dieses Vorschlags geht zusammen mit dem Gespräch an unseren Grafiker.',
+ fName:'Vor- und Nachname',fCompany:'Firma',fEmail:'E-Mail',fCountry:'Land',fQty:'Anzahl Etiketten',fPhone:'Telefon (optional)',fNotes:'Anmerkungen (optional)',fSend:'An UltraPixel senden',
+ sending:'Wird gesendet…',sent:'Erhalten! Wir antworten innerhalb eines Werktags mit Preis und Proof.',sentChat:'Sie haben „{n}“ an UltraPixel gesendet. Wir melden uns innerhalb eines Werktags.',fail:'Senden fehlgeschlagen. Bitte erneut versuchen oder an info@ultrapixel.it schreiben.',
+ privacy:'Die Texte und Bilder, die Sie senden, dienen nur zur Vorbereitung der Vorschläge und werden von einem KI-Dienst verarbeitet.',err:'Etwas ist schiefgelaufen. Bitte gleich noch einmal versuchen.'
+}};
+var LG=(function(){var q=new URLSearchParams(location.search).get('lang');if(q&&L[q])return q;try{var s=localStorage.getItem('up_lang');if(s&&L[s])return s}catch(e){}
+  var n=(navigator.language||'en').slice(0,2).toLowerCase();return L[n]?n:'en'})(),T=L[LG];
+document.documentElement.lang=LG;
+(function(){var h=document.querySelector('header'),w=document.createElement('nav');w.className='lgs';w.setAttribute('aria-label','Language');
+  ['it','en','fr','de'].forEach(function(l){var a=document.createElement('a');a.href='?lang='+l;a.textContent=l.toUpperCase();if(l===LG)a.setAttribute('aria-current','true');
+    a.onclick=function(){try{localStorage.setItem('up_lang',l)}catch(e){}};w.appendChild(a)});h.insertBefore(w,h.lastElementChild)})();
 var $=function(s){return document.querySelector(s)};
 [].forEach.call(document.querySelectorAll('[data-t]'),function(e){e.textContent=T[e.getAttribute('data-t')]});
 $('#in').placeholder=T.ph;
 var sid='',busy=false,files=[],log=$('#log'),cur=null;
 T.chips.forEach(function(c){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=c;b.onclick=function(){$('#in').value=c;$('#in').focus();grow()};$('#chips').appendChild(b)});
+var tn=document.createElement('p');tn.className='note';tn.textContent=T.time;$('#hero').appendChild(tn);
 var priv=document.createElement('p');priv.className='note';priv.innerHTML=T.privacy+' <a href="https://ultrapixel.it/privacy/" target="_blank" rel="noopener">Privacy</a>';$('#hero').appendChild(priv);
 function grow(){var t=$('#in');t.style.height='auto';t.style.height=Math.min(180,t.scrollHeight)+'px'}
 $('#in').addEventListener('input',grow);
@@ -174,9 +216,9 @@ function cards(list){var w=el('div','props');list.forEach(function(p){var c=el('
 $('#f').addEventListener('submit',function(e){e.preventDefault();if(busy)return;var text=$('#in').value.trim();if(!text&&!files.length)return;
   busy=true;$('#go').disabled=true;$('#hero').style.display='none';
   var m=el('div','msg me',text);if(files.length){var th=el('div','thumbs');files.forEach(function(f){var i=el('img');i.src=f.url;i.alt='';th.appendChild(i)});m.appendChild(th)}log.appendChild(m);
-  var wt=el('div','wait'),wi=el('i'),ws=el('span',null,T.wait[0]),k=0;wt.appendChild(wi);wt.appendChild(ws);log.appendChild(wt);scroll();
-  var tick=setInterval(function(){k=Math.min(T.wait.length-1,k+1);ws.textContent=T.wait[k]},9000);
-  var body={sid:sid,text:text,images:files.map(function(f){return{type:f.type,data:f.data,logo:f.logo,ratio:f.ratio}})};
+  var wt=el('div','wait'),wi=el('i'),ws=el('span',null,T.wait[0]),wc=el('span','mi',''),k=0,t0=Date.now();wt.appendChild(wi);wt.appendChild(ws);wt.appendChild(wc);log.appendChild(wt);scroll();
+  var tick=setInterval(function(){var sec=Math.round((Date.now()-t0)/1000);k=Math.min(T.wait.length-1,Math.floor(sec/22));ws.textContent=T.wait[k];wc.textContent=Math.floor(sec/60)+':'+('0'+sec%60).slice(-2)+' · '+T.waitTime},1000);
+  var body={sid:sid,lang:LG,text:text,images:files.map(function(f){return{type:f.type,data:f.data,logo:f.logo,ratio:f.ratio}})};
   $('#in').value='';grow();files=[];drawAtt();
   fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})
   .then(function(x){var j=x.j;if(j.sid)sid=j.sid;wt.remove();
