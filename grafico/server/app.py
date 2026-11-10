@@ -220,6 +220,14 @@ def chat():
         now = time.time()
         for k in [k for k, v in S.items() if now - v["t"] > 6 * 3600]:
             S.pop(k, None)
+        if SESS_DIR and os.path.isdir(SESS_DIR):   # privacy: conversazioni cancellate dopo 30 giorni
+            for fn in os.listdir(SESS_DIR):
+                fp = os.path.join(SESS_DIR, fn)
+                try:
+                    if now - os.path.getmtime(fp) > 30 * 86400:
+                        os.remove(fp)
+                except OSError:
+                    pass
         sess = S.get(sid) or carica(sid)
         if sess:
             S[sid] = sess
