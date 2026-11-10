@@ -107,7 +107,7 @@ def esegui_strumento(sess, inp, giro=0):
         except Exception as ex:
             testo.append(f"Proposta {n+1} ({p.get('nome', '')}): errore {type(ex).__name__}, non disegnata."); continue
         sess["proposte"][pid] = {"p": p, "r": r, "t": time.time()}
-        out.append({"id": pid, "nome": str(p.get("nome", ""))[:60], "concetto": str(p.get("concetto", ""))[:300], "spec": r["spec"]})
+        out.append({"id": pid, "nome": str(p.get("nome", ""))[:60], "concetto": str(p.get("concetto", ""))[:300], "spec": r["spec"], "p": p})
         testo.append(f"Proposta {n+1} «{p.get('nome', '')}»: " + ("avvisi: " + "; ".join(r["avvisi"]) if r["avvisi"] else "nessun avviso") + ".")
     # una correzione può ridisegnare solo alcune proposte: le altre di questo turno restano visibili
     nuovi = {o["nome"] for o in out}
@@ -139,6 +139,64 @@ def msg(k, d):
     l = str(d.get("lang", "it"))[:2]
     return MSG[k].get(l, MSG[k]["en"])
 
+SESS_DIR = os.environ.get("SESS_DIR", "")   # con un disco persistente di Render (es. /data/sessioni) le conversazioni sopravvivono a riavvii e aggiornamenti
+
+def salva(sid, sess):
+    if not SESS_DIR:
+        return
+    try:
+        os.makedirs(SESS_DIR, exist_ok=True); tmp = os.path.join(SESS_DIR, sid + ".tmp")
+        data = {k: v for k, v in sess.items() if k != "busy"}
+        data["proposte"] = {k: {"p": v["p"], "t": v.get("t", 0)} for k, v in sess["proposte"].items()}   # le anteprime si ridisegnano quando servono
+        with open(tmp, "w") as f:
+            json.dump(data, f)
+        os.replace(tmp, os.path.join(SESS_DIR, sid + ".json"))
+    except Exception as ex:
+        app.logger.error("sessione non salvata: %s", ex)
+
+def carica(sid):
+    if not SESS_DIR or not re.match(r"^[0-9a-f]{32}$", sid or ""):
+        return None
+    try:
+        with open(os.path.join(SESS_DIR, sid + ".json")) as f:
+            sess = json.load(f)
+        sess["busy"] = False
+        if sess.get("logo"):
+            sess["logo"] = tuple(sess["logo"])
+        return sess
+    except Exception:
+        return None
+
+def proposta(sess, pid):
+    """La proposta con le sue anteprime (ridisegnate se la sessione è stata ricaricata dal disco)."""
+    pr = sess and sess["proposte"].get(pid)
+    if pr and "r" not in pr:
+        pr["r"] = progetto.anteprime(pr["p"], sess.get("logo"), k="d" + pid[:4], illustrazioni=sess.get("ill"))
+    return pr
+
+def ripristina(sess, r):
+    """Il servizio si è riavviato e la sessione è persa: il browser rimanda la conversazione (testi, proposte, logo) e la ricostruiamo."""
+    storia = []
+    for m in (r.get("storia") or [])[-30:]:
+        chi = "Cliente" if m.get("r") == "u" else "Grafico"
+        storia.append(f"{chi}: {str(m.get('t', ''))[:1500]}")
+    props = [x for x in (r.get("proposte") or [])[:3] if isinstance(x, dict) and isinstance(x.get("p"), dict)]
+    lg = r.get("logo") or {}
+    if lg.get("data") and re.match(r"^[A-Za-z0-9+/=]+$", str(lg["data"])[:200]) and len(lg["data"]) < 4_000_000:
+        mt = lg.get("type") if lg.get("type") in ("image/jpeg", "image/png", "image/webp") else "image/png"
+        sess["logo"] = (f"data:{mt};base64,{lg['data']}", max(.1, min(10, float(lg.get("ratio") or 1))))
+    rimappa = {}
+    for x in props:
+        try:
+            pid = uuid.uuid4().hex[:10]; rr_ = progetto.anteprime(x["p"], sess.get("logo"), k="r" + pid[:4], illustrazioni=sess.get("ill"))
+            sess["proposte"][pid] = {"p": x["p"], "r": rr_, "t": time.time()}; rimappa[str(x.get("id", ""))] = pid
+        except Exception:
+            pass
+    testo = ("(La conversazione riprende dopo un riavvio del servizio: il cliente non deve accorgersene. Ecco cosa ci siamo detti finora:)\n" + "\n".join(storia) +
+             "\n(Ultime proposte mostrate al cliente, nel linguaggio di disegno: partine da qui per le modifiche, mantenendo testi, formato e contenitore. "
+             "Le illustrazioni AI già generate non sono più disponibili: se servono, rigenerale con la stessa descrizione.)\n" + json.dumps([x["p"] for x in props], ensure_ascii=False)[:40000])
+    return testo, rimappa
+
 def ip():
     return (request.headers.get("X-Forwarded-For") or request.remote_addr or "").split(",")[0].strip()
 
@@ -162,12 +220,16 @@ def chat():
         now = time.time()
         for k in [k for k, v in S.items() if now - v["t"] > 6 * 3600]:
             S.pop(k, None)
-        sess = S.get(sid)
+        sess = S.get(sid) or carica(sid)
+        if sess:
+            S[sid] = sess
+        elif sid and not d.get("ripristino"):
+            return jsonify(error="persa"), 410   # il browser rimanda la conversazione con "ripristino"
         if not sess:
             a = [t for t in IPS.get(ip(), []) if now - t < 3600]
             if len(a) >= MAX_SESSIONI_ORA:
                 return jsonify(error="troppe", msg=msg("troppe", d)), 429
-            IPS[ip()] = a + [now]; sid = uuid.uuid4().hex
+            IPS[ip()] = a + [now]; vecchio = sid; sid = uuid.uuid4().hex
             sess = S[sid] = {"messages": [], "logo": None, "proposte": {}, "ultime": [], "turni": 0, "t": now, "busy": False}
         if sess["busy"]:
             return jsonify(error="occupato", msg=msg("occupato", d)), 409
@@ -188,6 +250,10 @@ def chat():
                 content.append({"type": "text", "text": "(Questa immagine è il logo del cliente: usalo con l'elemento logo.)"})
         if not text and not content:
             return jsonify(error="vuoto"), 400
+        rimappa = {}
+        if d.get("ripristino") and not sess["messages"]:
+            prima, rimappa = ripristina(sess, d["ripristino"]); sess["turni"] += len(d["ripristino"].get("storia") or []) // 2
+            content.insert(0, {"type": "text", "text": prima})
         content.append({"type": "text", "text": text or "(immagini allegate)"})
         msgs = sess["messages"]; msgs.append({"role": "user", "content": content})
         sess["ultime"] = []; reply = ""; c = client()
@@ -208,7 +274,8 @@ def chat():
             msgs.append({"role": "assistant", "content": [b.model_dump(exclude_none=True) for b in res.content]})
             reply = "\n".join(b.text for b in res.content if b.type == "text").strip()
         pota(msgs)
-        return jsonify(sid=sid, reply=reply, proposte=sess["ultime"], turni_rimasti=MAX_TURNI - sess["turni"])
+        salva(sid, sess)
+        return jsonify(sid=sid, reply=reply, proposte=sess["ultime"], turni_rimasti=MAX_TURNI - sess["turni"], rimappa=rimappa)
     except Exception as ex:
         app.logger.exception("chat")
         # la conversazione resta coerente: tolgo il turno incompleto
@@ -222,7 +289,9 @@ def chat():
 
 @app.get("/api/file/<sid>/<pid>/<kind>.svg")
 def file(sid, pid, kind):
-    sess = S.get(sid); pr = sess and sess["proposte"].get(pid)
+    sess = S.get(sid) or carica(sid); pr = proposta(sess, pid)
+    if sess and sid not in S:
+        S[sid] = sess
     if not pr or kind not in ("contenitore", "piatta"):   # il file di stampa non si scarica: va solo a UltraPixel
         abort(404)
     return Response(pr["r"][kind], mimetype="image/svg+xml", headers={"Cache-Control": "private, max-age=3600"})
@@ -267,14 +336,14 @@ def pacchetto():
     """Il firewall di Keliweb blocca le richieste che partono dai server di Render: l'invio a lead.php lo fa il browser del cliente.
     Dopo che il cliente ha lasciato i suoi dati, il server gli consegna una volta sola testo di riepilogo e file di stampa da inoltrare."""
     d = request.get_json(force=True, silent=True) or {}
-    sess = S.get(d.get("sid", "")); pr = sess and sess["proposte"].get(d.get("pid", ""))
+    sess = S.get(d.get("sid", "")) or carica(d.get("sid", "")); pr = proposta(sess, d.get("pid", ""))
     if not pr:
         return jsonify(error="sessione", msg="La conversazione è scaduta: ricarica la pagina."), 404
     if sess.get("inviate", 0) >= 3:
         return jsonify(error="limite", msg="Hai già inviato le tue scelte: ti rispondiamo presto."), 429
     if not str(d.get("name", "")).strip() or not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", str(d.get("email", ""))):
         return jsonify(error="campi"), 400
-    sess["inviate"] = sess.get("inviate", 0) + 1
+    sess["inviate"] = sess.get("inviate", 0) + 1; salva(d.get("sid", ""), sess)
     nome = re.sub(r"[^a-z0-9]+", "-", str(pr["p"].get("nome", "proposta")).lower()).strip("-")[:40] or "proposta"
     return jsonify(testo=riepilogo_testo(sess, pr), svg=pr["r"]["stampa"], filename=f"etichetta-{nome}.svg", endpoint=LEAD_ENDPOINT)
 
