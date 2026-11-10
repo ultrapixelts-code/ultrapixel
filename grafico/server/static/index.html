@@ -181,7 +181,7 @@ $('#f').addEventListener('submit',function(e){e.preventDefault();if(busy)return;
   fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})
   .then(function(x){var j=x.j;if(j.sid)sid=j.sid;wt.remove();
     if(!x.ok){log.appendChild(el('div','msg ai err',j.msg||T.err));return}
-    if(j.reply)log.appendChild(el('div','msg ai',j.reply));if(j.proposte&&j.proposte.length)cards(j.proposte)})
+    if(j.reply){var am=el('div','msg ai');am.innerHTML=j.reply.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');log.appendChild(am)}if(j.proposte&&j.proposte.length)cards(j.proposte)})
   .catch(function(){wt.remove();log.appendChild(el('div','msg ai err',T.err))})
   .then(function(){clearInterval(tick);busy=false;$('#go').disabled=false;scroll()})});
 [].forEach.call(document.querySelectorAll('[data-close]'),function(b){b.onclick=function(){b.closest('dialog').close()}});
