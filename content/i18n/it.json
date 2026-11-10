@@ -1022,5 +1022,8 @@
  "UltraPixel concept wine label with hot foil and embossing": "Etichetta vino concept UltraPixel con stampa a caldo e rilievo",
  "Headquarters and production": "Sede e produzione",
  "Italy": "Italia",
- "France": "Francia"
+ "France": "Francia",
+ "Design your label": "Disegna la tua etichetta",
+ "AI label designer": "Grafico AI per etichette",
+ "On studio.ultrapixel.it you can describe your product and receive label proposals created with artificial intelligence. What you write and the images you upload (photos, logo, sketches) are sent to our server and processed, only to prepare the proposals, by artificial intelligence providers acting as data processors: Anthropic (conversation and layout) and OpenAI (illustrations). These providers are based in the United States; the transfer takes place under the safeguards provided by the GDPR. Conversations are deleted after 30 days, unless you send us a proposal: then it becomes a request and follows the rules above. Please do not upload personal data of other people.": "Su studio.ultrapixel.it puoi descrivere il tuo prodotto e ricevere proposte di etichetta create con l'intelligenza artificiale. Quello che scrivi e le immagini che carichi (foto, logo, bozze) vengono inviati al nostro server ed elaborati, solo per preparare le proposte, da fornitori di intelligenza artificiale che agiscono come responsabili del trattamento: Anthropic (conversazione e impaginazione) e OpenAI (illustrazioni). Questi fornitori hanno sede negli Stati Uniti; il trasferimento avviene con le garanzie previste dal GDPR. Le conversazioni vengono cancellate dopo 30 giorni, salvo che tu ci invii una proposta: in quel caso diventa una richiesta e segue le regole indicate sopra. Ti chiediamo di non caricare dati personali di altre persone."
 }

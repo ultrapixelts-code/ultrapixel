@@ -220,7 +220,8 @@ def lhref(l, path, P, langs=None):
 def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls="", langs=None):
     s, ui = C["site"], C["ui"]; url = pub(C, C["lang"], path[len(P) - 1:]) if path.endswith("/") else s["url"].rstrip("/") + path
     ui = dict(ui, sustain=C["sustainability"]["nav"])
-    nav = f'<a class="price" href="{P}quote/">{e(ui["priceNav"])}</a>' + "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("sustain", f"{P}sustainability/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
+    studio = (f'<a class="price" href="{e(s["studioUrl"])}/?lang={C["lang"]}">{e(ui["studioNav"])}</a>' if s.get("studioUrl") else "")
+    nav = studio + f'<a class="price" href="{P}quote/">{e(ui["priceNav"])}</a>' + "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("sustain", f"{P}sustainability/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
     contact = "".join(f"<li>{x}</li>" for x in (
         *[f'<strong>{e(n)}</strong><br>' + "<br>".join(e(l) for l in ls) + (f'<br>{e(ui["vat"])} {e(s["vatID"][2:] if C["lang"] == "it" else s["vatID"])}' if n == s["legalName"] else "") for _, n, ls in office_cards(C)], f'<a href="mailto:{e(s["email"])}">{e(s["email"])}</a>' if s["email"] else "", f'<a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a>' if s["phone"] else "",
         f'<a href="{e(wa_url(C))}" target="_blank" rel="noopener">WhatsApp</a>' if s.get("whatsapp") else "",
@@ -938,7 +939,7 @@ CALC_POSTS = {"label-roll-breaks-on-labelling-line", "label-quote-specification-
 BLOG_FAQ = {"en": "Frequently asked questions", "it": "Domande frequenti", "fr": "Questions fréquentes", "de": "Häufige Fragen"}
 
 
-NO_TR = {"sameAs", "sameAsHQ", "slug", "key", "image", "img", "id", "url", "lang", "macro", "fx", "shot", "heroImg", "launchUrl", "email", "phone", "whatsapp", "linkedin", "instagram", "formEndpoint", "analyticsEndpoint", "sameAs", "openingHours", "telephone",
+NO_TR = {"studioUrl", "sameAs", "sameAsHQ", "slug", "key", "image", "img", "id", "url", "lang", "macro", "fx", "shot", "heroImg", "launchUrl", "email", "phone", "whatsapp", "linkedin", "instagram", "formEndpoint", "analyticsEndpoint", "sameAs", "openingHours", "telephone",
          "vatID", "street", "postalCode", "locality", "region", "country", "address", "name", "legalName", "founded"}
 
 

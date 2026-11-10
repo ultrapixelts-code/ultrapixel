@@ -63,7 +63,8 @@
       "https://www.facebook.com/profile.php?id=61584300690740",
       "https://www.instagram.com/ultrapixel.it/",
       "https://www.google.com/search?kgmid=/g/1hc2y40wv"
-    ]
+    ],
+    "studioUrl": "https://studio.ultrapixel.it"
   },
   "ui": {
     "requestSamples": "Request samples",
@@ -129,7 +130,8 @@
     "conceptAlt": "UltraPixel concept wine label with hot foil and embossing",
     "hqRole": "Headquarters and production",
     "countryIT": "Italy",
-    "countryFR": "France"
+    "countryFR": "France",
+    "studioNav": "Design your label"
   },
   "form": {
     "name": "Name",
@@ -3288,6 +3290,10 @@
         [
           "Label price calculator",
           "When you use the price page, the photo or file you upload and the values you enter (size, material, finishes and quantity) are sent to our server to read the label and calculate the price. The image is used only for this reading and is not stored. Nothing in this step identifies you, unless you then choose to send us a request. The reading of the image may be carried out by an external provider acting as data processor."
+        ],
+        [
+          "AI label designer",
+          "On studio.ultrapixel.it you can describe your product and receive label proposals created with artificial intelligence. What you write and the images you upload (photos, logo, sketches) are sent to our server and processed, only to prepare the proposals, by artificial intelligence providers acting as data processors: Anthropic (conversation and layout) and OpenAI (illustrations). These providers are based in the United States; the transfer takes place under the safeguards provided by the GDPR. Conversations are deleted after 30 days, unless you send us a proposal: then it becomes a request and follows the rules above. Please do not upload personal data of other people."
         ],
         [
           "Why we use this data",
