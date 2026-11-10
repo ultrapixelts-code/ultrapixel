@@ -229,9 +229,9 @@ def contenitore(tipo, L, colore=None, tappo=None, d=None, h=None, centro=None, l
     """Anteprima SVG del contenitore con l'etichetta applicata.
     tipo: bordolese, borgognotta, champagnotta, flacone (boston round), cilindro (flacone dritto), vaso, lattina.
     d, h: diametro e altezza in mm (default tipici); centro: altezza del centro etichetta dalla base (mm)."""
-    D = {"bordolese": (75, 300), "borgognotta": (82, 295), "champagnotta": (90, 300), "flacone": (62, 150), "cilindro": (55, 180), "vaso": (85, 95), "lattina": (66, 115)}[tipo]
+    D = {"bordolese": (75, 300), "borgognotta": (82, 295), "champagnotta": (90, 300), "longneck": (60, 232), "steinie": (64, 172), "flacone": (62, 150), "cilindro": (55, 180), "vaso": (85, 95), "lattina": (66, 115)}[tipo]
     d = d or D[0]; h = h or D[1]; R = d / 2; cx = R + 26; base = h + 14; W = L.w; H = L.h
-    vetro = VETRO[colore or {"bordolese": "verde", "borgognotta": "verde", "champagnotta": "verde", "flacone": "ambra", "cilindro": "bianco", "vaso": "trasparente", "lattina": "argento"}.get(tipo, "verde")] if (colore or tipo != "lattina") else ["#8d9498", "#eef0f1", "#a7adb0", "#5f666a"]
+    vetro = VETRO[colore or {"bordolese": "verde", "borgognotta": "verde", "champagnotta": "verde", "longneck": "ambra", "steinie": "ambra", "flacone": "ambra", "cilindro": "bianco", "vaso": "trasparente", "lattina": "argento"}.get(tipo, "verde")] if (colore or tipo != "lattina") else ["#8d9498", "#eef0f1", "#a7adb0", "#5f666a"]
     top = base - h
     if tipo in ("bordolese", "borgognotta", "champagnotta"):
         nr = 15 if tipo == "champagnotta" else 14.5; sh = base - (200 if tipo == "bordolese" else 145); neck = base - (232 if tipo == "bordolese" else 222)
@@ -242,6 +242,15 @@ def contenitore(tipo, L, colore=None, tappo=None, d=None, h=None, centro=None, l
         cap = (f'<path d="M{cx-nr-1.9} {top-.5}H{cx+nr+1.9}V{top+10}L{cx+nr+.4} {top+13}V{neck-4}H{cx-nr-.4}V{top+13}L{cx-nr-1.9} {top+10}Z" fill="{capc}"/>'
                f'<path d="M{cx-nr-1.9} {top-.5}H{cx+nr+1.9}V{top+10}L{cx+nr+.4} {top+13}V{neck-4}H{cx-nr-.4}V{top+13}L{cx-nr-1.9} {top+10}Z" fill="url(#{k}cap)"/>')
         body_rng = ({"bordolese": 18, "borgognotta": 15, "champagnotta": 15}[tipo], base - sh)
+    elif tipo in ("longneck", "steinie"):   # bottiglie da birra con tappo a corona
+        nr = 13.2; lng = tipo == "longneck"
+        sh = base - (h * (.5 if lng else .6)); neck = base - (h * (.68 if lng else .8)); c1, c2 = sh - (12 if lng else 10), neck + (10 if lng else 8)
+        body = (f"M{cx-R+5} {base}Q{cx-R} {base} {cx-R} {base-6}L{cx-R} {sh}C{cx-R} {c1} {cx-nr} {c2} {cx-nr} {neck}L{cx-nr+1.2} {top+9}L{cx-nr-1} {top+5}L{cx-nr-1} {top+2}"
+                f"L{cx+nr+1} {top+2}L{cx+nr+1} {top+5}L{cx+nr-1.2} {top+9}L{cx+nr} {neck}C{cx+nr} {c2} {cx+R} {c1} {cx+R} {sh}L{cx+R} {base-6}Q{cx+R} {base} {cx+R-5} {base}Z")
+        cc = tappo if (tappo or "").startswith("#") else "#B8902F"
+        cap = (f'<path d="M{cx-nr-1.6} {top+1}H{cx+nr+1.6}V{top+6}H{cx-nr-1.6}Z" fill="{cc}"/><path d="M{cx-nr-1.6} {top+1}H{cx+nr+1.6}V{top+6}H{cx-nr-1.6}Z" fill="url(#{k}cap)"/>'
+               + "".join(f'<path d="M{cx-nr-1+i*1.6:.1f} {top+4}v2.4" stroke="#000" stroke-opacity=".35" stroke-width=".4"/>' for i in range(int((2*nr+2)/1.6))))
+        body_rng = (8, base - sh - 4)
     elif tipo in ("flacone", "cilindro"):
         nr = d * (.2 if tipo == "flacone" else .16); sh = top + (h * .34 if tipo == "flacone" else h * .2); neck = top + h * .2 if tipo == "flacone" else top + h * .14
         capH = h * .17

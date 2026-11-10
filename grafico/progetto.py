@@ -12,10 +12,11 @@ import math, re
 from grafico import Label, contenitore, place, segno_e, forma, rr, f2, immagine, MATERIALI, FOIL
 import ornamenti as O, botanica
 
-FONT_OK = {"bodoni-moda", "playfair-display", "dm-serif-display", "cormorant-garamond", "eb-garamond", "fraunces", "cinzel", "archivo", "inter", "manrope", "zilla-slab", "pinyon-script"}
+FONT_OK = {"bodoni-moda", "playfair-display", "dm-serif-display", "cormorant-garamond", "eb-garamond", "fraunces", "cinzel", "archivo", "inter", "manrope", "zilla-slab", "pinyon-script",
+           "big-shoulders-display", "bebas-neue", "instrument-serif", "syne", "space-grotesk", "unbounded", "abril-fatface", "alfa-slab-one", "caveat", "oswald"}
 LIVELLI = {"stampa", "foil", "rilievo", "bianco", "vernice"}
 FORME = {"rect", "round", "oval", "circle", "arch", "shield", "notch"}
-CONT = {"bordolese", "borgognotta", "champagnotta", "flacone", "cilindro", "vaso", "lattina"}
+CONT = {"bordolese", "borgognotta", "champagnotta", "flacone", "cilindro", "vaso", "lattina", "longneck", "steinie"}
 COL = re.compile(r"^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$")
 PATH = re.compile(r"^[MmLlHhVvCcSsQqTtAaZz0-9 ,.\-eE]{1,20000}$")
 
@@ -137,6 +138,11 @@ def costruisci(p, logo=None, illustrazioni=None):
                 if not a:
                     avvisi.append(f"elemento {i}: illustrazione non disponibile (limite raggiunto o generazione non riuscita): usa un'altra soluzione"); continue
                 bx, by, bw, bh = [num(v, -5, 320, d) for v, d in zip((el.get("box") or [W * .2, H * .2, W * .6, H * .4])[:4], (W * .2, H * .2, W * .6, H * .4))]
+                if el.get("riempi") and lv[0] == "stampa":   # a tutta etichetta: copre il riquadro (di default tutta l'etichetta con l'abbondanza)
+                    if not el.get("box"):
+                        bx, by, bw, bh = -2, -2, W + 4, H + 4
+                    L.add("stampa", f'<svg x="{f2(bx)}" y="{f2(by)}" width="{f2(bw)}" height="{f2(bh)}" viewBox="0 0 {f2(a["ratio"] * 1000)} 1000" preserveAspectRatio="xMidYMid slice"><image href="{a["png"]}" width="{f2(a["ratio"] * 1000)}" height="1000"/></svg>')
+                    continue
                 ratio = a["ratio"]; lw, lh = (bw, bw / ratio) if bw / ratio <= bh else (bh * ratio, bh); x, y = bx + (bw - lw) / 2, by + (bh - lh) / 2
                 if lv[0] == "stampa":
                     L.add("stampa", f'<image href="{a["png"]}" x="{f2(x)}" y="{f2(y)}" width="{f2(lw)}" height="{f2(lh)}" preserveAspectRatio="xMidYMid meet"/>')
@@ -220,9 +226,9 @@ def anteprime(p, logo=None, k="P", illustrazioni=None):
     """{'contenitore': svg, 'piatta': svg, 'stampa': svg file, 'spec': [...], 'avvisi': [...]}"""
     L, avvisi, kw = costruisci(p, logo, illustrazioni)
     tipo = kw.pop("tipo")
-    if tipo in ("bordolese", "borgognotta", "champagnotta") and kw.get("tappo") in ("disco", "pompa", "coperchio"):
+    if tipo in ("bordolese", "borgognotta", "champagnotta", "longneck", "steinie") and kw.get("tappo") in ("disco", "pompa", "coperchio"):
         kw["tappo"] = None
     if tipo in ("bordolese", "borgognotta", "champagnotta") and kw.get("tappo") in ("sughero", "capsula"):
         kw["tappo"] = None
-    return {"contenitore": contenitore(tipo, L, k=k, **kw), "piatta": L.piatta(k=k + "f", quote=True), "stampa": L.file_stampa(),
+    return {"contenitore": contenitore(tipo, L, k=k, **kw), "piatta": L.piatta(k=k + "f", quote=False), "tecnica": L.piatta(k=k + "t", quote=True), "stampa": L.file_stampa(),
             "spec": L.spec(), "avvisi": avvisi, "separazioni": L.separazioni()}

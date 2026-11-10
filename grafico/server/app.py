@@ -64,7 +64,7 @@ def png_controllo(items):  # piatte grandi per poter giudicare i dettagli
 
 CHECK = ("\n\nOra guarda l'immagine come un direttore artistico. Checklist: 1) sembra il lavoro di un grafico professionista o una clipart? "
          "2) gerarchia chiara (marchio, prodotto, diciture) e corpi leggibili? 3) allineamenti e spazi coerenti, niente vuoti casuali o elementi schiacciati? "
-         "4) le tre direzioni sono davvero diverse? 5) lavorazioni sensate e stampabili? 6) il contenitore somiglia a quello del cliente? "
+         "4) sembra un template (immagine sopra, fascia sotto, nome centrato in bastoni)? ogni direzione ha un'idea forte e un linguaggio visivo riconoscibile, e le tre sono davvero diverse? 5) lavorazioni sensate e stampabili? 6) il contenitore somiglia a quello del cliente? "
          "Se anche un punto non è all'altezza, correggi le proposte e richiama mostra_proposte. Altrimenti rispondi al cliente.")
 
 def illustra(sess, props):
@@ -85,8 +85,9 @@ def illustra(sess, props):
         job = dict(list(job.items())[:max(0, min(4, resto))])
     def one(k, e):
         lav = e.get("livello", "stampa") != "stampa"
-        png = immagini.genera(str(e.get("descrizione")), e.get("stile", "incisione"), str(e.get("colori", "")), lav, e.get("formato", "quadrato"))
-        return k, immagini.prepara(png, per_lavorazione=lav, sagoma=not lav)
+        rp = bool(e.get("riempi")) and not lav
+        png = immagini.genera(str(e.get("descrizione")), e.get("stile", "incisione"), str(e.get("colori", "")), lav, e.get("formato", "quadrato"), rp, str(e.get("zona", ""))[:80])
+        return k, immagini.prepara(png, per_lavorazione=lav, sagoma=not lav and not rp, riempi=rp)
     if job:
         sess["n_img"] = sess.get("n_img", 0) + len(job)
         with ThreadPoolExecutor(max_workers=4) as ex:

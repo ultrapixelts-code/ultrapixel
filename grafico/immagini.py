@@ -20,8 +20,13 @@ STILI = {
 LAVORAZIONE = ("pure black and white artwork only: solid black shapes and bold lines on a plain white background, no grays, no gradients, "
                "no thin hairlines, no textures, shapes thick enough to be hot-foil stamped or embossed")
 
-def prompt(descrizione, stile, colori, per_lavorazione):
-    s = STILI.get(stile, STILI["incisione"])
+def prompt(descrizione, stile, colori, per_lavorazione, riempi=False, zona=""):
+    s = STILI.get(stile, stile if isinstance(stile, str) and len(stile) > 12 else STILI["incisione"])
+    if riempi:
+        return (f"Full-bleed artwork for a premium product label, filling the entire frame edge to edge: {descrizione.strip()[:700]}. Style: {s}. "
+                + (f"Color palette: {colori.strip()[:200]}. " if colori else "")
+                + (f"Keep a calm, uncluttered area {zona} where typography will be placed later. " if zona else "")
+                + "Strong, distinctive composition worthy of an award-winning label designer; no generic clip-art look. Absolutely no text, no letters, no numbers, no logos, no frame, no border, no mockup, no bottle: only the flat artwork.")
     base = (f"Illustration for a premium product label: {descrizione.strip()[:500]}. Style: {s}. "
             "Single isolated subject, centered, nothing cut off at the edges. Absolutely no text, no letters, no numbers, no logos, "
             "no frame, no border, no background scenery unless the description asks for it.")
@@ -43,13 +48,13 @@ def _post(model, p, size, transparent):
     with urllib.request.urlopen(d["url"], timeout=60) as r:
         return r.read()
 
-def genera(descrizione, stile="incisione", colori="", per_lavorazione=False, formato="quadrato"):
+def genera(descrizione, stile="incisione", colori="", per_lavorazione=False, formato="quadrato", riempi=False, zona=""):
     if not os.environ.get("OPENAI_API_KEY"):
         raise RuntimeError("manca OPENAI_API_KEY")
     size = {"verticale": "1024x1536", "orizzontale": "1536x1024"}.get(formato, "1024x1024")
-    p = prompt(descrizione, stile, colori, per_lavorazione); err = None
+    p = prompt(descrizione, stile, colori, per_lavorazione, riempi, zona); err = None
     for m in MODELLI:
-        for transparent in ((False,) if per_lavorazione else (True, False)):
+        for transparent in ((False,) if (per_lavorazione or riempi) else (True, False)):
             try:
                 return _post(m, p, size, transparent)
             except urllib.error.HTTPError as e:
@@ -99,10 +104,14 @@ def vettorializza(im, lato=900, modo="nero"):
 def chiave(el):
     import hashlib
     per_lav = el.get("livello", "stampa") != "stampa"
-    return hashlib.sha1(json.dumps([el.get("descrizione", ""), el.get("stile", ""), el.get("colori", ""), per_lav, el.get("formato", "")], ensure_ascii=False).encode()).hexdigest()[:16]
+    return hashlib.sha1(json.dumps([el.get("descrizione", ""), el.get("stile", ""), el.get("colori", ""), per_lav, el.get("formato", ""), bool(el.get("riempi")), el.get("zona", "")], ensure_ascii=False).encode()).hexdigest()[:16]
 
-def prepara(png, per_lavorazione=False, sagoma=False):
-    im = Image.open(io.BytesIO(png)); im = _ritaglia(_trasparente(im))
+def prepara(png, per_lavorazione=False, sagoma=False, riempi=False):
+    im = Image.open(io.BytesIO(png))
+    if riempi:   # a tutta etichetta: niente scontorno, JPEG per tenere leggero il file
+        im = im.convert("RGB"); b = io.BytesIO(); im.save(b, "JPEG", quality=88)
+        return {"png": "data:image/jpeg;base64," + base64.b64encode(b.getvalue()).decode(), "ratio": im.width / im.height, "vettore": None, "sagoma": None}
+    im = _ritaglia(_trasparente(im))
     if max(im.size) > 1400:
         s = 1400 / max(im.size); im = im.resize((int(im.width * s), int(im.height * s)))
     b = io.BytesIO(); im.save(b, "PNG", optimize=True)
