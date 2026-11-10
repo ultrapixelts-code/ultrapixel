@@ -120,7 +120,7 @@
       text('ar', st.vintage, b.h * .12, b.x, y(.59), 'start', b.w * .6, 0, a, 'vintage');
       var lg = Math.min(b.w * .3, b.h * .17);
       text('arb', den.toUpperCase(), b.h * .04, b.x, y(.72), 'start', b.w, .08, p, 'den');
-      text('ar', denFull.toUpperCase(), b.h * .026, b.x, y(.765), 'start', b.w, .06, a, 'den');
+      text('ar', denFull.toUpperCase(), b.h * .026, b.x, y(.765), 'start', b.w - lg - 3, .06, a, 'den');
       logo(b.x + b.w - lg / 2, y(.88) - lg / 2 + b.h * .02, lg, lg, p);
       text('ar', [alc, vol].filter(Boolean).join('   '), b.h * .034, b.x, y(.985), 'start', b.w - lg - 2, .06, p, 'den');
       text('ar', st.area, b.h * .03, b.x, y(.93), 'start', b.w - lg - 2, .04, a, 'den');
