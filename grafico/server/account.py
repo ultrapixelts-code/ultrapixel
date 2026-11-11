@@ -28,6 +28,17 @@ def init():
         create table if not exists codice(email text primary key, h text, scade real, tentativi integer default 0, inviati text);
         create table if not exists token(h text primary key, account integer, creato real, visto real);
         """)
+    pulisci()
+
+def pulisci(giorni=730):
+    """Privacy: account non usati da 24 mesi cancellati, con codici e accessi scaduti."""
+    lim = time.time() - giorni * 86400
+    with _L, _db() as c:
+        ids = [r[0] for r in c.execute("select id from account where coalesce(ultimo, creato) < ?", (lim,))]
+        for i in ids:
+            c.execute("delete from token where account=?", (i,)); c.execute("delete from account where id=?", (i,))
+        c.execute("delete from token where creato < ?", (time.time() - 180 * 86400,)); c.execute("delete from codice where scade < ?", (time.time() - 86400,))
+        return len(ids)
 
 def _h(s):
     return hashlib.sha256(s.encode()).hexdigest()

@@ -283,6 +283,7 @@ def admin_sessioni():
 import account, urllib.request, urllib.error
 account.init()
 COOKIE = "up_t"
+PULIZIA = [time.time()]
 def acc_corrente():
     return account.da_token(request.cookies.get(COOKIE, ""))
 
@@ -464,6 +465,8 @@ def chat():
         now = time.time()
         for k in [k for k, v in S.items() if now - v["t"] > 6 * 3600]:
             S.pop(k, None)
+        if now - PULIZIA[0] > 86400:   # privacy: una volta al giorno, account inattivi da 24 mesi
+            PULIZIA[0] = now; account.pulisci()
         if SESS_DIR and os.path.isdir(SESS_DIR):   # privacy: conversazioni cancellate dopo 30 giorni
             for fn in os.listdir(SESS_DIR):
                 fp = os.path.join(SESS_DIR, fn)
