@@ -99,6 +99,7 @@ def illustra(sess, props):
     return note
 
 def esegui_strumento(sess, inp, giro=0):
+    sess["_disegnato"] = True
     props = (inp.get("proposte") or [])[:3]; out = []; testo = illustra(sess, props)
     for n, p in enumerate(props):
         pid = uuid.uuid4().hex[:10]
@@ -128,6 +129,11 @@ def pota(messages):
                     c["content"] = [x for x in c["content"] if x.get("type") != "image"] or [{"type": "text", "text": "ok"}]
 
 MSG = {
+    "account": {"it": "Per usare lo studio accedi o registra la tua azienda.", "en": "To use the studio, sign in or register your company.", "fr": "Pour utiliser le studio, connectez-vous ou enregistrez votre entreprise.", "de": "Um das Studio zu nutzen, melden Sie sich an oder registrieren Sie Ihr Unternehmen."},
+    "pagamento": {"it": "Hai usato i giri gratuiti. Per continuare a modificare le proposte sblocca altri giri, oppure scegli una proposta: la inviamo a UltraPixel e ti prepariamo il preventivo.",
+                  "en": "You have used your free rounds. To keep editing, unlock more rounds, or choose a proposal: we send it to UltraPixel and prepare your quote.",
+                  "fr": "Vous avez utilisé vos tours gratuits. Pour continuer à modifier, débloquez d'autres tours, ou choisissez une proposition : nous l'envoyons à UltraPixel et préparons votre devis.",
+                  "de": "Sie haben Ihre kostenlosen Runden genutzt. Um weiter zu ändern, schalten Sie weitere Runden frei, oder wählen Sie einen Vorschlag: Wir senden ihn an UltraPixel und erstellen Ihr Angebot."},
     "troppe": {"it": "Hai aperto molte conversazioni nell'ultima ora: riprova più tardi o scrivici a info@ultrapixel.it.", "en": "You have opened many conversations in the last hour: please try later or write to info@ultrapixel.it.",
                "fr": "Vous avez ouvert beaucoup de conversations ces dernières heures : réessayez plus tard ou écrivez à info@ultrapixel.it.", "de": "Sie haben in der letzten Stunde viele Gespräche gestartet: bitte später erneut versuchen oder an info@ultrapixel.it schreiben."},
     "occupato": {"it": "Sto ancora lavorando alla risposta precedente.", "en": "I am still working on the previous answer.", "fr": "Je travaille encore sur la réponse précédente.", "de": "Ich arbeite noch an der vorherigen Antwort."},
@@ -274,6 +280,12 @@ def admin_sessioni():
                     "proposte": [{"pid": pid, "nome": v["p"].get("nome"), "t": v.get("t"), "foto": bool(_foto_path(pid) and os.path.exists(_foto_path(pid)))} for pid, v in s.get("proposte", {}).items()]})
     return jsonify(out)
 
+import account
+account.init()
+COOKIE = "up_t"
+def acc_corrente():
+    return account.da_token(request.cookies.get(COOKIE, ""))
+
 def ip():
     return (request.headers.get("X-Forwarded-For") or request.remote_addr or "").split(",")[0].strip()
 
@@ -323,6 +335,109 @@ def static_f(f):
 def health():
     return {"ok": True, "chiave": bool(os.environ.get("ANTHROPIC_API_KEY")), "model": MODEL, "immagini": bool(os.environ.get("OPENAI_API_KEY"))}
 
+# ——— account aziendali ———
+REG_IPS = {}
+EMAIL_RE = re.compile(r"^[^@\s]{1,64}@[^@\s]+\.[A-Za-z]{2,}$")
+
+def _lim(store, n):
+    now = time.time(); a = [t for t in store.get(ip(), []) if now - t < 3600]
+    if len(a) >= n:
+        return False
+    store[ip()] = a + [now]; return True
+
+def _risposta_codice(ok, cod, err, email, extra=None):
+    if not ok:
+        return jsonify(error="codice", msg=err or ""), 429 if err == "troppi" else 502
+    j = {"ok": True, "email": email, **(extra or {})}
+    if cod:
+        j["prova_codice"] = cod   # SMTP non configurato: modalità prova
+    return jsonify(j)
+
+@app.post("/api/account/vies")
+def acc_vies():
+    d = request.get_json(force=True, silent=True) or {}
+    paese = str(d.get("paese", "")).upper()[:2]; piva = account.pulisci_piva(paese, d.get("piva"))
+    if not _lim(REG_IPS, 40) or not piva:
+        return jsonify(valida=None)
+    v, nome, ind = account.vies(paese, piva)
+    return jsonify(valida=v, ragione=nome, indirizzo=ind, piva=piva)
+
+@app.post("/api/account/registra")
+def acc_registra():
+    d = request.get_json(force=True, silent=True) or {}
+    if not _lim(REG_IPS, 40):
+        return jsonify(error="troppe"), 429
+    email = str(d.get("email", "")).strip().lower()[:120]; lg = d.get("lang") if d.get("lang") in ("it", "en", "fr", "de") else "en"
+    if not EMAIL_RE.match(email):
+        return jsonify(error="email"), 400
+    esiste = account.per_email(email)
+    if esiste and esiste.get("verificato"):
+        ok, cod, err = account.manda_codice(email, lg)
+        return _risposta_codice(ok, cod, err, email, {"esiste": True})
+    paese = str(d.get("paese", "")).upper()[:2]; piva = account.pulisci_piva(paese, d.get("piva"))
+    f = {k: str(d.get(k, "")).strip()[:200] for k in ("referente", "ragione", "indirizzo", "cap", "citta", "sdi", "pec", "telefono")}
+    if not re.match(r"^[A-Z]{2}$", paese) or len(piva) < 5 or not f["referente"]:
+        return jsonify(error="campi"), 400
+    v, nome, ind = account.vies(paese, piva)
+    if v is False:
+        return jsonify(error="piva"), 400
+    f["ragione"] = f["ragione"] or nome
+    if not f["indirizzo"] and ind:
+        f["indirizzo"] = ind
+    if not f["ragione"] or (not ind and not (f["indirizzo"] and f["citta"])):
+        return jsonify(error="campi"), 400
+    if paese == "IT" and not (re.match(r"^[A-Za-z0-9]{7}$", f["sdi"]) or EMAIL_RE.match(f["pec"])):
+        return jsonify(error="sdi"), 400
+    account.salva({"email": email, **f, "paese": paese, "piva": piva, "piva_ok": 1 if v else 0, "lingua": lg,
+                   "vies": json.dumps({"ragione": nome, "indirizzo": ind}, ensure_ascii=False) if v else None})
+    ok, cod, err = account.manda_codice(email, lg)
+    return _risposta_codice(ok, cod, err, email)
+
+@app.post("/api/account/accedi")
+def acc_accedi():
+    d = request.get_json(force=True, silent=True) or {}
+    email = str(d.get("email", "")).strip().lower()[:120]
+    if not _lim(REG_IPS, 40):
+        return jsonify(error="troppe"), 429
+    a = account.per_email(email)
+    if not a:
+        return jsonify(error="nessuno"), 404
+    ok, cod, err = account.manda_codice(email, d.get("lang") or a.get("lingua") or "en")
+    return _risposta_codice(ok, cod, err, email)
+
+@app.post("/api/account/verifica")
+def acc_verifica():
+    d = request.get_json(force=True, silent=True) or {}
+    email = str(d.get("email", "")).strip().lower()[:120]
+    t, nuovo = account.verifica_codice(email, str(d.get("codice", "")))
+    if not t:
+        return jsonify(error="codice"), 400
+    a = account.da_token(t)
+    r = jsonify(ok=True, account=account.pubblico(a), nuovo=nuovo,
+                lead=({"testo": "Nuova azienda registrata allo studio AI:\n" + "\n".join(f"{k}: {a.get(k) or ''}" for k in ("ragione", "referente", "email", "telefono", "paese", "piva", "indirizzo", "cap", "citta", "sdi", "pec"))
+                       + f"\nPartita IVA verificata VIES: {'sì' if a.get('piva_ok') else 'no / non UE'}", "endpoint": LEAD_ENDPOINT} if nuovo else None))
+    r.set_cookie(COOKIE, t, max_age=180 * 86400, httponly=True, secure=True, samesite="Lax")
+    return r
+
+@app.get("/api/account/me")
+def acc_me():
+    a = acc_corrente()
+    return jsonify(account=account.pubblico(a) if a else None)
+
+@app.post("/api/account/esci")
+def acc_esci():
+    account.esci(request.cookies.get(COOKIE, "")); r = jsonify(ok=True); r.delete_cookie(COOKIE); return r
+
+@app.get("/api/admin/account")
+def admin_account():
+    import hashlib
+    k = request.args.get("k", "")
+    if not k or hashlib.sha256(k.encode()).hexdigest() != ADMIN_SHA:
+        abort(404)
+    if request.args.get("email") and request.args.get("giri"):
+        return jsonify(account.aggiungi_giri(request.args["email"].lower(), int(request.args["giri"])))
+    return jsonify(account.elenco())
+
 @app.post("/api/chat")
 def chat():
     d = request.get_json(force=True, silent=True) or {}
@@ -352,6 +467,14 @@ def chat():
             sess = S[sid] = {"messages": [], "logo": None, "proposte": {}, "ultime": [], "turni": 0, "t": now, "busy": False}
         if sess["busy"]:
             return jsonify(error="occupato", msg=msg("occupato", d)), 409
+        acc = acc_corrente()
+        if (os.environ.get("REQUIRE_ACCOUNT") == "1" or d.get("studio") == "account") and not acc:
+            return jsonify(error="account", msg=msg("account", d)), 401
+        if acc:
+            u, tot = account.giri(acc)
+            if u >= tot:
+                return jsonify(error="pagamento", msg=msg("pagamento", d), account=account.pubblico(acc)), 402
+            sess["acc"] = acc["id"]
         if sess["turni"] >= MAX_TURNI:
             return jsonify(error="limite", msg=msg("limite", d)), 429
         sess["busy"] = True; sess["turni"] += 1; sess["t"] = now
@@ -396,7 +519,13 @@ def chat():
         salva(sid, sess)
         for o in sess["ultime"]:
             avvia_foto(sess, o["id"])
-        return jsonify(sid=sid, reply=reply, proposte=sess["ultime"], turni_rimasti=MAX_TURNI - sess["turni"], rimappa=rimappa)
+        info = None
+        if sess.pop("_disegnato", False) and sess.get("acc"):
+            account.conta_giro(sess["acc"])
+        a2 = acc_corrente()
+        if a2:
+            info = account.pubblico(a2)
+        return jsonify(sid=sid, reply=reply, proposte=sess["ultime"], turni_rimasti=MAX_TURNI - sess["turni"], rimappa=rimappa, account=info)
     except Exception as ex:
         app.logger.exception("chat")
         # la conversazione resta coerente: tolgo il turno incompleto
@@ -462,6 +591,10 @@ def pacchetto():
         return jsonify(error="sessione", msg="La conversazione è scaduta: ricarica la pagina."), 404
     if sess.get("inviate", 0) >= 3:
         return jsonify(error="limite", msg="Hai già inviato le tue scelte: ti rispondiamo presto."), 429
+    acc = acc_corrente()
+    if acc:   # cliente registrato: i dati li abbiamo già
+        for k, ka in (("name", "referente"), ("email", "email"), ("company", "ragione"), ("country", "paese"), ("phone", "telefono")):
+            d[k] = d.get(k) or acc.get(ka) or ""
     if not str(d.get("name", "")).strip() or not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", str(d.get("email", ""))):
         return jsonify(error="campi"), 400
     sess["inviate"] = sess.get("inviate", 0) + 1; salva(d.get("sid", ""), sess)
@@ -485,7 +618,9 @@ def pacchetto():
             zf.writestr(f"anteprima-etichetta-{nome}.png", _png(pr["r"]["piatta"], width=1200))
         except Exception as ex:
             app.logger.error("anteprime zip: %s", ex)
-    testo = riepilogo_testo(sess, pr) + "\n\nNello ZIP: file di stampa (SVG a livelli)" + (", rendering realistico visto dal cliente (JPG)" if jpg else "") + ", anteprime PNG."
+    fisc = ("\n\nDATI DI FATTURAZIONE (account studio)\n" + "\n".join(f"{k}: {acc.get(k) or ''}" for k in ("ragione", "referente", "email", "telefono", "piva", "paese", "indirizzo", "cap", "citta", "sdi", "pec"))
+            + f"\nP.IVA verificata VIES: {'sì' if acc.get('piva_ok') else 'no'} · giri usati: {acc.get('giri_usati')}") if acc else ""
+    testo = riepilogo_testo(sess, pr) + fisc + "\n\nNello ZIP: file di stampa (SVG a livelli)" + (", rendering realistico visto dal cliente (JPG)" if jpg else "") + ", anteprime PNG."
     return jsonify(testo=testo, zip=base64.b64encode(z.getvalue()).decode(), zipname=f"ultrapixel-{nome}.zip",
                    svg=pr["r"]["stampa"], filename=f"etichetta-{nome}.svg", endpoint=LEAD_ENDPOINT)
 
