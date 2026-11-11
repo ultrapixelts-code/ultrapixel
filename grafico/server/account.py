@@ -59,6 +59,8 @@ def invia_mail(a, oggetto, testo):
     mitt = os.environ.get("SMTP_FROM") or os.environ["SMTP_USER"]
     if "@" not in mitt:   # solo il nome: aggiungiamo l'indirizzo della casella
         mitt = f'{mitt} <{os.environ["SMTP_USER"]}>'
+    elif "<" not in mitt and " " in mitt.strip():   # "Nome indirizzo@…" senza parentesi
+        nome, ind = mitt.strip().rsplit(" ", 1); mitt = f"{nome} <{ind}>"
     m = EmailMessage(); m["From"] = mitt; m["To"] = a; m["Subject"] = oggetto; m.set_content(testo)
     porta = int(os.environ.get("SMTP_PORT", "465"))
     if porta == 465:
