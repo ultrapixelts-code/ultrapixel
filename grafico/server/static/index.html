@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,500..700;1,6..96,400..700&family=Cinzel:wght@500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script>(function(){try{var c=navigator.connection||{},lento=c.saveData||/(^|-)2g|3g/.test(c.effectiveType||''),visto=+localStorage.getItem('up_intro')>Date.now()-30*864e5;if(location.pathname==='/prova'&&!lento&&!visto){document.documentElement.classList.add('pre');setTimeout(function(){document.documentElement.classList.remove('pre')},1800)}}catch(e){}})()</script>
+<script>(function(){try{var c=navigator.connection||{},lento=c.saveData||/(^|-)2g|3g/.test(c.effectiveType||''),visto=+localStorage.getItem('up_intro')>Date.now()-30*864e5;if(!lento&&!visto){document.documentElement.classList.add('pre');setTimeout(function(){document.documentElement.classList.remove('pre')},1800)}}catch(e){}})()</script>
 <style>
 html.pre,html.pre body{background:#F3EFE6}html.pre body>*{visibility:hidden}
 :root{--cer:#F4F4F0;--sheet2:#EAEAE5;--white:#fff;--ink:#101214;--gra:#34383B;--tg:#A7ADB0;--tgt:#686D71;--tgl:#858A8E;--hair:rgba(167,173,176,.5);
@@ -510,7 +510,7 @@ $('#pf').addEventListener('submit',function(e){e.preventDefault();if(!cur)return
   .catch(function(){msg.textContent=T.fail}).then(function(){btn.disabled=false})});
 
 window.UP={T:T,LG:LG,el:el,prep:prep,log:log,bubble:bubble,scroll:scroll,setFiles:function(a){files=a;drawAtt()},send:function(t){$('#in').value=t;grow();$('#f').requestSubmit()}};
-if(location.pathname==='/prova'){['intro.js?v=18','account.js?v=2','brief.js?v=2'].forEach(function(f){var s=document.createElement('script');s.src='/static/'+f;s.async=false;document.body.appendChild(s)})}
+if(true){['intro.js?v=18','account.js?v=2','brief.js?v=2'].forEach(function(f){var s=document.createElement('script');s.src='/static/'+f;s.async=false;document.body.appendChild(s)})}
 })();
 </script>
 </body>

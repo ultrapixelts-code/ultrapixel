@@ -486,7 +486,7 @@ def chat():
         if sess["busy"]:
             return jsonify(error="occupato", msg=msg("occupato", d)), 409
         acc = acc_corrente()
-        if (os.environ.get("REQUIRE_ACCOUNT") == "1" or d.get("studio") == "account") and not acc:
+        if os.environ.get("REQUIRE_ACCOUNT", "1") != "0" and not acc:   # lo studio si usa solo da registrati
             return jsonify(error="account", msg=msg("account", d)), 401
         if acc:
             u, tot = account.giri(acc)
