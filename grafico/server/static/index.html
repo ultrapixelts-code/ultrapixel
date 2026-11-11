@@ -9,7 +9,7 @@
 <link rel="icon" href="/static/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=Bodoni+Moda:opsz,wght@6..96,500..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=Bodoni+Moda:ital,opsz,wght@0,6..96,500..700;1,6..96,400..700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>(function(){try{if(location.pathname==='/prova'&&!sessionStorage.getItem('up_intro')){document.documentElement.classList.add('pre');setTimeout(function(){document.documentElement.classList.remove('pre')},4000)}}catch(e){}})()</script>
 <style>
 html.pre,html.pre body{background:#0B0D0F}html.pre body>*{visibility:hidden}
@@ -510,7 +510,7 @@ $('#pf').addEventListener('submit',function(e){e.preventDefault();if(!cur)return
   .catch(function(){msg.textContent=T.fail}).then(function(){btn.disabled=false})});
 
 window.UP={T:T,LG:LG,el:el,prep:prep,log:log,bubble:bubble,scroll:scroll,setFiles:function(a){files=a;drawAtt()},send:function(t){$('#in').value=t;grow();$('#f').requestSubmit()}};
-if(location.pathname==='/prova'){['intro.js?v=1','account.js?v=2','brief.js?v=2'].forEach(function(f){var s=document.createElement('script');s.src='/static/'+f;s.async=false;document.body.appendChild(s)})}
+if(location.pathname==='/prova'){['intro.js?v=3','account.js?v=2','brief.js?v=2'].forEach(function(f){var s=document.createElement('script');s.src='/static/'+f;s.async=false;document.body.appendChild(s)})}
 })();
 </script>
 </body>

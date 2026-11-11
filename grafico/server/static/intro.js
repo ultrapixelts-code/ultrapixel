@@ -1,81 +1,103 @@
-/* Ingresso nello studio (pagina /prova): pixel CMYK che compongono il benvenuto, logo, scansione e apertura delle ante dell'atelier.
-   Una volta per sessione del browser; si salta con un clic o con un tasto. */
+/* Ingresso nello studio (pagina /prova): un atelier di etichette di classe.
+   Luce calda dall'alto, pulviscolo dorato, un'etichetta in carta cotone che sale nella luce, cornice e monogramma in foil oro
+   che si stampano, testo in rilievo, riflesso sull'oro, un solo passaggio della scansione AI, poi la luce si apre sullo studio.
+   Una volta per visita; si salta con un clic o un tasto. */
 (function(){
 var de=document.documentElement;
 function fine(){de.classList.remove('pre');try{sessionStorage.setItem('up_intro','1')}catch(e){}}
 if(!de.classList.contains('pre'))return;
 var LG=(window.UP&&UP.LG)||'it';
-var W={it:['Benvenuti','nello studio'],en:['Welcome','to the studio'],fr:['Bienvenue','dans l’atelier'],de:['Willkommen','im Atelier']}[LG]||['Benvenuti','nello studio'];
-var SUB={it:'Atelier grafico UltraPixel · AI',en:'UltraPixel design atelier · AI',fr:'Atelier graphique UltraPixel · IA',de:'UltraPixel Grafik-Atelier · KI'}[LG];
-var SKIP={it:'Salta',en:'Skip',fr:'Passer',de:'Überspringen'}[LG];
+var TX={it:{a:'Benvenuti',b:'nell’atelier',c:'Etichette d’autore',d:'San Dorligo della Valle · Trieste',s:'Entra'},
+        en:{a:'Welcome',b:'to the atelier',c:'Labels of distinction',d:'San Dorligo della Valle · Trieste · Italy',s:'Enter'},
+        fr:{a:'Bienvenue',b:'à l’atelier',c:'Étiquettes d’exception',d:'San Dorligo della Valle · Trieste · Italie',s:'Entrer'},
+        de:{a:'Willkommen',b:'im Atelier',c:'Etiketten mit Klasse',d:'San Dorligo della Valle · Triest · Italien',s:'Eintreten'}}[LG]||null;
+if(!TX)TX={a:'Benvenuti',b:'nell’atelier',c:'Etichette d’autore',d:'San Dorligo della Valle · Trieste',s:'Entra'};
 var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 var css=document.createElement('style');css.textContent=
-'#intro{position:fixed;inset:0;z-index:100;pointer-events:auto;cursor:pointer;font-family:var(--body)}'+
-'#intro .door{position:absolute;top:0;bottom:0;width:50.5%;background:#0B0D0F;transition:transform 1.15s cubic-bezier(.77,0,.18,1)}#intro .door.l{left:0}#intro .door.r{right:0}'+
-'#intro .door::after{content:"";position:absolute;top:0;bottom:0;width:1px;opacity:0;transition:opacity .4s;background:linear-gradient(180deg,#22B8D6,#6F5BE8,#D9438F,#EBA43A)}#intro .door.l::after{right:0}#intro .door.r::after{left:0}'+
-'#intro.open .door::after{opacity:1;box-shadow:0 0 18px 2px rgba(111,91,232,.6)}#intro.open .door.l{transform:translateX(-101%)}#intro.open .door.r{transform:translateX(101%)}'+
-'#intro canvas{position:absolute;inset:0;width:100%;height:100%;transition:opacity .5s}'+
-'#intro .ui{position:absolute;inset:0;pointer-events:none;transition:opacity .45s}#intro.open .ui,#intro.open canvas{opacity:0}'+
-'#intro .crop{position:absolute;width:26px;height:26px;border:1px solid rgba(167,173,176,.7);opacity:0;animation:ifade .6s .15s forwards}'+
-'#intro .crop.a{left:22px;top:22px;border-width:1px 0 0 1px}#intro .crop.b{right:22px;top:22px;border-width:1px 1px 0 0}#intro .crop.c{left:22px;bottom:22px;border-width:0 0 1px 1px}#intro .crop.d{right:22px;bottom:22px;border-width:0 1px 1px 0}'+
-'#intro .hl,#intro .vl{position:absolute;background:rgba(167,173,176,.28)}#intro .hl{left:0;right:0;top:50%;height:1px;transform:scaleX(0);animation:ix .9s .1s cubic-bezier(.6,0,.2,1) forwards}#intro .vl{top:0;bottom:0;left:50%;width:1px;transform:scaleY(0);animation:iy .9s .25s cubic-bezier(.6,0,.2,1) forwards}'+
-'#intro .reg{position:absolute;width:30px;height:30px;left:50%;top:22px;margin-left:-15px;opacity:0;animation:ifade .5s .4s forwards}#intro .reg.b2{top:auto;bottom:22px}'+
-'#intro .mk{position:absolute;left:50%;top:calc(50% + min(15vw,150px));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:16px}'+
-'#intro .sq{display:flex;gap:10px}#intro .sq i{width:14px;height:14px;transform:scale(0) rotate(45deg);animation:ipop .5s cubic-bezier(.3,1.6,.5,1) forwards}'+
-'#intro .sub{font:400 12px var(--mono);letter-spacing:.32em;text-transform:uppercase;color:#E9E9E4;min-height:16px;white-space:nowrap}#intro .sub .cursor{background:#E9E9E4}'+
-'#intro .meta{position:absolute;left:28px;top:60px;font:400 10px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:#686D71;line-height:1.8;opacity:0;animation:ifade .6s .5s forwards}'+
-'#intro .meta.r{left:auto;right:28px;text-align:right}'+
-'#intro .scan{position:absolute;left:0;right:0;height:2px;top:0;opacity:0;background:linear-gradient(90deg,transparent,#22B8D6 15%,#6F5BE8 40%,#D9438F 65%,#EBA43A 85%,transparent);box-shadow:0 0 24px 4px rgba(111,91,232,.45)}'+
-'#intro .scan.go{animation:iscan 1.1s cubic-bezier(.5,0,.5,1) forwards}'+
-'#intro .skip{position:absolute;right:26px;bottom:60px;pointer-events:auto;border:1px solid rgba(167,173,176,.4);background:none;color:#A7ADB0;border-radius:999px;padding:7px 14px;font:400 10px var(--mono);letter-spacing:.16em;text-transform:uppercase;cursor:pointer}'+
-'@keyframes ifade{to{opacity:1}}@keyframes ix{to{transform:scaleX(1)}}@keyframes iy{to{transform:scaleY(1)}}@keyframes ipop{to{transform:scale(1) rotate(0)}}'+
-'@keyframes iscan{0%{opacity:0;transform:translateY(18vh)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateY(82vh)}}'+
-'@media(max-width:640px){#intro .meta{display:none}#intro .sub{font-size:10px;letter-spacing:.2em}}';
+'#intro{position:fixed;inset:0;z-index:100;cursor:pointer;background:#0C0A08;overflow:hidden;transition:opacity 1s ease}'+
+'#intro.out{opacity:0}'+
+'#intro .lamp{position:absolute;left:50%;top:-30vh;width:150vmax;height:130vh;transform:translateX(-50%);opacity:0;animation:ifade 1.6s .1s ease forwards;'+
+' background:radial-gradient(ellipse 30% 55% at 50% 30%,rgba(255,226,170,.30),rgba(255,214,150,.10) 45%,transparent 70%)}'+
+'#intro .vig{position:absolute;inset:0;background:radial-gradient(ellipse 75% 70% at 50% 45%,transparent 40%,rgba(0,0,0,.65))}'+
+'#intro canvas{position:absolute;inset:0;width:100%;height:100%}'+
+'#intro .stage{position:absolute;left:50%;top:50%;width:min(64vmin,430px);aspect-ratio:34/46;transform:translate(-50%,-44%) perspective(1200px) rotateX(9deg);opacity:0;'+
+' animation:irise 1.6s .5s cubic-bezier(.2,.8,.2,1) forwards;filter:drop-shadow(0 30px 40px rgba(0,0,0,.55)) drop-shadow(0 6px 10px rgba(0,0,0,.4))}'+
+'#intro.out .stage{transform:translate(-50%,-50%) scale(1.06);transition:transform 1.1s cubic-bezier(.4,0,.2,1)}'+
+'#intro svg{width:100%;height:100%;display:block;overflow:visible}'+
+'#intro .draw{stroke-dasharray:1;stroke-dashoffset:1;animation:idraw 1.5s cubic-bezier(.6,0,.2,1) forwards}'+
+'#intro .st{opacity:0;animation:istamp .7s cubic-bezier(.2,.9,.3,1) forwards;transform-box:fill-box;transform-origin:center}'+
+'#intro .ai{opacity:0}#intro .ai.go{animation:iscan 1.3s cubic-bezier(.5,0,.5,1) forwards}'+
+'#intro .sig{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);display:flex;gap:9px;opacity:0;animation:ifade 1s 3.4s forwards}#intro .sig i{width:8px;height:8px}'+
+'#intro .skip{position:absolute;right:26px;bottom:26px;border:1px solid rgba(232,212,170,.35);background:none;color:rgba(232,212,170,.8);border-radius:999px;padding:8px 16px;font:400 10px var(--mono);letter-spacing:.2em;text-transform:uppercase;cursor:pointer}'+
+'#intro .bloom{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#FFF8EA,#F4F4F0 60%);opacity:0;transition:opacity .9s ease}#intro.light .bloom{opacity:1}'+
+'@keyframes ifade{to{opacity:1}}@keyframes idraw{to{stroke-dashoffset:0}}'+
+'@keyframes irise{from{opacity:0;transform:translate(-50%,-38%) perspective(1200px) rotateX(18deg)}to{opacity:1;transform:translate(-50%,-50%) perspective(1200px) rotateX(0)}}'+
+'@keyframes istamp{0%{opacity:0;transform:scale(1.035)}60%{opacity:1}100%{opacity:1;transform:scale(1)}}'+
+'@keyframes iscan{0%{opacity:0;transform:translateY(0)}15%{opacity:.85}85%{opacity:.85}100%{opacity:0;transform:translateY(440px)}}';
 document.head.appendChild(css);
 
+/* l'etichetta: carta cotone, foil oro, testi in rilievo */
+var G='url(#ugold)',D=function(s){return 'style="animation-delay:'+s+'s"'};
+var svg='<svg viewBox="0 0 340 460" xmlns="http://www.w3.org/2000/svg"><defs>'+
+ '<linearGradient id="ugold" gradientUnits="userSpaceOnUse" x1="-340" y1="0" x2="0" y2="460">'+
+  '<stop offset="0" stop-color="#8A6424"/><stop offset=".30" stop-color="#C79A45"/><stop offset=".44" stop-color="#F6E3A8"/><stop offset=".50" stop-color="#FFF6D8"/><stop offset=".56" stop-color="#E9CB7C"/><stop offset=".72" stop-color="#B98A3A"/><stop offset="1" stop-color="#7C5A20"/>'+
+  '<animateTransform attributeName="gradientTransform" type="translate" from="-120 0" to="560 0" begin="2.6s" dur="2.2s" fill="freeze" calcMode="spline" keySplines=".4 0 .2 1"/></linearGradient>'+
+ '<linearGradient id="uspec" x1="0" x2="1"><stop offset="0" stop-color="#22B8D6" stop-opacity="0"/><stop offset=".2" stop-color="#22B8D6"/><stop offset=".45" stop-color="#6F5BE8"/><stop offset=".7" stop-color="#D9438F"/><stop offset=".85" stop-color="#EBA43A"/><stop offset="1" stop-color="#EBA43A" stop-opacity="0"/></linearGradient>'+
+ '<filter id="upaper" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="7"/><feColorMatrix values="0 0 0 0 .45 0 0 0 0 .40 0 0 0 0 .32 0 0 0 -1.2 .9"/><feComposite in2="SourceGraphic" operator="in"/></filter>'+
+ '<filter id="uemb" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur in="SourceAlpha" stdDeviation=".5" result="b"/><feOffset in="b" dx="-.6" dy="-.6" result="h"/><feOffset in="b" dx=".8" dy=".9" result="s"/>'+
+  '<feFlood flood-color="#fff" flood-opacity=".9"/><feComposite in2="h" operator="in" result="hi"/><feFlood flood-color="#4a3a20" flood-opacity=".45"/><feComposite in2="s" operator="in" result="sh"/>'+
+  '<feMerge><feMergeNode in="sh"/><feMergeNode in="hi"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
+ '<filter id="ufoil"><feDropShadow dx=".4" dy=".6" stdDeviation=".35" flood-color="#3b2a0c" flood-opacity=".55"/></filter>'+
+ '<clipPath id="ulab"><rect x="0" y="0" width="340" height="460" rx="14"/></clipPath></defs>'+
+ '<g clip-path="url(#ulab)"><rect width="340" height="460" fill="#F3EDE0"/><rect width="340" height="460" fill="#EFE7D6" filter="url(#upaper)" opacity=".55"/>'+
+  '<rect width="340" height="460" fill="url(#ugold)" opacity=".05"/>'+
+ /* cornici in foil */
+ '<g fill="none" stroke="'+G+'" filter="url(#ufoil)"><rect class="draw" pathLength="1" x="18" y="18" width="304" height="424" rx="6" stroke-width="2.2" '+D(1.1)+'/>'+
+  '<rect class="draw" pathLength="1" x="25" y="25" width="290" height="410" rx="3" stroke-width=".7" '+D(1.35)+'/>'+
+  '<path class="draw" pathLength="1" d="M25 70h290M25 390h290" stroke-width=".6" '+D(1.6)+'/></g>'+
+ /* monogramma */
+ '<g filter="url(#ufoil)"><circle class="draw" pathLength="1" cx="170" cy="118" r="30" fill="none" stroke="'+G+'" stroke-width="1.6" '+D(1.7)+'/>'+
+  '<circle class="draw" pathLength="1" cx="170" cy="118" r="25" fill="none" stroke="'+G+'" stroke-width=".5" '+D(1.85)+'/>'+
+  '<text class="st" x="170" y="129" text-anchor="middle" font-family="Bodoni Moda,Didot,serif" font-size="30" font-weight="600" fill="'+G+'" '+D(2.2)+'>U<tspan font-style="italic" font-weight="500" dx="-3">P</tspan></text></g>'+
+ '<text class="st" x="170" y="54" text-anchor="middle" font-family="DM Mono,monospace" font-size="8.5" letter-spacing="5" fill="#7A6A4E" '+D(2.0)+'>ULTRAPIXEL</text>'+
+ /* saluto: rilievo a secco + foil */
+ '<g filter="url(#uemb)"><text class="st" x="170" y="222" text-anchor="middle" font-family="Bodoni Moda,Didot,serif" font-style="italic" font-size="'+(TX.a.length>9?38:44)+'" font-weight="500" fill="#2B2620" '+D(2.4)+'>'+TX.a+'</text>'+
+  '<text class="st" x="170" y="256" text-anchor="middle" font-family="Bodoni Moda,Didot,serif" font-size="19" font-weight="500" letter-spacing="1.5" fill="#2B2620" '+D(2.6)+'>'+TX.b+'</text></g>'+
+ '<g filter="url(#ufoil)"><path class="draw" pathLength="1" d="M108 286h46l16-7 16 7h46" fill="none" stroke="'+G+'" stroke-width="1.2" '+D(2.7)+'/>'+
+  '<path class="st" d="M170 279l4 7-4 7-4-7z" fill="'+G+'" '+D(3.0)+'/></g>'+
+ '<text class="st" x="170" y="326" text-anchor="middle" font-family="Archivo,sans-serif" font-size="10" letter-spacing="4.2" fill="#5E5241" '+D(2.9)+'>'+TX.c.toUpperCase()+'</text>'+
+ '<text class="st" x="170" y="414" text-anchor="middle" font-family="DM Mono,monospace" font-size="6.6" letter-spacing="2.2" fill="#8B7D63" '+D(3.1)+'>'+TX.d.toUpperCase()+'</text>'+
+ '<text class="st" x="170" y="363" text-anchor="middle" font-family="Bodoni Moda,Didot,serif" font-style="italic" font-size="14" font-weight="600" fill="#A97C2E" filter="url(#ufoil)" '+D(3.2)+'>MMXIII</text>'+
+ /* un solo passaggio della scansione AI */
+ '<g class="ai"><rect x="0" y="6" width="340" height="1.4" fill="url(#uspec)"/><rect x="0" y="-16" width="340" height="22" fill="url(#uspec)" opacity=".10"/></g>'+
+ '</g></svg>';
+
 var o=document.createElement('div');o.id='intro';o.setAttribute('aria-hidden','true');
-var reg='<svg viewBox="0 0 30 30" fill="none" stroke="#A7ADB0" stroke-width=".8"><circle cx="15" cy="15" r="7"/><path d="M15 0v30M0 15h30"/><circle cx="15" cy="15" r="3" fill="#A7ADB0"/></svg>';
-o.innerHTML='<div class="door l"></div><div class="door r"></div><canvas></canvas><div class="ui">'+
- '<i class="hl"></i><i class="vl"></i><i class="crop a"></i><i class="crop b"></i><i class="crop c"></i><i class="crop d"></i>'+
- '<div class="reg">'+reg+'</div><div class="reg b2">'+reg+'</div>'+
- '<div class="meta">UP / Studio AI · 001<br>CMYK · 1200 dpi<br>45.6503° N 13.8170° E</div><div class="meta r">Xeikon CX3 · Cartes<br>Foil · Rilievo · Serigrafia<br>San Dorligo della Valle</div>'+
- '<div class="scan"></div><div class="mk"><div class="sq"><i style="background:#00A0E3;animation-delay:2.05s"></i><i style="background:#E6007E;animation-delay:2.17s"></i><i style="background:#FFE600;animation-delay:2.29s"></i><i style="background:#F4F4F0;animation-delay:2.41s"></i></div><div class="sub"></div></div>'+
- '<button class="skip" type="button">'+SKIP+'</button></div>';
+o.innerHTML='<div class="lamp"></div><canvas></canvas><div class="stage">'+svg+'</div><div class="vig"></div>'+
+ '<div class="sig"><i style="background:#00A0E3"></i><i style="background:#E6007E"></i><i style="background:#FFE600"></i><i style="background:#F4F4F0"></i></div>'+
+ '<div class="bloom"></div><button class="skip" type="button">'+TX.s+' →</button>';
 document.body.appendChild(o);de.classList.remove('pre');
 
 var done=false,raf=0;
-function chiudi(){if(done)return;done=true;o.classList.add('open');setTimeout(function(){cancelAnimationFrame(raf);o.remove();fine()},1250)}
+function chiudi(){if(done)return;done=true;o.classList.add('light');
+  setTimeout(function(){o.classList.add('out')},650);setTimeout(function(){cancelAnimationFrame(raf);o.remove();fine()},1700)}
 o.addEventListener('click',chiudi);document.addEventListener('keydown',function k(){document.removeEventListener('keydown',k);chiudi()});
-if(RM){var s=o.querySelector('.sub');s.textContent=W.join(' ');setTimeout(chiudi,900);return}
+if(RM){[].forEach.call(o.querySelectorAll('.draw,.st'),function(e){e.style.animation='none';e.style.opacity=1;e.style.strokeDashoffset=0});o.querySelector('.stage').style.cssText+='animation:none;opacity:1;transform:translate(-50%,-50%)';setTimeout(chiudi,2200);return}
 
-/* pixel che compongono la scritta */
-var cv=o.querySelector('canvas'),cx=cv.getContext('2d'),dpr=Math.min(2,window.devicePixelRatio||1),w,h,P=[];
-var COL=['#00A0E3','#E6007E','#FFE600','#F4F4F0','#6F5BE8','#22B8D6'];
-function setup(){w=innerWidth;h=innerHeight;cv.width=w*dpr;cv.height=h*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
-  var off=document.createElement('canvas'),oc=off.getContext('2d');off.width=w;off.height=h;
-  var fs=Math.min(w/(Math.max(W[0].length,W[1].length)*.56),h*.15,150);
-  oc.fillStyle='#fff';oc.textAlign='center';oc.textBaseline='middle';oc.font='800 '+fs+'px Archivo, "Helvetica Neue", Arial, sans-serif';
-  try{oc.font='800 '+fs+'px Archivo'}catch(e){}
-  var mw=Math.max(oc.measureText(W[0].toUpperCase()).width,oc.measureText(W[1].toUpperCase()).width);if(mw>w*.86){fs*=w*.86/mw;oc.font='800 '+fs+'px Archivo, "Helvetica Neue", Arial, sans-serif'}
-  oc.fillText(W[0].toUpperCase(),w/2,h/2-fs*.52);oc.fillText(W[1].toUpperCase(),w/2,h/2+fs*.46);
-  var d=oc.getImageData(0,0,w,h).data,step=Math.max(3,Math.round(fs/26)),T=[];
-  for(var y=0;y<h;y+=step)for(var x=0;x<w;x+=step)if(d[(y*w+x)*4+3]>130)T.push([x,y]);
-  var n=Math.min(T.length,w<700?2600:5200);for(var i=T.length-1;i>0;i--){var j=Math.random()*(i+1)|0,t=T[i];T[i]=T[j];T[j]=t}
-  P=[];for(i=0;i<n;i++){var a=Math.random()*Math.PI*2,r=Math.max(w,h)*(.55+Math.random()*.6);
-    P.push({x:w/2+Math.cos(a)*r,y:h/2+Math.sin(a)*r,tx:T[i][0],ty:T[i][1],s:step*.62*(.7+Math.random()*.6),c:COL[(Math.random()*COL.length)|0],d:Math.random()*.55,f:Math.random()})}}
+/* pulviscolo dorato nel fascio di luce */
+var cv=o.querySelector('canvas'),cx=cv.getContext('2d'),dpr=Math.min(2,window.devicePixelRatio||1),w,h,M=[];
+function setup(){w=innerWidth;h=innerHeight;cv.width=w*dpr;cv.height=h*dpr;cx.setTransform(dpr,0,0,dpr,0,0);M=[];
+  var n=w<700?70:150;for(var i=0;i<n;i++)M.push({x:w/2+(Math.random()-.5)*w*.7,y:Math.random()*h,r:.4+Math.random()*1.6,v:.08+Math.random()*.25,p:Math.random()*6.3,a:.15+Math.random()*.55})}
+setup();addEventListener('resize',function(){if(!done)setup()});
 var t0=performance.now();
-function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
 function frame(now){var t=(now-t0)/1000;cx.clearRect(0,0,w,h);
-  for(var i=0;i<P.length;i++){var p=P[i],k=Math.max(0,Math.min(1,(t-.25-p.d)/1.25)),e=ease(k),x=p.x+(p.tx-p.x)*e,y=p.y+(p.ty-p.y)*e;
-    if(k>=1){x+=Math.sin(t*3+p.f*9)*.35;y+=Math.cos(t*2.6+p.f*7)*.35}
-    var col=k<1?p.c:(t>1.95&&t<2.9&&Math.abs((y/h)-((t-1.95)/0.95))<.05?COL[(p.f*4)|0]:'#F4F4F0');
-    cx.globalAlpha=Math.min(1,.15+k*1.1);cx.fillStyle=col;cx.fillRect(x,y,p.s*(k<1?1.4-e*.4:1),p.s*(k<1?1.4-e*.4:1))}
-  cx.globalAlpha=1;if(!done)raf=requestAnimationFrame(frame)}
-function start(){setup();t0=performance.now();raf=requestAnimationFrame(frame);
-  setTimeout(function(){o.querySelector('.scan').classList.add('go')},1900);
-  var sub=o.querySelector('.sub'),j=0;setTimeout(function ty(){if(done)return;sub.textContent=SUB.slice(0,++j);var c=document.createElement('span');c.className='cursor';sub.appendChild(c);if(j<SUB.length)setTimeout(ty,34)},2550);
-  setTimeout(chiudi,4700)}
-(document.fonts&&document.fonts.load?Promise.race([document.fonts.load('800 80px Archivo'),new Promise(function(r){setTimeout(r,700)})]):Promise.resolve()).then(start,start);
-addEventListener('resize',function(){if(!done)setup()});
+  for(var i=0;i<M.length;i++){var m=M[i];m.y-=m.v;m.x+=Math.sin(t*.6+m.p)*.18;if(m.y<-5){m.y=h+5}
+    var cone=Math.max(0,1-Math.abs(m.x-w/2)/(w*.33)),fl=.6+.4*Math.sin(t*1.7+m.p*3);
+    cx.globalAlpha=m.a*cone*fl*Math.min(1,t/1.2);cx.fillStyle='#F4D99A';cx.beginPath();cx.arc(m.x,m.y,m.r,0,6.283);cx.fill()}
+  cx.globalAlpha=1;if(!done||o.isConnected)raf=requestAnimationFrame(frame)}
+raf=requestAnimationFrame(frame);
+setTimeout(function(){var a=o.querySelector('.ai');if(a)a.classList.add('go')},3700);
+(document.fonts&&document.fonts.load?Promise.all([document.fonts.load('italic 500 40px "Bodoni Moda"'),document.fonts.load('500 20px "Bodoni Moda"')]).catch(function(){}):Promise.resolve());
+setTimeout(chiudi,5900);
 })();
