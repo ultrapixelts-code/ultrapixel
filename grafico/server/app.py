@@ -453,6 +453,8 @@ def admin_account():
     k = request.args.get("k", "")
     if not k or hashlib.sha256(k.encode()).hexdigest() != ADMIN_SHA:
         abort(404)
+    if request.args.get("email") and request.args.get("set"):   # correzione dati: set={"ragione":..,"paese":..}
+        return jsonify(account.correggi(request.args["email"].lower(), json.loads(request.args["set"])))
     if request.args.get("email") and request.args.get("giri"):
         return jsonify(account.aggiungi_giri(request.args["email"].lower(), int(request.args["giri"])))
     return jsonify(account.elenco())

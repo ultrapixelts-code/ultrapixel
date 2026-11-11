@@ -208,3 +208,11 @@ def pagamento_chiudi(sessione, pi):
         c.execute("update account set giri_extra=giri_extra+? where id=?", (r["giri"], r["account"]))
         a = c.execute("select * from account where id=?", (r["account"],)).fetchone()
         return dict(r), dict(a)
+
+def correggi(email, campi):
+    ok = {k: v for k, v in campi.items() if k in ("referente", "ragione", "piva", "paese", "indirizzo", "cap", "citta", "sdi", "pec", "telefono", "piva_ok")}
+    with _L, _db() as c:
+        if ok:
+            c.execute("update account set " + ",".join(f"{k}=?" for k in ok) + " where email=?", list(ok.values()) + [email])
+        r = c.execute("select * from account where email=?", (email,)).fetchone()
+        return dict(r) if r else None

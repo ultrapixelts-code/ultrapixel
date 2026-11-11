@@ -486,7 +486,7 @@ $('#f').addEventListener('submit',function(e){e.preventDefault();if(busy)return;
   .then(function(x){var j=x.j;if(j.sid)sid=j.sid;cs.stop();if(window.UP&&UP.after)setTimeout(function(){UP.after(x)},0);
     if(j.rimappa)Object.keys(j.rimappa).forEach(function(o){if(shown[o]){shown[o].id=j.rimappa[o];shown[j.rimappa[o]]=shown[o]}lastP.forEach(function(q){if(q.id===o)q.id=j.rimappa[o]});tl.forEach(function(e){(e.l||[]).forEach(function(q){if(q.id===o)q.id=j.rimappa[o]})})});
     if(x.ok){hist.push({r:'u',t:text});if(j.reply)hist.push({r:'a',t:j.reply})}
-    if(!x.ok){log.appendChild(bubble('ai err',T.ai,j.msg||T.err));rail(-1);return}
+    if(!x.ok){log.appendChild(bubble(x.status===402?'ai':'ai err',T.ai,j.msg||T.err));rail(-1);return}
     if(j.reply){tl.push({k:'a',t:j.reply});var am=bubble('ai',T.ai);am.querySelector('.tx').innerHTML=j.reply.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');log.appendChild(am)}
     if(j.proposte&&j.proposte.length){tl.push({k:'c',l:j.proposte.map(function(q){return{id:q.id,nome:q.nome,concetto:q.concetto,p:q.p}})});cards(j.proposte);rail(T.rail.length-1)}else rail(-1)})
   .catch(function(){cs.stop();rail(-1);log.appendChild(bubble('ai err',T.ai,T.err))})
