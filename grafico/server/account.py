@@ -173,7 +173,12 @@ def elenco():
 def pubblico(a):
     u, tot = giri(a)
     return {"email": a["email"], "ragione": a["ragione"], "referente": a["referente"], "paese": a["paese"], "piva": a["piva"],
-            "giri_usati": u, "giri_totali": tot, "giri_rimasti": max(0, tot - u), "offerta": offerta(a), "pagamenti": bool(os.environ.get("STRIPE_SECRET_KEY"))}
+            "giri_usati": u, "giri_totali": tot, "giri_rimasti": max(0, tot - u), "offerta": offerta(a), "pagamenti": bool(os.environ.get("STRIPE_SECRET_KEY")),
+            "completo": completo(a), "dati": {k: a.get(k) or "" for k in ("referente", "ragione", "piva", "paese", "indirizzo", "cap", "citta", "sdi", "pec", "telefono")}}
+
+def completo(a):
+    """Dati aziendali sufficienti per preventivo e fattura."""
+    return bool(a.get("ragione") and a.get("piva") and a.get("paese") and a.get("referente") and (a.get("indirizzo") or a.get("citta")))
 
 
 # ——— pagamenti dello sblocco giri (Stripe Checkout) ———

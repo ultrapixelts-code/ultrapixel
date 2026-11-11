@@ -367,6 +367,55 @@ def acc_vies():
     v, nome, ind = account.vies(paese, piva)
     return jsonify(valida=v, ragione=nome, indirizzo=ind, piva=piva)
 
+NUOVI_IPS = {}
+
+@app.post("/api/account/entra")
+def acc_entra():
+    """Accesso con la sola email: chi non c'è ancora viene creato (2 giri gratuiti per email). I dati aziendali si chiedono dopo."""
+    d = request.get_json(force=True, silent=True) or {}
+    email = str(d.get("email", "")).strip().lower()[:120]; lg = d.get("lang") if d.get("lang") in ("it", "en", "fr", "de") else "en"
+    if not _lim(REG_IPS, 40):
+        return jsonify(error="troppe"), 429
+    if not EMAIL_RE.match(email):
+        return jsonify(error="email"), 400
+    if not account.per_email(email):
+        now = time.time(); a = [t for t in NUOVI_IPS.get(ip(), []) if now - t < 86400]
+        if len(a) >= int(os.environ.get("NUOVI_PER_IP", "3")):   # contro chi crea tante email per avere giri gratis
+            return jsonify(error="troppe"), 429
+        NUOVI_IPS[ip()] = a + [now]
+        paese = str(d.get("paese", "")).upper()[:2]
+        account.salva({"email": email, "lingua": lg, "paese": paese if re.match(r"^[A-Z]{2}$", paese) else None})
+    ok, cod, err = account.manda_codice(email, lg)
+    return _risposta_codice(ok, cod, err, email)
+
+@app.post("/api/account/completa")
+def acc_completa():
+    """Dati aziendali, chiesti quando servono: per scegliere una proposta (preventivo) o per pagare altri giri."""
+    acc = acc_corrente(); d = request.get_json(force=True, silent=True) or {}
+    if not acc:
+        return jsonify(error="account"), 401
+    nuovo = not account.completo(acc)
+    paese = str(d.get("paese", "")).upper()[:2]; piva = account.pulisci_piva(paese, d.get("piva"))
+    f = {k: str(d.get(k, "")).strip()[:200] for k in ("referente", "ragione", "indirizzo", "cap", "citta", "sdi", "pec", "telefono")}
+    if not re.match(r"^[A-Z]{2}$", paese) or len(piva) < 5 or not f["referente"]:
+        return jsonify(error="campi"), 400
+    v, nome, ind = account.vies(paese, piva)
+    if v is False:
+        return jsonify(error="piva"), 400
+    f["ragione"] = f["ragione"] or nome
+    if not f["indirizzo"] and ind:
+        f["indirizzo"] = ind
+    if not f["ragione"] or (not ind and not (f["indirizzo"] and f["citta"])):
+        return jsonify(error="campi"), 400
+    if paese == "IT" and not (re.match(r"^[A-Za-z0-9]{7}$", f["sdi"]) or EMAIL_RE.match(f["pec"])):
+        return jsonify(error="sdi"), 400
+    a = account.correggi(acc["email"], {**f, "paese": paese, "piva": piva, "piva_ok": 1 if v else 0})
+    lead = None
+    if nuovo:
+        lead = {"testo": "Nuova azienda nello studio AI (dati completati):\n" + "\n".join(f"{k}: {a.get(k) or ''}" for k in ("ragione", "referente", "email", "telefono", "paese", "piva", "indirizzo", "cap", "citta", "sdi", "pec"))
+                + f"\nPartita IVA verificata VIES: {'sì' if a.get('piva_ok') else 'no / non UE'}\nGiri usati finora: {a.get('giri_usati')}", "endpoint": LEAD_ENDPOINT}
+    return jsonify(ok=True, account=account.pubblico(a), lead=lead)
+
 @app.post("/api/account/registra")
 def acc_registra():
     d = request.get_json(force=True, silent=True) or {}
@@ -420,7 +469,7 @@ def acc_verifica():
     a = account.da_token(t)
     r = jsonify(ok=True, account=account.pubblico(a), nuovo=nuovo,
                 lead=({"testo": "Nuova azienda registrata allo studio AI:\n" + "\n".join(f"{k}: {a.get(k) or ''}" for k in ("ragione", "referente", "email", "telefono", "paese", "piva", "indirizzo", "cap", "citta", "sdi", "pec"))
-                       + f"\nPartita IVA verificata VIES: {'sì' if a.get('piva_ok') else 'no / non UE'}", "endpoint": LEAD_ENDPOINT} if nuovo else None))
+                       + f"\nPartita IVA verificata VIES: {'sì' if a.get('piva_ok') else 'no / non UE'}", "endpoint": LEAD_ENDPOINT} if nuovo and account.completo(a) else None))
     r.set_cookie(COOKIE, t, max_age=180 * 86400, httponly=True, secure=True, samesite="Lax")
     return r
 
@@ -520,6 +569,8 @@ def pag_crea():
         return jsonify(error="account"), 401
     if not os.environ.get("STRIPE_SECRET_KEY"):
         return jsonify(error="non_attivo"), 503
+    if not account.completo(acc):
+        return jsonify(error="dati"), 428
     o = account.offerta(acc); lg = d.get("lang") if d.get("lang") in PROD else "en"; base = "https://" + request.host
     try:
         s = stripe("POST", "checkout/sessions", {
@@ -721,6 +772,8 @@ def pacchetto():
     if sess.get("inviate", 0) >= 3:
         return jsonify(error="limite", msg="Hai già inviato le tue scelte: ti rispondiamo presto."), 429
     acc = acc_corrente()
+    if acc and not account.completo(acc):
+        return jsonify(error="dati"), 428
     if acc:   # cliente registrato: i dati li abbiamo già
         for k, ka in (("name", "referente"), ("email", "email"), ("company", "ragione"), ("country", "paese"), ("phone", "telefono")):
             d[k] = d.get(k) or acc.get(ka) or ""

@@ -510,7 +510,7 @@ $('#pf').addEventListener('submit',function(e){e.preventDefault();if(!cur)return
   .catch(function(){msg.textContent=T.fail}).then(function(){btn.disabled=false})});
 
 window.UP={T:T,LG:LG,el:el,prep:prep,log:log,bubble:bubble,scroll:scroll,setFiles:function(a){files=a;drawAtt()},send:function(t){$('#in').value=t;grow();$('#f').requestSubmit()}};
-if(true){['intro.js?v=18','account.js?v=2','brief.js?v=2'].forEach(function(f){var s=document.createElement('script');s.src='/static/'+f;s.async=false;document.body.appendChild(s)})}
+if(true){['intro.js?v=18','account.js?v=3','brief.js?v=2'].forEach(function(f){var s=document.createElement('script');s.src='/static/'+f;s.async=false;document.body.appendChild(s)})}
 })();
 </script>
 </body>
