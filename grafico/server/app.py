@@ -280,7 +280,7 @@ def admin_sessioni():
                     "proposte": [{"pid": pid, "nome": v["p"].get("nome"), "t": v.get("t"), "foto": bool(_foto_path(pid) and os.path.exists(_foto_path(pid)))} for pid, v in s.get("proposte", {}).items()]})
     return jsonify(out)
 
-import account
+import account, urllib.request, urllib.error
 account.init()
 COOKIE = "up_t"
 def acc_corrente():
@@ -427,6 +427,24 @@ def acc_me():
 @app.post("/api/account/esci")
 def acc_esci():
     account.esci(request.cookies.get(COOKIE, "")); r = jsonify(ok=True); r.delete_cookie(COOKIE); return r
+
+@app.post("/api/admin/immagine")
+def admin_immagine():
+    """Genera un'immagine (per le grafiche del sito, es. l'ingresso): solo con la chiave riservata."""
+    import hashlib, base64 as b64
+    d = request.get_json(force=True, silent=True) or {}
+    k = d.get("k", "")
+    if not k or hashlib.sha256(k.encode()).hexdigest() != ADMIN_SHA:
+        abort(404)
+    body = {"model": d.get("model") or immagini.MODELLI[0], "prompt": d["prompt"], "size": d.get("size", "1024x1536"), "n": 1, "quality": d.get("quality", "high")}
+    req = urllib.request.Request("https://api.openai.com/v1/images/generations", data=json.dumps(body).encode(),
+                                 headers={"Authorization": "Bearer " + os.environ["OPENAI_API_KEY"], "Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=300) as r:
+            j = json.load(r)
+        return jsonify(b64=j["data"][0].get("b64_json"), model=body["model"])
+    except urllib.error.HTTPError as e:
+        return jsonify(error=e.code, msg=e.read()[:400].decode("utf-8", "replace"), model=body["model"]), 502
 
 @app.get("/api/admin/account")
 def admin_account():
