@@ -56,7 +56,10 @@ def smtp_ok():
     return bool(os.environ.get("SMTP_HOST") and os.environ.get("SMTP_USER") and os.environ.get("SMTP_PASS"))
 
 def invia_mail(a, oggetto, testo):
-    m = EmailMessage(); m["From"] = os.environ.get("SMTP_FROM") or os.environ["SMTP_USER"]; m["To"] = a; m["Subject"] = oggetto; m.set_content(testo)
+    mitt = os.environ.get("SMTP_FROM") or os.environ["SMTP_USER"]
+    if "@" not in mitt:   # solo il nome: aggiungiamo l'indirizzo della casella
+        mitt = f'{mitt} <{os.environ["SMTP_USER"]}>'
+    m = EmailMessage(); m["From"] = mitt; m["To"] = a; m["Subject"] = oggetto; m.set_content(testo)
     porta = int(os.environ.get("SMTP_PORT", "465"))
     if porta == 465:
         s = smtplib.SMTP_SSL(os.environ["SMTP_HOST"], porta, timeout=20)
