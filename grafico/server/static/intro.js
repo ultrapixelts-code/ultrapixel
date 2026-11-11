@@ -5,7 +5,7 @@
    Circa 11 secondi; una volta per visita; si salta con un clic o un tasto. */
 (function(){
 var de=document.documentElement;
-function fine(){de.classList.remove('pre');try{sessionStorage.setItem('up_intro','1')}catch(e){}}
+function fine(){de.classList.remove('pre');try{localStorage.setItem('up_intro',Date.now())}catch(e){}}
 if(!de.classList.contains('pre'))return;
 var LG=(window.UP&&UP.LG)||'it';
 var TX={it:{c:'L’arte di vestire un prodotto.',a:'UltraPixel · Atelier di etichette',k:'Entra'},en:{c:'The art of dressing a product.',a:'UltraPixel · Label atelier',k:'Enter'},
@@ -18,10 +18,10 @@ var css=document.createElement('style');css.textContent=
 '#intro{position:fixed;inset:0;z-index:100;cursor:pointer;overflow:hidden;background:#0E0C0A;transition:opacity 1.2s ease}#intro.out{opacity:0}'+
 '#intro .bgb{position:absolute;inset:0;background:#0D0B09;opacity:0;transition:opacity 2.2s ease}'+
 '#intro .box{position:absolute;left:50%;top:50%;width:min(100vw,66.667vh);height:min(100vh,150vw);transform:translate(-50%,-50%)}'+
-'#intro .ph{position:absolute;inset:0;background:url('+FOTO+') center/cover no-repeat;opacity:0;clip-path:circle(0% at 50% 54%);transition:opacity 2.2s ease,clip-path 3s cubic-bezier(.4,0,.2,1)}'+
+'#intro .ph{position:absolute;inset:0;background:url('+FOTO+') center/cover no-repeat;opacity:0;clip-path:circle(0% at 50% 54%);transition:opacity 1.4s ease,clip-path 2s cubic-bezier(.4,0,.2,1)}'+
 '#intro .edge{position:absolute;inset:-1px;pointer-events:none;background:linear-gradient(90deg,#0D0B09 0,rgba(13,11,9,0) 24%,rgba(13,11,9,0) 76%,#0D0B09 100%),linear-gradient(180deg,rgba(13,11,9,.0) 80%,rgba(13,11,9,.55));opacity:0;transition:opacity 2s ease}'+
 '#intro.lit .edge{opacity:1}#intro.lit .ph{clip-path:circle(150% at 50% 54%)}'+
-'#intro .paper{position:absolute;inset:0;background:#F3EFE6;transition:opacity 2.2s ease}'+
+'#intro .paper{position:absolute;inset:0;background:#F3EFE6;transition:opacity 1.4s ease}'+
 '#intro .paper::before{content:"";position:absolute;inset:0;opacity:.5;background-image:url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'220\' height=\'220\'><filter id=\'n\'><feTurbulence type=\'fractalNoise\' baseFrequency=\'.85\' numOctaves=\'3\' seed=\'4\'/><feColorMatrix values=\'0 0 0 0 .42 0 0 0 0 .38 0 0 0 0 .30 0 0 0 .22 0\'/></filter><rect width=\'220\' height=\'220\' filter=\'url(%23n)\'/></svg>")}'+
 '#intro .paper::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 80% 75% at 50% 45%,transparent 55%,rgba(120,100,70,.18))}'+
 '#intro.lit .paper{opacity:0}#intro.lit .bgb{opacity:1}#intro.lit .ph{opacity:1}'+
@@ -69,7 +69,7 @@ o.addEventListener('click',chiudi);document.addEventListener('keydown',function 
 if(RM){o.classList.add('lit');q('.c').classList.add('on2');q('.a').classList.add('on2');setTimeout(chiudi,3000);return}
 
 /* la penna: una sequenza di tratti, la punta segue ciascuno */
-var tip=q('.tip'),SEQ=[['bot',2300],['cap',260],['lab',1400],['lab2',700],['leaf',1300],['plinth',900]],queue=[];
+var tip=q('.tip'),SEQ=[['bot',1150],['cap',140],['lab',700],['lab2',320],['leaf',650],['plinth',380]],queue=[];
 function eas(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
 function traccia(i){if(done||i>=SEQ.length){tip.setAttribute('opacity',0);return}
   var el=q('[data-p="'+SEQ[i][0]+'"]'),L=el.getTotalLength(),dur=SEQ[i][1],t0=0;el.style.strokeDashoffset=1;
@@ -77,11 +77,11 @@ function traccia(i){if(done||i>=SEQ.length){tip.setAttribute('opacity',0);return
     var p=el.getPointAtLength(L*e);tip.setAttribute('transform','translate('+p.x+' '+p.y+')');tip.setAttribute('opacity',1);
     if(k<1)raf=requestAnimationFrame(f);else{if(SEQ[i][0]==='leaf')scrivi();traccia(i+1)}}
   raf=requestAnimationFrame(f)}
-function scrivi(){[].forEach.call(o.querySelectorAll('.tx'),function(t,j){t.style.transition='stroke-dashoffset '+(j?1:1.6)+'s ease-in-out '+(j?.9:0)+'s, fill 1s ease 1.4s';
-  t.style.strokeDashoffset=0;setTimeout(function(){t.style.fill=INK},1800+j*600)})}
-at(500,function(){traccia(0)});
-at(7600,function(){o.classList.add('lit')});            // si accendono le luci: il disegno diventa la foto
-at(9300,function(){q('.c').classList.add('on2')});
-at(9900,function(){q('.a').classList.add('on2')});
-at(12600,chiudi);
+function scrivi(){[].forEach.call(o.querySelectorAll('.tx'),function(t,j){t.style.transition='stroke-dashoffset '+(j?.6:.9)+'s ease-in-out '+(j?.35:0)+'s, fill .6s ease .8s';
+  t.style.strokeDashoffset=0;setTimeout(function(){t.style.fill=INK},1000+j*400)})}
+at(250,function(){traccia(0)});
+at(3900,function(){if(img.complete&&img.naturalWidth)o.classList.add('lit');else chiudi()});   // foto non arrivata (rete lenta): si entra subito            // si accendono le luci: il disegno diventa la foto
+at(4700,function(){q('.c').classList.add('on2')});
+at(5100,function(){q('.a').classList.add('on2')});
+at(7200,chiudi);
 })();
