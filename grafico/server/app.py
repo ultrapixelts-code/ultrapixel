@@ -457,6 +457,108 @@ def admin_account():
         return jsonify(account.aggiungi_giri(request.args["email"].lower(), int(request.args["giri"])))
     return jsonify(account.elenco())
 
+# ——— sblocco giri a pagamento (Stripe Checkout, solo aziende) ———
+NOTIFY_TO = os.environ.get("NOTIFY_TO", "info@ultrapixel.it")
+PROD = {"it": "UltraPixel Studio – {n} giri di proposte grafiche", "en": "UltraPixel Studio – {n} rounds of design proposals",
+        "fr": "UltraPixel Studio – {n} tours de propositions graphiques", "de": "UltraPixel Studio – {n} Runden Gestaltungsvorschläge"}
+
+def stripe(metodo, percorso, dati=None):
+    import urllib.parse
+    req = urllib.request.Request("https://api.stripe.com/v1/" + percorso, method=metodo,
+                                 data=urllib.parse.urlencode(dati).encode() if dati else None,
+                                 headers={"Authorization": "Bearer " + os.environ["STRIPE_SECRET_KEY"]})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return json.load(r)
+
+def eur(x):
+    return f"{x:,.2f} €".replace(",", "X").replace(".", ",").replace("X", ".")
+
+def notifica_pagamento(pg, a):
+    righe = ["PAGAMENTO RICEVUTO – Studio AI (sblocco giri)", "", "Dati per la fattura in Spring:",
+             f"Ragione sociale: {a.get('ragione')}", f"P.IVA: {a.get('paese')} {a.get('piva')} (VIES: {'verificata' if a.get('piva_ok') else 'non verificata'})",
+             f"Indirizzo: {a.get('indirizzo') or ''} {a.get('cap') or ''} {a.get('citta') or ''}".strip(), f"Codice SDI: {a.get('sdi') or '-'}   PEC: {a.get('pec') or '-'}",
+             f"Email: {a.get('email')}   Referente: {a.get('referente')}   Telefono: {a.get('telefono') or '-'}", "",
+             f"Descrizione: Acconto progettazione grafica – {pg['giri']} giri di proposte (scalabile dall'ordine di stampa)",
+             f"Imponibile: {eur(pg['netto'])}   IVA: {eur(pg['iva'])}   Totale incassato: {eur(pg['totale'])}", f"Regime IVA: {pg['regime']}",
+             f"Pagamento Stripe: {pg.get('stripe_pi') or pg['sessione']}   Data: {time.strftime('%d/%m/%Y %H:%M', time.localtime())}",
+             "", "Ricorda: nell'eventuale ordine di stampa questo importo va scalato come acconto."]
+    try:
+        account.invia_mail(NOTIFY_TO, f"Pagamento studio {eur(pg['totale'])} – {a.get('ragione')}", "\n".join(righe))
+    except Exception as ex:
+        app.logger.error("mail pagamento a UltraPixel: %s", ex)
+    lg = a.get("lingua") or "en"
+    testo = {"it": "Grazie, abbiamo ricevuto il pagamento di {t}: nel tuo studio sono stati aggiunti {n} giri. La fattura ti arriva da UltraPixel nei prossimi giorni; l'importo sarà scalato dall'eventuale ordine di stampa.",
+             "en": "Thank you, we have received your payment of {t}: {n} rounds have been added to your studio. UltraPixel will send you the invoice in the next few days; the amount will be deducted from any print order.",
+             "fr": "Merci, nous avons reçu votre paiement de {t} : {n} tours ont été ajoutés à votre studio. UltraPixel vous enverra la facture dans les prochains jours ; le montant sera déduit d'une éventuelle commande.",
+             "de": "Vielen Dank, wir haben Ihre Zahlung von {t} erhalten: {n} Runden wurden Ihrem Studio hinzugefügt. Die Rechnung erhalten Sie in den nächsten Tagen von UltraPixel; der Betrag wird mit einem Druckauftrag verrechnet."}
+    try:
+        account.invia_mail(a["email"], {"it": "Pagamento ricevuto – UltraPixel Studio", "en": "Payment received – UltraPixel Studio", "fr": "Paiement reçu – UltraPixel Studio",
+                                        "de": "Zahlung erhalten – UltraPixel Studio"}.get(lg, "Payment received – UltraPixel Studio"),
+                           testo.get(lg, testo["en"]).format(t=eur(pg["totale"]), n=pg["giri"]) + "\n\nUltraPixel – https://studio.ultrapixel.it")
+    except Exception as ex:
+        app.logger.error("ricevuta cliente: %s", ex)
+
+def chiudi_sessione(sessione):
+    s = stripe("GET", "checkout/sessions/" + sessione)
+    if s.get("payment_status") != "paid":
+        return False
+    pg, a = account.pagamento_chiudi(sessione, s.get("payment_intent") or "")
+    if pg:
+        notifica_pagamento({**pg, "stripe_pi": s.get("payment_intent")}, a)
+    return True
+
+@app.post("/api/pagamento/crea")
+def pag_crea():
+    acc = acc_corrente(); d = request.get_json(force=True, silent=True) or {}
+    if not acc:
+        return jsonify(error="account"), 401
+    if not os.environ.get("STRIPE_SECRET_KEY"):
+        return jsonify(error="non_attivo"), 503
+    o = account.offerta(acc); lg = d.get("lang") if d.get("lang") in PROD else "en"; base = "https://" + request.host
+    try:
+        s = stripe("POST", "checkout/sessions", {
+            "mode": "payment", "customer_email": acc["email"], "client_reference_id": str(acc["id"]), "locale": lg,
+            "success_url": f"{base}/?lang={lg}&pagato={{CHECKOUT_SESSION_ID}}", "cancel_url": f"{base}/?lang={lg}",
+            "line_items[0][quantity]": 1, "line_items[0][price_data][currency]": "eur", "line_items[0][price_data][unit_amount]": int(round(o["totale"] * 100)),
+            "line_items[0][price_data][product_data][name]": PROD[lg].format(n=o["giri"]),
+            "line_items[0][price_data][product_data][description]": f"{acc.get('ragione')} · {eur(o['netto'])} + {o['regime']}",
+            "metadata[account]": acc["id"], "metadata[regime]": o["regime"][:450]})
+    except urllib.error.HTTPError as e:
+        app.logger.error("stripe: %s", e.read()[:300]); return jsonify(error="stripe"), 502
+    account.pagamento_nuovo(acc["id"], s["id"], o)
+    return jsonify(url=s["url"])
+
+@app.get("/api/pagamento/verifica")
+def pag_verifica():
+    s = request.args.get("s", "")
+    if not re.match(r"^cs_[A-Za-z0-9_]{10,200}$", s) or not os.environ.get("STRIPE_SECRET_KEY"):
+        return jsonify(error="sessione"), 400
+    try:
+        ok = chiudi_sessione(s)
+    except Exception as ex:
+        app.logger.error("verifica pagamento: %s", ex); return jsonify(error="stripe"), 502
+    a = acc_corrente()
+    return jsonify(pagato=ok, account=account.pubblico(a) if a else None)
+
+@app.post("/api/stripe/webhook")
+def stripe_webhook():
+    import hmac, hashlib
+    sec = os.environ.get("STRIPE_WEBHOOK_SECRET", ""); raw = request.get_data()
+    if sec:
+        sig = dict(x.split("=", 1) for x in request.headers.get("Stripe-Signature", "").split(",") if "=" in x)
+        atteso = hmac.new(sec.encode(), (sig.get("t", "") + "." + raw.decode("utf-8")).encode(), hashlib.sha256).hexdigest()
+        if not hmac.compare_digest(atteso, sig.get("v1", "")) or abs(time.time() - int(sig.get("t", "0") or 0)) > 600:
+            abort(400)
+    else:
+        abort(404)
+    ev = json.loads(raw or b"{}")
+    if ev.get("type") in ("checkout.session.completed", "checkout.session.async_payment_succeeded"):
+        try:
+            chiudi_sessione(ev["data"]["object"]["id"])
+        except Exception as ex:
+            app.logger.error("webhook: %s", ex); return jsonify(ok=False), 500
+    return jsonify(ok=True)
+
 @app.post("/api/chat")
 def chat():
     d = request.get_json(force=True, silent=True) or {}

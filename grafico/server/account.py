@@ -27,6 +27,8 @@ def init():
           creato real, verificato real, giri_usati integer default 0, giri_extra integer default 0, ultimo real, lingua text);
         create table if not exists codice(email text primary key, h text, scade real, tentativi integer default 0, inviati text);
         create table if not exists token(h text primary key, account integer, creato real, visto real);
+        create table if not exists pagamento(id integer primary key, account integer, sessione text unique, netto real, iva real, totale real,
+          regime text, giri integer, stato text, creato real, pagato real, stripe_pi text);
         """)
     pulisci()
 
@@ -171,4 +173,38 @@ def elenco():
 def pubblico(a):
     u, tot = giri(a)
     return {"email": a["email"], "ragione": a["ragione"], "referente": a["referente"], "paese": a["paese"], "piva": a["piva"],
-            "giri_usati": u, "giri_totali": tot, "giri_rimasti": max(0, tot - u)}
+            "giri_usati": u, "giri_totali": tot, "giri_rimasti": max(0, tot - u), "offerta": offerta(a), "pagamenti": bool(os.environ.get("STRIPE_SECRET_KEY"))}
+
+
+# ——— pagamenti dello sblocco giri (Stripe Checkout) ———
+PREZZO = float(os.environ.get("PREZZO_GIRI", "39"))
+PACCHETTO = int(os.environ.get("GIRI_PACCHETTO", "10"))
+
+def regime_iva(a):
+    """(aliquota, descrizione per la fattura). Vendita solo ad aziende."""
+    p = (a.get("paese") or "").upper()
+    if p == "IT" or (p in UE and not a.get("piva_ok")):
+        return .22, "IVA 22%" + ("" if p == "IT" else " (P.IVA UE non verificata in VIES)")
+    if p in UE:
+        return 0.0, "Operazione non soggetta, inversione contabile (art. 7-ter DPR 633/72, art. 196 Dir. 2006/112/CE)"
+    return 0.0, "Operazione non soggetta (art. 7-ter DPR 633/72, cliente extra UE)"
+
+def offerta(a):
+    al, reg = regime_iva(a); iva = round(PREZZO * al, 2)
+    return {"netto": PREZZO, "iva": iva, "totale": round(PREZZO + iva, 2), "aliquota": al, "regime": reg, "giri": PACCHETTO}
+
+def pagamento_nuovo(aid, sessione, o):
+    with _L, _db() as c:
+        c.execute("insert into pagamento(account,sessione,netto,iva,totale,regime,giri,stato,creato) values(?,?,?,?,?,?,?,?,?)",
+                  (aid, sessione, o["netto"], o["iva"], o["totale"], o["regime"], o["giri"], "aperto", time.time()))
+
+def pagamento_chiudi(sessione, pi):
+    """Segna il pagamento come pagato e accredita i giri una sola volta. Restituisce (pagamento, account) se appena accreditato."""
+    with _L, _db() as c:
+        r = c.execute("select * from pagamento where sessione=?", (sessione,)).fetchone()
+        if not r or r["stato"] == "pagato":
+            return None, None
+        c.execute("update pagamento set stato='pagato', pagato=?, stripe_pi=? where id=?", (time.time(), pi, r["id"]))
+        c.execute("update account set giri_extra=giri_extra+? where id=?", (r["giri"], r["account"]))
+        a = c.execute("select * from account where id=?", (r["account"],)).fetchone()
+        return dict(r), dict(a)
