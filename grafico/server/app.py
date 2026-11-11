@@ -294,6 +294,10 @@ def ip():
 def home():
     return send_from_directory(os.path.join(HERE, "static"), "index.html")
 
+@app.get("/condizioni")
+def condizioni():
+    return send_from_directory(os.path.join(HERE, "static"), "condizioni.html")
+
 @app.get("/prova")
 def prova():   # versione di prova con il brief guidato (stessa pagina: lo script vede /prova e mostra le schede)
     return send_from_directory(os.path.join(HERE, "static"), "index.html")
