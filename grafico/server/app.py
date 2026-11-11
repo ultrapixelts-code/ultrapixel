@@ -470,6 +470,15 @@ def acc_verifica():
     r = jsonify(ok=True, account=account.pubblico(a), nuovo=nuovo,
                 lead=({"testo": "Nuova azienda registrata allo studio AI:\n" + "\n".join(f"{k}: {a.get(k) or ''}" for k in ("ragione", "referente", "email", "telefono", "paese", "piva", "indirizzo", "cap", "citta", "sdi", "pec"))
                        + f"\nPartita IVA verificata VIES: {'sì' if a.get('piva_ok') else 'no / non UE'}", "endpoint": LEAD_ENDPOINT} if nuovo and account.completo(a) else None))
+    if nuovo:   # nuovo accesso con la sola email: avviso a UltraPixel (la scheda completa arriva quando l'azienda dà i dati)
+        def avvisa(a=dict(a)):
+            try:
+                account.invia_mail(NOTIFY_TO, f"Nuovo accesso allo studio: {a['email']}",
+                                   f"Una nuova persona è entrata nello studio AI.\n\nEmail: {a['email']}\nLingua: {a.get('lingua') or '-'}\nPaese indicato: {a.get('paese') or '-'}\n"
+                                   f"Data: {time.strftime('%d/%m/%Y %H:%M', time.localtime())}\n\nI dati aziendali arriveranno quando sceglie una proposta o paga altri giri.")
+            except Exception as ex:
+                app.logger.error("avviso nuovo accesso: %s", ex)
+        threading.Thread(target=avvisa, daemon=True).start()
     r.set_cookie(COOKIE, t, max_age=180 * 86400, httponly=True, secure=True, samesite="Lax")
     return r
 
