@@ -294,6 +294,15 @@ def ip():
 def home():
     return send_from_directory(os.path.join(HERE, "static"), "index.html")
 
+@app.get("/robots.txt")
+def robots():
+    return Response("User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /prova\n\nSitemap: https://studio.ultrapixel.it/sitemap.xml\n", mimetype="text/plain")
+
+@app.get("/sitemap.xml")
+def sitemap():
+    return Response('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+                    "  <url><loc>https://studio.ultrapixel.it/</loc></url>\n</urlset>\n", mimetype="application/xml")
+
 @app.get("/condizioni")
 def condizioni():
     return send_from_directory(os.path.join(HERE, "static"), "condizioni.html")
