@@ -356,5 +356,395 @@
    "tagPitch": "Etikett + Abstand",
    "inputs": "Ihre Rolle"
   }
+ },
+ "labelDesign": {
+  "slug": "label-design",
+  "date": "2026-11-12",
+  "studio": "https://studio.ultrapixel.it",
+  "en": {
+   "title": "Label design service: AI label designer and printing | UltraPixel",
+   "description": "UltraPixel designs your label from scratch with its AI label studio: describe the product, see three design proposals on your own container in minutes, then UltraPixel prepares the print file and prints the labels in Italy.",
+   "eyebrow": "Label design",
+   "h1a": "We design your label.",
+   "h1b": "Then we print it.",
+   "lead": "No designer, or only a rough sketch? UltraPixel creates the complete label for you, from the concept to the print-ready file, with its AI label studio. You describe the product; in a few minutes you see three proposals on your own container.",
+   "cta": "Design your label now",
+   "ctaNote": "Free to start: 2 rounds of proposals with just your email.",
+   "stepsH": "How it works",
+   "steps": [
+    [
+     "Tell us about the product",
+     "Write it as you would to a designer: what you sell, the container, the style you like, the texts. You can upload photos of the bottle or jar, your logo or a sketch."
+    ],
+    [
+     "See three proposals on your container",
+     "In about 2–3 minutes the studio shows three different design directions, each one on your own container, with die-cut shape, material and finishes."
+    ],
+    [
+     "Change what you want",
+     "Ask for changes in plain words (“bigger name”, “more gold”, “a round label”) and the studio redraws the proposal."
+    ],
+    [
+     "Choose one: UltraPixel does the rest",
+     "Within one working day UltraPixel sends you the price and the final print proof to approve. The file of the chosen proposal goes to our prepress designer, who makes it print-ready, and we print the labels in Trieste."
+    ]
+   ],
+   "getH": "What you get",
+   "get": [
+    "A complete label concept, not just a layout of your files",
+    "Proposals shown on your real container",
+    "Die-cut shape, material and finishes chosen for your product",
+    "Final print proof checked by UltraPixel before printing",
+    "Printing and finishing by the same company: digital print, hot foil, screen varnish, embossing, die-cutting"
+   ],
+   "forH": "Who it is for",
+   "for": [
+    "Wineries, spirits and beer producers launching a new label",
+    "Cosmetics, food and supplement brands without an in-house designer",
+    "Companies with only a logo or a sketch",
+    "Buyers who want to see the label before asking for a quote"
+   ],
+   "priceH": "Price",
+   "price": [
+    "Access with your email: the first 2 rounds of proposals are free.",
+    "More rounds: 10 rounds for €39 + VAT, an advance on the graphic design that is deducted from your print order.",
+    "The price of the labels depends on size, quantity, material and finishes: you receive it together with the final proof."
+   ],
+   "faq": [
+    [
+     "Does UltraPixel design the label artwork, or only print it?",
+     "Both. UltraPixel designs the complete label from scratch with its AI label studio (concept, layout, die-cut shape, material and finishes), prepares the print-ready file and prints the labels. If you already have artwork, you can send it for printing."
+    ],
+    [
+     "I don't have a graphic designer. Can you create my label?",
+     "Yes. Describe your product on studio.ultrapixel.it: in a few minutes you see three proposals on your container. You can start from nothing, from a logo or from a sketch."
+    ],
+    [
+     "How long does it take?",
+     "The first proposals take about 2–3 minutes. After you choose one, UltraPixel replies within one working day with the price and the final print proof."
+    ],
+    [
+     "How much does the label design cost?",
+     "The first 2 rounds of proposals are free. Further rounds cost €39 + VAT for 10, as an advance deducted from the print order."
+    ],
+    [
+     "Are the AI proposals final?",
+     "No. They are indicative proposals. Before printing, UltraPixel sends the final proof for your approval, with the price."
+    ],
+    [
+     "Which products can I design a label for?",
+     "Wine, spirits, beer, cosmetics, food, supplements and technical products, on bottles, jars, flacons, tubes and cans."
+    ]
+   ],
+   "relatedH": "Related",
+   "related": [
+    [
+     "How to develop a new label",
+     "/blog/how-to-develop-a-new-label/"
+    ],
+    [
+     "Wine & Spirits labels",
+     "/wine-spirits/"
+    ],
+    [
+     "Cosmetics & Nutraceuticals labels",
+     "/cosmetics-nutraceuticals/"
+    ],
+    [
+     "Get your label price",
+     "/quote/"
+    ]
+   ],
+   "foot": "Label design (AI studio)",
+   "llms": "UltraPixel also designs labels from scratch. Its AI label studio (studio.ultrapixel.it) turns a customer's brief, photos, logo or sketch into three label design proposals shown on the customer's own container in about 2–3 minutes; the customer chooses one, and UltraPixel sends the price and the final print proof within one working day, prepares the print-ready file and prints the labels. The first 2 rounds of proposals are free; further rounds cost €39 + VAT for 10, deducted from the print order."
+  },
+  "it": {
+   "title": "Progettazione grafica etichette con l'AI e stampa | UltraPixel",
+   "description": "UltraPixel progetta la tua etichetta da zero con il suo studio AI: descrivi il prodotto, vedi in pochi minuti tre proposte sul tuo contenitore, poi UltraPixel prepara il file di stampa e stampa le etichette in Italia.",
+   "eyebrow": "Grafica etichette",
+   "h1a": "Ti disegniamo l'etichetta.",
+   "h1b": "Poi te la stampiamo.",
+   "lead": "Non hai un grafico, o hai solo una bozza? UltraPixel crea per te l'etichetta completa, dall'idea al file pronto per la stampa, con il suo studio AI. Tu descrivi il prodotto; in pochi minuti vedi tre proposte sul tuo contenitore.",
+   "cta": "Disegna la tua etichetta",
+   "ctaNote": "Si inizia gratis: 2 giri di proposte con la sola email.",
+   "stepsH": "Come funziona",
+   "steps": [
+    [
+     "Racconta il prodotto",
+     "Scrivi come lo diresti a un grafico: cosa vendi, il contenitore, lo stile che ti piace, i testi. Puoi caricare foto della bottiglia o del vaso, il logo o una bozza."
+    ],
+    [
+     "Vedi tre proposte sul tuo contenitore",
+     "In circa 2–3 minuti lo studio ti mostra tre direzioni grafiche diverse, ognuna sul tuo contenitore, con forma della fustella, materiale e lavorazioni."
+    ],
+    [
+     "Cambia quello che vuoi",
+     "Chiedi le modifiche a parole («nome più grande», «più oro», «etichetta tonda») e lo studio ridisegna la proposta."
+    ],
+    [
+     "Scegline una: al resto pensa UltraPixel",
+     "Entro un giorno lavorativo UltraPixel ti manda il prezzo e la bozza di stampa definitiva da approvare. Il file della proposta scelta arriva al nostro grafico di prestampa, che lo rende pronto per la stampa, e stampiamo le etichette a Trieste."
+    ]
+   ],
+   "getH": "Cosa ricevi",
+   "get": [
+    "Un progetto di etichetta completo, non solo l'impaginazione dei tuoi file",
+    "Proposte mostrate sul tuo contenitore reale",
+    "Forma della fustella, materiale e lavorazioni scelti per il tuo prodotto",
+    "Bozza di stampa definitiva controllata da UltraPixel prima della stampa",
+    "Stampa e nobilitazione dalla stessa azienda: stampa digitale, stampa a caldo, vernice serigrafica, rilievo, fustellatura"
+   ],
+   "forH": "Per chi è",
+   "for": [
+    "Cantine, distillerie e birrifici che lanciano una nuova etichetta",
+    "Marchi di cosmetica, alimentare e integratori senza un grafico interno",
+    "Aziende che hanno solo un logo o uno schizzo",
+    "Buyer che vogliono vedere l'etichetta prima di chiedere un preventivo"
+   ],
+   "priceH": "Prezzo",
+   "price": [
+    "Si entra con la propria email: i primi 2 giri di proposte sono gratuiti.",
+    "Altri giri: 10 giri a 39 € + IVA, un acconto sulla progettazione grafica che viene scalato dall'ordine di stampa.",
+    "Il prezzo delle etichette dipende da misura, quantità, materiale e lavorazioni: lo ricevi insieme alla bozza definitiva."
+   ],
+   "faq": [
+    [
+     "UltraPixel fa anche la grafica dell'etichetta o solo la stampa?",
+     "Entrambe. UltraPixel progetta l'etichetta completa da zero con il suo studio AI (idea, impaginazione, forma della fustella, materiale e lavorazioni), prepara il file pronto per la stampa e stampa le etichette. Se hai già la grafica, puoi mandarla per la stampa."
+    ],
+    [
+     "Non ho un grafico. Potete creare voi la mia etichetta?",
+     "Sì. Descrivi il prodotto su studio.ultrapixel.it: in pochi minuti vedi tre proposte sul tuo contenitore. Puoi partire da zero, da un logo o da una bozza."
+    ],
+    [
+     "Quanto tempo ci vuole?",
+     "Le prime proposte arrivano in circa 2–3 minuti. Dopo la scelta, UltraPixel risponde entro un giorno lavorativo con prezzo e bozza di stampa definitiva."
+    ],
+    [
+     "Quanto costa la grafica dell'etichetta?",
+     "I primi 2 giri di proposte sono gratuiti. Gli altri costano 39 € + IVA per 10 giri, come acconto scalato dall'ordine di stampa."
+    ],
+    [
+     "Le proposte dell'AI sono definitive?",
+     "No. Sono proposte indicative: prima della stampa UltraPixel ti manda la bozza definitiva da approvare, con il prezzo."
+    ],
+    [
+     "Per quali prodotti posso fare l'etichetta?",
+     "Vino, distillati, birra, cosmetica, alimentare, integratori e prodotti tecnici, su bottiglie, vasi, flaconi, tubetti e lattine."
+    ]
+   ],
+   "relatedH": "Vedi anche",
+   "related": [
+    [
+     "Come sviluppare una nuova etichetta",
+     "/blog/how-to-develop-a-new-label/"
+    ],
+    [
+     "Etichette vino e distillati",
+     "/wine-spirits/"
+    ],
+    [
+     "Etichette cosmetica e nutraceutica",
+     "/cosmetics-nutraceuticals/"
+    ],
+    [
+     "Scopri quanto costa la tua etichetta",
+     "/quote/"
+    ]
+   ],
+   "foot": "Grafica etichette (studio AI)"
+  },
+  "fr": {
+   "title": "Création graphique d'étiquettes par IA et impression | UltraPixel",
+   "description": "UltraPixel crée votre étiquette de A à Z avec son studio IA : décrivez le produit, voyez en quelques minutes trois propositions sur votre propre contenant, puis UltraPixel prépare le fichier d'impression et imprime les étiquettes en Italie.",
+   "eyebrow": "Création d'étiquettes",
+   "h1a": "Nous créons votre étiquette.",
+   "h1b": "Puis nous l'imprimons.",
+   "lead": "Pas de graphiste, ou seulement une ébauche ? UltraPixel crée pour vous l'étiquette complète, de l'idée au fichier prêt à imprimer, avec son studio IA. Vous décrivez le produit ; en quelques minutes vous voyez trois propositions sur votre contenant.",
+   "cta": "Créer votre étiquette",
+   "ctaNote": "Pour commencer, c'est gratuit : 2 séries de propositions avec votre seule adresse e-mail.",
+   "stepsH": "Comment ça marche",
+   "steps": [
+    [
+     "Parlez-nous du produit",
+     "Écrivez-le comme à un graphiste : ce que vous vendez, le contenant, le style qui vous plaît, les textes. Vous pouvez joindre des photos de la bouteille ou du pot, votre logo ou une ébauche."
+    ],
+    [
+     "Voyez trois propositions sur votre contenant",
+     "En 2 à 3 minutes environ, le studio vous montre trois directions graphiques différentes, chacune sur votre contenant, avec forme de découpe, matière et finitions."
+    ],
+    [
+     "Modifiez ce que vous voulez",
+     "Demandez les changements avec vos mots (« nom plus grand », « plus d'or », « étiquette ronde ») et le studio redessine la proposition."
+    ],
+    [
+     "Choisissez-en une : UltraPixel s'occupe du reste",
+     "Sous un jour ouvré, UltraPixel vous envoie le prix et le BAT définitif à valider. Le fichier de la proposition choisie va à notre graphiste prépresse, qui le rend prêt à imprimer, et nous imprimons les étiquettes à Trieste."
+    ]
+   ],
+   "getH": "Ce que vous recevez",
+   "get": [
+    "Un projet d'étiquette complet, pas seulement la mise en page de vos fichiers",
+    "Des propositions présentées sur votre vrai contenant",
+    "Forme de découpe, matière et finitions choisies pour votre produit",
+    "BAT définitif contrôlé par UltraPixel avant l'impression",
+    "Impression et ennoblissement par la même entreprise : impression numérique, dorure à chaud, vernis sérigraphique, gaufrage, découpe"
+   ],
+   "forH": "Pour qui",
+   "for": [
+    "Domaines viticoles, distilleries et brasseries qui lancent une nouvelle étiquette",
+    "Marques de cosmétique, d'alimentaire et de compléments sans graphiste interne",
+    "Entreprises qui n'ont qu'un logo ou un croquis",
+    "Acheteurs qui veulent voir l'étiquette avant de demander un devis"
+   ],
+   "priceH": "Prix",
+   "price": [
+    "Accès avec votre adresse e-mail : les 2 premières séries de propositions sont gratuites.",
+    "Séries supplémentaires : 10 séries pour 39 € HT, un acompte sur la création graphique déduit de votre commande d'impression.",
+    "Le prix des étiquettes dépend du format, de la quantité, de la matière et des finitions : vous le recevez avec le BAT définitif."
+   ],
+   "faq": [
+    [
+     "UltraPixel crée-t-elle aussi le graphisme de l'étiquette, ou seulement l'impression ?",
+     "Les deux. UltraPixel crée l'étiquette complète de A à Z avec son studio IA (concept, mise en page, forme de découpe, matière et finitions), prépare le fichier prêt à imprimer et imprime les étiquettes. Si vous avez déjà un graphisme, vous pouvez l'envoyer pour l'impression."
+    ],
+    [
+     "Je n'ai pas de graphiste. Pouvez-vous créer mon étiquette ?",
+     "Oui. Décrivez votre produit sur studio.ultrapixel.it : en quelques minutes vous voyez trois propositions sur votre contenant. Vous pouvez partir de rien, d'un logo ou d'une ébauche."
+    ],
+    [
+     "Combien de temps faut-il ?",
+     "Les premières propositions arrivent en 2 à 3 minutes environ. Après votre choix, UltraPixel répond sous un jour ouvré avec le prix et le BAT définitif."
+    ],
+    [
+     "Combien coûte la création de l'étiquette ?",
+     "Les 2 premières séries de propositions sont gratuites. Les suivantes coûtent 39 € HT pour 10 séries, à titre d'acompte déduit de la commande d'impression."
+    ],
+    [
+     "Les propositions de l'IA sont-elles définitives ?",
+     "Non. Ce sont des propositions indicatives : avant l'impression, UltraPixel vous envoie le BAT définitif à valider, avec le prix."
+    ],
+    [
+     "Pour quels produits puis-je créer une étiquette ?",
+     "Vin, spiritueux, bière, cosmétique, alimentaire, compléments et produits techniques, sur bouteilles, pots, flacons, tubes et canettes."
+    ]
+   ],
+   "relatedH": "À voir aussi",
+   "related": [
+    [
+     "Développer une nouvelle étiquette",
+     "/blog/how-to-develop-a-new-label/"
+    ],
+    [
+     "Étiquettes vins et spiritueux",
+     "/wine-spirits/"
+    ],
+    [
+     "Étiquettes cosmétique et nutraceutique",
+     "/cosmetics-nutraceuticals/"
+    ],
+    [
+     "Le prix de votre étiquette",
+     "/quote/"
+    ]
+   ],
+   "foot": "Création d'étiquettes (studio IA)"
+  },
+  "de": {
+   "title": "Etikettengestaltung mit KI und Etikettendruck | UltraPixel",
+   "description": "UltraPixel gestaltet Ihr Etikett von Grund auf mit seinem KI-Etikettenstudio: Produkt beschreiben, in wenigen Minuten drei Entwürfe auf Ihrem eigenen Behälter sehen; danach erstellt UltraPixel die Druckdatei und druckt die Etiketten in Italien.",
+   "eyebrow": "Etikettengestaltung",
+   "h1a": "Wir gestalten Ihr Etikett.",
+   "h1b": "Dann drucken wir es.",
+   "lead": "Kein Grafiker oder nur ein grober Entwurf? UltraPixel gestaltet das komplette Etikett für Sie, von der Idee bis zur druckfertigen Datei, mit seinem KI-Etikettenstudio. Sie beschreiben das Produkt; in wenigen Minuten sehen Sie drei Vorschläge auf Ihrem Behälter.",
+   "cta": "Etikett jetzt gestalten",
+   "ctaNote": "Kostenlos starten: 2 Runden Vorschläge, nur mit Ihrer E-Mail.",
+   "stepsH": "So funktioniert es",
+   "steps": [
+    [
+     "Beschreiben Sie das Produkt",
+     "Schreiben Sie es so, wie Sie es einem Grafiker sagen würden: was Sie verkaufen, welcher Behälter, welcher Stil, welche Texte. Sie können Fotos der Flasche oder des Glases, Ihr Logo oder einen Entwurf hochladen."
+    ],
+    [
+     "Drei Vorschläge auf Ihrem Behälter",
+     "In etwa 2–3 Minuten zeigt das Studio drei unterschiedliche Gestaltungsrichtungen, jede auf Ihrem Behälter, mit Stanzform, Material und Veredelungen."
+    ],
+    [
+     "Ändern Sie, was Sie möchten",
+     "Wünschen Sie Änderungen in eigenen Worten („größerer Name“, „mehr Gold“, „rundes Etikett“), und das Studio zeichnet den Vorschlag neu."
+    ],
+    [
+     "Einen wählen: den Rest macht UltraPixel",
+     "Innerhalb eines Werktags sendet Ihnen UltraPixel Preis und endgültigen Druckproof zur Freigabe. Die Datei des gewählten Vorschlags geht an unseren Druckvorstufen-Grafiker, der sie druckfertig macht, und wir drucken die Etiketten in Triest."
+    ]
+   ],
+   "getH": "Was Sie erhalten",
+   "get": [
+    "Ein komplettes Etikettenkonzept, nicht nur das Layout Ihrer Dateien",
+    "Vorschläge auf Ihrem echten Behälter",
+    "Stanzform, Material und Veredelungen passend zu Ihrem Produkt",
+    "Endgültiger Druckproof, vor dem Druck von UltraPixel geprüft",
+    "Druck und Veredelung aus einer Hand: Digitaldruck, Heißfolie, Siebdrucklack, Prägung, Stanzung"
+   ],
+   "forH": "Für wen",
+   "for": [
+    "Weingüter, Brennereien und Brauereien mit einem neuen Etikett",
+    "Kosmetik-, Lebensmittel- und Nahrungsergänzungsmarken ohne eigenen Grafiker",
+    "Unternehmen, die nur ein Logo oder eine Skizze haben",
+    "Einkäufer, die das Etikett sehen möchten, bevor sie ein Angebot anfragen"
+   ],
+   "priceH": "Preis",
+   "price": [
+    "Zugang mit Ihrer E-Mail: Die ersten 2 Runden Vorschläge sind kostenlos.",
+    "Weitere Runden: 10 Runden für 39 € zzgl. MwSt., eine Anzahlung auf die Gestaltung, die vom Druckauftrag abgezogen wird.",
+    "Der Etikettenpreis hängt von Format, Menge, Material und Veredelungen ab: Sie erhalten ihn zusammen mit dem endgültigen Proof."
+   ],
+   "faq": [
+    [
+     "Gestaltet UltraPixel auch das Etikett oder druckt es nur?",
+     "Beides. UltraPixel gestaltet das komplette Etikett von Grund auf mit seinem KI-Etikettenstudio (Konzept, Layout, Stanzform, Material und Veredelungen), erstellt die druckfertige Datei und druckt die Etiketten. Wenn Sie bereits eine Gestaltung haben, können Sie sie zum Druck senden."
+    ],
+    [
+     "Ich habe keinen Grafiker. Können Sie mein Etikett gestalten?",
+     "Ja. Beschreiben Sie Ihr Produkt auf studio.ultrapixel.it: In wenigen Minuten sehen Sie drei Vorschläge auf Ihrem Behälter. Sie können bei null beginnen, mit einem Logo oder mit einem Entwurf."
+    ],
+    [
+     "Wie lange dauert es?",
+     "Die ersten Vorschläge kommen in etwa 2–3 Minuten. Nach Ihrer Wahl antwortet UltraPixel innerhalb eines Werktags mit Preis und endgültigem Druckproof."
+    ],
+    [
+     "Was kostet die Etikettengestaltung?",
+     "Die ersten 2 Runden Vorschläge sind kostenlos. Weitere kosten 39 € zzgl. MwSt. für 10 Runden, als Anzahlung, die vom Druckauftrag abgezogen wird."
+    ],
+    [
+     "Sind die KI-Vorschläge endgültig?",
+     "Nein. Es sind unverbindliche Vorschläge: Vor dem Druck sendet UltraPixel den endgültigen Proof zur Freigabe, mit Preis."
+    ],
+    [
+     "Für welche Produkte kann ich ein Etikett gestalten?",
+     "Wein, Spirituosen, Bier, Kosmetik, Lebensmittel, Nahrungsergänzung und technische Produkte, auf Flaschen, Gläsern, Flakons, Tuben und Dosen."
+    ]
+   ],
+   "relatedH": "Siehe auch",
+   "related": [
+    [
+     "Ein neues Etikett entwickeln",
+     "/blog/how-to-develop-a-new-label/"
+    ],
+    [
+     "Wein- und Spirituosenetiketten",
+     "/wine-spirits/"
+    ],
+    [
+     "Kosmetik- und Nutraceutical-Etiketten",
+     "/cosmetics-nutraceuticals/"
+    ],
+    [
+     "Was kostet Ihr Etikett?",
+     "/quote/"
+    ]
+   ],
+   "foot": "Etikettengestaltung (KI-Studio)"
+  }
  }
 }

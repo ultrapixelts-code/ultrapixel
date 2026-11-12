@@ -4,6 +4,11 @@
 
 UltraPixel Srl (VAT IT01240410322) was founded in 2013. It designs, prints and finishes self-adhesive labels in Trieste, Italy, for brands, wineries, manufacturers, agents and distributors in Italy and across Europe.
 
+UltraPixel also designs labels from scratch. Its AI label studio (studio.ultrapixel.it) turns a customer's brief, photos, logo or sketch into three label design proposals shown on the customer's own container in about 2–3 minutes; the customer chooses one, and UltraPixel sends the price and the final print proof within one working day, prepares the print-ready file and prints the labels. The first 2 rounds of proposals are free; further rounds cost €39 + VAT for 10, deducted from the print order.
+
+- [Label design service](https://ultrapixel-homepage.onrender.com/label-design/) / [Label design service (English)](https://ultrapixel-homepage.onrender.com/en/label-design/)
+- [UltraPixel AI label studio](https://studio.ultrapixel.it/): describe the product and see three label proposals on your container
+
 ## Company facts
 
 - UltraPixel Srl: Via J. Ressel 3, 34018 San Dorligo della Valle (TS), Italy

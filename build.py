@@ -164,7 +164,7 @@ def seo_extra(C, P, path, meta, langs=None):
            "description": s["description"], "foundingDate": s["founded"], "logo": base + "/assets/logo.png",
            "address": {"@type": "PostalAddress", "streetAddress": s["street"], "postalCode": s["postalCode"], "addressLocality": s["locality"],
                        "addressRegion": s["region"], "addressCountry": s["country"]}, "vatID": s["vatID"],
-           "areaServed": "Europe", "knowsAbout": [t["title"] for t in C["technologies"]["items"]]}
+           "areaServed": "Europe", "knowsAbout": ["Label design", *[t["title"] for t in C["technologies"]["items"]]]}
     if s.get("offices"):
         org["location"] = [{"@type": "Place", "name": x["name"], "address": {"@type": "PostalAddress", "streetAddress": x["street"], "postalCode": x["postalCode"],
                             "addressLocality": x["locality"], "addressCountry": x["country"]}} for x in s["offices"]]
@@ -263,7 +263,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls="", langs
   <div class="cols">
     <div><span class="mi">{e(s["name"])}</span><ul>{contact}</ul></div>
     <div><span class="mi">{e(ui["sectors"])}</span><ul>{secs}</ul></div>
-    <div><span class="mi">{e(ui["index"])}</span><ul><li><a href="{P}technologies/">{e(ui["technologies"])}</a></li><li><a href="{P}work/">{e(ui["work"])}</a></li><li><a href="{P}sustainability/">{e(C["sustainability"]["nav"])}</a></li><li><a href="{P}about/">{e(ui["about"])}</a></li>{f'<li><a href="{P}blog/">{e(C["blogNav"])}</a></li>' if C.get("blogNav") else ""}<li><a href="{P}contact/">{e(ui["contact"])}</a></li></ul></div>
+    <div><span class="mi">{e(ui["index"])}</span><ul>{f'<li><a href="{P}{C["designNav"][1]}/">{e(C["designNav"][0])}</a></li>' if C.get("designNav") else ""}<li><a href="{P}technologies/">{e(ui["technologies"])}</a></li><li><a href="{P}work/">{e(ui["work"])}</a></li><li><a href="{P}sustainability/">{e(C["sustainability"]["nav"])}</a></li><li><a href="{P}about/">{e(ui["about"])}</a></li>{f'<li><a href="{P}blog/">{e(C["blogNav"])}</a></li>' if C.get("blogNav") else ""}<li><a href="{P}contact/">{e(ui["contact"])}</a></li></ul></div>
     <div><span class="mi">{e(ui["contact"])}</span><ul><li><a href="{P}samples/">{e(ui["requestSamples"])}</a></li><li><a href="{P}contact/?topic=quote">{e(ui["requestQuote"])}</a></li><li><a href="{P}partners/">{e(ui["partners"])}</a></li></ul></div>
   </div>
   <img class="flogo" src="/assets/logo.png" alt="UltraPixel" width="370" height="133" loading="lazy">
@@ -696,6 +696,7 @@ def llms_txt(C0, CE, B=None, TL=None):
     out = [f"# {s['name']}", "", f"> {s['description']}", "",
            f"{s['legalName']} (VAT {s['vatID']}) was founded in {s['founded']}. It designs, prints and finishes self-adhesive labels in Trieste, Italy, "
            "for brands, wineries, manufacturers, agents and distributors in Italy and across Europe.", "",
+           *([TL["labelDesign"]["en"]["llms"], "", link("Label design service", "/" + TL["labelDesign"]["slug"] + "/"), f"- [UltraPixel AI label studio]({TL['labelDesign']['studio']}/): describe the product and see three label proposals on your container", ""] if TL and "labelDesign" in TL else []),
            "## Company facts", "", *offices]
     if s["email"]: out.append(f"- Email: {s['email']}")
     if s["phone"]: out.append(f"- Phone: {s['phone']}")
@@ -935,6 +936,32 @@ def roll_calc(C, P, T):
                     extra_head=BLOG_CSS + CALC_CSS + f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>' + faq_ld(u["faq"]), extra_foot=js)
 
 
+def design_ml(C, P, T):
+    """Label design service page: UltraPixel designs the label from scratch with its AI studio, then prints it."""
+    t = T["labelDesign"]; l = C["lang"]; u = t[l]; rel = f"/{t['slug']}/"; url = pub(C, l, rel); base = C["site"]["url"].rstrip("/")
+    go = f'{e(t["studio"])}/?lang={l}&amp;utm_source=ultrapixel.it&amp;utm_medium=site&amp;utm_campaign=label-design'
+    cta = f'<div class="ctas"><a class="cta pill" href="{go}">{e(u["cta"])} ↗</a><a class="cta pill ghost" href="{P}contact/?topic=quote">{e(C["ui"]["requestQuote"])} ↗</a></div><p class="mi dim">{e(u["ctaNote"])}</p>'
+    head = (f'<section class="phead rhero"><span class="mi">{e(u["eyebrow"])}</span><h1 class="mega rv">{e(u["h1a"])} <span>{e(u["h1b"])}</span></h1>'
+            f'<p class="lead">{e(u["lead"])}</p>{cta}</section>')
+    steps = "".join(f"<h3>{i}. {e(a)}</h3><p>{e(b)}</p>" for i, (a, b) in enumerate(u["steps"], 1))
+    ul = lambda xs: "<ul>" + "".join(f"<li>{e(x)}</li>" for x in xs) + "</ul>"
+    rel_links = '<div class="tl">' + "".join(f'<a class="cta" href="{P}{h.lstrip("/")}">{e(tx)} →</a>' for tx, h in u["related"]) + "</div>"
+    body = (head + '<hr class="spl"><section class="sec w"><article class="post">'
+            f'<h2>{e(u["stepsH"])}</h2>{steps}<h2>{e(u["getH"])}</h2>{ul(u["get"])}<h2>{e(u["forH"])}</h2>{ul(u["for"])}'
+            f'<h2>{e(u["priceH"])}</h2>' + "".join(f"<p>{e(x)}</p>" for x in u["price"]) +
+            f'<p><a class="cta pill" href="{go}">{e(u["cta"])} ↗</a></p>'
+            f'<h2>{e(BLOG_FAQ.get(l, "FAQ"))}</h2>' + faq_block(C, u["faq"]) + "</article>"
+            f'<div style="margin-top:clamp(40px,5vw,70px)"><span class="mi">{e(u["relatedH"])}</span>{rel_links}</div></section>' + talk_ml(C, P))
+    ld = {"@context": "https://schema.org", "@type": "Service", "@id": url + "#service", "name": u["h1a"].rstrip("."), "serviceType": "Label design and label printing",
+          "description": u["description"], "url": url, "inLanguage": l, "provider": {"@id": base + "/#organization"}, "areaServed": "Europe",
+          "audience": {"@type": "BusinessAudience"},
+          "offers": [{"@type": "Offer", "name": u["price"][0], "price": "0", "priceCurrency": "EUR", "url": t["studio"] + "/"},
+                     {"@type": "Offer", "name": u["price"][1], "price": "39", "priceCurrency": "EUR", "valueAddedTaxIncluded": False, "url": t["studio"] + "/"}],
+          "potentialAction": {"@type": "UseAction", "target": t["studio"] + "/"}}
+    return shell_ml(C, P, f"{P}{t['slug']}/", {"title": u["title"], "description": u["description"]}, body,
+                    extra_head=BLOG_CSS + f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>' + faq_ld(u["faq"]))
+
+
 CALC_POSTS = {"label-roll-breaks-on-labelling-line", "label-quote-specification-checklist", "how-to-store-label-rolls", "reduce-label-costs"}
 BLOG_FAQ = {"en": "Frequently asked questions", "it": "Domande frequenti", "fr": "Questions fréquentes", "de": "Häufige Fragen"}
 
@@ -978,6 +1005,8 @@ def build(launch=False):
             C["site"]["noindex"] = False; C["site"]["url"] = PUB[HOME] if HOME in cd or HOME == C["site"]["mainLang"] else main
         if B and lang in blog_langs(B):
             C["blogNav"] = B["ui"][lang]["nav"]
+        if TL and "labelDesign" in TL and lang in TL["labelDesign"]:
+            C["designNav"] = (TL["labelDesign"][lang]["foot"], TL["labelDesign"]["slug"])
         if lang == HOME:
             C0 = C
         if lang == DEFAULT:
@@ -993,6 +1022,8 @@ def build(launch=False):
         if TL and lang in TL["rollCalc"]:
             C["calc"] = (TL["rollCalc"][lang]["h1"], TL["rollCalc"]["slug"], TL["rollCalc"][lang]["lead"])
             wr(f"{P}{TL['rollCalc']['slug']}/index.html".lstrip("/"), roll_calc(C, P, TL)); blogp.append("/" + TL["rollCalc"]["slug"] + "/")
+        if TL and "labelDesign" in TL and lang in TL["labelDesign"]:
+            wr(f"{P}{TL['labelDesign']['slug']}/index.html".lstrip("/"), design_ml(C, P, TL))
         if B and lang in blog_langs(B):
             wr(f"{P}blog/index.html".lstrip("/"), blog_index(C, P, B)); blogp.append("/blog/")
             for bp in B["posts"]:
@@ -1003,6 +1034,8 @@ def build(launch=False):
     rels = [p for p in paths if not any(p.startswith(f"/{l}/") for l in LANGS if l != HOME)]
     if TL:
         rels.append("/" + TL["rollCalc"]["slug"] + "/")
+        if "labelDesign" in TL:
+            rels.append("/" + TL["labelDesign"]["slug"] + "/")
     loc = lambda l, r: pub(C0, l, r)
     wr("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "".join(
         f"  <url><loc>{loc(l, r)}</loc>" + "".join(f'<xhtml:link rel="alternate" hreflang="{a}" href="{loc(a, r)}"/>' for a in LANGS) + f'<xhtml:link rel="alternate" hreflang="x-default" href="{loc(XDEF, r)}"/></url>\n'
