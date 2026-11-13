@@ -1,2 +1,5 @@
 __pycache__/
 backend/data/*.sqlite
+portail/data/*
+!portail/data/.htaccess
+!portail/data/index.html

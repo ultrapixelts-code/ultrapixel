@@ -1,0 +1,2 @@
+# Schede, immagini e ordini del portale: mai serviti direttamente (passano da api.php con login).
+Require all denied

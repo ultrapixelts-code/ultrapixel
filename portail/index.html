@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Portail clients · UltraPixel</title>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]{display:none!important}
+/* Layout: sticky top bar, catalogue of labels shown on their liner, side sheet for the order. */
+:root{
+  --paper:#f4f6f7; --surface:#ffffff; --ink:#15191e; --muted:#5b6470; --line:#dbe0e5;
+  --accent:#0a6d8e; --accent-soft:#e1f0f5; --accent-ink:#ffffff; --liner:#eaeef1;
+  --ok:#1f7a4d; --ok-soft:#e2f2e9; --warn:#8a5a00; --warn-soft:#fbf0d9; --danger:#b3261e;
+  --c:#00a0e3; --m:#e5007e; --y:#ffe600; --k:#1d1d1b;
+  --display:"Barlow Semi Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --shadow:0 1px 2px rgba(20,30,40,.06),0 8px 24px rgba(20,30,40,.08);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e1115; --surface:#161a20; --ink:#e8ecf0; --muted:#9aa4af; --line:#2a3139;
+  --accent:#4dbbe0; --accent-soft:#11303b; --accent-ink:#06171d; --liner:#1c2229;
+  --ok:#5cc792; --ok-soft:#12291e; --warn:#e9b94f; --warn-soft:#2c2412; --danger:#ff8a80;
+  --k:#e8ecf0; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); color-scheme:dark}}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.1;margin:0;text-wrap:balance;letter-spacing:.005em}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1180px;margin:0 auto}
+
+/* brand */
+.brand{display:flex;flex-direction:column;gap:6px}
+.brand .word{font-family:var(--body);font-weight:400;font-size:22px;letter-spacing:.14em;line-height:1}
+.cmyk{display:flex;gap:7px}
+.cmyk i{width:14px;height:14px;border-radius:4px;display:block}
+.cmyk i:nth-child(1){background:var(--c)}.cmyk i:nth-child(2){background:var(--m)}.cmyk i:nth-child(3){background:var(--y)}.cmyk i:nth-child(4){background:var(--k)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:9px 14px;font-weight:500;font-size:14px;transition:background .15s,border-color .15s;text-decoration:none}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.ghost{background:transparent;border-color:transparent}
+.btn.ghost:hover{background:var(--liner)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.small{padding:6px 10px;font-size:13px}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);font-weight:500;text-decoration:underline;text-underline-offset:3px}
+
+/* login */
+.login{min-height:100vh;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+.login-side{background:var(--surface);border-right:1px solid var(--line);padding-block:48px;display:flex;flex-direction:column;justify-content:space-between;gap:40px}
+.login-side h1{font-size:clamp(34px,4.4vw,54px);max-width:14ch;margin-top:56px}
+.login-side p{max-width:44ch;color:var(--muted);margin:16px 0 0}
+.steps{display:grid;gap:14px;margin-top:36px;max-width:440px}
+.steps div{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start}
+.steps b{font-family:var(--mono);font-weight:500;font-size:12px;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted)}
+.addr{font-size:12.5px;color:var(--muted)}
+.login-main{display:flex;align-items:center;justify-content:center;padding-block:48px}
+.login-card{width:100%;max-width:380px;display:grid;gap:18px}
+.login-card h2{font-size:28px}
+.field{display:grid;gap:6px}
+.field label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+.field input,.field textarea,.field select{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.field textarea{min-height:76px;resize:vertical}
+.field input:focus,.field textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+.hint{font-size:13px;background:var(--liner);border-radius:8px;padding:10px 12px;color:var(--muted)}
+.err{color:var(--danger);font-size:13px;min-height:1em}
+.langs{display:flex;gap:2px;background:var(--liner);border-radius:8px;padding:3px}
+.langs button{border:0;background:transparent;border-radius:6px;padding:4px 9px;font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--muted)}
+.langs button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.boot{min-height:100vh;display:grid;place-items:center;color:var(--muted)}
+
+/* app shell */
+.top{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{display:flex;align-items:center;gap:16px;padding-block:12px;flex-wrap:wrap}
+.top .client{border-left:1px solid var(--line);padding-left:16px;display:grid;line-height:1.25}
+.top .client b{font-family:var(--display);font-weight:600;font-size:17px}
+.top .client span{font-size:12px;color:var(--muted)}
+.top nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap;align-items:center}
+.tab{border:0;background:transparent;padding:8px 12px;border-radius:8px;font-weight:500;color:var(--muted)}
+.tab[aria-current="page"]{color:var(--ink);background:var(--liner)}
+.cartbtn{position:relative}
+.badge{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-size:11.5px;font-weight:600}
+
+main{padding-block:28px 64px}
+.head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.head h1{font-size:clamp(28px,3.4vw,38px)}
+.head p{margin:6px 0 0;color:var(--muted);max-width:60ch}
+.search{min-width:0;flex:0 1 300px}
+.search input{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 12px}
+
+/* catalogue */
+.art{background:var(--liner);background-image:radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--muted) 18%,transparent) 1px,transparent 0);background-size:14px 14px;aspect-ratio:16/10;display:grid;place-items:center;padding:18px;border:0;width:100%;cursor:zoom-in;position:relative}
+.art img{max-height:100%;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(0,0,0,.18))}
+.card-top{display:flex;justify-content:space-between;gap:10px;align-items:start}
+.sku{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--ok-soft);color:var(--ok);white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.specs{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13px;margin:0}
+.specs dt{color:var(--muted)}
+.specs dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.inks{display:inline-flex;gap:4px;align-items:center;vertical-align:middle}
+.ink{width:12px;height:12px;border-radius:50%;border:1px solid color-mix(in srgb,var(--ink) 20%,transparent)}
+.card-foot{display:flex;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:14px;margin-top:auto;flex-wrap:wrap}
+.qty{width:150px;max-width:100%;text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;height:38px}
+.qty:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+.qtynote{font-size:12px;color:var(--muted);font-family:var(--mono)}
+.empty{border:1px dashed var(--line);border-radius:12px;padding:40px 24px;text-align:center;color:var(--muted)}
+
+/* catalogue list */
+.group{display:grid;gap:0;margin-bottom:28px}
+.group-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:0 4px 10px;border-bottom:2px solid var(--ink)}
+.group-head h2{font-size:20px}
+.group-head span{font-size:13px;color:var(--muted)}
+.cols-head,.lrow{display:grid;grid-template-columns:112px minmax(0,1.6fr) minmax(0,.8fr) minmax(0,.9fr) 210px;gap:20px;align-items:center}
+.cols-head{padding:10px 16px;font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:600}
+.lrow{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:8px;transition:border-color .15s}
+.lrow.in{border-color:var(--ok);box-shadow:inset 3px 0 0 var(--ok)}
+.thumb{position:relative;width:112px;height:84px;border:0;border-radius:8px;background:var(--liner);padding:0;cursor:zoom-in;overflow:hidden}
+.thumb img{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);max-width:none;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))}
+.thumb:hover{outline:2px solid var(--accent);outline-offset:1px}
+.pname{display:grid;gap:2px;min-width:0}
+.pname b{font-family:var(--display);font-weight:600;font-size:19px;line-height:1.15;overflow-wrap:anywhere}
+.pname .sku{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.fact{display:grid;gap:1px;font-size:14px;min-width:0}
+.fact small{display:none;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.fact span{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.order{display:grid;grid-template-columns:1fr auto;gap:6px 8px;align-items:center}
+.order .qty{width:100%}
+.order .qtynote{grid-column:1/-1}
+.orderbar{position:sticky;bottom:0;z-index:15;background:var(--ink);color:var(--paper);padding-bottom:env(safe-area-inset-bottom,0px)}
+.orderbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px;flex-wrap:wrap}
+.orderbar b{font-family:var(--mono)}
+.orderbar .btn{background:var(--surface);color:var(--ink);border-color:var(--surface)}
+@media (max-width:900px){
+  .cols-head{display:none}
+  .lrow{grid-template-columns:88px minmax(0,1fr);gap:12px 14px;align-items:start}
+  .thumb{width:88px;height:88px;grid-row:span 2}
+  .lrow .fact{display:none}
+  .lrow .order{grid-column:2}
+  .lrow .facts-m{display:block}
+}
+.facts-m{display:none;font-size:12.5px;color:var(--muted);font-family:var(--mono)}
+
+/* sheet / modal */
+.scrim{position:fixed;inset:0;background:rgba(10,14,18,.45);z-index:40}
+.sheet{position:fixed;top:0;right:0;bottom:0;width:min(520px,100%);background:var(--surface);z-index:41;display:flex;flex-direction:column;box-shadow:var(--shadow);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px)}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.sheet-head h2{font-size:22px}
+.sheet-body{flex:1;overflow:auto;padding:20px;display:grid;gap:18px;align-content:start}
+.sheet-foot{border-top:1px solid var(--line);padding:16px 20px;display:grid;gap:10px}
+.line{display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.line img{width:72px;height:52px;object-fit:contain;background:var(--liner);border-radius:6px;padding:4px}
+.line h4{margin:0;font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.x{border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;width:32px;height:32px;border-radius:6px}
+.x:hover{background:var(--liner);color:var(--ink)}
+Portale Clienti UltraPixel</untrusted-document-bbf45466fab1>","total_lines":713,"url":"https://claude.ai/artifact/RPABhX2C82WeAnUK4rqLCY","version":"1793115146-3f42"}<untrusted-document-bbf45466fab1>.totals{display:flex;justify-content:space-between;font-size:14px}
+.modal{position:fixed;inset:0;z-index:41;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));pointer-events:none}
+.modal-box{pointer-events:auto;background:var(--surface);border-radius:14px;width:min(980px,100%);max-height:100%;overflow:auto;box-shadow:var(--shadow);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.modal-art{border:0;cursor:zoom-in;width:100%;aspect-ratio:auto;background:var(--liner);display:grid;place-items:center;padding:28px;min-height:280px}
+.modal-art img{max-height:70vh;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,.2))}
+.modal-info{padding:22px 24px;display:grid;gap:16px;align-content:start;min-width:0}
+.modal-info h2{font-size:26px;overflow-wrap:anywhere}
+.sect{font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;margin-bottom:6px}
+.zoom{position:fixed;inset:0;z-index:55;background:rgba(8,11,14,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));cursor:zoom-out}
+.zoom img{max-width:100%;max-height:calc(100% - 56px);object-fit:contain;filter:drop-shadow(0 10px 30px rgba(0,0,0,.5))}
+.zoom .cap{color:#e8ecf0;font-size:13px;font-family:var(--mono);text-align:center}
+.zoom .x{position:absolute;top:max(12px,env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));color:#e8ecf0;font-size:28px;width:44px;height:44px}
+.zoom .x:hover{background:rgba(255,255,255,.12);color:#fff}
+.roll{display:flex;gap:16px;align-items:center}
+.roll svg{flex:none}
+.roll svg text{fill:var(--muted);font-family:var(--mono);font-size:10px}
+
+/* orders & admin */
+.table-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;background:var(--liner)}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.status{font-size:12px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.drop{border:1.5px dashed var(--line);border-radius:12px;background:var(--surface);padding:28px;text-align:center;display:grid;gap:8px;justify-items:center;transition:border-color .15s,background .15s}
+.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop h3{font-size:20px}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:grid;gap:14px}
+.mail{font-family:var(--mono);font-size:12.5px;background:var(--liner);border-radius:8px;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:340px;overflow:auto;margin:0}
+.done{display:grid;gap:10px;justify-items:start}
+.done .tick{width:44px;height:44px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;font-size:22px;font-weight:700}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:8px;font-size:14px;z-index:60;box-shadow:var(--shadow)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+@media (max-width:820px){
+  .login{grid-template-columns:1fr}
+  .login-side{border-right:0;border-bottom:1px solid var(--line);padding-block:28px}
+  .login-side h1{margin-top:28px}
+  .modal-box{grid-template-columns:1fr}
+  .cols{grid-template-columns:1fr}
+  .top .client{display:none}
+  .top-in{gap:10px}
+  .top nav{margin-left:0;width:100%;justify-content:space-between}
+  .tab{padding:6px 8px}
+}
+@media (max-width:480px){.grid2{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head><body>
+
+<div id="app"></div>
+<div id="layer"></div>
+<div id="zoomLayer"></div>
+
+<script>
+// UltraPixel customer portal. Labels, orders and settings live on the server (api.php);
+// the browser keeps only the language and the order being prepared.
+const STORE = "upx-portal-v1";
+const API = "api.php";
+
+const I18N = {
+fr:{
+  tagline:"Portail clients", loginTitle:"Vos étiquettes confirmées, prêtes à recommander.",
+  loginLead:"Retrouvez chaque étiquette validée avec sa fiche technique et envoyez votre commande à UltraPixel en quelques clics.",
+  s1:"Choisissez les étiquettes confirmées", s2:"Indiquez la quantité d'étiquettes",qtyLabel:"Quantité d'étiquettes",enterQty:"Indiquez une quantité", s3:"Envoyez la commande à UltraPixel",
+  signIn:"Connexion", user:"Identifiant", pass:"Mot de passe", enter:"Se connecter", badLogin:"Identifiant ou mot de passe incorrect.",
+  help:"Pas d'identifiant ? Écrivez à info@ultrapixel.it ou à votre contact UltraPixel.", wait:"Trop de tentatives : réessayez dans quelques minutes.", net:"Connexion impossible avec le serveur. Réessayez.", sending:"Envoi…", pdf:"Fiche PDF", mailed:"Une copie vous a été envoyée par e-mail.", expired:"Session expirée : reconnectez-vous.",
+  catalogue:"Étiquettes", orders:"Mes commandes", cart:"Commande", logout:"Déconnexion",
+  catTitle:"Étiquettes confirmées", catLead:"Dernières versions validées par {c}. Indiquez la quantité d'étiquettes souhaitée.",
+  searchPh:"Rechercher un code ou un produit", size:"Format", material:"Support", roll:"Rouleau",
+  inks:"Encres", perRoll:"étiq./rouleau",colLabel:"Étiquette",colSize:"Format",colRoll:"Rouleau",colQty:"Quantité",barLabels:"étiquettes dans la commande",barView:"Voir la commande",finish:"Finition", rolls:"rouleaux", rollsOne:"rouleau", add:"Ajouter", update:"Mettre à jour",
+  labels:"étiquettes", details:"Fiche technique", core:"Mandrin", outer:"Ø ext. max", winding:"Sens d'enroulement", length:"Longueur/rouleau",
+  lanes:"Poses", materialId:"Réf. support", confirmedOn:"Confirmée le", close:"Fermer",
+  cartEmpty:"Aucune étiquette dans la commande. Ajoutez des rouleaux depuis le catalogue.",
+  totalLabels:"Total étiquettes", totalRolls:"Total rouleaux", checkout:"Continuer", back:"Retour",
+  contact:"Nom du contact", email:"E-mail", po:"Votre n° de commande", deliv:"Livraison souhaitée", address:"Adresse de livraison", notes:"Remarques",
+  send:"Envoyer la commande", sentTitle:"Commande transmise", sentLead:"UltraPixel a reçu votre commande et vous confirme la date de livraison.",
+  orderNo:"N° commande", date:"Date", lines:"Lignes", status:"Statut", stReceived:"Reçue", reorder:"Recommander",
+  noOrders:"Aucune commande pour l'instant.", required:"Champ obligatoire", copied:"Copié", copy:"Copier le texte",
+  added:"Ajouté à la commande", noMatch:"Aucune étiquette ne correspond à la recherche.",
+  admin:"Espace UltraPixel",adminLead:"Chargez les fiches techniques confirmées : le portail lit le PDF et publie l'étiquette pour le client.",drop:"Déposez une fiche technique PDF",dropSub:"ou cliquez pour choisir un ou plusieurs fichiers",reading:"Lecture de",uploading:"Envoi au serveur de",sheets:"Fiches publiées",received:"Commandes reçues",settings:"Réglages",orderEmail:"E-mail de réception des commandes",orderEmailHint:"Plusieurs adresses séparées par une virgule.",save:"Enregistrer",remove:"Retirer",parsed:"Fiche publiée",parseFail:"Impossible de lire cette fiche",by:"chargée par",noPortal:"client sans accès au portail",localNote:"Fiches et commandes sont enregistrées sur le serveur UltraPixel : chaque personne connectée voit les mêmes."
+},
+it:{
+  tagline:"Portale clienti", loginTitle:"Le vostre etichette confermate, pronte da riordinare.",
+  loginLead:"Ogni etichetta approvata con la sua scheda tecnica. Inviate l'ordine a UltraPixel in pochi clic.",
+  s1:"Scegliete le etichette confermate", s2:"Indicate la quantità di etichette",qtyLabel:"Quantità etichette",enterQty:"Inserite una quantità", s3:"Inviate l'ordine a UltraPixel",
+  signIn:"Accesso", user:"Utente", pass:"Password", enter:"Accedi", badLogin:"Utente o password non corretti.",
+  help:"Non avete le credenziali? Scrivete a info@ultrapixel.it o al vostro referente UltraPixel.", wait:"Troppi tentativi: riprovate tra qualche minuto.", net:"Impossibile contattare il server. Riprovate.", sending:"Invio…", pdf:"Scheda PDF", mailed:"Vi abbiamo inviato una copia via email.", expired:"Sessione scaduta: accedete di nuovo.",
+  catalogue:"Etichette", orders:"I miei ordini", cart:"Ordine", logout:"Esci",
+  catTitle:"Etichette confermate", catLead:"Ultime versioni approvate da {c}. Indicate la quantità di etichette che vi serve.",
+  searchPh:"Cerca codice o prodotto", size:"Formato", material:"Materiale", roll:"Rotolo",
+  inks:"Colori", perRoll:"etich./rotolo",colLabel:"Etichetta",colSize:"Formato",colRoll:"Rotolo",colQty:"Quantità",barLabels:"etichette nell'ordine",barView:"Vedi ordine",finish:"Finitura", rolls:"rotoli", rollsOne:"rotolo", add:"Aggiungi", update:"Aggiorna",
+  labels:"etichette", details:"Scheda tecnica", core:"Anima", outer:"Ø est. max", winding:"Avvolgimento", length:"Lunghezza/rotolo",
+  lanes:"File per rotolo", materialId:"ID materiale", confirmedOn:"Confermata il", close:"Chiudi",
+  cartEmpty:"Nessuna etichetta nell'ordine. Aggiungete rotoli dal catalogo.",
+  totalLabels:"Totale etichette", totalRolls:"Totale rotoli", checkout:"Continua", back:"Indietro",
+  contact:"Referente", email:"Email", po:"Vostro n° ordine", deliv:"Consegna richiesta", address:"Indirizzo di consegna", notes:"Note",
+  send:"Invia ordine", sentTitle:"Ordine trasmesso", sentLead:"UltraPixel ha ricevuto l'ordine e vi conferma la data di consegna.",
+  orderNo:"N° ordine", date:"Data", lines:"Righe", status:"Stato", stReceived:"Ricevuto", reorder:"Riordina",
+  noOrders:"Nessun ordine per ora.", required:"Campo obbligatorio", copied:"Copiato", copy:"Copia testo",
+  added:"Aggiunto all'ordine", noMatch:"Nessuna etichetta corrisponde alla ricerca.",
+  admin:"Area UltraPixel",adminLead:"Caricate le schede tecniche confermate: il portale legge il PDF e pubblica l'etichetta per il cliente.",drop:"Trascinate qui una scheda tecnica PDF",dropSub:"oppure cliccate per scegliere uno o più file",reading:"Lettura di",uploading:"Invio al server di",sheets:"Schede pubblicate",received:"Ordini ricevuti",settings:"Impostazioni",orderEmail:"Email che riceve gli ordini",orderEmailHint:"Più indirizzi separati da virgola.",save:"Salva",remove:"Rimuovi",parsed:"Scheda pubblicata",parseFail:"Impossibile leggere questa scheda",by:"caricata da",noPortal:"cliente senza accesso al portale",localNote:"Schede e ordini sono salvati sul server UltraPixel: chi accede vede gli stessi dati."
+},
+en:{
+  tagline:"Customer portal", loginTitle:"Your confirmed labels, ready to reorder.",
+  loginLead:"Every approved label with its technical sheet. Send your order to UltraPixel in a few clicks.",
+  s1:"Pick your confirmed labels", s2:"Enter the label quantity",qtyLabel:"Label quantity",enterQty:"Enter a quantity", s3:"Send the order to UltraPixel",
+  signIn:"Sign in", user:"Username", pass:"Password", enter:"Sign in", badLogin:"Wrong username or password.",
+  help:"No login yet? Write to info@ultrapixel.it or to your UltraPixel contact.", wait:"Too many attempts: try again in a few minutes.", net:"Could not reach the server. Please try again.", sending:"Sending…", pdf:"PDF sheet", mailed:"A copy has been sent to you by email.", expired:"Session expired: please sign in again.",
+  catalogue:"Labels", orders:"My orders", cart:"Order", logout:"Sign out",
+  catTitle:"Confirmed labels", catLead:"Latest versions approved by {c}. Enter the number of labels you need.",
+  searchPh:"Search code or product", size:"Size", material:"Material", roll:"Roll",
+  inks:"Inks", perRoll:"labels/roll",colLabel:"Label",colSize:"Size",colRoll:"Roll",colQty:"Quantity",barLabels:"labels in the order",barView:"View order",finish:"Finish", rolls:"rolls", rollsOne:"roll", add:"Add", update:"Update",
+  labels:"labels", details:"Technical sheet", core:"Core", outer:"Max outer Ø", winding:"Winding", length:"Length/roll",
+  lanes:"Lanes", materialId:"Material ID", confirmedOn:"Confirmed on", close:"Close",
+  cartEmpty:"No labels in the order yet. Add rolls from the catalogue.",
+  totalLabels:"Total labels", totalRolls:"Total rolls", checkout:"Continue", back:"Back",
+  contact:"Contact name", email:"Email", po:"Your PO number", deliv:"Requested delivery", address:"Delivery address", notes:"Notes",
+  send:"Send order", sentTitle:"Order sent", sentLead:"UltraPixel has received your order and will confirm the delivery date.",
+  orderNo:"Order no.", date:"Date", lines:"Lines", status:"Status", stReceived:"Received", reorder:"Reorder",
+  noOrders:"No orders yet.", required:"Required", copied:"Copied", copy:"Copy text",
+  added:"Added to order", noMatch:"No label matches your search.",
+  admin:"UltraPixel area",adminLead:"Upload confirmed technical sheets: the portal reads the PDF and publishes the label to the customer.",drop:"Drop a technical sheet PDF",dropSub:"or click to choose one or more files",reading:"Reading",uploading:"Uploading",sheets:"Published sheets",received:"Orders received",settings:"Settings",orderEmail:"Email that receives orders",orderEmailHint:"Several addresses separated by commas.",save:"Save",remove:"Remove",parsed:"Sheet published",parseFail:"Could not read this sheet",by:"uploaded by",noPortal:"customer without portal access",localNote:"Sheets and orders are saved on the UltraPixel server: everyone who signs in sees the same data."
+}};
+
+/* ---------- state ---------- */
+let S = load();
+function load(){
+  const d={lang:"fr",me:null,role:null,labels:[],cart:{},orders:[],orderEmail:"",view:"catalogue",q:"",boot:true};
+  try{const l=(navigator.language||"fr").slice(0,2); if(I18N[l]) d.lang=l;}catch(e){}
+  try{const raw=localStorage.getItem(STORE); if(raw){const s=JSON.parse(raw); if(s.lang&&I18N[s.lang]) d.lang=s.lang; if(s.cart&&typeof s.cart==="object") d.cart=s.cart;}}catch(e){}
+  return d;
+}
+function save(){try{localStorage.setItem(STORE,JSON.stringify({lang:S.lang,cart:S.cart}));}catch(e){}}
+const t=k=>(I18N[S.lang]&&I18N[S.lang][k])||I18N.fr[k]||k;
+const $=s=>document.querySelector(s);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const nf=n=>new Intl.NumberFormat(S.lang==="en"?"en-GB":S.lang==="it"?"it-IT":"fr-FR").format(n);
+const fdate=iso=>{if(!iso)return"—";const d=new Date(iso+(iso.length===10?"T12:00:00":""));return isNaN(d)?iso:d.toLocaleDateString(S.lang==="en"?"en-GB":S.lang==="it"?"it-IT":"fr-FR",{day:"2-digit",month:"short",year:"numeric"})};
+const INKCOL={cyan:"var(--c)",magenta:"var(--m)",jaune:"var(--y)",yellow:"var(--y)",giallo:"var(--y)",noir:"var(--k)",black:"var(--k)",nero:"var(--k)"};
+const inkDot=n=>`<span class="ink" title="${esc(n)}" style="background:${INKCOL[String(n).toLowerCase()]||"repeating-linear-gradient(45deg,var(--muted) 0 2px,transparent 2px 4px)"}"></span>`;
+const byId=id=>S.labels.find(l=>l.id===id);
+function toast(msg){const el=document.createElement("div");el.className="toast";el.textContent=msg;document.body.appendChild(el);setTimeout(()=>el.remove(),2600)}
+const errText=e=>e&&e.message==="net"?t("net"):e&&e.message==="fields"?t("required"):t("net");
+
+async function api(action,opt={}){
+  const o={credentials:"same-origin",headers:{"X-UPX":"1"}};
+  if(opt.json!==undefined){o.method="POST";o.headers["Content-Type"]="application/json";o.body=JSON.stringify(opt.json)}
+  if(opt.form){o.method="POST";o.body=opt.form}
+  let r; try{r=await fetch(API+"?a="+action,o)}catch(e){throw new Error("net")}
+  let j=null; try{j=await r.json()}catch(e){}
+  if(r.status===401&&action!=="login"&&action!=="me"&&S.role){S.role=null;S.me=null;closeLayer();render();toast(t("expired"))}
+  if(!r.ok){const err=new Error((j&&j.error)||"http"+r.status);err.status=r.status;throw err}
+  return j;
+}
+async function signedIn(me){
+  S.me=me;S.role=me.role==="staff"?"admin":"client";S.orderEmail=me.orderEmail||"";S.view=S.role==="admin"?"admin":"catalogue";
+  const [labels,orders]=await Promise.all([api("labels"),api("orders")]);
+  S.labels=labels;S.orders=orders;
+  for(const id of Object.keys(S.cart)) if(!byId(id)) delete S.cart[id];
+  save();
+}
+async function boot(){
+  try{await signedIn(await api("me"))}catch(e){S.role=null;S.me=null}
+  S.boot=false;render();
+}
+
+/* ---------- render ---------- */
+function render(){
+  document.documentElement.lang=S.lang;
+  const app=$("#app");
+  if(S.boot){app.innerHTML=`<div class="boot">${brand()}</div>`;return}
+  if(!S.role){app.innerHTML=loginView();return}
+  app.innerHTML=shell(S.view==="orders"?ordersView():S.view==="admin"?adminView():catalogueView());
+  if(S.view==="admin") bindDrop();
+}
+function langs(){return `<div class="langs" role="group" aria-label="Langue">${["fr","it","en"].map(l=>`<button data-act="lang" data-v="${l}" aria-pressed="${S.lang===l}">${l.toUpperCase()}</button>`).join("")}</div>`}
+function brand(){return `<div class="brand"><span class="word">UltraPixel</span><div class="cmyk"><i></i><i></i><i></i><i></i></div></div>`}
+
+function loginView(){return `
+<div class="login">
+  <section class="login-side gut">
+    <div>
+      <div class="row" style="justify-content:space-between">${brand()}${langs()}</div>
+      <h1>${t("loginTitle")}</h1>
+      <p>${t("loginLead")}</p>
+      <div class="steps">
+        <div><b>1</b><span>${t("s1")}</span></div>
+        <div><b>2</b><span>${t("s2")}</span></div>
+        <div><b>3</b><span>${t("s3")}</span></div>
+      </div>
+    </div>
+    <div class="addr">UltraPixel · Via J. Ressel, 3 · 34018 San Dorligo della Valle (TS) · +39 040 817222</div>
+  </section>
+  <section class="login-main gut">
+    <form class="login-card" id="loginForm" novalidate>
+      <div><div class="sect">${t("tagline")}</div><h2>${t("signIn")}</h2></div>
+      <div class="field"><label for="u">${t("user")}</label><input id="u" autocomplete="username" autocapitalize="none" spellcheck="false"></div>
+      <div class="field"><label for="p">${t("pass")}</label><input id="p" type="password" autocomplete="current-password"></div>
+      <div class="err" id="loginErr"></div>
+      <button class="btn primary" type="submit" id="loginBtn">${t("enter")}</button>
+      <div class="hint">${t("help")}</div>
+    </form>
+  </section>
+</div>`}
+
+function shell(inner){
+  const n=Object.keys(S.cart).filter(byId).length;
+  const admin=S.role==="admin";
+  return `
+<header class="top"><div class="wrap gut top-in">
+  ${brand()}
+  <div class="client"><b>${admin?t("admin"):esc(S.me.name)}</b><span>${admin?esc(S.me.name):t("tagline")+" · "+esc(S.me.customer||"")}</span></div>
+  <nav>
+    ${admin?`<button class="tab" data-act="view" data-v="admin" aria-current="${S.view==="admin"?"page":"false"}">${t("admin")}</button>`:""}
+    <button class="tab" data-act="view" data-v="catalogue" aria-current="${S.view==="catalogue"?"page":"false"}">${t("catalogue")}</button>
+    <button class="tab" data-act="view" data-v="orders" aria-current="${S.view==="orders"?"page":"false"}">${admin?t("received"):t("orders")}</button>
+    <button class="btn cartbtn" data-act="cart">${t("cart")} ${n?`<span class="badge">${n}</span>`:""}</button>
+    ${langs()}
+    <button class="btn ghost small" data-act="logout">${t("logout")}</button>
+  </nav>
+</div></header>
+<main class="gut"><div class="wrap">${inner}</div></main>${orderBar()}`}
+
+function matShort(m){return (m||"").replace(/\b(PLUS|PRIMECOAT|IMP|FSC)\b.*$/i,"").replace(/\s+[A-Z]\d{3,}.*$/,"").trim().toLowerCase().replace(/(^|\s)\S/g,c=>c.toUpperCase())}
+function shortName(l){return l.desc.replace(/\s+(?:L\.)?PRINTED\b.*$/i,"").replace(/\s+\d+x\d+.*$/i,"").trim()||l.desc}
+function qtyInput(id,v){return `<input class="qty" id="q-${esc(id)}" inputmode="numeric" autocomplete="off" value="${v?nf(v):""}" data-qty="${esc(id)}" aria-label="${t("qtyLabel")}">`}
+function rolls(l,v){return Math.ceil(v/l.perRoll)}
+function rollNote(l,v){return v?`≈ ${nf(rolls(l,v))} ${rolls(l,v)===1?t("rollsOne"):t("rolls")} × ${nf(l.perRoll)}`:`${t("qtyLabel")} · ${nf(l.perRoll)} ${t("perRoll")}`}
+function rowHTML(l){
+  const q=S.cart[l.id]||0;
+  return `<div class="lrow${q?" in":""}">
+    <button class="thumb" data-act="zoom" data-id="${esc(l.id)}" aria-label="${esc(l.id)}"><img src="${esc(l.art)}" alt="${esc(shortName(l))}" loading="lazy"></button>
+    <div class="pname"><b>${esc(shortName(l))}</b>
+      <div class="sku"><span class="mono muted" style="font-size:12.5px">${esc(l.id)}</span><button class="linkbtn" style="font-size:13px" data-act="detail" data-id="${esc(l.id)}">${t("details")}</button></div>
+      <div class="facts-m">${l.w}×${l.h} mm · ${nf(l.perRoll)} ${t("perRoll")}</div></div>
+    <div class="fact"><small>${t("colSize")}</small><span>${l.w} × ${l.h} mm</span></div>
+    <div class="fact"><small>${t("colRoll")}</small><span>${nf(l.perRoll)} ${t("perRoll")}</span></div>
+    <div class="order">${qtyInput(l.id,q)}<button class="btn ${q?"":"primary"}" data-act="add" data-id="${esc(l.id)}">${q?t("update"):t("add")}</button>
+      <span class="qtynote" id="qn-${esc(l.id)}">${q?rollNote(l,q):t("colQty")+" ("+t("labels")+")"}</span></div>
+  </div>`}
+
+function catalogueView(){
+  const q=S.q.trim().toLowerCase();
+  const list=S.labels.filter(l=>!q||(l.id+" "+l.desc+" "+l.material).toLowerCase().includes(q));
+  const groups={};
+  list.forEach(l=>{const k=l.w+"|"+matShort(l.material);(groups[k]=groups[k]||[]).push(l)});
+  const keys=Object.keys(groups).sort((a,b)=>parseFloat(b)-parseFloat(a));
+  const body=keys.length?keys.map(k=>{const g=groups[k].sort((a,b)=>shortName(a).localeCompare(shortName(b)));const l=g[0];
+    return `<section class="group"><div class="group-head"><h2>${t("colLabel")} ${l.w} mm · ${esc(matShort(l.material))}</h2><span>${g.length}</span></div>
+      <div class="cols-head"><span></span><span>${t("colLabel")}</span><span>${t("colSize")}</span><span>${t("colRoll")}</span><span>${t("colQty")}</span></div>
+      ${g.map(rowHTML).join("")}</section>`}).join(""):`<div class="empty">${t("noMatch")}</div>`;
+  return `<div class="head"><div><h1>${t("catTitle")}</h1><p>${t("catLead").replace("{c}",esc(S.role==="admin"?"UltraPixel":S.me.name))}</p></div>
+    <div class="search"><input id="search" type="search" placeholder="${t("searchPh")}" value="${esc(S.q)}" aria-label="${t("searchPh")}"></div></div>
+    <div id="grid">${body}</div>`}
+function orderBar(){
+  const ids=Object.keys(S.cart).filter(byId); if(!ids.length||S.view!=="catalogue") return "";
+  const tot=ids.reduce((a,id)=>a+S.cart[id],0);
+  return `<div class="orderbar"><div class="wrap gut"><span>${ids.length} × · <b>${nf(tot)}</b> ${t("barLabels")}</span><button class="btn" data-act="cart">${t("barView")} →</button></div></div>`}
+function ordersView(){
+  const admin=S.role==="admin";
+  if(!S.orders.length) return `<div class="head"><div><h1>${admin?t("received"):t("orders")}</h1></div></div><div class="empty">${t("noOrders")}</div>`;
+  return `<div class="head"><div><h1>${admin?t("received"):t("orders")}</h1>${admin?`<p>${t("localNote")}</p>`:""}</div></div>
+  <div class="table-wrap"><table><thead><tr><th>${t("orderNo")}</th><th>${t("date")}</th><th>${t("lines")}</th><th>${t("deliv")}</th><th>${t("status")}</th><th></th></tr></thead><tbody>
+  ${S.orders.slice().reverse().map(o=>`<tr><td class="num">${esc(o.no)}<div class="muted" style="font-family:var(--body)">${esc(o.po||"")}</div></td><td class="num">${fdate(o.created.slice(0,10))}</td>
+    <td>${o.lines.map(li=>`<div><span class="mono">${esc(li.id)}</span> · <span class="mono">${nf(li.qty)}</span> ${t("labels")}</div>`).join("")}</td>
+    <td class="num">${fdate(o.delivery)}${admin?`<div class="muted" style="font-family:var(--body);font-size:12.5px;white-space:normal">${esc(o.customerName)} · ${esc(o.contact)}</div>`:""}</td><td><span class="status">${t("stReceived")}</span></td>
+    <td><div class="row"><button class="btn small" data-act="mail" data-no="${esc(o.no)}">${t("details")}</button>${admin?"":`<button class="btn small" data-act="reorder" data-no="${esc(o.no)}">${t("reorder")}</button>`}</div></td></tr>`).join("")}
+  </tbody></table></div>`}
+
+function adminView(){return `<div class="head"><div><h1>${t("admin")}</h1><p>${t("adminLead")}</p></div></div>
+  <div class="cols">
+    <div style="display:grid;gap:16px">
+      <label class="drop" id="drop" for="pdfIn">
+        <h3>${t("drop")}</h3><span class="muted">${t("dropSub")}</span>
+        <input id="pdfIn" type="file" accept="application/pdf" multiple hidden>
+        <span class="muted" id="dropStatus" style="font-size:13px"></span>
+      </label>
+      <div class="panel"><div class="sect" style="margin:0">${t("settings")}</div>
+        <div class="field"><label for="oe">${t("orderEmail")}</label><input id="oe" value="${esc(S.orderEmail)}"><span class="muted" style="font-size:12.5px">${t("orderEmailHint")}</span></div>
+        <div><button class="btn small" data-act="saveEmail">${t("save")}</button></div>
+        <p class="muted" style="margin:0;font-size:13px">${t("localNote")}</p>
+      </div>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th colspan="3">${t("sheets")} · ${S.labels.length}</th></tr></thead><tbody>
+      ${S.labels.slice().sort((a,b)=>String(b.uploadedAt||"").localeCompare(String(a.uploadedAt||""))).map(l=>`<tr><td style="width:84px"><img src="${esc(l.art)}" alt="" style="width:72px;height:48px;object-fit:contain;background:var(--liner);border-radius:6px;padding:3px"></td>
+      <td><div class="sku">${esc(l.id)} · ${esc(l.customerCode)} ${esc(l.customer)}${S.me.customers&&!S.me.customers[l.customerCode]?` · <span style="color:var(--warn)">${t("noPortal")}</span>`:""}</div><div style="font-weight:500;overflow-wrap:anywhere">${esc(l.desc)}</div>
+        <div class="muted" style="font-size:12.5px">${t("confirmedOn")} ${fdate(l.date)} · ${l.pdf?`<a href="${esc(l.pdf)}" target="_blank" rel="noopener">${esc(l.source||t("pdf"))}</a>`:esc(l.source||"")}${l.uploadedBy?` · ${t("by")} ${esc(l.uploadedBy)}`:""}</div></td>
+      <td><button class="btn small" data-act="remove" data-id="${esc(l.id)}">${t("remove")}</button></td></tr>`).join("")}
+    </tbody></table></div>
+  </div>`}
+
+/* ---------- overlays ---------- */
+function closeLayer(){$("#layer").innerHTML="";document.body.style.overflow=""}
+function openLayer(html){$("#layer").innerHTML=`<div class="scrim" data-act="closeLayer"></div>`+html;document.body.style.overflow="hidden"}
+
+function rollSVG(l){
+  const R=46,r=Math.max(10,Math.round(R*l.core/(l.outer||200)));
+  return `<svg width="120" height="110" viewBox="0 0 120 110" aria-hidden="true">
+    <circle cx="56" cy="52" r="${R}" fill="var(--liner)" stroke="var(--line)"/>
+    ${[0.85,0.7,0.55].map(f=>`<circle cx="56" cy="52" r="${Math.round(r+(R-r)*f)}" fill="none" stroke="var(--line)"/>`).join("")}
+    <circle cx="56" cy="52" r="${r}" fill="color-mix(in srgb,var(--warn) 35%,var(--surface))" stroke="var(--muted)"/>
+    <circle cx="56" cy="52" r="${r-5}" fill="var(--surface)"/>
+    <text x="56" y="56" text-anchor="middle">${l.core}</text>
+    <text x="56" y="108" text-anchor="middle">⌀ ${l.outer} mm</text></svg>`}
+
+function openDetail(id){
+  const l=byId(id); if(!l) return; const q=S.cart[id]||0;
+  openLayer(`<div class="modal"><div class="modal-box" role="dialog" aria-modal="true" aria-label="${esc(l.id)}">
+    <button class="modal-art art" data-act="zoom" data-id="${esc(l.id)}" aria-label="${esc(l.id)}"><img src="${esc(l.art)}" alt="${esc(l.desc)}"></button>
+    <div class="modal-info">
+      <div class="card-top"><div style="min-width:0"><div class="sku">${esc(l.id)} · ${t("details")}</div><h2>${esc(shortName(l))}</h2></div><button class="x" data-act="closeLayer" aria-label="${t("close")}">×</button></div>
+      <div class="muted" style="font-size:13px;overflow-wrap:anywhere">${esc(l.desc)}</div>
+      <div class="row"><span class="pill">${t("confirmedOn")} ${fdate(l.date)}</span>${l.pdf?`<a class="btn small" href="${esc(l.pdf)}" target="_blank" rel="noopener">${t("pdf")} ↗</a>`:""}</div>
+      <div><div class="sect">${t("size")}</div>
+        <dl class="specs"><dt>A</dt><dd class="mono">${l.w} mm</dd><dt>B</dt><dd class="mono">${l.h} mm</dd><dt>C</dt><dd class="mono">${l.gapC??"—"} mm</dd><dt>E</dt><dd class="mono">${l.pitchE??"—"} mm</dd></dl></div>
+      <div><div class="sect">${t("material")}</div>
+        <dl class="specs"><dt>${t("material")}</dt><dd>${esc(l.material)}</dd><dt>${t("materialId")}</dt><dd class="mono">${esc(l.materialId||"—")}</dd>
+        <dt>${t("inks")}</dt><dd><span class="inks">${(l.inks||[]).map(inkDot).join("")}</span> ${esc((l.inks||[]).join(", "))}</dd>${l.finish?`<dt>${t("finish")}</dt><dd>${esc(l.finish)}</dd>`:""}</dl></div>
+      <div><div class="sect">${t("roll")}</div><div class="roll">${rollSVG(l)}
+        <dl class="specs"><dt>${t("perRoll")}</dt><dd class="mono">${nf(l.perRoll)}</dd><dt>${t("length")}</dt><dd class="mono">${esc(l.rollLength||"—")} m</dd>
+        <dt>${t("lanes")}</dt><dd class="mono">${l.lanes??1}</dd><dt>${t("core")}</dt><dd class="mono">${l.core} mm</dd><dt>${t("outer")}</dt><dd class="mono">${l.outer} mm</dd>
+        <dt>${t("winding")}</dt><dd>${esc(l.winding||"—")}</dd></dl></div></div>
+      <div class="card-foot"><div style="display:grid;gap:4px">${qtyInput(l.id,q)}<span class="qtynote" id="qn-${esc(l.id)}">${rollNote(l,q)}</span></div>
+        <button class="btn primary" data-act="add" data-id="${esc(l.id)}" data-close="1">${S.cart[id]?t("update"):t("add")}</button></div>
+    </div></div></div>`);
+}
+
+let checkoutStep="cart";
+function openCart(step){
+  checkoutStep=step||"cart";
+  const ids=Object.keys(S.cart).filter(id=>byId(id));
+  const nRolls=ids.reduce((a,id)=>a+rolls(byId(id),S.cart[id]),0), labels=ids.reduce((a,id)=>a+S.cart[id],0);
+  let body="",foot="";
+  if(checkoutStep==="cart"){
+    body=ids.length?ids.map(id=>{const l=byId(id);return `<div class="line"><img src="${esc(l.art)}" alt="">
+      <div style="min-width:0"><div class="sku">${esc(l.id)}</div><h4>${esc(shortName(l))}</h4>
+      <div class="row" style="margin-top:6px">${qtyInput(id,S.cart[id])}<span class="qtynote" id="qn-${esc(id)}">${rollNote(l,S.cart[id])}</span></div></div>
+      <button class="x" data-act="rm" data-id="${esc(id)}" aria-label="${t("remove")}">×</button></div>`}).join(""):`<div class="empty">${t("cartEmpty")}</div>`;
+    foot=`<div class="totals"><span class="muted">${t("totalLabels")}</span><b class="mono" id="totL">${nf(labels)}</b></div>
+      <div class="totals"><span class="muted">${t("totalRolls")}</span><span class="mono" id="totR">≈ ${nf(nRolls)}</span></div>
+      <button class="btn primary" data-act="toForm" ${ids.length?"":"disabled"}>${t("checkout")}</button>`;
+  } else if(checkoutStep==="form"){
+    const d=new Date();d.setDate(d.getDate()+14);const min=new Date();min.setDate(min.getDate()+2);
+    const last=S.orders.filter(o=>o.user===S.me.user).slice(-1)[0]||{};
+    body=`<form id="coForm" novalidate style="display:grid;gap:14px">
+      <div class="grid2"><div class="field"><label for="cn">${t("contact")} *</label><input id="cn" value="${esc(last.contact||"")}" autocomplete="name"></div>
+      <div class="field"><label for="ce">${t("email")} *</label><input id="ce" type="email" value="${esc(last.email||"")}" autocomplete="email"></div></div>
+      <div class="grid2"><div class="field"><label for="po">${t("po")}</label><input id="po"></div>
+      <div class="field"><label for="dd">${t("deliv")} *</label><input id="dd" type="date" min="${min.toISOString().slice(0,10)}" value="${d.toISOString().slice(0,10)}"></div></div>
+      <div class="field"><label for="ad">${t("address")} *</label><textarea id="ad">${esc(last.address||S.me.address||"")}</textarea></div>
+      <div class="field"><label for="nt">${t("notes")}</label><textarea id="nt"></textarea></div>
+      <div class="err" id="coErr"></div></form>
+      <div class="sect" style="margin:0">${t("lines")}</div>
+      ${ids.map(id=>{const l=byId(id);return `<div class="totals"><span><span class="mono">${esc(id)}</span> · ≈ ${nf(rolls(l,S.cart[id]))} ${t("rolls")}</span><b class="mono">${nf(S.cart[id])} ${t("labels")}</b></div>`}).join("")}`;
+    foot=`<div class="row" style="justify-content:space-between"><button class="btn" data-act="toCart">${t("back")}</button><button class="btn primary" data-act="send" id="sendBtn">${t("send")}</button></div>`;
+  }
+  openLayer(`<aside class="sheet" role="dialog" aria-modal="true" aria-label="${t("cart")}"><div class="sheet-head"><h2>${checkoutStep==="form"?t("send"):t("cart")}</h2><button class="x" data-act="closeLayer" aria-label="${t("close")}">×</button></div>
+    <div class="sheet-body">${body}</div><div class="sheet-foot">${foot}</div></aside>`);
+}
+
+function showMail(o,fresh){
+  openLayer(`<aside class="sheet" role="dialog" aria-modal="true"><div class="sheet-head"><h2>${fresh?t("sentTitle"):esc(o.no)}</h2><button class="x" data-act="closeLayer" aria-label="${t("close")}">×</button></div>
+  <div class="sheet-body">${fresh?`<div class="done"><div class="tick">✓</div><div><b class="mono">${esc(o.no)}</b></div><p class="muted" style="margin:0">${t("sentLead")} ${S.role==="client"?t("mailed"):""}</p></div>`:""}
+   <pre class="mail" id="mailTxt">${esc(o.text||"")}</pre></div>
+  <div class="sheet-foot"><button class="btn" data-act="copyMail" data-no="${esc(o.no)}">${t("copy")}</button></div></aside>`);
+}
+
+/* ---------- actions ---------- */
+function readQty(id){const el=document.getElementById("q-"+id);const d=String(el&&el.value||"").replace(/\D/g,"");const v=parseInt(d,10);return isNaN(v)?0:Math.min(v,99999999)}
+function setQtyNote(id,v){const l=byId(id);const n=document.getElementById("qn-"+id);if(n&&l)n.textContent=rollNote(l,v)}
+function cartTotals(){const ids=Object.keys(S.cart).filter(byId);const a=$("#totL"),b=$("#totR");if(a)a.textContent=nf(ids.reduce((x,id)=>x+S.cart[id],0));if(b)b.textContent="≈ "+nf(ids.reduce((x,id)=>x+rolls(byId(id),S.cart[id]),0))}
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]"); if(!b) return;
+  const a=b.dataset.act,id=b.dataset.id;
+  if(a==="lang"){S.lang=b.dataset.v;save();const inCart=$("#layer .sheet");render();if(inCart)openCart(checkoutStep==="form"?"cart":checkoutStep);else closeLayer();return}
+  if(a==="view"){S.view=b.dataset.v;render();window.scrollTo(0,0);return}
+  if(a==="logout"){api("logout",{json:{}}).catch(()=>{});S.role=null;S.me=null;S.labels=[];S.orders=[];closeLayer();render();return}
+  if(a==="zoom"){const l=byId(id);if(!l)return;$("#zoomLayer").innerHTML=`<div class="zoom" data-act="unzoom" role="dialog" aria-modal="true" aria-label="${esc(l.id)}"><button class="x" data-act="unzoom" aria-label="${t("close")}">×</button><img src="${esc(l.art)}" alt="${esc(l.desc)}"><div class="cap">${esc(l.id)} · ${esc(shortName(l))} · ${l.w} × ${l.h} mm</div></div>`;document.body.style.overflow="hidden";return}
+  if(a==="unzoom"){$("#zoomLayer").innerHTML="";if(!$("#layer").innerHTML)document.body.style.overflow="";return}
+  if(a==="detail"){openDetail(id);return}
+  if(a==="closeLayer"){closeLayer();return}
+  if(a==="add"){const v=readQty(id);if(!v){toast(t("enterQty"));const el=document.getElementById("q-"+id);if(el)el.focus();return}
+    S.cart[id]=v;save();toast(t("added"));if(b.dataset.close)closeLayer();render();return}
+  if(a==="cart"){openCart("cart");return}
+  if(a==="rm"){delete S.cart[id];save();openCart("cart");render();return}
+  if(a==="toForm"){openCart("form");return}
+  if(a==="toCart"){openCart("cart");return}
+  if(a==="send"){sendOrder();return}
+  if(a==="mail"){const o=S.orders.find(o=>o.no===b.dataset.no);if(o)showMail(o,false);return}
+  if(a==="copyMail"){const o=S.orders.find(o=>o.no===b.dataset.no);if(o)copy(o.text||"");return}
+  if(a==="reorder"){const o=S.orders.find(o=>o.no===b.dataset.no);if(!o)return;o.lines.forEach(li=>{if(byId(li.id))S.cart[li.id]=li.qty});save();render();openCart("cart");return}
+  if(a==="remove"){b.disabled=true;api("remove",{json:{id}}).then(()=>{S.labels=S.labels.filter(l=>l.id!==id);delete S.cart[id];save();render()}).catch(err=>{b.disabled=false;toast(errText(err))});return}
+  if(a==="saveEmail"){const v=$("#oe").value.trim();if(v)api("settings",{json:{orderEmail:v}}).then(r=>{S.orderEmail=r.orderEmail;$("#oe").value=r.orderEmail;toast(t("save")+" ✓")}).catch(err=>toast(err.message==="email"?t("required"):errText(err)));return}
+});
+document.addEventListener("input",e=>{
+  if(e.target.id==="search"){S.q=e.target.value;const g=$("#grid");const tmp=document.createElement("div");tmp.innerHTML=catalogueView();g.replaceWith(tmp.querySelector("#grid"));return}
+  const id=e.target.dataset&&e.target.dataset.qty; if(id){const v=readQty(id);setQtyNote(id,v);if($("#layer .sheet")&&checkoutStep==="cart"&&v){S.cart[id]=v;save();cartTotals()}}
+});
+document.addEventListener("change",e=>{const id=e.target.dataset&&e.target.dataset.qty;if(!id)return;const v=readQty(id);e.target.value=v?nf(v):"";
+  if($("#layer .sheet")&&checkoutStep==="cart"&&v){S.cart[id]=v;save();render()}});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.dataset&&e.target.dataset.qty&&!$("#layer .sheet")){const b=e.target.closest(".card-foot,.order")?.querySelector('[data-act="add"]');if(b){e.preventDefault();b.click()}}});
+document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if($("#zoomLayer").innerHTML){$("#zoomLayer").innerHTML="";if(!$("#layer").innerHTML)document.body.style.overflow="";return}if($("#layer").innerHTML)closeLayer()});
+document.addEventListener("submit",e=>{
+  if(e.target.id==="loginForm"){e.preventDefault();
+    const u=$("#u").value.trim().toLowerCase(),p=$("#p").value,btn=$("#loginBtn"),er=$("#loginErr");
+    if(!u||!p){er.textContent=t("badLogin");return}
+    btn.disabled=true;er.textContent="";
+    api("login",{json:{u,p}}).then(()=>api("me")).then(signedIn).then(render)
+      .catch(err=>{btn.disabled=false;er.textContent=err.status===429?t("wait"):err.status===401?t("badLogin"):t("net")});}
+  if(e.target.id==="coForm"){e.preventDefault();sendOrder()}
+});
+function copy(txt){
+  const ok=()=>toast(t("copied"));
+  try{navigator.clipboard.writeText(txt).then(ok,()=>selectMail())}catch(e){selectMail()}
+}
+function selectMail(){const el=$("#mailTxt");if(!el)return;const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r)}
+
+function sendOrder(){
+  const v=id=>($("#"+id)?.value||"").trim();
+  const need=["cn","ce","dd","ad"].filter(id=>!v(id));
+  document.querySelectorAll("#coForm input,#coForm textarea").forEach(el=>el.style.borderColor=need.includes(el.id)?"var(--danger)":"");
+  if(need.length||!/^\S+@\S+\.\S+$/.test(v("ce"))){$("#coErr").textContent=t("required");return}
+  const btn=$("#sendBtn"); if(btn){if(btn.disabled)return;btn.disabled=true;btn.textContent=t("sending")}
+  const body={contact:v("cn"),email:v("ce"),po:v("po"),delivery:v("dd"),address:v("ad"),notes:v("nt"),lang:S.lang,
+    lines:Object.keys(S.cart).filter(byId).map(id=>({id,qty:S.cart[id]}))};
+  api("order",{json:body}).then(o=>{S.orders.push(o);S.cart={};save();render();showMail(o,true)})
+    .catch(err=>{if(btn){btn.disabled=false;btn.textContent=t("send")}const er=$("#coErr");if(er)er.textContent=errText(err)});
+}
+
+/* ---------- PDF technical sheet reader (UltraPixel area) ---------- */
+let pdfReady=null;
+function loadPdfJs(){
+  if(pdfReady) return pdfReady;
+  const add=src=>new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)});
+  const base="vendor/";   // pdf.js 3.11.174 (Apache-2.0), served from here: no outside service
+  pdfReady=add(base+"pdf.min.js").then(()=>{window.pdfjsLib.GlobalWorkerOptions.workerSrc=base+"pdf.worker.min.js";return window.pdfjsLib});
+  pdfReady.catch(()=>{pdfReady=null});
+  return pdfReady;
+}
+function bindDrop(){
+  const d=$("#drop"),inp=$("#pdfIn");if(!d)return;
+  ["dragenter","dragover"].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.add("over")}));
+  ["dragleave","drop"].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.remove("over")}));
+  d.addEventListener("drop",e=>handleFiles(e.dataTransfer.files));
+  inp.addEventListener("change",()=>handleFiles(inp.files));
+}
+async function handleFiles(files){
+  const say=m=>{const s=$("#dropStatus");if(s)s.textContent=m};
+  const fails=[];
+  for(const f of Array.from(files)){
+    if(!/pdf$/i.test(f.type)&&!/\.pdf$/i.test(f.name)) continue;
+    say(`${t("reading")} ${f.name}…`);
+    try{
+      const lib=await loadPdfJs();
+      const doc=await lib.getDocument({data:new Uint8Array(await f.arrayBuffer())}).promise;
+      const rec=await parseSheet(doc,f.name);
+      const art=rec.art;delete rec.art;
+      say(`${t("uploading")} ${f.name}…`);
+      const fd=new FormData();fd.append("rec",JSON.stringify(rec));fd.append("pdf",f,f.name);if(art)fd.append("art",art,rec.id+".webp");
+      const saved=await api("sheet",{form:fd});
+      S.labels=S.labels.filter(l=>l.id!==saved.id);S.labels.push(saved);render();
+      toast(`${t("parsed")}: ${saved.id}`);
+    }catch(err){console.error(err);fails.push(f.name)}
+  }
+  render();
+  if(fails.length) say(`${t("parseFail")}: ${fails.join(", ")}`);
+}
+async function parseSheet(doc,fname){
+  const page=await doc.getPage(1);const vp=page.getViewport({scale:1});const W=vp.width,H=vp.height;
+  const tc=await page.getTextContent();
+  const items=tc.items.filter(i=>i.str.trim()).map(i=>({s:i.str.trim(),x:i.transform[4],y:H-i.transform[5]}));
+  const lines=[];items.sort((a,b)=>a.y-b.y||a.x-b.x).forEach(it=>{const L=lines.find(l=>Math.abs(l.y-it.y)<3);if(L)L.items.push(it);else lines.push({y:it.y,items:[it]})});
+  lines.forEach(l=>{l.items.sort((a,b)=>a.x-b.x);l.text=l.items.map(i=>i.s).join(" ")});
+  const all=lines.map(l=>l.text).join("\n");
+  const col=(l,x0,x1)=>l.items.filter(i=>i.x>=W*x0&&i.x<W*x1).map(i=>i.s).join(" ");
+  const m=(re,src=all)=>{const r=src.match(re);return r?r[1].trim():""};
+  const num=s=>parseFloat(String(s).replace(",","."))||0;
+  // UltraPixel sheets come in Italian, French or English
+  const id=m(/(?:ID Prodotto|UGS|Product ID|ID Product|SKU)\s*:?\s*(\d{4,})/i); if(!id) throw new Error("ID non trovato");
+  const idLine=lines.find(l=>/(?:ID Prodotto|UGS|Product ID|ID Product|SKU)\s*:/i.test(l.text))||{y:0};
+  const tagLine=lines.find(l=>/(?:Etichetta|Label|Étiquettes autocollantes)\s*\/\s*tag/i.test(l.text));
+  const desc=lines.filter(l=>l.y>idLine.y+1&&(!tagLine||l.y<tagLine.y-1)).map(l=>col(l,.45,1)).filter(Boolean).join(" ").replace(/\s+/g," ").trim();
+  const leftText=lines.map(l=>col(l,0,.6)).filter(Boolean);
+  const cm=(leftText.find(s=>/^\d+\s*-\s*\S/.test(s))||"").match(/^(\d+)\s*-\s*(.+)$/)||[];
+  const colLine=lines.findIndex(l=>/(?:Colori|Nombre de couleurs|Colou?rs?)\s*:/i.test(l.text));
+  const nInks=parseInt(m(/(?:Colori|Nombre de couleurs|Colou?rs?)\s*:?\s*(\d+)/i),10)||0;
+  const inks=colLine>=0?lines.slice(colLine+1).map(l=>col(l,0,.3)).filter(Boolean).slice(0,nInks).map(s=>s.split(/\s+/)[0]):[];
+  const footer=lines.find(l=>/www\.ultrapixel/i.test(l.text));
+  const coreLine=lines.find(l=>/\d+\s*mm\s+\d+\s*mm/.test(l.text));
+  const rollM=coreLine&&coreLine.text.match(/(\d+)\s*mm\s+(\d+)\s*mm/);
+  const winding=coreLine?lines.filter(l=>l.y>coreLine.y+1&&(!footer||l.y<footer.y-1)).map(l=>col(l,.6,1)).filter(Boolean).join(" ").replace(/\s+/g," ").trim():"";
+  const prLine=lines.find(l=>/^(?:STAMPATO|CON STAMPA|IMPRIMÉES|PRINTED)/i.test(l.text));
+  const finish=prLine?lines.filter(l=>l.y>=prLine.y-1&&(!footer||l.y<footer.y-1)).map(l=>col(l,.3,.6)).filter(s=>s&&!/FINITURE|FINISH|FINITION/i.test(s)).join(", "):"";
+  const MON={gen:0,jan:0,janv:0,feb:1,fev:1,"fév":1,mar:2,apr:3,avr:3,mag:4,may:4,mai:4,giu:5,jun:5,juin:5,lug:6,jul:6,juil:6,ago:7,aug:7,"aoû":7,aou:7,set:8,sep:8,ott:9,oct:9,nov:10,dic:11,dec:11,"déc":11};
+  const dmm=all.match(/(\d{1,2})\s+([A-Za-zÀ-ÿ]{3,5})\.?\s+(\d{4})/); let parsedDate=null;
+  if(dmm){const mo=MON[dmm[2].toLowerCase()]??MON[dmm[2].toLowerCase().slice(0,3)];if(mo!=null)parsedDate=new Date(Date.UTC(+dmm[3],mo,+dmm[1],12))}
+  const rec={id,customerCode:cm[1]||"",customer:(cm[2]||"").trim(),desc:desc||id,
+    date:parsedDate&&!isNaN(parsedDate)?parsedDate.toISOString().slice(0,10):new Date().toISOString().slice(0,10),
+    w:num(m(/\bA:\s*([\d.,]+)\s*mm/)),h:num(m(/\bB:\s*([\d.,]+)\s*mm/)),gapC:num(m(/\bC:\s*([\d.,]+)\s*mm/)),pitchE:num(m(/\bE:\s*([\d.,]+)\s*mm/)),
+    material:m(/(?:MATERIALE|MATIÈRE|MATERIAL)\s*:?\s*([^\n]+)/i).replace(/\s+\d+\s*mm.*$/,""),
+    materialId:m(/(?:ID Materiale|Identifiant|Material ID)\s*:?\s*([^\n]+)/i).replace(/\s+\d+\s*mm.*$/,""),
+    perRoll:parseInt(m(/(?:Etichette per Unit[àa] in Rotolo|Étiquettes par Rouleaux?|Labels per (?:Unit in )?Roll)\s*:?\s*([\d.]+)/i).replace(/\./g,""),10)||1000,
+    rollLength:m(/(?:Lunghezza per Unit[àa] in Rotolo|Longueur par Rouleaux?|Length per (?:Unit in )?Roll)\s*:?\s*([\d.,]+)/i),
+    lanes:parseInt(m(/(?:File per Rotolo|Nombre de colonnes|Lanes(?: per Roll)?)\s*:?\s*(\d+)/i),10)||1,
+    core:rollM?+rollM[1]:76,outer:rollM?+rollM[2]:0,inks,finish,winding,source:fname};
+  try{rec.art=await cropArt(page)}catch(e){console.error(e)}
+  return rec;
+}
+async function cropArt(page){
+  const scale=2.4,vp=page.getViewport({scale});
+  const cv=document.createElement("canvas");cv.width=vp.width;cv.height=vp.height;
+  await page.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise;
+  // artwork frame on UltraPixel sheets: left box under the header
+  const x0=Math.round(.0475*cv.width),x1=Math.round(.669*cv.width),y0=Math.round(.149*cv.height),y1=Math.round(.414*cv.height);
+  const ctx=cv.getContext("2d"),img=ctx.getImageData(x0,y0,x1-x0,y1-y0),d=img.data,w=img.width,h=img.height;
+  let minX=w,minY=h,maxX=0,maxY=0;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const k=(y*w+x)*4;if(d[k]<242||d[k+1]<242||d[k+2]<242){if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y}}
+  if(maxX<=minX){minX=0;minY=0;maxX=w-1;maxY=h-1}
+  const out=document.createElement("canvas");const cw=maxX-minX+1,ch=maxY-minY+1,f=Math.min(1,900/cw);
+  out.width=Math.round(cw*f);out.height=Math.round(ch*f);
+  out.getContext("2d").drawImage(cv,x0+minX,y0+minY,cw,ch,0,0,out.width,out.height);
+  return await new Promise(res=>out.toBlob(b=>res(b),"image/webp",.8));
+}
+
+render();boot();
+</script>
+</body></html>

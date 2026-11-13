@@ -1,0 +1,12 @@
+# Portale clienti: niente indice delle cartelle, file interni mai serviti, niente indicizzazione.
+Options -Indexes
+<FilesMatch "^(config|seed)\.php$|\.(json|md)$">
+  Require all denied
+</FilesMatch>
+<IfModule mod_php.c>
+  php_value upload_max_filesize 24M
+  php_value post_max_size 30M
+</IfModule>
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>

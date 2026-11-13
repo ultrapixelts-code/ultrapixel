@@ -1,6 +1,7 @@
 # Pubblica il sito su Keliweb quando il ramo "live" viene aggiornato.
 # ultrapixel.it e ultrapixel.fr vengono costruiti nella versione di lancio (indicizzabile) e caricati via FTPS.
 # Non vengono mai caricati: sorgenti, backend dei moduli (config del server), .htaccess del server.
+# Il portale clienti (portail/) va solo su ultrapixel.it: i suoi dati (portail/data/) nascono sul server e non vengono mai toccati.
 # Il caricamento sovrascrive solo i file del sito; file presenti solo sul server (vecchio sito, backend, posta) restano.
 #
 # Secrets (Settings > Secrets and variables > Actions):
@@ -40,7 +41,7 @@ jobs:
             build_args: --launch --home=fr
             dir_secret: FTP_DIR_FR
             prefix: "FR_"
-            extra_exclude: "fr/**"
+            extra_exclude: "{fr,portail}/**"   # il portale clienti vive solo su ultrapixel.it/portail/
     env:
       HOST: ${{ secrets[format('{0}FTP_SERVER', matrix.prefix)] }}
       USER: ${{ secrets[format('{0}FTP_USERNAME', matrix.prefix)] }}
