@@ -55,7 +55,7 @@
     "street": "Via J. Ressel 3",
     "postalCode": "34018",
     "region": "TS",
-    "analyticsEndpoint": "",
+    "analyticsEndpoint": "https://ultrapixel.it/backend/api/event.php",
     "privacyVersion": "Draft, 6 October 2026",
     "quoteApi": "",
     "sameAsHQ": [
