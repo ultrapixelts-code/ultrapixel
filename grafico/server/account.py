@@ -84,10 +84,10 @@ def invia_mail(a, oggetto, testo):
         s.login(os.environ["SMTP_USER"], os.environ["SMTP_PASS"]); s.send_message(m)
 
 OGG = {"it": "Il tuo codice per UltraPixel Studio", "en": "Your UltraPixel Studio code", "fr": "Votre code UltraPixel Studio", "de": "Ihr Code für UltraPixel Studio"}
-TXT = {"it": "Ciao,\n\nil tuo codice di accesso a UltraPixel Studio è: {c}\n\nVale 15 minuti. Se non l'hai chiesto tu, ignora questa mail.\n\nUltraPixel – etichette su misura\nhttps://ultrapixel.it",
-       "en": "Hello,\n\nyour UltraPixel Studio access code is: {c}\n\nIt is valid for 15 minutes. If you did not request it, please ignore this email.\n\nUltraPixel – custom labels\nhttps://ultrapixel.it",
-       "fr": "Bonjour,\n\nvotre code d'accès à UltraPixel Studio est : {c}\n\nIl est valable 15 minutes. Si vous ne l'avez pas demandé, ignorez cet e-mail.\n\nUltraPixel – étiquettes sur mesure\nhttps://ultrapixel.fr",
-       "de": "Hallo,\n\nIhr Zugangscode für UltraPixel Studio lautet: {c}\n\nEr ist 15 Minuten gültig. Falls Sie ihn nicht angefordert haben, ignorieren Sie diese E-Mail.\n\nUltraPixel – Etiketten nach Maß\nhttps://ultrapixel.it"}
+TXT = {"it": "Ciao,\n\nil tuo codice di accesso a UltraPixel Studio è: {c}\n\nVale 15 minuti. Se non l'hai chiesto tu, ignora questa mail.\n\nUltraPixel Studio – Disegna la tua etichetta\nhttps://studio.ultrapixel.it/it/",
+       "en": "Hello,\n\nyour UltraPixel Studio access code is: {c}\n\nIt is valid for 15 minutes. If you did not request it, please ignore this email.\n\nUltraPixel Studio – Design your label\nhttps://studio.ultrapixel.it/en/",
+       "fr": "Bonjour,\n\nvotre code d'accès à UltraPixel Studio est : {c}\n\nIl est valable 15 minutes. Si vous ne l'avez pas demandé, ignorez cet e-mail.\n\nUltraPixel Studio – Dessinez votre étiquette\nhttps://studio.ultrapixel.it/fr/",
+       "de": "Hallo,\n\nIhr Zugangscode für UltraPixel Studio lautet: {c}\n\nEr ist 15 Minuten gültig. Falls Sie ihn nicht angefordert haben, ignorieren Sie diese E-Mail.\n\nUltraPixel Studio – Gestalten Sie Ihr Etikett\nhttps://studio.ultrapixel.it/de/"}
 
 def manda_codice(email, lingua):
     """Crea e invia il codice. Restituisce (ok, codice_se_modalita_prova, errore)."""

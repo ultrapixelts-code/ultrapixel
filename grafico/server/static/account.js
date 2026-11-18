@@ -70,7 +70,7 @@ function checkVat(){clearTimeout(vatT);var p=F.piva.replace(/[^A-Za-z0-9]/g,'');
 function showVat(){var v=$('#vatmsg',box);if(!v)return;v.className='vat '+(vatState===true?'ok':vatState===false?'ko':vatState===null&&F.piva.length>=8?'na':'');
   v.textContent=vatState===true?'✓ '+A.vatOk:vatState===false?A.vatKo:'';}
 function draw(){box.innerHTML='';var x=el('button','close','×');x.type='button';x.onclick=function(){dlg.close()};box.appendChild(x);
-  box.appendChild(el('span','mi','UltraPixel Studio · AI'));box.appendChild(el('h2',null,stage==='code'?A.codeT:mode==='azienda'?A.compT:A.title));
+  box.appendChild(el('span','mi','UltraPixel Studio'));box.appendChild(el('h2',null,stage==='code'?A.codeT:mode==='azienda'?A.compT:A.title));
   if(stage==='code'){box.appendChild(el('p','note',A.codeS.replace('{e}',sentTo)));
     if(testCode){var t=el('p','testc');t.appendChild(document.createTextNode(A.test+' '));t.appendChild(el('b',null,testCode));box.appendChild(t)}
     var f=el('form','form'),l=el('label','full'),i=el('input','codein');i.inputMode='numeric';i.autocomplete='one-time-code';i.maxLength=6;i.value=testCode||'';l.appendChild(el('span',null,A.code));l.appendChild(i);f.appendChild(l);
@@ -92,7 +92,7 @@ function draw(){box.innerHTML='';var x=el('button','close','×');x.type='button'
     f.appendChild(inp(A.phone,'telefono',{type:'tel',ac:'tel'}))}
   if(mode!=='azienda'){
     var c=el('label','chk full'),cb=el('input');cb.type='checkbox';cb.checked=F.ok;cb.onchange=function(){F.ok=cb.checked};c.appendChild(cb);
-    var ct=el('span');ct.innerHTML=A.terms.replace('{n}',GRATIS)+' <a href="/condizioni?lang='+LG+'" target="_blank" rel="noopener">'+A.termsL+'</a> · <a href="https://ultrapixel.it/'+(LG==='it'?'':LG+'/')+'privacy/" target="_blank" rel="noopener">Privacy</a>';c.appendChild(ct);f.appendChild(c)}
+    var ct=el('span');ct.innerHTML=A.terms.replace('{n}',GRATIS)+' <a href="/condizioni?lang='+LG+'" target="_blank" rel="noopener">'+A.termsL+'</a> · <a href="'+UP.SITE[LG]+'privacy/" target="_blank" rel="noopener">Privacy</a>';c.appendChild(ct);f.appendChild(c)}
   f.appendChild(el('p','aerr full',err));var row=el('div','full'),b=el('button','btn',mode==='azienda'?A.saveC:A.go);row.appendChild(b);f.appendChild(row);
   f.onsubmit=function(ev){ev.preventDefault();send()};box.appendChild(f);showVat()}
 function send(){err='';
@@ -123,7 +123,7 @@ UP.after=function(x){var j=x.j;if(j.account){acc=j.account;head()}
 function eur(v){return v.toLocaleString(LG,{style:'currency',currency:'EUR'})}
 var pd=el('dialog');pd.id='payd';var pbx=el('div','dlg');pd.appendChild(pbx);document.body.appendChild(pd);
 function payDialog(){var o=(acc&&acc.offerta)||{giri:10,netto:39,iva:0,totale:39,aliquota:0};pbx.innerHTML='';var x=el('button','close','×');x.type='button';x.onclick=function(){pd.close()};pbx.appendChild(x);
-  pbx.appendChild(el('span','mi','UltraPixel Studio · AI'));pbx.appendChild(el('h2',null,A.payT));pbx.appendChild(el('p','note',A.payS.replace('{n}',o.giri)));
+  pbx.appendChild(el('span','mi','UltraPixel Studio'));pbx.appendChild(el('h2',null,A.payT));pbx.appendChild(el('p','note',A.payS.replace('{n}',o.giri)));
   var g=el('div','pgrid'),ul=el('ul','pwhat');A.payWhat.forEach(function(t){ul.appendChild(el('li',null,t.replace('{n}',o.giri)))});g.appendChild(ul);
   var tb=el('div','ptot');[[A.payNet,eur(o.netto)],[o.iva>0?A.payVat+' '+Math.round(o.aliquota*100)+'%':A.payVat,o.iva>0?eur(o.iva):A.vatNo],[A.payTot,eur(o.totale)]].forEach(function(r,i){var d=el('div',i===2?'tt':'');d.appendChild(el('span',null,r[0]));d.appendChild(el('b',null,r[1]));tb.appendChild(d)});
   g.appendChild(tb);pbx.appendChild(g);pbx.appendChild(el('p','pm',A.payM));
@@ -131,8 +131,8 @@ function payDialog(){var o=(acc&&acc.offerta)||{giri:10,netto:39,iva:0,totale:39
   if(acc&&acc.pagamenti){var b=el('button','btn',A.payGo+' · '+eur(o.totale));b.type='button';row.appendChild(b);
     b.onclick=function(){if(!acc.completo){pd.close();pending=payDialog;open('azienda');return}b.disabled=true;post('/api/pagamento/crea',{lang:LG}).then(function(r){if(r.ok&&r.j.url)location.href=r.j.url;else{b.disabled=false;row.appendChild(el('p','aerr',A.buyErr))}}).catch(function(){b.disabled=false})}}
   else{row.appendChild(el('p','note',A.paySoon));var u=el('button','btn',A.unlock);u.type='button';row.appendChild(u);
-    u.onclick=function(){u.disabled=true;lead({endpoint:'https://ultrapixel.it/backend/api/lead.php',testo:'Richiesta di sblocco giri allo studio AI.\nAzienda: '+(acc&&acc.ragione)+'\nEmail: '+(acc&&acc.email)+'\nP.IVA: '+(acc&&acc.paese)+' '+(acc&&acc.piva)+'\nGiri usati: '+(acc&&acc.giri_usati)});row.appendChild(el('p','note',A.unlockSent))}}
-  pbx.appendChild(row);pbx.appendChild(el('p','pby',A.payBy));if(!pd.open)pd.showModal()}
+    u.onclick=function(){u.disabled=true;lead({endpoint:'https://ultrapixel.it/backend/api/lead.php',testo:'Richiesta di sblocco giri a UltraPixel Studio.\nAzienda: '+(acc&&acc.ragione)+'\nEmail: '+(acc&&acc.email)+'\nP.IVA: '+(acc&&acc.paese)+' '+(acc&&acc.piva)+'\nGiri usati: '+(acc&&acc.giri_usati)});row.appendChild(el('p','note',A.unlockSent))}}
+  pbx.appendChild(row);var pby=el('p','pby',A.payBy+' ');var tl=el('a',null,A.termsL);tl.href='/condizioni?lang='+LG;tl.target='_blank';tl.rel='noopener';pby.appendChild(tl);pbx.appendChild(pby);if(!pd.open)pd.showModal()}
 function paywall(){var p=el('div','paywall');p.appendChild(el('p','note',A.left0+' · '+(acc&&acc.ragione||'')));
   var b=el('button','btn',A.payT);b.type='button';b.onclick=payDialog;p.appendChild(b);setTimeout(payDialog,400);
   UP.log.appendChild(p);UP.scroll()}

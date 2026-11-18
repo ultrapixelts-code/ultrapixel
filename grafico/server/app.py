@@ -6,10 +6,11 @@ Variabili d'ambiente: ANTHROPIC_API_KEY (obbligatoria), MODEL (default claude-so
 Le sessioni stanno in memoria (un solo processo): al riavvio del servizio si perdono, come una conversazione chiusa.
 """
 import base64, io, json, os, re, sys, threading, time, uuid
-from flask import Flask, Response, jsonify, request, send_from_directory, abort
+from urllib.parse import urlencode
+from flask import Flask, Response, jsonify, request, send_from_directory, abort, redirect
 
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.dirname(HERE))
-import progetto, immagini  # noqa: E402
+import progetto, immagini, pagina  # noqa: E402
 from concurrent.futures import ThreadPoolExecutor
 
 MODEL = os.environ.get("MODEL", "claude-opus-5-5")
@@ -290,18 +291,65 @@ def acc_corrente():
 def ip():
     return (request.headers.get("X-Forwarded-For") or request.remote_addr or "").split(",")[0].strip()
 
+# ——— pagine pubbliche: una per lingua, già tradotte nell'HTML (pagina.py) ———
+def _query_senza(*via):
+    q = [(k, v) for k, v in request.args.items(multi=True) if k not in via]
+    return ("?" + urlencode(q)) if q else ""
+
+def _lingua_richiesta():
+    return pagina.scegli_lingua(request.headers.get("Accept-Language", ""))
+
 @app.get("/")
 def home():
-    return send_from_directory(os.path.join(HERE, "static"), "index.html")
+    lg = request.args.get("lang", "")
+    if lg in pagina.LINGUE:   # vecchi link ?lang=xx: 301 alla pagina della lingua, con UTM, gclid e il resto
+        return redirect(f"/{lg}/" + _query_senza("lang"), 301)
+    r = redirect(f"/{_lingua_richiesta()}/" + _query_senza("lang"), 302)
+    r.headers["Vary"] = "Accept-Language"
+    return r
+
+@app.get("/<lg>/")
+def home_lingua(lg):
+    if lg not in pagina.LINGUE:
+        abort(404)
+    r = Response(pagina.rendi(lg), mimetype="text/html")
+    r.headers["Content-Language"] = lg
+    return r
+
+@app.get("/<lg>")
+def home_lingua_senza_barra(lg):
+    if lg not in pagina.LINGUE:
+        abort(404)
+    return redirect(f"/{lg}/" + _query_senza(), 301)
 
 @app.get("/robots.txt")
 def robots():
-    return Response("User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /prova\n\nSitemap: https://studio.ultrapixel.it/sitemap.xml\n", mimetype="text/plain")
+    gruppi = "".join(f"User-agent: {b}\nAllow: /\nDisallow: /api/\nDisallow: /prova\n\n" for b in ("OAI-SearchBot", "ChatGPT-User"))
+    return Response(gruppi + "User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /prova\n\nSitemap: https://studio.ultrapixel.it/sitemap.xml\n", mimetype="text/plain")
 
 @app.get("/sitemap.xml")
 def sitemap():
-    return Response('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-                    "  <url><loc>https://studio.ultrapixel.it/</loc></url>\n</urlset>\n", mimetype="application/xml")
+    return Response(pagina.sitemap(), mimetype="application/xml")
+
+@app.get("/llms.txt")
+def llms():
+    return Response(pagina.LLMS, mimetype="text/plain; charset=utf-8")
+
+# indirizzi che le persone provano a mano: niente 404
+@app.get("/terms")
+@app.get("/terms/")
+def terms():
+    return redirect("/condizioni?lang=" + _lingua_richiesta(), 301)
+
+@app.get("/privacy")
+@app.get("/privacy/")
+def privacy():
+    return redirect(pagina.SITO[_lingua_richiesta()] + "privacy/", 301)
+
+@app.get("/pricing")
+@app.get("/pricing/")
+def pricing():
+    return redirect(f"/{_lingua_richiesta()}/#info", 301)
 
 @app.get("/condizioni")
 def condizioni():
@@ -309,7 +357,8 @@ def condizioni():
 
 @app.get("/prova")
 def prova():   # versione di prova con il brief guidato (stessa pagina: lo script vede /prova e mostra le schede)
-    return send_from_directory(os.path.join(HERE, "static"), "index.html")
+    lg = request.args.get("lang") if request.args.get("lang") in pagina.LINGUE else _lingua_richiesta()
+    return Response(pagina.rendi(lg, indicizza=False), mimetype="text/html")
 
 # ——— brief guidato: dalle risposte a schede l'AI scrive il brief come lo scriverebbe un grafico ———
 BRIEF_MODEL = os.environ.get("BRIEF_MODEL", "claude-sonnet-5-5")
@@ -421,7 +470,7 @@ def acc_completa():
     a = account.correggi(acc["email"], {**f, "paese": paese, "piva": piva, "piva_ok": 1 if v else 0})
     lead = None
     if nuovo:
-        lead = {"testo": "Nuova azienda nello studio AI (dati completati):\n" + "\n".join(f"{k}: {a.get(k) or ''}" for k in ("ragione", "referente", "email", "telefono", "paese", "piva", "indirizzo", "cap", "citta", "sdi", "pec"))
+        lead = {"testo": "Nuova azienda in UltraPixel Studio (dati completati):\n" + "\n".join(f"{k}: {a.get(k) or ''}" for k in ("ragione", "referente", "email", "telefono", "paese", "piva", "indirizzo", "cap", "citta", "sdi", "pec"))
                 + f"\nPartita IVA verificata VIES: {'sì' if a.get('piva_ok') else 'no / non UE'}\nGiri usati finora: {a.get('giri_usati')}", "endpoint": LEAD_ENDPOINT}
     return jsonify(ok=True, account=account.pubblico(a), lead=lead)
 
@@ -477,13 +526,13 @@ def acc_verifica():
         return jsonify(error="codice"), 400
     a = account.da_token(t)
     r = jsonify(ok=True, account=account.pubblico(a), nuovo=nuovo,
-                lead=({"testo": "Nuova azienda registrata allo studio AI:\n" + "\n".join(f"{k}: {a.get(k) or ''}" for k in ("ragione", "referente", "email", "telefono", "paese", "piva", "indirizzo", "cap", "citta", "sdi", "pec"))
+                lead=({"testo": "Nuova azienda registrata a UltraPixel Studio:\n" + "\n".join(f"{k}: {a.get(k) or ''}" for k in ("ragione", "referente", "email", "telefono", "paese", "piva", "indirizzo", "cap", "citta", "sdi", "pec"))
                        + f"\nPartita IVA verificata VIES: {'sì' if a.get('piva_ok') else 'no / non UE'}", "endpoint": LEAD_ENDPOINT} if nuovo and account.completo(a) else None))
     if nuovo:   # nuovo accesso con la sola email: avviso a UltraPixel (la scheda completa arriva quando l'azienda dà i dati)
         def avvisa(a=dict(a)):
             try:
                 account.invia_mail(NOTIFY_TO, f"Nuovo accesso allo studio: {a['email']}",
-                                   f"Una nuova persona è entrata nello studio AI.\n\nEmail: {a['email']}\nLingua: {a.get('lingua') or '-'}\nPaese indicato: {a.get('paese') or '-'}\n"
+                                   f"Una nuova persona è entrata in UltraPixel Studio.\n\nEmail: {a['email']}\nLingua: {a.get('lingua') or '-'}\nPaese indicato: {a.get('paese') or '-'}\n"
                                    f"Data: {time.strftime('%d/%m/%Y %H:%M', time.localtime())}\n\nI dati aziendali arriveranno quando sceglie una proposta o paga altri giri.")
             except Exception as ex:
                 app.logger.error("avviso nuovo accesso: %s", ex)
@@ -547,7 +596,7 @@ def eur(x):
     return f"{x:,.2f} €".replace(",", "X").replace(".", ",").replace("X", ".")
 
 def notifica_pagamento(pg, a):
-    righe = ["PAGAMENTO RICEVUTO – Studio AI (sblocco giri)", "", "Dati per la fattura in Spring:",
+    righe = ["PAGAMENTO RICEVUTO – UltraPixel Studio (sblocco giri)", "", "Dati per la fattura in Spring:",
              f"Ragione sociale: {a.get('ragione')}", f"P.IVA: {a.get('paese')} {a.get('piva')} (VIES: {'verificata' if a.get('piva_ok') else 'non verificata'})",
              f"Indirizzo: {a.get('indirizzo') or ''} {a.get('cap') or ''} {a.get('citta') or ''}".strip(), f"Codice SDI: {a.get('sdi') or '-'}   PEC: {a.get('pec') or '-'}",
              f"Email: {a.get('email')}   Referente: {a.get('referente')}   Telefono: {a.get('telefono') or '-'}", "",
@@ -567,7 +616,8 @@ def notifica_pagamento(pg, a):
     try:
         account.invia_mail(a["email"], {"it": "Pagamento ricevuto – UltraPixel Studio", "en": "Payment received – UltraPixel Studio", "fr": "Paiement reçu – UltraPixel Studio",
                                         "de": "Zahlung erhalten – UltraPixel Studio"}.get(lg, "Payment received – UltraPixel Studio"),
-                           testo.get(lg, testo["en"]).format(t=eur(pg["totale"]), n=pg["giri"]) + "\n\nUltraPixel – https://studio.ultrapixel.it")
+                           testo.get(lg, testo["en"]).format(t=eur(pg["totale"]), n=pg["giri"]) + "\n\nUltraPixel Studio – " + {"it": "Disegna la tua etichetta", "en": "Design your label", "fr": "Dessinez votre étiquette", "de": "Gestalten Sie Ihr Etikett"}.get(lg, "Design your label")
+                           + f"\nhttps://studio.ultrapixel.it/{lg if lg in pagina.LINGUE else 'en'}/")
     except Exception as ex:
         app.logger.error("ricevuta cliente: %s", ex)
 
@@ -593,7 +643,7 @@ def pag_crea():
     try:
         s = stripe("POST", "checkout/sessions", {
             "mode": "payment", "customer_email": acc["email"], "client_reference_id": str(acc["id"]), "locale": lg,
-            "success_url": f"{base}/?lang={lg}&pagato={{CHECKOUT_SESSION_ID}}", "cancel_url": f"{base}/?lang={lg}",
+            "success_url": f"{base}/{lg}/?pagato={{CHECKOUT_SESSION_ID}}", "cancel_url": f"{base}/{lg}/",
             "line_items[0][quantity]": 1, "line_items[0][price_data][currency]": "eur", "line_items[0][price_data][unit_amount]": int(round(o["totale"] * 100)),
             "line_items[0][price_data][product_data][name]": PROD[lg].format(n=o["giri"]),
             "line_items[0][price_data][product_data][description]": f"{acc.get('ragione')} · {eur(o['netto'])} + {o['regime']}",
