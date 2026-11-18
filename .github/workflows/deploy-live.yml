@@ -85,6 +85,7 @@ jobs:
             .github/**
             **/__pycache__/**
             README.md
+            requirements.txt
             build.py
             .htaccess
             src/**
