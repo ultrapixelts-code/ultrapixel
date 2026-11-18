@@ -30,6 +30,13 @@ def init():
         create table if not exists pagamento(id integer primary key, account integer, sessione text unique, netto real, iva real, totale real,
           regime text, giri integer, stato text, creato real, pagato real, stripe_pi text);
         """)
+        # tracciamento (Google Ads): da dove arriva l'account, cosa sceglie, quanto ordina. gclid solo con consenso marketing.
+        for col in ("metodo text", "gclid text", "landing_page text", "utm_source text", "utm_medium text", "utm_campaign text", "referrer text",
+                    "design_scelto text", "design_data real", "ordine_stampa text", "ordine_valore real", "ordine_data text"):
+            try:
+                c.execute("alter table account add column " + col)
+            except sqlite3.OperationalError:
+                pass   # già presente
     pulisci()
 
 def pulisci(giorni=730):
@@ -145,12 +152,16 @@ def salva(d):
     with _L, _db() as c:
         r = c.execute("select id, verificato from account where email=?", (d["email"],)).fetchone()
         campi = ["referente", "ragione", "piva", "paese", "indirizzo", "cap", "citta", "sdi", "pec", "telefono", "piva_ok", "vies", "lingua"]
+        campi += [k for k in TRACCIA if d.get(k)]   # provenienza: solo se c'è, e mai sovrascritta da una registrazione successiva vuota
         if r and r["verificato"]:
             return r["id"], False   # esiste già: si entra col codice, i dati non si sovrascrivono da qui
         if r:
             c.execute("update account set " + ",".join(f"{k}=?" for k in campi) + " where id=?", [d.get(k) for k in campi] + [r["id"]]); return r["id"], True
         cur = c.execute("insert into account(email," + ",".join(campi) + ",creato) values(?," + ",".join("?" * len(campi)) + ",?)", [d["email"]] + [d.get(k) for k in campi] + [time.time()])
         return cur.lastrowid, True
+
+TRACCIA = ("metodo", "gclid", "landing_page", "utm_source", "utm_medium", "utm_campaign", "referrer")
+
 
 def giri(a):
     """(usati, disponibili totali)"""
@@ -173,7 +184,7 @@ def elenco():
 def pubblico(a):
     u, tot = giri(a)
     return {"email": a["email"], "ragione": a["ragione"], "referente": a["referente"], "paese": a["paese"], "piva": a["piva"],
-            "giri_usati": u, "giri_totali": tot, "giri_rimasti": max(0, tot - u), "offerta": offerta(a), "pagamenti": bool(os.environ.get("STRIPE_SECRET_KEY")),
+            "giri_usati": u, "giri_totali": tot, "giri_gratis": GIRI_GRATIS, "giri_rimasti": max(0, tot - u), "offerta": offerta(a), "pagamenti": bool(os.environ.get("STRIPE_SECRET_KEY")),
             "completo": completo(a), "dati": {k: a.get(k) or "" for k in ("referente", "ragione", "piva", "paese", "indirizzo", "cap", "citta", "sdi", "pec", "telefono")}}
 
 def completo(a):
@@ -215,9 +226,38 @@ def pagamento_chiudi(sessione, pi):
         return dict(r), dict(a)
 
 def correggi(email, campi):
-    ok = {k: v for k, v in campi.items() if k in ("referente", "ragione", "piva", "paese", "indirizzo", "cap", "citta", "sdi", "pec", "telefono", "piva_ok")}
+    ok = {k: v for k, v in campi.items() if k in ("referente", "ragione", "piva", "paese", "indirizzo", "cap", "citta", "sdi", "pec", "telefono", "piva_ok",
+                                                   "design_scelto", "design_data", "ordine_stampa", "ordine_valore", "ordine_data")}
     with _L, _db() as c:
         if ok:
             c.execute("update account set " + ",".join(f"{k}=?" for k in ok) + " where email=?", list(ok.values()) + [email])
         r = c.execute("select * from account where email=?", (email,)).fetchone()
         return dict(r) if r else None
+
+
+def pagamento_per_sessione(sessione):
+    with _L, _db() as c:
+        r = c.execute("select * from pagamento where sessione=?", (sessione,)).fetchone()
+        return dict(r) if r else None
+
+def id_transazione(pg):
+    """Identificativo unico del pagamento, lo stesso per Google Ads e per la fattura: UP-<anno>-<numero>."""
+    return f"UP-{time.strftime('%Y', time.localtime(pg.get('pagato') or pg.get('creato') or time.time()))}-{int(pg['id']):06d}"
+
+CSV = ["email", "metodo", "creato", "lingua", "paese", "ragione", "gclid", "landing_page", "utm_source", "utm_medium", "utm_campaign", "referrer",
+       "giri_usati", "giri_extra", "design_scelto", "design_data", "pacchetti_pagati", "pagato_netto_eur", "transazioni", "ordine_stampa", "ordine_valore", "ordine_data"]
+
+def esporta_csv():
+    """Un record per utente (sezione 3.6): provenienza, giri, design scelto, pacchetti pagati, ordine di stampa confermato."""
+    import csv, io
+    data = lambda t: time.strftime("%Y-%m-%d %H:%M", time.localtime(t)) if t else ""
+    with _L, _db() as c:
+        acc = [dict(r) for r in c.execute("select * from account order by creato")]
+        pag = [dict(r) for r in c.execute("select * from pagamento where stato='pagato'")]
+    out = io.StringIO(); w = csv.writer(out); w.writerow(CSV)
+    for a in acc:
+        mie = [p for p in pag if p["account"] == a["id"]]
+        r = dict(a, creato=data(a.get("creato")), design_data=data(a.get("design_data")), pacchetti_pagati=len(mie),
+                 pagato_netto_eur=f"{sum(p['netto'] or 0 for p in mie):.2f}", transazioni=" ".join(id_transazione(p) for p in mie))
+        w.writerow(["" if r.get(k) is None else r.get(k) for k in CSV])
+    return "\ufeff" + out.getvalue()

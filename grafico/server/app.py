@@ -26,7 +26,10 @@ S, IPS, LOCK = {}, {}, threading.Lock()
 TOOL = {
     "name": "mostra_proposte",
     "description": "Disegna e mostra al cliente da 1 a 3 proposte di etichetta sul suo contenitore. Restituisce un'immagine di controllo e gli avvisi di impaginazione.",
-    "input_schema": {"type": "object", "required": ["proposte"], "properties": {"proposte": {"type": "array", "minItems": 1, "maxItems": 3, "items": {
+    "input_schema": {"type": "object", "required": ["prodotto", "proposte"], "properties": {
+        "prodotto": {"type": "string", "enum": ["wine", "spirits", "beer", "food", "cosmetics", "supplements", "other"],
+                     "description": "Categoria del prodotto del cliente (per le statistiche, non si vede): wine, spirits, beer, food, cosmetics, supplements, other."},
+        "proposte": {"type": "array", "minItems": 1, "maxItems": 3, "items": {
         "type": "object", "required": ["nome", "concetto", "formato", "materiale", "contenitore", "elementi"],
         "properties": {"nome": {"type": "string"}, "concetto": {"type": "string"},
                        "formato": {"type": "object", "properties": {"w": {"type": "number"}, "h": {"type": "number"}, "forma": {"type": "string"}, "raggio": {"type": "number"}}},
@@ -98,8 +101,12 @@ def illustra(sess, props):
                     app.logger.error("illustrazione non generata: %s", err); note.append("Un'illustrazione non è stata generata: usa un'alternativa.")
     return note
 
+PRODOTTI = ("wine", "spirits", "beer", "food", "cosmetics", "supplements", "other")
+
 def esegui_strumento(sess, inp, giro=0):
     sess["_disegnato"] = True
+    if inp.get("prodotto") in PRODOTTI:
+        sess["prodotto"] = inp["prodotto"]
     props = (inp.get("proposte") or [])[:3]; out = []; testo = illustra(sess, props)
     for n, p in enumerate(props):
         pid = uuid.uuid4().hex[:10]
@@ -378,6 +385,15 @@ def acc_vies():
 
 NUOVI_IPS = {}
 
+def provenienza(d):
+    """Sezione 3.5: con l'account si conservano il clic Google (cookie up_gclid, che esiste solo con il consenso marketing),
+    la pagina d'arrivo e i parametri UTM della visita. L'ora di creazione è già nell'account."""
+    a = d.get("attr") if isinstance(d.get("attr"), dict) else {}
+    g = re.sub(r"[^\w-]", "", request.cookies.get("up_gclid", ""))[:200]
+    return {"metodo": "email", "gclid": g or None, "landing_page": str(a.get("landing_page", ""))[:500] or None,
+            "utm_source": str(a.get("utm_source", ""))[:120] or None, "utm_medium": str(a.get("utm_medium", ""))[:120] or None,
+            "utm_campaign": str(a.get("utm_campaign", ""))[:120] or None, "referrer": str(a.get("referrer", ""))[:500] or None}
+
 @app.post("/api/account/entra")
 def acc_entra():
     """Accesso con la sola email: chi non c'è ancora viene creato (2 giri gratuiti per email). I dati aziendali si chiedono dopo."""
@@ -393,7 +409,7 @@ def acc_entra():
             return jsonify(error="troppe"), 429
         NUOVI_IPS[ip()] = a + [now]
         paese = str(d.get("paese", "")).upper()[:2]
-        account.salva({"email": email, "lingua": lg, "paese": paese if re.match(r"^[A-Z]{2}$", paese) else None})
+        account.salva({"email": email, "lingua": lg, "paese": paese if re.match(r"^[A-Z]{2}$", paese) else None, **provenienza(d)})
     ok, cod, err = account.manda_codice(email, lg)
     return _risposta_codice(ok, cod, err, email)
 
@@ -451,7 +467,7 @@ def acc_registra():
         return jsonify(error="campi"), 400
     if paese == "IT" and not (re.match(r"^[A-Za-z0-9]{7}$", f["sdi"]) or EMAIL_RE.match(f["pec"])):
         return jsonify(error="sdi"), 400
-    account.salva({"email": email, **f, "paese": paese, "piva": piva, "piva_ok": 1 if v else 0, "lingua": lg,
+    account.salva({"email": email, **f, "paese": paese, "piva": piva, "piva_ok": 1 if v else 0, "lingua": lg, **provenienza(d),
                    "vies": json.dumps({"ragione": nome, "indirizzo": ind}, ensure_ascii=False) if v else None})
     ok, cod, err = account.manda_codice(email, lg)
     return _risposta_codice(ok, cod, err, email)
@@ -528,6 +544,8 @@ def admin_account():
         return jsonify(account.correggi(request.args["email"].lower(), json.loads(request.args["set"])))
     if request.args.get("email") and request.args.get("giri"):
         return jsonify(account.aggiungi_giri(request.args["email"].lower(), int(request.args["giri"])))
+    if request.args.get("f") == "csv":   # sezione 3.6: un record per utente; l'ordine di stampa si registra con set={"ordine_stampa":..,"ordine_valore":..,"ordine_data":..}
+        return Response(account.esporta_csv(), mimetype="text/csv", headers={"Content-Disposition": "attachment; filename=studio-account.csv", "Cache-Control": "no-store"})
     return jsonify(account.elenco())
 
 # ——— sblocco giri a pagamento (Stripe Checkout, solo aziende) ———
@@ -612,8 +630,11 @@ def pag_verifica():
         ok = chiudi_sessione(s)
     except Exception as ex:
         app.logger.error("verifica pagamento: %s", ex); return jsonify(error="stripe"), 502
-    a = acc_corrente()
-    return jsonify(pagato=ok, account=account.pubblico(a) if a else None)
+    a = acc_corrente(); pg = account.pagamento_per_sessione(s) if ok else None
+    acquisto = None
+    if pg and a and pg["account"] == a["id"] and pg["stato"] == "pagato":   # per l'evento purchase: importo netto, una transazione = un pagamento
+        acquisto = {"transaction_id": account.id_transazione(pg), "value": round(pg["netto"], 2), "currency": "EUR", "item_name": f"{pg['giri']} design rounds"}
+    return jsonify(pagato=ok, account=account.pubblico(a) if a else None, acquisto=acquisto)
 
 @app.post("/api/stripe/webhook")
 def stripe_webhook():
@@ -723,7 +744,8 @@ def chat():
         a2 = acc_corrente()
         if a2:
             info = account.pubblico(a2)
-        return jsonify(sid=sid, reply=reply, proposte=sess["ultime"], turni_rimasti=MAX_TURNI - sess["turni"], rimappa=rimappa, account=info)
+        return jsonify(sid=sid, reply=reply, proposte=sess["ultime"], turni_rimasti=MAX_TURNI - sess["turni"], rimappa=rimappa, account=info,
+                       prodotto=sess.get("prodotto") or "other")
     except Exception as ex:
         app.logger.exception("chat")
         # la conversazione resta coerente: tolgo il turno incompleto
@@ -798,6 +820,8 @@ def pacchetto():
     if not str(d.get("name", "")).strip() or not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", str(d.get("email", ""))):
         return jsonify(error="campi"), 400
     sess["inviate"] = sess.get("inviate", 0) + 1; salva(d.get("sid", ""), sess)
+    if acc:   # sezione 3.6: il design scelto resta sull'account
+        account.correggi(acc["email"], {"design_scelto": str(pr["p"].get("nome", ""))[:120], "design_data": time.time()})
     nome = re.sub(r"[^a-z0-9]+", "-", str(pr["p"].get("nome", "proposta")).lower()).strip("-")[:40] or "proposta"
     pid = d.get("pid", "")
     for _ in range(45):   # la foto è ancora in preparazione: la aspettiamo un po', così arriva insieme al file

@@ -32,6 +32,13 @@ de:{signin:'Anmelden',signup:'Registrieren',out:'Abmelden',title:'Ins Studio',su
  left:'{n} kostenlose Runden übrig',left1:'1 Runde übrig',left0:'Keine Runden mehr',unlock:'Weitere Runden anfragen',compT:'Ihre Firmendaten',compS:'Wir brauchen sie für Ihr Angebot und eine eventuelle Rechnung. Wir fragen nur einmal.',saveC:'Speichern und weiter',entryS:'Geben Sie Ihre geschäftliche E-Mail ein: Wir senden Ihnen einen Code und Sie sind drin. Die ersten {n} Vorschlagsrunden sind kostenlos.',termsL:'Bedingungen',payT:'Weitere Runden freischalten',payS:'Arbeiten Sie mit der KI weiter an Ihren Vorschlägen: {n} weitere Runden mit Änderungen und neuen Vorschlägen, mit realistischen Fotos.',payWhat:['{n} Runden Vorschläge und Änderungen','Realistische Fotos auf Ihrem Behälter','Der Betrag wird mit dem Druckauftrag verrechnet'],payNet:'Netto',payVat:'MwSt.',payTot:'Gesamt',payM:'Karte · Apple Pay · Google Pay · PayPal · SEPA-Überweisung',payGo:'Sicher bezahlen',payBy:'Zahlung über Stripe. Rechnung von UltraPixel S.R.L.',paySoon:'Die Online-Zahlung wird gerade aktiviert: fordern Sie die Freischaltung an, wir schalten die Runden frei.',buy:'{n} Runden freischalten · {t}',vatInc:'inkl. MwSt.',vatNo:'ohne MwSt. (Reverse Charge / Nicht-EU)',buyNote:'Sichere Kartenzahlung (Stripe). Die Rechnung kommt von UltraPixel; der Betrag wird mit einem Druckauftrag verrechnet.',paidOk:'Zahlung erhalten: {n} Runden hinzugefügt. Sie können weitermachen.',paidWait:'Zahlung wird geprüft: Wenn die Runden nicht innerhalb einer Minute erscheinen, laden Sie die Seite neu.',buyErr:'Zahlung gerade nicht verfügbar: bitte gleich erneut versuchen oder an info@ultrapixel.it schreiben.',unlockSent:'Anfrage gesendet: wir melden uns in Kürze.',needAcc:'Registrieren Sie Ihr Unternehmen oder melden Sie sich an, um zu starten.'}
 }[LG]||null;if(!A)return;
 var GRATIS=2,acc=null,mode='new',stage='form',sentTo='',testCode='';
+var ATTR=(function(){var k='up_sattr',a=null;try{a=JSON.parse(sessionStorage.getItem(k)||'null')}catch(e){}var q=new URLSearchParams(location.search);
+  if(!a||q.get('utm_source')){var r=document.referrer&&document.referrer.indexOf(location.origin)!==0?document.referrer:'';
+    a={landing_page:location.origin+location.pathname+(q.get('lang')?'?lang='+q.get('lang'):''),utm_source:q.get('utm_source')||'',utm_medium:q.get('utm_medium')||'',utm_campaign:q.get('utm_campaign')||'',referrer:r||(a&&a.referrer)||''};
+    try{sessionStorage.setItem(k,JSON.stringify(a))}catch(e){}}return a})();
+/* Google Tag Manager (dataLayer): sign_up, login, begin_checkout, purchase. The email is trimmed and lowercased; Tag Manager hashes it. */
+function track(o){if(window.upEvent)upEvent(o)}
+function page(p,t){if(window.upPage)upPage(p,t)}
 var PAESI=['IT','FR','DE','AT','BE','BG','HR','CY','CZ','DK','EE','FI','GR','IE','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE','CH','GB','NO','US'];
 var NAMES;try{NAMES=new Intl.DisplayNames([LG],{type:'region'})}catch(e){NAMES=null}
 function pname(c){try{return NAMES?NAMES.of(c):c}catch(e){return c}}
@@ -61,7 +68,7 @@ function head(){hb.innerHTML='';if(acc){var w=el('span','who2');w.appendChild(el
 
 var dlg=el('dialog');dlg.id='accd';var box=el('div','dlg');dlg.appendChild(box);document.body.appendChild(dlg);
 var F={email:'',referente:'',paese:{it:'IT',fr:'FR',de:'DE',en:'GB'}[LG]||'IT',piva:'',ragione:'',indirizzo:'',cap:'',citta:'',sdi:'',pec:'',telefono:'',ok:false},vatState=null,vatT=null,err='';
-function open(m){mode=m||'new';stage='form';err='';if(mode==='azienda'&&acc&&acc.dati){for(var k in acc.dati)if(acc.dati[k])F[k]=acc.dati[k];if(acc.dati.paese)F.paese=acc.dati.paese==='EL'?'GR':acc.dati.paese}draw();if(!dlg.open)dlg.showModal()}
+function open(m){mode=m||'new';stage='form';err='';page(m==='azienda'?'/company-details':'/sign-in',m==='azienda'?'Company details':'Sign in');if(mode==='azienda'&&acc&&acc.dati){for(var k in acc.dati)if(acc.dati[k])F[k]=acc.dati[k];if(acc.dati.paese)F.paese=acc.dati.paese==='EL'?'GR':acc.dati.paese}draw();if(!dlg.open)dlg.showModal()}
 function inp(lbl,k,opt){var l=el('label',opt&&opt.full?'full':'');l.appendChild(el('span',null,lbl+(opt&&opt.req?' *':'')));var i=el('input');i.value=F[k]||'';if(opt&&opt.type)i.type=opt.type;if(opt&&opt.ac)i.autocomplete=opt.ac;
   i.oninput=function(){F[k]=i.value;if(k==='piva'||k==='paese')checkVat()};l.appendChild(i);return l}
 function checkVat(){clearTimeout(vatT);var p=F.piva.replace(/[^A-Za-z0-9]/g,'');if(p.length<8){vatState=null;showVat();return}
@@ -77,7 +84,8 @@ function draw(){box.innerHTML='';var x=el('button','close','×');x.type='button'
     var e=el('p','aerr full',err);f.appendChild(e);var row=el('div','full'),b=el('button','btn',A.enter),ag=el('button','btn ghost',A.again);ag.type='button';row.appendChild(b);row.appendChild(document.createTextNode(' '));row.appendChild(ag);f.appendChild(row);
     ag.onclick=function(){stage='form';send()};
     f.onsubmit=function(ev){ev.preventDefault();b.disabled=true;post('/api/account/verifica',{email:sentTo,codice:i.value}).then(function(r){b.disabled=false;
-      if(!r.ok){err=A.errCode;draw();return}acc=r.j.account;head();dlg.close();if(r.j.lead)lead(r.j.lead);if(pending){var p=pending;pending=null;p()}})};
+      if(!r.ok){err=A.errCode;draw();return}acc=r.j.account;head();dlg.close();
+      track({event:r.j.nuovo?'sign_up':'login',method:'email',app_language:LG,user_data:{email:String(acc&&acc.email||sentTo).trim().toLowerCase()}});page('/prompt','Prompt');if(r.j.lead)lead(r.j.lead);if(pending){var p=pending;pending=null;p()}})};
     box.appendChild(f);setTimeout(function(){i.focus()},50);return}
   box.appendChild(el('p','note',mode==='azienda'?A.compS:A.entryS.replace('{n}',GRATIS)));
   var f=el('form','form');
@@ -104,7 +112,7 @@ function send(){err='';
       acc=j.account;head();dlg.close();if(j.lead)lead(j.lead);if(pending){var p=pending;pending=null;p()}}).catch(function(){err=A.errGen;draw()});return}
   var em=F.email.trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){err=A.errEmail;draw();return}
   if(!F.ok){err=A.errFields;draw();return}
-  post('/api/account/entra',{lang:LG,email:em,paese:vcode(F.paese)}).then(function(r){var j=r.j;
+  post('/api/account/entra',{lang:LG,email:em,paese:vcode(F.paese),attr:ATTR}).then(function(r){var j=r.j;
     if(!r.ok){err=r.status===429?A.errMany:j.error==='email'?A.errEmail:A.errGen;draw();return}
     sentTo=j.email;testCode=j.prova_codice||'';stage='code';draw()}).catch(function(){err=A.errGen;draw()})}
 /* nuova azienda registrata: avviso a info@ (lo manda il browser, come le altre richieste del sito) */
@@ -115,21 +123,22 @@ function lead(l){if(!l||!l.endpoint)return;var fd=new FormData();fd.append('name
 
 /* collegamenti con la pagina */
 var pending=null;
-UP.extra={studio:'account'};
+UP.extra={studio:'account'};UP.acc=function(){return acc};
 UP.gate=function(){if(acc)return true;pending=function(){$('#f').requestSubmit()};open('new');return false};
 UP.after=function(x){var j=x.j;if(j.account){acc=j.account;head()}
   if(x.status===401){acc=null;head();open('new')}
   if(x.status===402)paywall()};
 function eur(v){return v.toLocaleString(LG,{style:'currency',currency:'EUR'})}
 var pd=el('dialog');pd.id='payd';var pbx=el('div','dlg');pd.appendChild(pbx);document.body.appendChild(pd);
-function payDialog(){var o=(acc&&acc.offerta)||{giri:10,netto:39,iva:0,totale:39,aliquota:0};pbx.innerHTML='';var x=el('button','close','×');x.type='button';x.onclick=function(){pd.close()};pbx.appendChild(x);
+function payDialog(){var o=(acc&&acc.offerta)||{giri:10,netto:39,iva:0,totale:39,aliquota:0};page('/checkout','Checkout');pbx.innerHTML='';var x=el('button','close','×');x.type='button';x.onclick=function(){pd.close()};pbx.appendChild(x);
   pbx.appendChild(el('span','mi','UltraPixel Studio · AI'));pbx.appendChild(el('h2',null,A.payT));pbx.appendChild(el('p','note',A.payS.replace('{n}',o.giri)));
   var g=el('div','pgrid'),ul=el('ul','pwhat');A.payWhat.forEach(function(t){ul.appendChild(el('li',null,t.replace('{n}',o.giri)))});g.appendChild(ul);
   var tb=el('div','ptot');[[A.payNet,eur(o.netto)],[o.iva>0?A.payVat+' '+Math.round(o.aliquota*100)+'%':A.payVat,o.iva>0?eur(o.iva):A.vatNo],[A.payTot,eur(o.totale)]].forEach(function(r,i){var d=el('div',i===2?'tt':'');d.appendChild(el('span',null,r[0]));d.appendChild(el('b',null,r[1]));tb.appendChild(d)});
   g.appendChild(tb);pbx.appendChild(g);pbx.appendChild(el('p','pm',A.payM));
   var row=el('div','prow');
   if(acc&&acc.pagamenti){var b=el('button','btn',A.payGo+' · '+eur(o.totale));b.type='button';row.appendChild(b);
-    b.onclick=function(){if(!acc.completo){pd.close();pending=payDialog;open('azienda');return}b.disabled=true;post('/api/pagamento/crea',{lang:LG}).then(function(r){if(r.ok&&r.j.url)location.href=r.j.url;else{b.disabled=false;row.appendChild(el('p','aerr',A.buyErr))}}).catch(function(){b.disabled=false})}}
+    b.onclick=function(){if(!acc.completo){pd.close();pending=payDialog;open('azienda');return}b.disabled=true;post('/api/pagamento/crea',{lang:LG}).then(function(r){if(r.ok&&r.j.url){var go=function(){if(!go.done){go.done=1;location.href=r.j.url}};
+      track({event:'begin_checkout',value:o.netto,currency:'EUR',item_name:o.giri+' design rounds',eventCallback:go,eventTimeout:1200});setTimeout(go,1500);return}else{b.disabled=false;row.appendChild(el('p','aerr',A.buyErr))}}).catch(function(){b.disabled=false})}}
   else{row.appendChild(el('p','note',A.paySoon));var u=el('button','btn',A.unlock);u.type='button';row.appendChild(u);
     u.onclick=function(){u.disabled=true;lead({endpoint:'https://ultrapixel.it/backend/api/lead.php',testo:'Richiesta di sblocco giri allo studio AI.\nAzienda: '+(acc&&acc.ragione)+'\nEmail: '+(acc&&acc.email)+'\nP.IVA: '+(acc&&acc.paese)+' '+(acc&&acc.piva)+'\nGiri usati: '+(acc&&acc.giri_usati)});row.appendChild(el('p','note',A.unlockSent))}}
   pbx.appendChild(row);pbx.appendChild(el('p','pby',A.payBy));if(!pd.open)pd.showModal()}
@@ -139,7 +148,12 @@ function paywall(){var p=el('div','paywall');p.appendChild(el('p','note',A.left0
 /* ritorno da Stripe: verifica del pagamento e giri aggiunti */
 (function(){var qs=new URLSearchParams(location.search),s=qs.get('pagato');if(!s)return;qs.delete('pagato');history.replaceState(null,'',location.pathname+(qs.toString()?'?'+qs:''));
   fetch('/api/pagamento/verifica?s='+encodeURIComponent(s),{credentials:'same-origin'}).then(function(r){return r.json()}).then(function(j){
-    if(j.account){acc=j.account;head()}var m=UP.bubble('ai',UP.T.ai||'UltraPixel AI',j.pagato?A.paidOk.replace('{n}',acc&&acc.offerta?acc.offerta.giri:''):A.paidWait);UP.log.appendChild(m);UP.scroll()}).catch(function(){})})();
+    if(j.account){acc=j.account;head()}
+    /* purchase: once per payment, also if this screen is reloaded or opened again */
+    var x=j.acquisto;if(j.pagato&&x){var seen=[];try{seen=JSON.parse(localStorage.getItem('up_tx')||'[]')}catch(e){}
+      if(seen.indexOf(x.transaction_id)<0){seen.push(x.transaction_id);try{localStorage.setItem('up_tx',JSON.stringify(seen.slice(-50)))}catch(e){}
+        track({event:'purchase',transaction_id:x.transaction_id,value:x.value,currency:x.currency,item_name:x.item_name,user_data:{email:String(acc&&acc.email||'').trim().toLowerCase()}})}}
+    var m=UP.bubble('ai',UP.T.ai||'UltraPixel AI',j.pagato?A.paidOk.replace('{n}',acc&&acc.offerta?acc.offerta.giri:''):A.paidWait);UP.log.appendChild(m);UP.scroll()}).catch(function(){})})();
 /* "Scelgo questa": i dati li abbiamo già, restano solo quantità, telefono e note */
 var pick=$('#pick');
 function riempi(){var f=$('#pf');if(!acc||!f)return;

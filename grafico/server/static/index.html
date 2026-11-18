@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.upTag=1;gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',wait_for_update:500});gtag('set','ads_data_redaction',true);gtag('set','url_passthrough',true);(function(){var m=document.cookie.match(/(?:^|; )up_consent=([^;]+)/);if(!m)return;try{var c=JSON.parse(decodeURIComponent(m[1])),a=c.analytics?'granted':'denied',k=c.marketing?'granted':'denied';gtag('consent','update',{analytics_storage:a,ad_storage:k,ad_user_data:k,ad_personalization:k})}catch(e){}})();</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WM2TGCDL');</script>
+<!-- End Google Tag Manager -->
+<script src="/static/tag.js?v=1" defer></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>UltraPixel Studio – AI label designer | Design your label online</title>
 <meta name="description" content="UltraPixel AI label studio: describe your product, upload photos, logo or a sketch and see three label design proposals on your own container in 2–3 minutes. Then UltraPixel prints the labels in Italy. Free to start.">
@@ -345,7 +350,7 @@ $('#in').placeholder=T.ph;setTimeout(grow,0);
 T.rail.forEach(function(r,i){var s=document.createElement('span');s.textContent=('0'+(i+1)).slice(-2)+' '+r;$('#rail').appendChild(s)});
 function rail(k){[].forEach.call($('#rail').children,function(s,i){s.className=k<0?'':i<k?'done':i===k?'on':''})}
 var sid='',busy=false,files=[],log=$('#log'),cur=null,hist=[],shown={},lastP=[],logoImg=null,tl=[],KEY='up_conv';
-function persist(){try{localStorage.setItem(KEY,JSON.stringify({sid:sid,tl:tl.slice(-40),hist:hist.slice(-40),lastP:lastP,t:Date.now()}))}catch(e){}}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify({sid:sid,tl:tl.slice(-40),hist:hist.slice(-40),lastP:lastP,t:Date.now(),prod:typeof prod==='string'?prod:'other'}))}catch(e){}}
 function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 T.chips.forEach(function(c,i){var b=el('button','chip');b.type='button';b.appendChild(el('span','n',('0'+(i+1)).slice(-2)));b.appendChild(el('span',null,c));b.appendChild(el('span','a','↗'));
   b.onclick=function(){$('#in').value=c;$('#in').focus();grow()};$('#chips').appendChild(b)});
@@ -446,6 +451,11 @@ function drawAtt(){var a=$('#att');a.innerHTML='';files.forEach(function(f,i){va
   var lb=el('label'),cb=el('input');cb.type='checkbox';cb.checked=!!f.logo;cb.onchange=function(){f.logo=cb.checked};lb.appendChild(cb);lb.appendChild(document.createTextNode(T.isLogo));fg.appendChild(lb);
   var x=el('button','x','×');x.type='button';x.setAttribute('aria-label','×');x.onclick=function(){files.splice(i,1);drawAtt()};fg.appendChild(x);a.appendChild(fg)})}
 function url(pid,k){return '/api/file/'+sid+'/'+pid+'/'+k+'.svg'}
+/* Google Tag Manager: one proposals_generated per round shown; the round and the product type go with the chosen design */
+var prod='other',rounds=0;try{var ps=JSON.parse(localStorage.getItem(KEY)||'null');if(ps&&ps.prod)prod=ps.prod}catch(e){}
+function generated(j){var a=j.account,n=a&&a.giri_usati?a.giri_usati:++rounds;rounds=n;prod=j.prodotto||prod;
+  j.proposte.forEach(function(q){if(shown[q.id])shown[q.id].round=n});
+  if(window.upEvent){upEvent({event:'proposals_generated',round_number:n,is_free_round:n<=((a&&a.giri_gratis)||2),product_type:prod});upPage('/proposals','Proposals')}}
 var np=0;
 function cards(list){lastP=list.map(function(p){return{id:p.id,p:p.p}});var w=el('div','props');list.forEach(function(p){shown[p.id]=p;np++;var num=T.prop+' '+('0'+np).slice(-2);
   var c=el('article','card'),top=el('div','top'),tb=el('div','tb'),vw=el('div','vw'),img=el('img');
@@ -463,7 +473,7 @@ function cards(list){lastP=list.map(function(p){return{id:p.id,p:p.p}});var w=el
   vw.onclick=function(){$('#zk').textContent=num;$('#zt').textContent=p.nome;$('#z1').src=fotoUrl||url(p.id,'contenitore');$('#z2').src=url(p.id,'piatta');$('#zoom').showModal()};
   var bd=el('div','bd');bd.appendChild(el('h3',null,p.nome));bd.appendChild(el('p',null,p.concetto));
   var act=el('div','act'),b1=el('button','btn',T.pick),b2=el('button','btn ghost',T.change);b1.type=b2.type='button';
-  b1.onclick=function(){cur=p;$('#pt').textContent=p.nome;$('#pmsg').textContent='';$('#pick').showModal()};
+  b1.onclick=function(){cur=p;$('#pt').textContent=p.nome;$('#pmsg').textContent='';$('#pick').showModal();window.upPage&&upPage('/proposal-request','Price and proof request')};
   b2.onclick=function(){$('#in').value=T.changeTxt.replace('{n}',p.nome);$('#in').focus();grow()};
   act.appendChild(b1);act.appendChild(b2);bd.appendChild(act);c.appendChild(top);c.appendChild(tb);c.appendChild(vw);c.appendChild(bd);w.appendChild(c)});
   log.appendChild(w);log.appendChild(el('p','note',T.note))}
@@ -493,7 +503,7 @@ $('#f').addEventListener('submit',function(e){e.preventDefault();if(busy)return;
     if(x.ok){hist.push({r:'u',t:text});if(j.reply)hist.push({r:'a',t:j.reply})}
     if(!x.ok){log.appendChild(bubble(x.status===402?'ai':'ai err',T.ai,j.msg||T.err));rail(-1);return}
     if(j.reply){tl.push({k:'a',t:j.reply});var am=bubble('ai',T.ai);am.querySelector('.tx').innerHTML=j.reply.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');log.appendChild(am)}
-    if(j.proposte&&j.proposte.length){tl.push({k:'c',l:j.proposte.map(function(q){return{id:q.id,nome:q.nome,concetto:q.concetto,p:q.p}})});cards(j.proposte);rail(T.rail.length-1)}else rail(-1)})
+    if(j.proposte&&j.proposte.length){tl.push({k:'c',l:j.proposte.map(function(q){return{id:q.id,nome:q.nome,concetto:q.concetto,p:q.p}})});cards(j.proposte);rail(T.rail.length-1);generated(j)}else rail(-1)})
   .catch(function(){cs.stop();rail(-1);log.appendChild(bubble('ai err',T.ai,T.err))})
   .then(function(){if(sid)persist();busy=false;$('#go').disabled=false;$('#f').classList.remove('busy');scroll()})});
 [].forEach.call(document.querySelectorAll('[data-close]'),function(b){b.onclick=function(){b.closest('dialog').close()}});
@@ -510,12 +520,14 @@ $('#pf').addEventListener('submit',function(e){e.preventDefault();if(!cur)return
     fd.append('timestamp',new Date().toISOString());fd.append('website','');
     if(pk.zip){var bs=atob(pk.zip),u8=new Uint8Array(bs.length);for(var i=0;i<bs.length;i++)u8[i]=bs.charCodeAt(i);fd.append('file',new File([u8],pk.zipname,{type:'application/zip'}))}
     else fd.append('file',new File([pk.svg],pk.filename,{type:'image/svg+xml'}));
-    return fetch(pk.endpoint,{method:'POST',headers:{Accept:'application/json'},body:fd})}).then(function(r){if(!r.ok)throw 0;msg.textContent=T.sent;
+    return fetch(pk.endpoint,{method:'POST',headers:{Accept:'application/json'},body:fd})}).then(function(r){if(!r.ok)throw 0;return r.json().catch(function(){return{}})}).then(function(rj){msg.textContent=T.sent;
+      if(window.upEvent&&rj&&rj.accepted!==false){var ac=UP.acc&&UP.acc(),em=(ac&&ac.email)||data.email||'';
+        upEvent({event:'design_selected',round_number:(shown[cur.id]&&shown[cur.id].round)||(ac&&ac.giri_usati)||rounds||1,product_type:prod,user_data:{email:String(em).trim().toLowerCase()}})}
       setTimeout(function(){$('#pick').close();log.appendChild(bubble('ai',T.ai,T.sentChat.replace('{n}',cur.nome)));scroll()},1600)})
   .catch(function(){msg.textContent=T.fail}).then(function(){btn.disabled=false})});
 
 window.UP={T:T,LG:LG,el:el,prep:prep,log:log,bubble:bubble,scroll:scroll,setFiles:function(a){files=a;drawAtt()},send:function(t){$('#in').value=t;grow();$('#f').requestSubmit()}};
-if(true){['intro.js?v=18','account.js?v=3','brief.js?v=2'].forEach(function(f){var s=document.createElement('script');s.src='/static/'+f;s.async=false;document.body.appendChild(s)})}
+if(true){['intro.js?v=18','account.js?v=4','brief.js?v=2'].forEach(function(f){var s=document.createElement('script');s.src='/static/'+f;s.async=false;document.body.appendChild(s)})}
 })();
 </script>
 </body>
