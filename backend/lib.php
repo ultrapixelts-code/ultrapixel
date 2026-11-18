@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 const STATUSES = ['new', 'contacted', 'samples_sent', 'quoted', 'won', 'lost', 'spam'];
-const LEAD_FIELDS = ['name', 'company', 'country', 'email', 'sector', 'request_type', 'message', 'lang', 'source_page', 'landing_page', 'referrer', 'utm_source', 'utm_medium', 'utm_campaign'];
+const LEAD_FIELDS = ['name', 'company', 'country', 'email', 'sector', 'request_type', 'message', 'lang', 'source_page', 'landing_page', 'referrer', 'utm_source', 'utm_medium', 'utm_campaign', 'gclid'];
 const EVENTS = ['page_view', 'cta_click', 'form_start', 'form_success', 'form_error'];
-const EXPORT = ['id', 'created_at', 'status', 'name', 'company', 'country', 'email', 'sector', 'request_type', 'message', 'lang', 'source', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer', 'landing_page', 'source_page', 'notes', 'updated_at'];
+const EXPORT = ['id', 'created_at', 'status', 'name', 'company', 'country', 'email', 'sector', 'request_type', 'message', 'lang', 'source', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer', 'landing_page', 'source_page', 'gclid', 'notes', 'updated_at'];
 
 function cfg(): array {
   static $c; if ($c === null) { $f = getenv('UP_CONFIG') ?: __DIR__ . '/config.php'; if (!is_file($f)) { http_response_code(500); exit('Not configured'); } $c = require $f; }
@@ -31,6 +31,7 @@ function db(): PDO {
     sector VARCHAR(300), request_type VARCHAR(300), message TEXT, lang VARCHAR(10), source_page VARCHAR(300), landing_page VARCHAR(300), referrer TEXT, utm_source VARCHAR(300), utm_medium VARCHAR(300),
     utm_campaign VARCHAR(300), source VARCHAR(30), status VARCHAR(20) NOT NULL DEFAULT 'new', notes TEXT, updated_at DATETIME NULL, email_sent INT DEFAULT 0)$tail");
   try { $p->exec('ALTER TABLE web_leads ADD COLUMN file VARCHAR(300) NULL'); } catch (Throwable $e) {}   // already there
+  try { $p->exec('ALTER TABLE web_leads ADD COLUMN gclid VARCHAR(300) NULL'); } catch (Throwable $e) {}   // Google click ID (only with marketing consent)
   $p->exec("CREATE TABLE IF NOT EXISTS web_events (id $id, created_at DATETIME NOT NULL, event VARCHAR(30), path VARCHAR(300), lang VARCHAR(10), source VARCHAR(30), utm_source VARCHAR(120),
     utm_medium VARCHAR(120), utm_campaign VARCHAR(120), ref_host VARCHAR(200), landing_page VARCHAR(300), props TEXT)$tail");
   $p->exec("CREATE TABLE IF NOT EXISTS web_rate (k VARCHAR(64) NOT NULL, t INT NOT NULL)$tail");
@@ -110,7 +111,7 @@ function notify(array $r, int $id, array $file = ['', '', 0, '']): bool {
   $lines = [];
   foreach (['name', 'company', 'country', 'email', 'sector', 'request_type', 'lang'] as $k) $lines[] = "$k: " . ($r[$k] ?? '');
   $lines[] = ''; $lines[] = $r['message']; $lines[] = ''; $lines[] = 'source: ' . $r['source'];
-  foreach (['utm_source', 'utm_medium', 'utm_campaign', 'referrer', 'landing_page', 'source_page'] as $k) $lines[] = "$k: " . ($r[$k] ?? '');
+  foreach (['utm_source', 'utm_medium', 'utm_campaign', 'referrer', 'landing_page', 'source_page', 'gclid'] as $k) $lines[] = "$k: " . ($r[$k] ?? '');
   [$path, $fname, $fsize, $fprob] = $file;
   $attach = $path !== '' && $fsize <= MAIL_MAX;
   if ($fname !== '') {

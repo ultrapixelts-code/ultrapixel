@@ -276,6 +276,24 @@ def preflight(_p):
     return ("", 204)
 
 
+# ------------------------------------------------------------------ anteprima: modulo di richiesta finto
+# Solo con PREVIEW_LEADS=1 (servizio Render di prova): risponde come backend/api/lead.php ma non salva e non invia nulla,
+# così i test delle conversioni non arrivano mai nella casella delle richieste vere. Build: python3 build.py --form-endpoint=/api/preview-lead
+@app.post("/api/preview-lead")
+def preview_lead():
+    if os.environ.get("PREVIEW_LEADS") != "1":
+        abort(404)
+    d = request.form if request.form else (request.get_json(silent=True) or {})
+    if d.get("website"):
+        return jsonify(ok=True, accepted=False)          # honeypot, come lead.php
+    email = (d.get("email") or "").strip()
+    if not (d.get("name") or "").strip() or not (d.get("company") or "").strip() or not (d.get("message") or "").strip() or not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email):
+        return jsonify(error="fields"), 400
+    f = request.files.get("file")
+    app.logger.warning("preview lead: %s / %s / gclid=%s / file=%s", d.get("request_type"), d.get("sector"), d.get("gclid") or "-", f.filename if f else "-")
+    return jsonify(ok=True, file="ok" if f else "none")
+
+
 # ------------------------------------------------------------------ sito statico
 BLOCKED = ("server/", "content/", "src/", ".git", "build.py", "requirements.txt", "README.md", "render.yaml")
 

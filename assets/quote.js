@@ -43,7 +43,7 @@
     show($('q-pick'),false);show($('q-prev'),true);show($('q-form'),false);show($('q-dim'),false);$('q-prev').classList.remove('done');show($('q-reading'),true);scanning(true);
     if(!S.classList.contains('mouse')){try{$('q-drop').scrollIntoView({behavior:rm?'auto':'smooth',block:'start'})}catch(e){}}
     var min=wait(rm?0:1900);
-    st.file=file;st.small=null;st.pdf=isPdf;
+    st.file=file;st.small=null;st.pdf=isPdf;st.ev=null;
     shrink(file).then(function(b){st.small=b;var fd=new FormData();fd.append('file',b,isPdf?'label.pdf':'label.jpg');return fetch(API+'/api/quote/analyze',{method:'POST',body:fd})})
       .then(function(r){return r.json().then(function(j){return{ok:r.ok,status:r.status,j:j}})})
       .then(function(x){if(x.ok&&x.j.preview){$('q-img').src=x.j.preview;$('q-prev').classList.remove('pdf')}return min.then(function(){return x})})
@@ -98,6 +98,9 @@
     tween(first?0:from,j.total,first?1300:700,function(v){$('q-total').textContent=eur(Math.round(v))});
     if(first&&!S.classList.contains('mouse')){try{P.scrollIntoView({behavior:rm?'auto':'smooth',block:'start'})}catch(e){}}
     window.upTrack&&upTrack('quote_price',{qty:j.config.qty,material:j.config.material,total:j.total});
+    /* Google Tag Manager (ultrapixel.it only): once per calculation; a new quantity or size with a new price fires again */
+    var key=[j.config.qty,j.config.w,j.config.h,j.config.material,j.config.varnish,j.config.foil,j.config.relief].join('|');
+    if(window.upTag&&key!==st.ev){st.ev=key;(window.dataLayer=window.dataLayer||[]).push({event:'price_shown',quantity:j.config.qty,label_size:j.config.w+'x'+j.config.h,has_upload:!!st.file,page_language:lang})}
   }
   /* the request form under the price sends the configuration and the label file already chosen above */
   var R=$('q-req');

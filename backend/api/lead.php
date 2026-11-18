@@ -5,7 +5,7 @@ require __DIR__ . '/../lib.php';
 api_guard();
 $d = body();
 header('Content-Type: application/json');
-if (!empty($d['website'])) { echo '{"ok":true}'; exit; }          // honeypot: pretend success, store nothing
+if (!empty($d['website'])) { echo '{"ok":true,"accepted":false}'; exit; }   // honeypot: pretend success, store nothing; the site fires no conversion
 try { if (limited('lead', 5, 600)) { http_response_code(429); exit('{"error":"rate"}'); } } catch (Throwable $e) { error_log('UltraPixel rate limit: ' . $e->getMessage()); }
 $r = [];
 foreach (LEAD_FIELDS as $f) $r[$f] = clip($d[$f] ?? '', $f === 'message' ? 5000 : ($f === 'referrer' ? 1000 : 300));

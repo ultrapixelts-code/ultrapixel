@@ -8,12 +8,21 @@
   var q=new URLSearchParams(location.search),a=get(K);
   var ext=d.referrer&&d.referrer.indexOf(location.origin)!==0?d.referrer:'';if(!ext){try{ext=sessionStorage.getItem('up_ref')||''}catch(e){}}
   if(!a||q.get('utm_source')){a={landing_page:location.pathname,referrer:ext||(a&&a.referrer)||'',utm_source:q.get('utm_source')||'',utm_medium:q.get('utm_medium')||'',utm_campaign:q.get('utm_campaign')||''};put(K,a)}
+  /* Google Tag Manager (ultrapixel.it only): one conversion per request the server has accepted. The event depends on
+     "I would like to", not on the page. The email goes to the dataLayer only, trimmed and lowercased; Tag Manager hashes it. */
+  var EV={quote:'quote_request',specialist:'quote_request',samples:'sample_request',partner:'partner_request'};
+  function conversion(data,hasFile){
+    if(!window.upTag)return;var t=data.request_type||'quote';
+    (window.dataLayer=window.dataLayer||[]).push({event:EV[t]||'quote_request',form_topic:t,sector:data.sector_name||'',country:data.country||'',
+      page_language:document.documentElement.lang,has_file:hasFile,user_data:{email:String(data.email||'').trim().toLowerCase()}});
+  }
   var forms=d.querySelectorAll('form[data-form]');
   if(!forms.length){put('up_prev',location.pathname);return}
   var prev=get('up_prev')||'';
   forms.forEach(function(f){
     var set=function(n,v){var i=f.querySelector('[name="'+n+'"]');if(i)i.value=v||''};
     set('source_page',f.hasAttribute('data-here')?location.pathname:prev);set('lang',document.documentElement.lang);set('landing_page',a.landing_page);set('referrer',a.referrer);set('utm_source',a.utm_source);set('utm_medium',a.utm_medium);set('utm_campaign',a.utm_campaign);
+    var gc=function(){var m=d.cookie.match(/(?:^|; )up_gclid=([^;]*)/);return m?decodeURIComponent(m[1]):''};
     var t=q.get('topic'),sel=f.querySelector('[name=request_type]');if(t&&sel&&sel.querySelector('option[value="'+t+'"]'))sel.value=t;
     var qm=q.get('msg'),ta=f.querySelector('[name=message]');if(qm&&ta)ta.value=qm;
     var sq=q.get('sector'),sc=f.querySelector('[name=sector]');if(sq&&sc)[].forEach.call(sc.options,function(o){if(o.text===sq||o.value===sq)sc.value=o.value});
@@ -21,7 +30,7 @@
     var msg=f.querySelector('.form-msg'),say=function(k){msg.textContent=f.dataset[k];msg.hidden=false},btn=f.querySelector('[type=submit]'),busy=false;
     f.addEventListener('submit',function(e){
       e.preventDefault();if(busy||!f.reportValidity())return;
-      set('timestamp',new Date().toISOString());
+      set('timestamp',new Date().toISOString());set('gclid',gc());
       var data={};new FormData(f).forEach(function(v,k){if(typeof v==='string')data[k]=v});
       if(f.dataset.endpoint){
         /* sent as a form with the file (label artwork) attached, when there is one; the page can add its own (f.upExtra) */
@@ -30,7 +39,12 @@
         if(fl&&fl.size>25*1048576){say('big');return}
         busy=true;if(btn)btn.disabled=true;say('sending');
         fetch(f.dataset.endpoint,{method:'POST',headers:{Accept:'application/json'},body:fd})
-          .then(function(r){if(r.status===413)throw 413;if(!r.ok)throw 0;f.reset();f.classList.add('sent');say('sent');window.upTrack&&upTrack('form_success',{request_type:data.request_type,sector:data.sector,file:!!fl})})
+          .then(function(r){if(r.status===413)throw 413;if(!r.ok)throw 0;return r.json().catch(function(){return{}})})
+          .then(function(j){
+            var sc=f.querySelector('[name=sector]'),so=sc&&sc.options[sc.selectedIndex];data.sector_name=so?(so.getAttribute('data-en')||so.text):'';
+            f.reset();f.classList.add('sent');say('sent');window.upTrack&&upTrack('form_success',{request_type:data.request_type,sector:data.sector,file:!!fl});
+            if(j&&j.ok&&j.accepted!==false&&!data.website)conversion(data,!!fl);
+          })
           .catch(function(x){say(x===413?'big':'error');window.upTrack&&upTrack('form_error',{request_type:data.request_type})})
           .then(function(){busy=false;if(btn)btn.disabled=false});
       }else if(f.dataset.email){

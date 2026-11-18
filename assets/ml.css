@@ -487,3 +487,25 @@ main>section.sec,main>.ms,footer.ftr2{content-visibility:auto;contain-intrinsic-
 .form label small{letter-spacing:.06em;text-transform:none;color:var(--tgt)}
 .form input[type=file]{font-size:15px;border-bottom:1px solid var(--hair);padding:10px 0}
 .form input[type=file]::file-selector-button{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);background:transparent;color:var(--ink);padding:9px 14px;margin-right:14px;cursor:pointer}
+/* cookie banner (assets/tag.js) — Accept and Reject share one style */
+.ckb{position:fixed;left:16px;right:16px;bottom:16px;z-index:95;max-width:640px;margin:0 auto;padding:22px 22px 18px;background:var(--white);color:var(--ink);border:1px solid var(--hair);border-radius:14px;box-shadow:0 18px 50px rgba(16,18,20,.18);max-height:calc(100vh - 32px);overflow:auto}
+.ckb[hidden]{display:none}
+.ckb .mi{display:block;margin:0 34px 10px 0}
+.ckb-p{margin:0;font:400 14.5px/1.5 var(--body);color:var(--gra)}.ckb-p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.ckb-x{position:absolute;top:10px;right:10px;width:34px;height:34px;border:0;background:none;color:var(--ink);font:300 24px/1 var(--body);cursor:pointer;border-radius:50%}
+.ckb-x:hover,.ckb-x:focus-visible{background:var(--hair)}
+.ckb-opts{display:grid;gap:0;margin:16px 0 0;border-top:1px solid var(--hair)}
+.ckb-opts[hidden]{display:none}
+.ckb-o{display:flex;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--hair);cursor:pointer}
+.ckb-o span{flex:1}.ckb-o b{display:block;font:500 14.5px/1.3 var(--body)}.ckb-o small{display:block;margin-top:3px;font:400 13px/1.4 var(--body);color:var(--gra)}
+.ckb-o input{position:absolute;opacity:0;width:1px;height:1px}
+.ckb-o i{flex:none;position:relative;width:40px;height:22px;border-radius:22px;background:var(--hair);transition:background .2s}
+.ckb-o i::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--white);box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.ckb-o input:checked+i{background:var(--ink)}.ckb-o input:checked+i::after{transform:translateX(18px)}
+.ckb-o input:disabled+i{opacity:.45}.ckb-o input:focus-visible+i{outline:2px solid var(--ink);outline-offset:2px}
+.ckb-b{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;align-items:center}
+.ckb-btn{flex:1 1 150px;padding:13px 18px;border-radius:999px;border:1px solid var(--ink);background:var(--ink);color:var(--cer);font:500 11.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.ckb-btn[hidden]{display:none}
+.ckb-btn:hover,.ckb-btn:focus-visible{background:var(--white);color:var(--ink)}
+.ckb-btn.ckb-l{flex:0 0 100%;background:none;border-color:transparent;color:var(--ink);text-decoration:underline;text-underline-offset:4px;padding:8px 0 2px}
+body.ck-open .lhint{display:none}

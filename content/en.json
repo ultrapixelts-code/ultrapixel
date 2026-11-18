@@ -56,7 +56,7 @@
     "postalCode": "34018",
     "region": "TS",
     "analyticsEndpoint": "https://ultrapixel.it/backend/api/event.php",
-    "privacyVersion": "Draft, 6 October 2026",
+    "privacyVersion": "Draft, 18 November 2026",
     "quoteApi": "",
     "sameAsHQ": [
       "https://www.linkedin.com/company/25050764/",
@@ -64,7 +64,11 @@
       "https://www.instagram.com/ultrapixel.it/",
       "https://www.google.com/search?kgmid=/g/1hc2y40wv"
     ],
-    "studioUrl": "https://studio.ultrapixel.it"
+    "studioUrl": "https://studio.ultrapixel.it",
+    "gtmId": "GTM-WM2TGCDL",
+    "trackingHomes": [
+      "it"
+    ]
   },
   "ui": {
     "requestSamples": "Request samples",
@@ -3324,6 +3328,51 @@
     "cookies": {
       "meta": {
         "title": "Cookie policy | UltraPixel",
+        "description": "Which cookies this website uses, why, for how long, and how to change your choice."
+      },
+      "h1": "Cookie policy",
+      "sections": [
+        [
+          "Your choice",
+          "When you first visit ultrapixel.it you can accept all cookies, reject them, or choose by category. Until you choose, and if you reject them, only the necessary cookies are used. Your choice applies to ultrapixel.it and to the label studio at studio.ultrapixel.it, and is kept for 6 months. You can change it at any time from “Cookie settings” at the bottom of every page."
+        ],
+        [
+          "Necessary cookies",
+          "up_consent remembers your cookie choice (6 months, shared with studio.ultrapixel.it). The studio also uses a technical cookie to keep you signed in to your account. These cookies do not need consent and are not used for statistics or advertising."
+        ],
+        [
+          "Analytics cookies (only with your consent)",
+          "Google Analytics 4, provided by Google Ireland Limited, measures how many people visit the site, which pages they read and where they come from. It sets the cookies _ga and _ga_<ID>, which last up to 2 years. IP addresses are not stored by Google Analytics 4."
+        ],
+        [
+          "Marketing cookies (only with your consent)",
+          "Google Ads, provided by Google Ireland Limited, measures which ads lead to a request or a purchase and can show our ads to people who have visited the site. It sets cookies such as _gcl_au (90 days). When you arrive from one of our ads, we also keep the Google click identifier in our own cookie up_gclid (90 days) and with any request you send, so that we can tell which ads lead to real orders."
+        ],
+        [
+          "Google Tag Manager",
+          "Google Tag Manager is the tool that loads the Google services above. It does not set cookies itself, but it is loaded from Google's servers, so your browser connects to Google on every page. Before you choose, and if you reject cookies, Google services work in consent mode: they do not read or write cookies and send only anonymous signals without identifiers, which Google uses to estimate visits and conversions in aggregate."
+        ],
+        [
+          "Session storage",
+          "During your visit the site keeps a few items in your browser's session storage: the first page you visited, the website that referred you, any campaign parameters in the link you followed and the previous page you viewed. They stay in your browser and are deleted when you close the tab. They are sent to us only if you send a request through a form, as part of that request."
+        ],
+        [
+          "Our own statistics",
+          "Page views and clicks on the request buttons are also counted by our own system without cookies and without identifiers that persist between visits. Details are in the privacy policy."
+        ],
+        [
+          "Transfers outside the EU",
+          "Google may process data in the United States. Google LLC is certified under the EU-US Data Privacy Framework, and the transfer is also covered by standard contractual clauses."
+        ],
+        [
+          "How to change your choice",
+          "Use “Cookie settings” at the bottom of any page. If you withdraw consent, we delete the Google cookies set on this site. You can also delete cookies from your browser settings."
+        ]
+      ]
+    },
+    "cookiesBasic": {
+      "meta": {
+        "title": "Cookie policy | UltraPixel",
         "description": "This website does not use cookies. What it stores in your browser during a visit, and why."
       },
       "h1": "Cookie policy",
@@ -3349,6 +3398,32 @@
           "If we introduce cookies or third-party services in the future, this page will be updated first and, where required, you will be asked for consent."
         ]
       ]
+    },
+    "privacyTracking": {
+      "after": "Usage statistics",
+      "sections": [
+        [
+          "Google Analytics and Google Ads",
+          "Only if you accept analytics or marketing cookies, we use Google Analytics 4 and Google Ads, provided by Google Ireland Limited, to measure visits and the results of our ads. When you send a request or create a studio account and you have accepted marketing cookies, your email address is converted on your device into a one-way code (hashing) and sent to Google, so that Google can match the request to the ad you clicked; Google does not receive the address in readable form. We also keep the Google click identifier with your request. The legal basis is your consent, which you can withdraw at any time from “Cookie settings”. Details are in the cookie policy."
+        ]
+      ]
     }
+  },
+  "consent": {
+    "title": "Cookies on this website",
+    "text": "We use cookies only if you agree: analytics cookies to understand how the site is used, and marketing cookies to measure our Google ads. Necessary cookies are always on. You can change your choice at any time from “Cookie settings” at the bottom of every page.",
+    "accept": "Accept all",
+    "reject": "Reject all",
+    "customise": "Customise",
+    "save": "Save choices",
+    "close": "Close and reject all",
+    "policy": "Cookie policy",
+    "settings": "Cookie settings",
+    "necessary": "Necessary",
+    "necessaryP": "Always on. They remember your cookie choice and keep the site working.",
+    "analytics": "Analytics",
+    "analyticsP": "Google Analytics: how many people visit, which pages they read and where they come from.",
+    "marketing": "Marketing",
+    "marketingP": "Google Ads: measures which ads lead to a request and lets Google show our ads to people who have visited this site."
   }
 }

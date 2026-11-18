@@ -89,6 +89,7 @@ LABELS = {
 # Scroll-film label per language. g = bottle w,h / label centre x,y in the bottle / flat label w,h / end squeeze x,y
 # (when the bottle is a photo that already wears the label, the flat label is squeezed onto it and faded out).
 FILM = {"": {"a": "/assets", "vb": "0 0 1500 1000", "die": "src/die.txt", "g": [333, 1026, 167.8, 767.8, 450, 300, 0.79, 1.208], "sw": 900, "sz": "(max-width:899px) 70vw, 800px", "qc": [(30, 31), (61, 52), (27, 70)]}}
+FORM_ENDPOINT = ""   # --form-endpoint=… : overrides site.formEndpoint (Render preview: /api/preview-lead, so tests never reach the real lead inbox)
 QUOTE_API = ""   # --quote-api=https://… : where the price page sends its requests when the site is served as plain files
 PUB = {}   # launch builds: language -> public base URL of that language (set in build())
 
@@ -217,6 +218,43 @@ def lhref(l, path, P, langs=None):
     return ("/" if l == HOME else "/" + l + "/") + (path[len(P):] if langs is None or l in langs else "")
 
 
+def tracking(C):
+    """Tag Manager + cookie banner: only on builds whose root language is in site.trackingHomes (ultrapixel.it, not ultrapixel.fr)."""
+    s = C["site"]
+    return bool(s.get("gtmId")) and HOME in s.get("trackingHomes", [])
+
+
+def tag_head(C):
+    """First thing in <head>: Consent Mode v2 defaults (everything denied), the visitor's stored choice, then Google Tag Manager."""
+    if not tracking(C):
+        return ""
+    gid = C["site"]["gtmId"]
+    return ("<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}window.upTag=1;"
+            "gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',wait_for_update:500});"
+            "gtag('set','ads_data_redaction',true);gtag('set','url_passthrough',true);"
+            "(function(){var m=document.cookie.match(/(?:^|; )up_consent=([^;]+)/);if(!m)return;try{var c=JSON.parse(decodeURIComponent(m[1])),a=c.analytics?'granted':'denied',k=c.marketing?'granted':'denied';"
+            "gtag('consent','update',{analytics_storage:a,ad_storage:k,ad_user_data:k,ad_personalization:k})}catch(e){}})();</script>\n"
+            "<!-- Google Tag Manager -->\n<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],"
+            "j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);"
+            f"}})(window,document,'script','dataLayer','{gid}');</script>\n<!-- End Google Tag Manager -->\n")
+
+
+def consent_ml(C, P):
+    """Cookie banner (assets/tag.js shows it when no choice is stored). Accept and Reject look the same; closing it rejects."""
+    if not tracking(C):
+        return ""
+    t = C["consent"]
+    opt = lambda k, on="": (f'<label class="ckb-o"><span><b>{e(t[k])}</b><small>{e(t[k + "P"])}</small></span>'
+                            f'<input type="checkbox" {on or ('id="ck-' + k[:2] + '"')}><i aria-hidden="true"></i></label>')
+    return (f'<div class="ckb" id="ckb" role="dialog" aria-labelledby="ckb-t" aria-describedby="ckb-p" hidden>'
+            f'<button class="ckb-x" type="button" data-ck="close" aria-label="{e(t["close"])}" title="{e(t["close"])}">×</button>'
+            f'<p class="mi" id="ckb-t">{e(t["title"])}</p><p class="ckb-p" id="ckb-p">{e(t["text"])} <a href="{P}cookies/">{e(t["policy"])}</a></p>'
+            f'<div class="ckb-opts" id="ckb-opts" hidden>{opt("necessary", "checked disabled")}{opt("analytics")}{opt("marketing")}</div>'
+            f'<div class="ckb-b"><button class="ckb-btn" type="button" data-ck="reject">{e(t["reject"])}</button><button class="ckb-btn" type="button" data-ck="accept">{e(t["accept"])}</button>'
+            f'<button class="ckb-btn ckb-l" type="button" data-ck="custom">{e(t["customise"])}</button><button class="ckb-btn" type="button" data-ck="save" hidden>{e(t["save"])}</button></div></div>\n'
+            '<script src="/assets/tag.js" defer></script>')
+
+
 def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls="", langs=None):
     s, ui = C["site"], C["ui"]; url = pub(C, C["lang"], path[len(P) - 1:]) if path.endswith("/") else s["url"].rstrip("/") + path
     ui = dict(ui, sustain=C["sustainability"]["nav"])
@@ -227,11 +265,12 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls="", langs
         f'<a href="{e(wa_url(C))}" target="_blank" rel="noopener">WhatsApp</a>' if s.get("whatsapp") else "",
         f'<a href="{e(s["linkedin"])}" rel="noopener">LinkedIn</a>' if s["linkedin"] else "", f'<a href="{e(s["instagram"])}" rel="noopener">Instagram</a>' if s["instagram"] else "") if x)
     secs = "".join(f'<li><a href="{P}{x["slug"]}/">{e(x["title"])}</a></li>' for x in C["sectors"])
+    settings_link = f' / <a href="{P}cookies/#settings" data-ck="open">{e(C["consent"]["settings"])}</a>' if tracking(C) else ""
     return f'''<!doctype html>
 <html lang="{C["lang"]}">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+{tag_head(C)}<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{e(meta["title"])}</title>
 <meta name="description" content="{e(meta["description"])}">
 <link rel="canonical" href="{url}">
@@ -267,10 +306,11 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls="", langs
     <div><span class="mi">{e(ui["contact"])}</span><ul><li><a href="{P}samples/">{e(ui["requestSamples"])}</a></li><li><a href="{P}contact/?topic=quote">{e(ui["requestQuote"])}</a></li><li><a href="{P}partners/">{e(ui["partners"])}</a></li></ul></div>
   </div>
   <img class="flogo" src="/assets/logo.png" alt="UltraPixel" width="370" height="133" loading="lazy">
-  <p class="mi dim legal">© {e(s["legalName"])} / {e(s["address"])} / <a href="{P}privacy/">{e(ui["privacy"])}</a> / <a href="{P}cookies/">{e(ui["cookies"])}</a></p>
+  <p class="mi dim legal">© {e(s["legalName"])} / {e(s["address"])} / <a href="{P}privacy/">{e(ui["privacy"])}</a> / <a href="{P}cookies/">{e(ui["cookies"])}</a>{settings_link}</p>
   <p class="mi dim legal langs">{" / ".join(f"""<a href="{lhref(l, path, P, langs)}" hreflang="{l}"{' aria-current="true"' if l == C["lang"] else ""}>{LANG_NAMES[l]}</a>""" for l in LANGS)}</p>
 </footer>
 <script src="/assets/ml.js" defer></script><script src="/assets/lead.js" defer></script><script src="/assets/analytics.js" defer data-endpoint="{e(s["analyticsEndpoint"])}" data-lang="{C["lang"]}"></script>
+{consent_ml(C, P)}
 {extra_foot}
 </body>
 </html>
@@ -553,13 +593,13 @@ def about_ml(C, P):
 
 
 FILE_ACCEPT = ".pdf,.ai,.eps,.svg,.jpg,.jpeg,.png,.webp,.heic,.heif,.tif,.tiff,.zip,image/*,application/pdf"
-HIDDEN = lambda extra=(): "".join(f'<input type="hidden" name="{n}">' for n in ("website", "lang", "timestamp", "source_page", "landing_page", "referrer", "utm_source", "utm_medium", "utm_campaign") + tuple(extra))
+HIDDEN = lambda extra=(): "".join(f'<input type="hidden" name="{n}">' for n in ("website", "lang", "timestamp", "source_page", "landing_page", "referrer", "utm_source", "utm_medium", "utm_campaign", "gclid") + tuple(extra))
 
 
 def form_data(C, sent=None):
     """Attributes read by assets/lead.js: where to send, and the messages it shows."""
     s, ui = C["site"], C["ui"]
-    return (f'data-endpoint="{e(s["formEndpoint"])}" data-email="{e(s["email"])}" data-none="{e(ui["formNotConnected"])}" data-sent="{e(sent or ui["formSent"])}" '
+    return (f'data-endpoint="{e(FORM_ENDPOINT or s["formEndpoint"])}" data-email="{e(s["email"])}" data-none="{e(ui["formNotConnected"])}" data-sent="{e(sent or ui["formSent"])}" '
             f'data-error="{e(ui["formError"])}" data-mail="{e(ui["formMail"])}" data-big="{e(ui["fileTooBig"])}" data-sending="{e(ui["sending"])}"')
 
 
@@ -567,9 +607,10 @@ def form_ml(C, P, key, topic):
     """Request form. Besides the visible fields it records timestamp, source page, landing page, referrer and UTM values (assets/lead.js)."""
     p, f, s, ui = C["pages"][key], C["form"], C["site"], C["ui"]
     opts = "".join(f'<option value="{k}"{" selected" if k == topic else ""}>{e(v)}</option>' for k, v in f["topics"].items())
-    secs = "".join(f"<option value=\"{x['key']}\">{e(x['title'])}</option>" for x in C["sectors"]) + f"<option value=\"other\">{e(ui['other'])}</option>"
+    en = {x["key"]: x["title"] for x in json.loads(rd(f"content/{DEFAULT}.json"))["sectors"]}   # the dataLayer gets the English name in every language
+    secs = "".join(f"<option value=\"{x['key']}\" data-en=\"{e(en.get(x['key'], x['title']))}\">{e(x['title'])}</option>" for x in C["sectors"]) + f"<option value=\"other\" data-en=\"Other\">{e(ui['other'])}</option>"
     hidden = HIDDEN()
-    upload = (f'<label class="full">{e(f["file"])}<input id="f-file" name="file" type="file" accept="{FILE_ACCEPT}"><small class="mi dim">{e(f["fileHint"])}</small></label>' if s["formEndpoint"] else "")
+    upload = (f'<label class="full">{e(f["file"])}<input id="f-file" name="file" type="file" accept="{FILE_ACCEPT}"><small class="mi dim">{e(f["fileHint"])}</small></label>' if (FORM_ENDPOINT or s["formEndpoint"]) else "")
     form = (f'<form class="form" data-form {form_data(C)}>'
             f'<label>{e(f["name"])}<input id="f-name" name="name" autocomplete="name" required></label><label>{e(f["company"])}<input id="f-company" name="company" autocomplete="organization" required></label>'
             f'<label>{e(f["country"])}<input id="f-country" name="country" autocomplete="country-name" required></label><label>{e(f["email"])}<input id="f-email" name="email" type="email" autocomplete="email" required></label>'
@@ -600,7 +641,7 @@ def quote_ml(C, P):
             '<path class="ld l2" pathLength="1" d="M135 150H92"/><path class="ld l3" pathLength="1" d="M226 104h66"/><path class="ld l4" pathLength="1" d="M242 186h50"/></svg>'
             f'<span class="tag t1 mi">80 × 130 mm</span><span class="tag t2 mi">{e(t["m_wine"])}</span><span class="tag t3 mi">{e(t["foil"])}</span><span class="tag t4 mi">{e(t["relief"])}</span><i class="beam"></i></div>')
     f = C["form"]
-    if s["formEndpoint"]:   # the file already chosen above leaves with the request: nothing to upload twice
+    if FORM_ENDPOINT or s["formEndpoint"]:   # the file already chosen above leaves with the request: nothing to upload twice
         request = (f'<form class="form qreq" id="q-req" data-form data-here {form_data(C, t["rq_sent"])}>'
                    f'<div class="full qreq-h"><span class="mi">{e(t["rq_h"])}</span><p>{e(t["rq_p"])}</p></div>'
                    f'<label>{e(f["name"])}<input name="name" autocomplete="name" required></label><label>{e(f["company"])}<input name="company" autocomplete="organization" required></label>'
@@ -714,6 +755,12 @@ def llms_txt(C0, CE, B=None, TL=None):
 
 def legal_ml(C, P, key):
     d = C["legal"][key]
+    if key == "cookies" and not tracking(C):   # no Tag Manager on this site (ultrapixel.fr): the cookie-free policy
+        d = C["legal"]["cookiesBasic"]
+    if key == "privacy" and tracking(C) and C["legal"].get("privacyTracking"):
+        x = C["legal"]["privacyTracking"]; secs = list(d["sections"])
+        i = next((n + 1 for n, (h, _) in enumerate(secs) if h == x["after"]), len(secs))
+        d = dict(d, sections=secs[:i] + list(x["sections"]) + secs[i:])
     body = (phead(C["site"]["privacyVersion"], d["h1"], mega=False) + '<hr class="spl"><section class="sec w"><div class="legal-text">'
             + "".join(f"<h2>{e(a)}</h2><p>{e(b)}</p>" for a, b in d["sections"]) + "</div></section>")
     return shell_ml(C, P, f"{P}{key}/", d["meta"], body)
@@ -1054,6 +1101,8 @@ if __name__ == "__main__":
     import sys
     # --home=fr serves another language at the root (e.g. for a country domain); the languages keep the same folders otherwise
     for a in sys.argv:
+        if a.startswith("--form-endpoint="):
+            FORM_ENDPOINT = a[16:]
         if a.startswith("--quote-api="):
             QUOTE_API = a[12:].rstrip("/")
         if a.startswith("--home=") and a[7:] in LANGS:
