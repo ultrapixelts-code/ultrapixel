@@ -65,6 +65,15 @@ RewriteRule ^cookies(_eng)?\.html$ https://ultrapixel.it/cookies/ [R=301,L,NC]
 RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
 RewriteRule ^(ribbontermici|cartetrasferimentotermico|etichetteneutre|stampaticommerciali|blog)(_eng)?\.html$ - [G,L,NC]
 
+# ---------------------------------------------------------------- 1b. French only on ultrapixel.fr, the other languages only on ultrapixel.it
+# Same page on the other domain, straight to the final https address (one hop, also from www and http).
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.it$ [NC]
+RewriteRule ^fr(?:/(.*))?$ https://ultrapixel.fr/$1 [R=301,L,NE]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.fr$ [NC]
+RewriteRule ^it(?:/(.*))?$ https://ultrapixel.it/$1 [R=301,L,NE]
+RewriteCond %{HTTP_HOST} ^(www\.)?ultrapixel\.fr$ [NC]
+RewriteRule ^(en|de)(?:/(.*))?$ https://ultrapixel.it/$1/$2 [R=301,L,NE]
+
 # ---------------------------------------------------------------- 2. one address per page
 # www -> without www, http -> https, /index.html -> folder (one hop, same domain).
 RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]

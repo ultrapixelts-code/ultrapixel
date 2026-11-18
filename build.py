@@ -214,8 +214,46 @@ def wa_url(C):
 
 # ---------------------------------------------------------------- MATERIAL INTELLIGENCE design system
 def lhref(l, path, P, langs=None):
-    """Same page in language l; the home of l when this page is not published in l (blog articles)."""
-    return ("/" if l == HOME else "/" + l + "/") + (path[len(P):] if langs is None or l in langs else "")
+    """Same page in language l; the home of l when this page is not published in l (blog articles).
+    Launch builds: a language that lives on another domain (French on ultrapixel.fr, the others on ultrapixel.it)
+    gets the absolute address, so the switcher never goes through a redirect."""
+    rest = path[len(P):] if langs is None or l in langs else ""
+    if l in PUB and HOME in PUB and _host(PUB[l]) != _host(PUB[HOME]):
+        return PUB[l] + "/" + rest
+    return ("/" if l == HOME else "/" + l + "/") + rest
+
+
+def _host(u):
+    return urllib.parse.urlparse(u).netloc
+
+
+# ---------------------------------------------------------------- UltraPixel Studio (content/studio.json)
+STUDIO = None
+STUDIO_SLUG = "label-design"
+
+
+def studio_url(C, placement):
+    """Link to the studio page in the page language, with UTM (utm_source = this domain, utm_campaign = where the link is)."""
+    src = "ultrapixel.fr" if HOME == "fr" else "ultrapixel.it"
+    return f'{STUDIO["studio"]}/{C["lang"]}/?utm_source={src}&utm_medium=site&utm_campaign={placement}'
+
+
+def studio_block(C, P, placement, mega=False):
+    """'No artwork yet? Design your label' block for sector pages; on the homepage the larger block with a proposal image."""
+    t = STUDIO[C["lang"]]; go = e(studio_url(C, placement)); how = f'{P}{STUDIO_SLUG}/'
+    if mega:
+        return (f'<section class="sec w studio-b"><div class="split"><div class="a"><span class="mi">{e(t["homeEyebrow"])}</span>'
+                f'<h2 class="h2 rv" style="margin:18px 0 22px;font-size:clamp(30px,3.8vw,60px)">{e(t["h1a"])} <span style="color:var(--tgl)">{e(t["h1b"])}</span></h2>'
+                + "".join(f'<p class="lead">{e(x)}</p>' for x in t["homeP"]) +
+                f'<div class="ctas"><a class="cta pill" href="{go}">{e(t["cta"])} ↗</a><a class="cta" href="{how}">{e(t["howLink"])} →</a></div></div>'
+                f'<div class="b"><figure class="studio-f"><img src="/assets/{e(STUDIO["image"])}" alt="{e(t["imgAlt"])}" loading="lazy" width="1200" height="900">'
+                f'<figcaption class="mi dim">{e(t["imgCap"])}</figcaption></figure></div></div></section>')
+    return (f'<section class="sec studio-b"><span class="mi">{e(t["sectorEyebrow"])}</span><h2 class="h2 rv" style="margin:18px 0 18px">{e(t["sectorH"])}</h2>'
+            f'<p class="lead">{e(t["sectorP"])}</p><div class="ctas"><a class="cta pill" href="{go}">{e(t["cta"])} ↗</a><a class="cta" href="{how}">{e(t["howLink"])} →</a></div></section>')
+
+
+STUDIO_CSS = ('<style>.studio-b .ctas{margin-top:28px}.studio-b .lead+.lead{margin-top:14px}.studio-f{margin:0}.studio-f img{display:block;width:100%;height:auto;background:var(--sheet2,#EAEAE5)}'
+              '.studio-f figcaption{margin-top:10px}</style>')
 
 
 def tracking(C):
@@ -258,7 +296,7 @@ def consent_ml(C, P):
 def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls="", langs=None):
     s, ui = C["site"], C["ui"]; url = pub(C, C["lang"], path[len(P) - 1:]) if path.endswith("/") else s["url"].rstrip("/") + path
     ui = dict(ui, sustain=C["sustainability"]["nav"])
-    studio = (f'<a class="price" href="{e(s["studioUrl"])}/?lang={C["lang"]}">{e(ui["studioNav"])}</a>' if s.get("studioUrl") else "")
+    studio = (f'<a class="price" href="{e(studio_url(C, "header"))}">{e(ui["studioNav"])}</a>' if STUDIO else "")
     nav = studio + f'<a class="price" href="{P}quote/">{e(ui["priceNav"])}</a>' + "".join(f'<a href="{h}">{e(ui[k])}</a>' for k, h in (("sectors", f"{P}#sectors"), ("technologies", f"{P}technologies/"), ("work", f"{P}work/"), ("sustain", f"{P}sustainability/"), ("about", f"{P}about/"), ("contact", f"{P}contact/")))
     contact = "".join(f"<li>{x}</li>" for x in (
         *[f'<strong>{e(n)}</strong><br>' + "<br>".join(e(l) for l in ls) + (f'<br>{e(ui["vat"])} {e(s["vatID"][2:] if C["lang"] == "it" else s["vatID"])}' if n == s["legalName"] else "") for _, n, ls in office_cards(C)], f'<a href="mailto:{e(s["email"])}">{e(s["email"])}</a>' if s["email"] else "", f'<a href="tel:{e(s["phone"].replace(" ", ""))}">{e(s["phone"])}</a>' if s["phone"] else "",
@@ -282,7 +320,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls="", langs
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Archivo-100-900-latin.woff2" crossorigin>
 <style>{rd("assets/fonts.css")}</style>
 <link rel="stylesheet" href="/assets/ml.css">
-{lang_hint(C)}{extra_head}
+{lang_hint(C)}{STUDIO_CSS if STUDIO else ""}{extra_head}
 </head>
 <body class="{cls}">
 <header class="nav2" id="nav2">
@@ -302,7 +340,7 @@ def shell_ml(C, P, path, meta, body, extra_head="", extra_foot="", cls="", langs
   <div class="cols">
     <div><span class="mi">{e(s["name"])}</span><ul>{contact}</ul></div>
     <div><span class="mi">{e(ui["sectors"])}</span><ul>{secs}</ul></div>
-    <div><span class="mi">{e(ui["index"])}</span><ul>{f'<li><a href="{P}{C["designNav"][1]}/">{e(C["designNav"][0])}</a></li>' if C.get("designNav") else ""}<li><a href="{P}technologies/">{e(ui["technologies"])}</a></li><li><a href="{P}work/">{e(ui["work"])}</a></li><li><a href="{P}sustainability/">{e(C["sustainability"]["nav"])}</a></li><li><a href="{P}about/">{e(ui["about"])}</a></li>{f'<li><a href="{P}blog/">{e(C["blogNav"])}</a></li>' if C.get("blogNav") else ""}<li><a href="{P}contact/">{e(ui["contact"])}</a></li></ul></div>
+    <div><span class="mi">{e(ui["index"])}</span><ul>{f'<li><a href="{e(studio_url(C, "footer"))}">{e(STUDIO[C["lang"]]["footStudio"])}</a></li>' if STUDIO else ""}{f'<li><a href="{P}{C["designNav"][1]}/">{e(C["designNav"][0])}</a></li>' if C.get("designNav") else ""}<li><a href="{P}technologies/">{e(ui["technologies"])}</a></li><li><a href="{P}work/">{e(ui["work"])}</a></li><li><a href="{P}sustainability/">{e(C["sustainability"]["nav"])}</a></li><li><a href="{P}about/">{e(ui["about"])}</a></li>{f'<li><a href="{P}blog/">{e(C["blogNav"])}</a></li>' if C.get("blogNav") else ""}<li><a href="{P}contact/">{e(ui["contact"])}</a></li></ul></div>
     <div><span class="mi">{e(ui["contact"])}</span><ul><li><a href="{P}samples/">{e(ui["requestSamples"])}</a></li><li><a href="{P}contact/?topic=quote">{e(ui["requestQuote"])}</a></li><li><a href="{P}partners/">{e(ui["partners"])}</a></li></ul></div>
   </div>
   <img class="flogo" src="/assets/logo.png" alt="UltraPixel" width="370" height="133" loading="lazy">
@@ -358,7 +396,7 @@ def net_map(C):
 def home_ml(C, P):
     h, ui = C["home"], C["ui"]; he = h["hero"]
     hero = (f'<div class="panel hero on" data-c="0"><span class="mono">{e(he["tag"])}</span><h1>{e(he["h1a"])} <em>{e(he["h1b"])}</em></h1><p>{e(he["sub"])}</p>'
-            f'<div class="ctas"><a class="cta pill" href="{P}contact/">{e(ui["talkToUs"])} →</a><a class="cta pill ghost" href="{P}samples/">{e(ui["requestSamples"])} ↗</a><a class="cta" href="{P}work/">{e(ui["exploreWork"])} ↗</a></div>'
+            f'<div class="ctas"><a class="cta pill" href="{P}contact/">{e(ui["talkToUs"])} →</a>{f'<a class="cta pill studio" href="{e(studio_url(C, "home-hero"))}">{e(ui["studioNav"])} ↗</a>' if STUDIO else ""}<a class="cta pill ghost" href="{P}samples/">{e(ui["requestSamples"])} ↗</a><a class="cta" href="{P}work/">{e(ui["exploreWork"])} ↗</a></div>'
             f'<div class="sys"><span class="mi">{e(he["chain"])}</span><span class="mi dim">{e(he["sectors"])}</span></div></div>')
     rail = '<div class="rail" id="rail">' + "".join(f'<span data-c="{i+1}">{i+1:02d} {e(n.upper())}</span>' for i, n in enumerate(h["rail"])) + '</div><span class="mi tag-sys">UP / SEQ 01–08</span>'
     fm = C["film"]; panels = ""
@@ -404,6 +442,7 @@ def home_ml(C, P):
     po = h["position"]
     body = f'''{film}
 <hr class="spl">
+{studio_block(C, P, "home-block", mega=True) + '<hr class="spl">' if STUDIO else ""}
 <section class="sec w">{top(an["eyebrow"], an["h2"], an["p"])}
  <div class="anat" id="anat"><figure><img src="{fv["a"]}/final.webp" alt="UltraPixel label with numbered callouts" loading="lazy" width="{fv["vb"].split()[2]}" height="{fv["vb"].split()[3]}">{pins}</figure><ol>{lis}</ol></div>
 </section>
@@ -477,6 +516,7 @@ def wine_ml(C, P, x):
             f'<div class="b">{frame(C, r["shot"], r["h2"], r.get("image", ""), r.get("note", ""))}</div></div></section><hr class="spl">'
             f'<section class="sec">{top(pr["eyebrow"], pr["h2"])}<ol class="steps">{"".join(f"<li><h3>{e(a)}</h3><p>{e(b)}</p></li>" for a, b in pr["steps"])}</ol></section><hr class="spl">'
             f'<section class="sec w">{top(g["eyebrow"], g["h2"])}<div class="hang">{"".join(frame(C, *s) for s in g["shots"])}</div></section><hr class="spl">'
+            + (studio_block(C, P, "sector") + '<hr class="spl">' if STUDIO else "") +
             f'<section class="sec callx"><h2 class="mega rv">{e(w["kit"]["h2"])}</h2><p class="lead">{e(w["kit"]["p"])}</p><div><a class="cta pill" href="{P}samples/?sector={sq}">{e(w["kit"]["cta"])} ↗</a></div></section><hr class="spl">'
             f'<section class="sec w">{top(fq["eyebrow"], fq["h2"])}<div class="faq">{"".join(f"<details><summary>{e(a)}</summary><p>{e(b)}</p></details>" for a, b in fq["items"])}</div></section>'
             + talk_ml(C, P))
@@ -524,7 +564,7 @@ def sector_ml(C, P, x, n):
             f'<section class="sec">{top(ui["specify"], ui["specifyH"])}<ol class="check">{"".join(f"<li>{e(i)}</li>" for i in d["specify"])}</ol></section><hr class="spl">'
             f'<section class="sec w">{top(ui["proof"], ui["proofH"])}<div class="hang">{"".join(frame(C, *s) for s in d["shots"])}</div></section><hr class="spl">'
             f'<section class="sec">{top(ui["questions"], C["wine"]["faq"]["h2"])}{faq_block(C, d["faq"])}</section><hr class="spl">'
-            + kit(C, P, x["title"]) + talk_ml(C, P))
+            + (studio_block(C, P, "sector") + '<hr class="spl">' if STUDIO else "") + kit(C, P, x["title"]) + talk_ml(C, P))
     return shell_ml(C, P, f'{P}{x["slug"]}/', x["meta"], body, extra_head=faq_ld(d["faq"]), cls=f'phys-{x["key"]}')
 
 
@@ -737,7 +777,9 @@ def llms_txt(C0, CE, B=None, TL=None):
     out = [f"# {s['name']}", "", f"> {s['description']}", "",
            f"{s['legalName']} (VAT {s['vatID']}) was founded in {s['founded']}. It designs, prints and finishes self-adhesive labels in Trieste, Italy, "
            "for brands, wineries, manufacturers, agents and distributors in Italy and across Europe.", "",
-           *([TL["labelDesign"]["en"]["llms"], "", link("Label design service", "/" + TL["labelDesign"]["slug"] + "/"), f"- [UltraPixel AI label studio]({TL['labelDesign']['studio']}/): describe the product and see three label proposals on your container", ""] if TL and "labelDesign" in TL else []),
+           *([TL["labelDesign"]["en"]["llms"], "", link("Label design service", "/" + TL["labelDesign"]["slug"] + "/"),
+             *([f"- [UltraPixel Studio – {STUDIO[l]['cta']} ({LANG_NAMES[l]})]({TL['labelDesign']['studio']}/{l}/)" for l in ("it", "en", "fr", "de")] if STUDIO else []),
+             *([link(STUDIO["en"]["pages"][k]["h1"], f"/{TL['labelDesign']['slug']}/{k}/") for k in STUDIO["entries"]] if STUDIO else []), ""] if TL and "labelDesign" in TL else []),
            "## Company facts", "", *offices]
     if s["email"]: out.append(f"- Email: {s['email']}")
     if s["phone"]: out.append(f"- Phone: {s['phone']}")
@@ -849,6 +891,13 @@ def blog_post(C, P, B, p):
     srcs = (f'<div class="src"><span class="mi">{e(u["sources"])}</span><ol>' + "".join(f'<li><a href="{e(h)}" target="_blank" rel="noopener">{e(t)}</a></li>' for t, h in a["sources"]) + "</ol>"
             + (f'<p class="mi dim" style="margin-top:14px">{e(u["notLegal"])}</p>' if p.get("legal") else "") + "</div>") if a.get("sources") else ""
     related = list(a["related"])
+    # every guide links its sector page and, for design and first-order topics, the label design service
+    have = {h.strip("/") for _, h in related}
+    if p.get("design") and STUDIO and STUDIO_SLUG not in have:
+        related = [(STUDIO[l]["footPage"], f"/{STUDIO_SLUG}/")] + related
+    sec = next((x for x in C["sectors"] if x["slug"] == p.get("sector")), None)
+    if sec and sec["slug"] not in have:
+        related = related + [(sec["meta"]["title"].split(" | ")[0], f'/{sec["slug"]}/')]
     if C.get("calc") and p["slug"] in CALC_POSTS:
         related = [(C["calc"][0], "/" + C["calc"][1] + "/")] + related[:3]
     rel_links = '<div class="tl">' + "".join(f'<a class="cta" href="{P}{h.lstrip("/")}">{e(t)} →</a>' for t, h in related) + "</div>"
@@ -984,15 +1033,20 @@ def roll_calc(C, P, T):
 
 
 def design_ml(C, P, T):
-    """Label design service page: UltraPixel designs the label from scratch with its AI studio, then prints it."""
+    """Label design service page: UltraPixel designs the label from scratch with UltraPixel Studio, then prints it."""
     t = T["labelDesign"]; l = C["lang"]; u = t[l]; rel = f"/{t['slug']}/"; url = pub(C, l, rel); base = C["site"]["url"].rstrip("/")
-    go = f'{e(t["studio"])}/?lang={l}&amp;utm_source=ultrapixel.it&amp;utm_medium=site&amp;utm_campaign=label-design'
+    go = e(studio_url(C, "label-design"))
     cta = f'<div class="ctas"><a class="cta pill" href="{go}">{e(u["cta"])} ↗</a><a class="cta pill ghost" href="{P}contact/?topic=quote">{e(C["ui"]["requestQuote"])} ↗</a></div><p class="mi dim">{e(u["ctaNote"])}</p>'
     head = (f'<section class="phead rhero"><span class="mi">{e(u["eyebrow"])}</span><h1 class="mega rv">{e(u["h1a"])} <span>{e(u["h1b"])}</span></h1>'
             f'<p class="lead">{e(u["lead"])}</p>{cta}</section>')
     steps = "".join(f"<h3>{i}. {e(a)}</h3><p>{e(b)}</p>" for i, (a, b) in enumerate(u["steps"], 1))
     ul = lambda xs: "<ul>" + "".join(f"<li>{e(x)}</li>" for x in xs) + "</ul>"
     rel_links = '<div class="tl">' + "".join(f'<a class="cta" href="{P}{h.lstrip("/")}">{e(tx)} →</a>' for tx, h in u["related"]) + "</div>"
+    if STUDIO:
+        st = STUDIO[l]
+        rel_links = ('<div class="tl">' + "".join(f'<a class="cta" href="{P}{t["slug"]}/{k}/">{e(st["pages"][k]["nav"])} →</a>' for k in STUDIO["entries"]) + "</div>"
+                     + f'<span class="mi" style="display:block;margin-top:28px">{e(u["relatedH"])}</span>' + rel_links)
+        u = dict(u, relatedH=st["entryOtherH"])
     body = (head + '<hr class="spl"><section class="sec w"><article class="post">'
             f'<h2>{e(u["stepsH"])}</h2>{steps}<h2>{e(u["getH"])}</h2>{ul(u["get"])}<h2>{e(u["forH"])}</h2>{ul(u["for"])}'
             f'<h2>{e(u["priceH"])}</h2>' + "".join(f"<p>{e(x)}</p>" for x in u["price"]) +
@@ -1002,11 +1056,35 @@ def design_ml(C, P, T):
     ld = {"@context": "https://schema.org", "@type": "Service", "@id": url + "#service", "name": u["h1a"].rstrip("."), "serviceType": "Label design and label printing",
           "description": u["description"], "url": url, "inLanguage": l, "provider": {"@id": base + "/#organization"}, "areaServed": "Europe",
           "audience": {"@type": "BusinessAudience"},
-          "offers": [{"@type": "Offer", "name": u["price"][0], "price": "0", "priceCurrency": "EUR", "url": t["studio"] + "/"},
-                     {"@type": "Offer", "name": u["price"][1], "price": "39", "priceCurrency": "EUR", "valueAddedTaxIncluded": False, "url": t["studio"] + "/"}],
-          "potentialAction": {"@type": "UseAction", "target": t["studio"] + "/"}}
+          "offers": [{"@type": "Offer", "name": u["price"][0], "price": "0", "priceCurrency": "EUR", "url": f'{t["studio"]}/{l}/'},
+                     {"@type": "Offer", "name": u["price"][1], "price": "39", "priceCurrency": "EUR", "valueAddedTaxIncluded": False, "url": f'{t["studio"]}/{l}/'}],
+          "potentialAction": {"@type": "UseAction", "target": f'{t["studio"]}/{l}/'},
+          "isRelatedTo": {"@type": "WebApplication", "@id": t["studio"] + "/#app", "name": "UltraPixel Studio", "url": f'{t["studio"]}/{l}/'}}
     return shell_ml(C, P, f"{P}{t['slug']}/", {"title": u["title"], "description": u["description"]}, body,
                     extra_head=BLOG_CSS + f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>' + faq_ld(u["faq"]))
+
+
+def entry_ml(C, P, T, k):
+    """/label-design/<product>/: one page per product type, in the buyer's words, that leads to the studio."""
+    t = T["labelDesign"]; l = C["lang"]; u = t[l]; st = STUDIO[l]; x = st["pages"][k]; base = C["site"]["url"].rstrip("/")
+    rel = f"/{t['slug']}/{k}/"; url = pub(C, l, rel); go = e(studio_url(C, "entry-" + k))
+    cta = f'<div class="ctas"><a class="cta pill" href="{go}">{e(st["cta"])} ↗</a><a class="cta" href="{P}{t["slug"]}/">{e(st["howLink"])} →</a></div><p class="mi dim">{e(u["ctaNote"])}</p>'
+    head = (f'<section class="phead rhero"><span class="mi"><a href="{P}{t["slug"]}/" style="color:inherit">{e(st["entryEyebrow"])}</a> / {e(x["nav"])}</span>'
+            f'<h1 class="mega rv">{e(x["h1"])}</h1><p class="lead">{e(x["answer"])}</p>{cta}</section>')
+    faq = x["faq"] + [u["faq"][3]]   # + "How much does the label design cost?" from /label-design/
+    others = '<div class="tl">' + "".join(f'<a class="cta" href="{P}{t["slug"]}/{o}/">{e(st["pages"][o]["nav"])} →</a>' for o in STUDIO["entries"] if o != k) + "</div>"
+    body = (head + '<hr class="spl"><section class="sec w"><article class="post">'
+            f'<p>{e(x["about"])}</p><h2>{e(st["entryGetH"])}</h2><ul>' + "".join(f"<li>{e(i)}</li>" for i in st["get"]) + "</ul>"
+            f'<h2>{e(st["entryPriceH"])}</h2>' + "".join(f"<p>{e(p)}</p>" for p in u["price"]) +
+            f'<p><a class="cta pill" href="{go}">{e(st["cta"])} ↗</a></p><h2>{e(st["entryFaqH"])}</h2>' + faq_block(C, faq) + "</article>"
+            f'<div style="margin-top:clamp(40px,5vw,70px)"><span class="mi">{e(st["entryOtherH"])}</span>{others}</div></section>' + talk_ml(C, P))
+    ld = {"@context": "https://schema.org", "@type": "Service", "@id": url + "#service", "name": x["h1"], "serviceType": "Label design and label printing",
+          "description": x["description"], "url": url, "inLanguage": l, "provider": {"@id": base + "/#organization"}, "areaServed": "Europe",
+          "offers": [{"@type": "Offer", "name": u["price"][0], "price": "0", "priceCurrency": "EUR", "url": f'{t["studio"]}/{l}/'},
+                     {"@type": "Offer", "name": u["price"][1], "price": "39", "priceCurrency": "EUR", "valueAddedTaxIncluded": False, "url": f'{t["studio"]}/{l}/'}],
+          "isRelatedTo": {"@type": "WebApplication", "@id": t["studio"] + "/#app", "name": "UltraPixel Studio", "url": f'{t["studio"]}/{l}/'}}
+    return shell_ml(C, P, f"{P}{t['slug']}/{k}/", {"title": x["title"], "description": x["description"]}, body,
+                    extra_head=BLOG_CSS + f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>' + faq_ld(faq))
 
 
 CALC_POSTS = {"label-roll-breaks-on-labelling-line", "label-quote-specification-checklist", "how-to-store-label-rolls", "reduce-label-costs"}
@@ -1032,6 +1110,9 @@ def build(launch=False):
     paths = []; blogp = []
     B = json.loads(rd("content/blog.json")) if os.path.exists(os.path.join(ROOT, "content/blog.json")) else None
     TL = json.loads(rd("content/tools.json")) if os.path.exists(os.path.join(ROOT, "content/tools.json")) else None
+    global STUDIO, STUDIO_SLUG
+    STUDIO = json.loads(rd("content/studio.json")) if os.path.exists(os.path.join(ROOT, "content/studio.json")) else None
+    STUDIO_SLUG = TL["labelDesign"]["slug"] if TL and "labelDesign" in TL else "label-design"
     for lang in LANGS:
         C = json.loads(rd(f"content/{DEFAULT}.json")); P = "/" if lang == HOME else f"/{lang}/"
         if lang != DEFAULT:
@@ -1071,6 +1152,9 @@ def build(launch=False):
             wr(f"{P}{TL['rollCalc']['slug']}/index.html".lstrip("/"), roll_calc(C, P, TL)); blogp.append("/" + TL["rollCalc"]["slug"] + "/")
         if TL and "labelDesign" in TL and lang in TL["labelDesign"]:
             wr(f"{P}{TL['labelDesign']['slug']}/index.html".lstrip("/"), design_ml(C, P, TL))
+            if STUDIO and lang in STUDIO:
+                for k in STUDIO["entries"]:
+                    wr(f"{P}{TL['labelDesign']['slug']}/{k}/index.html".lstrip("/"), entry_ml(C, P, TL, k))
         if B and lang in blog_langs(B):
             wr(f"{P}blog/index.html".lstrip("/"), blog_index(C, P, B)); blogp.append("/blog/")
             for bp in B["posts"]:
@@ -1083,6 +1167,8 @@ def build(launch=False):
         rels.append("/" + TL["rollCalc"]["slug"] + "/")
         if "labelDesign" in TL:
             rels.append("/" + TL["labelDesign"]["slug"] + "/")
+            if STUDIO:
+                rels += [f"/{TL['labelDesign']['slug']}/{k}/" for k in STUDIO["entries"]]
     loc = lambda l, r: pub(C0, l, r)
     wr("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "".join(
         f"  <url><loc>{loc(l, r)}</loc>" + "".join(f'<xhtml:link rel="alternate" hreflang="{a}" href="{loc(a, r)}"/>' for a in LANGS) + f'<xhtml:link rel="alternate" hreflang="x-default" href="{loc(XDEF, r)}"/></url>\n'

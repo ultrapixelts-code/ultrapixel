@@ -1,0 +1,503 @@
+{
+ "studio": "https://studio.ultrapixel.it",
+ "image": "studio-proposal.webp",
+ "entries": [
+  "wine",
+  "beer",
+  "honey-jam",
+  "olive-oil",
+  "cosmetics"
+ ],
+ "en": {
+  "name": "UltraPixel Studio",
+  "cta": "Design your label",
+  "h1a": "Design your label.",
+  "h1b": "We make it print-ready and print it.",
+  "homeEyebrow": "UltraPixel Studio / Label design",
+  "homeP": [
+   "No designer, or only a logo or a sketch? Describe your product in UltraPixel Studio and in a few minutes you see three label designs on your own bottle or jar.",
+   "Choose one: UltraPixel prepares the print file, sends you the final proof with the price and prints the labels in Trieste. The first 2 rounds of proposals are free."
+  ],
+  "howLink": "How it works",
+  "imgAlt": "Label proposal from UltraPixel Studio shown on a wine bottle and flat (illustrative concept)",
+  "imgCap": "Proposal made in UltraPixel Studio · Illustrative concept",
+  "sectorEyebrow": "No artwork yet?",
+  "sectorH": "Design your label with UltraPixel Studio.",
+  "sectorP": "Describe the product and see three label designs on your own container in a few minutes. UltraPixel then prepares the print file and prints the labels. The first 2 rounds are free.",
+  "footStudio": "UltraPixel Studio · Design your label",
+  "footPage": "Label design service",
+  "entryEyebrow": "Label design",
+  "entryGetH": "What you get",
+  "entryPriceH": "What it costs",
+  "entryFaqH": "Frequently asked questions",
+  "entryOtherH": "Design other labels",
+  "pages": {
+   "wine": {
+    "nav": "Wine labels",
+    "title": "Create your wine label online | UltraPixel Studio",
+    "description": "Create your wine label online: see three designs on your own bottle in minutes, then UltraPixel prepares the print file and prints it in Italy. Free to start.",
+    "h1": "Create your wine label",
+    "answer": "UltraPixel Studio is an online label design service from the Italian label printer UltraPixel: describe your wine and in a few minutes you see three wine label designs on your own bottle. Choose one and UltraPixel prepares the print file, sends you the final proof with the price and prints the labels.",
+    "about": "Write what you would tell a designer: the name, the denomination or category, the vintage, the bottle (Bordeaux, Burgundy, sparkling) and the style you like. Upload a logo, a photo of the bottle or a sketch if you have them. The proposals keep the denomination, the alcohol content and the nominal volume in the same field of vision, and the studio points out the statements that usually go on the back label, such as allergens, the bottler and the e-label for ingredients and nutrition. You remain responsible for the texts; UltraPixel checks the print file before printing.",
+    "faq": [
+     [
+      "Can I create a wine label without a designer?",
+      "Yes. You describe the wine in UltraPixel Studio and see three wine label designs on your own bottle in a few minutes. You can start from nothing, from a logo or from a sketch."
+     ],
+     [
+      "Can the wine label have gold foil or embossing?",
+      "Yes. The studio can propose hot foil, embossing and textured papers; UltraPixel prints and finishes them in Trieste. Each foil and each embossing needs its own tool, which is quoted with the final proof."
+     ]
+    ]
+   },
+   "beer": {
+    "nav": "Beer labels",
+    "title": "Create your beer label online | UltraPixel Studio",
+    "description": "Create your beer label online: three designs on your own longneck, steinie or can in minutes. UltraPixel prepares the print file and prints. Free to start.",
+    "h1": "Create your beer label",
+    "answer": "UltraPixel Studio is an online label design service from the Italian label printer UltraPixel: describe your beer and in a few minutes you see three beer label designs on your own bottle or can. Choose one and UltraPixel prepares the print file, sends you the final proof with the price and prints the labels.",
+    "about": "Tell the studio the name of the beer, the style, the container (longneck, steinie or can) and the mood you want on the shelf. Upload your logo or a sketch if you have one, or start from nothing. The proposals keep the name of the beer, the net quantity and the alcohol content in the same field of vision, and the studio points out the statements that usually go on the back, such as ingredients with allergens, the producer and the lot. You remain responsible for the texts; UltraPixel checks the print file before printing.",
+    "faq": [
+     [
+      "Can I design a label for a small batch of beer?",
+      "Yes. UltraPixel prints in digital, so short runs and different labels for each beer of a range are possible. The price depends on size, quantity, material and finishes and comes with the final proof."
+     ],
+     [
+      "Do I need a logo before I start?",
+      "No. You can start from a description only; if you have a logo or a sketch, upload it and the studio uses it in the proposals."
+     ]
+    ]
+   },
+   "honey-jam": {
+    "nav": "Honey and jam jar labels",
+    "title": "Create your honey and jam jar labels | UltraPixel Studio",
+    "description": "Create labels for honey and jam jars online: three designs on your own jar in minutes, then UltraPixel prepares the print file and prints. Free to start.",
+    "h1": "Create your honey and jam jar labels",
+    "answer": "UltraPixel Studio is an online label design service from the Italian label printer UltraPixel: describe your honey or jam and in a few minutes you see three label designs on your own jar. Choose one and UltraPixel prepares the print file, sends you the final proof with the price and prints the labels.",
+    "about": "Tell the studio what is in the jar, the size of the jar, the name of your farm or brand and the style you like, from artisanal to modern. Upload a logo or a photo of the jar if you have them. The proposals keep the name of the food and the net quantity in the same field of vision, and the studio points out the statements that a food label needs, such as ingredients with allergens, the best-before date, the operator, the lot and the origin where it is required, as for honey. You remain responsible for the texts; UltraPixel checks the print file before printing.",
+    "faq": [
+     [
+      "Can I have one design for a whole range of flavours?",
+      "Yes. Ask the studio for one design with a different colour or name for each flavour; UltraPixel prints the range together in digital."
+     ],
+     [
+      "Which shape works on a round jar?",
+      "The studio proposes the die-cut shape and size for your jar and shows the label on it, so you can judge it before asking for the price."
+     ]
+    ]
+   },
+   "olive-oil": {
+    "nav": "Olive oil labels",
+    "title": "Create your olive oil label online | UltraPixel Studio",
+    "description": "Create your olive oil label online: three designs on your own bottle or tin in minutes, then UltraPixel prepares the print file and prints. Free to start.",
+    "h1": "Create your olive oil label",
+    "answer": "UltraPixel Studio is an online label design service from the Italian label printer UltraPixel: describe your olive oil and in a few minutes you see three label designs on your own bottle. Choose one and UltraPixel prepares the print file, sends you the final proof with the price and prints the labels.",
+    "about": "Tell the studio the name of the oil, the category, the bottle and the style you want, from traditional estate to contemporary design. Upload your logo or a photo of the bottle if you have them. The proposals keep the name of the food and the net quantity in the same field of vision, and the studio points out the statements that a food label needs, such as the origin, the storage conditions, the best-before date, the operator and the lot. Labels for oil need materials that hold up to oily fingers and drips: they are chosen with UltraPixel before printing. You remain responsible for the texts.",
+    "faq": [
+     [
+      "Will the label resist oil?",
+      "UltraPixel chooses the material and the protective finish with you before printing, so that the label holds up to oil on the bottle. It is part of the final proof and the price."
+     ],
+     [
+      "Can I start from the label I have today?",
+      "Yes. Upload a photo of your current label and tell the studio what you want to change; it proposes three new directions on your bottle."
+     ]
+    ]
+   },
+   "cosmetics": {
+    "nav": "Cosmetics labels",
+    "title": "Create your cosmetics label online | UltraPixel Studio",
+    "description": "Create your cosmetics label online: three designs on your own bottle, jar or tube in minutes. UltraPixel prepares the print file and prints. Free to start.",
+    "h1": "Create your cosmetics label",
+    "answer": "UltraPixel Studio is an online label design service from the Italian label printer UltraPixel: describe your cosmetic product and in a few minutes you see three label designs on your own bottle, jar or tube. Choose one and UltraPixel prepares the print file, sends you the final proof with the price and prints the labels.",
+    "about": "Tell the studio the product, the container and the style of your brand, and upload your logo or a photo of the packaging if you have them. The proposals show the name, the function when it is not obvious and the nominal content, and the studio points out the statements that usually go on the back or on the carton, such as the INCI list, the period after opening, the lot and the responsible person. For showers and bathrooms the label needs a material that resists water: it is chosen with UltraPixel before printing. You remain responsible for the texts.",
+    "faq": [
+     [
+      "Can a cosmetics label have embossing or a tactile varnish?",
+      "Yes. The studio can propose embossing, hot foil and tactile screen varnish; UltraPixel prints and finishes them in Trieste. Each foil and each embossing needs its own tool, quoted with the final proof."
+     ],
+     [
+      "Can I see the label on my own bottle?",
+      "Yes. Every proposal is shown on the container you describe or upload, so you judge the label where it will be used."
+     ]
+    ]
+   }
+  },
+  "get": [
+   "Three different label designs on your own container",
+   "Changes in plain words until you like it",
+   "Die-cut shape, material and finishes chosen for your product",
+   "Final print proof and price from UltraPixel within one working day of your choice",
+   "Printing and finishing by the same company in Trieste"
+  ]
+ },
+ "it": {
+  "name": "UltraPixel Studio",
+  "cta": "Disegna la tua etichetta",
+  "h1a": "Disegna la tua etichetta.",
+  "h1b": "Noi la prepariamo per la stampa e la stampiamo.",
+  "homeEyebrow": "UltraPixel Studio / Grafica etichette",
+  "homeP": [
+   "Non hai un grafico, o hai solo un logo o una bozza? Descrivi il prodotto in UltraPixel Studio e in pochi minuti vedi tre proposte di etichetta sulla tua bottiglia o sul tuo vaso.",
+   "Scegline una: UltraPixel prepara il file di stampa, ti manda la bozza definitiva con il prezzo e stampa le etichette a Trieste. I primi 2 giri di proposte sono gratuiti."
+  ],
+  "howLink": "Come funziona",
+  "imgAlt": "Proposta di etichetta fatta con UltraPixel Studio, sulla bottiglia di vino e in piano (concept illustrativo)",
+  "imgCap": "Proposta fatta con UltraPixel Studio · Concept illustrativo",
+  "sectorEyebrow": "Non hai ancora la grafica?",
+  "sectorH": "Disegna la tua etichetta con UltraPixel Studio.",
+  "sectorP": "Descrivi il prodotto e in pochi minuti vedi tre proposte di etichetta sul tuo contenitore. Poi UltraPixel prepara il file di stampa e stampa le etichette. I primi 2 giri sono gratuiti.",
+  "footStudio": "UltraPixel Studio · Disegna la tua etichetta",
+  "footPage": "Progettazione grafica etichette",
+  "entryEyebrow": "Grafica etichette",
+  "entryGetH": "Cosa ricevi",
+  "entryPriceH": "Quanto costa",
+  "entryFaqH": "Domande frequenti",
+  "entryOtherH": "Disegna altre etichette",
+  "pages": {
+   "wine": {
+    "nav": "Etichette vino",
+    "title": "Crea l'etichetta del tuo vino online | UltraPixel Studio",
+    "description": "Crea l'etichetta del tuo vino online: tre proposte sulla tua bottiglia in pochi minuti, poi UltraPixel prepara il file e la stampa in Italia.",
+    "h1": "Crea l'etichetta del tuo vino",
+    "answer": "UltraPixel Studio è il servizio online di progettazione etichette di UltraPixel, etichettificio italiano: descrivi il tuo vino e in pochi minuti vedi tre proposte di etichetta sulla tua bottiglia. Scegline una e UltraPixel prepara il file di stampa, ti manda la bozza definitiva con il prezzo e stampa le etichette.",
+    "about": "Scrivi quello che diresti a un grafico: il nome, la denominazione o la categoria, l'annata, la bottiglia (bordolese, borgognotta, champagnotta) e lo stile che ti piace. Carica un logo, una foto della bottiglia o una bozza, se li hai. Le proposte tengono denominazione, titolo alcolometrico e volume nello stesso campo visivo, e lo studio ti segnala le diciture che di solito vanno in retroetichetta, come allergeni, imbottigliatore e l'etichetta elettronica per ingredienti e valori nutrizionali. Dei testi rispondi tu; UltraPixel controlla il file di stampa prima di stampare.",
+    "faq": [
+     [
+      "Posso creare l'etichetta del vino senza un grafico?",
+      "Sì. Descrivi il vino in UltraPixel Studio e in pochi minuti vedi tre proposte di etichetta sulla tua bottiglia. Puoi partire da zero, da un logo o da una bozza."
+     ],
+     [
+      "L'etichetta del vino può avere oro a caldo o rilievo?",
+      "Sì. Lo studio può proporre stampa a caldo, rilievo e carte materiche; UltraPixel le stampa e le nobilita a Trieste. Ogni foil e ogni rilievo richiedono un proprio cliché, quotato insieme alla bozza definitiva."
+     ]
+    ]
+   },
+   "beer": {
+    "nav": "Etichette birra",
+    "title": "Crea l'etichetta della tua birra online | UltraPixel Studio",
+    "description": "Crea l'etichetta della tua birra online: tre proposte sulla tua longneck, steinie o lattina in pochi minuti. UltraPixel prepara il file e stampa.",
+    "h1": "Crea l'etichetta della tua birra",
+    "answer": "UltraPixel Studio è il servizio online di progettazione etichette di UltraPixel, etichettificio italiano: descrivi la tua birra e in pochi minuti vedi tre proposte di etichetta sulla tua bottiglia o lattina. Scegline una e UltraPixel prepara il file di stampa, ti manda la bozza definitiva con il prezzo e stampa le etichette.",
+    "about": "Racconta allo studio il nome della birra, lo stile, il contenitore (longneck, steinie o lattina) e l'effetto che vuoi sullo scaffale. Carica il logo o una bozza se li hai, oppure parti da zero. Le proposte tengono nome della birra, quantità netta e titolo alcolometrico nello stesso campo visivo, e lo studio ti segnala le diciture che di solito vanno sul retro, come ingredienti con allergeni, produttore e lotto. Dei testi rispondi tu; UltraPixel controlla il file di stampa prima di stampare.",
+    "faq": [
+     [
+      "Posso fare l'etichetta per una piccola cotta di birra?",
+      "Sì. UltraPixel stampa in digitale, quindi sono possibili tirature brevi ed etichette diverse per ogni birra della gamma. Il prezzo dipende da misura, quantità, materiale e lavorazioni e arriva con la bozza definitiva."
+     ],
+     [
+      "Serve un logo per iniziare?",
+      "No. Puoi partire anche solo da una descrizione; se hai un logo o una bozza, caricali e lo studio li usa nelle proposte."
+     ]
+    ]
+   },
+   "honey-jam": {
+    "nav": "Etichette per vasi di miele e marmellata",
+    "title": "Crea le etichette per miele e marmellata | UltraPixel Studio",
+    "description": "Crea online le etichette per vasi di miele e marmellata: tre proposte sul tuo vaso in pochi minuti, poi UltraPixel prepara il file e stampa. Si inizia gratis.",
+    "h1": "Crea le etichette per i tuoi vasi di miele e marmellata",
+    "answer": "UltraPixel Studio è il servizio online di progettazione etichette di UltraPixel, etichettificio italiano: descrivi il tuo miele o la tua marmellata e in pochi minuti vedi tre proposte di etichetta sul tuo vaso. Scegline una e UltraPixel prepara il file di stampa, ti manda la bozza definitiva con il prezzo e stampa le etichette.",
+    "about": "Racconta allo studio cosa c'è nel vaso, la misura del vaso, il nome della tua azienda agricola o del marchio e lo stile che ti piace, dall'artigianale al moderno. Carica un logo o una foto del vaso, se li hai. Le proposte tengono denominazione dell'alimento e quantità netta nello stesso campo visivo, e lo studio ti segnala le diciture che servono a un'etichetta alimentare, come ingredienti con allergeni, termine minimo di conservazione, operatore, lotto e origine dove è richiesta, come per il miele. Dei testi rispondi tu; UltraPixel controlla il file di stampa prima di stampare.",
+    "faq": [
+     [
+      "Posso avere una sola grafica per tutta la gamma di gusti?",
+      "Sì. Chiedi allo studio una grafica con un colore o un nome diverso per ogni gusto; UltraPixel stampa la gamma insieme, in digitale."
+     ],
+     [
+      "Che forma funziona su un vaso tondo?",
+      "Lo studio propone forma della fustella e misura per il tuo vaso e ti mostra l'etichetta applicata, così la valuti prima di chiedere il prezzo."
+     ]
+    ]
+   },
+   "olive-oil": {
+    "nav": "Etichette olio",
+    "title": "Crea l'etichetta del tuo olio online | UltraPixel Studio",
+    "description": "Crea l'etichetta del tuo olio d'oliva online: tre proposte sulla tua bottiglia o latta in pochi minuti, poi UltraPixel prepara il file e stampa.",
+    "h1": "Crea l'etichetta del tuo olio",
+    "answer": "UltraPixel Studio è il servizio online di progettazione etichette di UltraPixel, etichettificio italiano: descrivi il tuo olio d'oliva e in pochi minuti vedi tre proposte di etichetta sulla tua bottiglia. Scegline una e UltraPixel prepara il file di stampa, ti manda la bozza definitiva con il prezzo e stampa le etichette.",
+    "about": "Racconta allo studio il nome dell'olio, la categoria, la bottiglia e lo stile che vuoi, dalla tenuta tradizionale al design contemporaneo. Carica il logo o una foto della bottiglia, se li hai. Le proposte tengono denominazione dell'alimento e quantità netta nello stesso campo visivo, e lo studio ti segnala le diciture che servono a un'etichetta alimentare, come origine, condizioni di conservazione, termine minimo di conservazione, operatore e lotto. Le etichette per l'olio richiedono materiali che reggono dita unte e colature: si scelgono con UltraPixel prima della stampa. Dei testi rispondi tu.",
+    "faq": [
+     [
+      "L'etichetta resiste all'olio?",
+      "UltraPixel sceglie con te materiale e finitura protettiva prima della stampa, perché l'etichetta regga l'olio sulla bottiglia. Fa parte della bozza definitiva e del prezzo."
+     ],
+     [
+      "Posso partire dall'etichetta che ho oggi?",
+      "Sì. Carica una foto dell'etichetta attuale e di' allo studio cosa vuoi cambiare: ti propone tre nuove direzioni sulla tua bottiglia."
+     ]
+    ]
+   },
+   "cosmetics": {
+    "nav": "Etichette cosmetiche",
+    "title": "Crea l'etichetta del tuo cosmetico online | UltraPixel Studio",
+    "description": "Crea l'etichetta del tuo cosmetico online: tre proposte sul tuo flacone, vasetto o tubetto in pochi minuti. UltraPixel prepara il file e stampa.",
+    "h1": "Crea l'etichetta del tuo cosmetico",
+    "answer": "UltraPixel Studio è il servizio online di progettazione etichette di UltraPixel, etichettificio italiano: descrivi il tuo prodotto cosmetico e in pochi minuti vedi tre proposte di etichetta sul tuo flacone, vasetto o tubetto. Scegline una e UltraPixel prepara il file di stampa, ti manda la bozza definitiva con il prezzo e stampa le etichette.",
+    "about": "Racconta allo studio il prodotto, il contenitore e lo stile del tuo marchio, e carica il logo o una foto della confezione, se li hai. Le proposte mostrano il nome, la funzione quando non è evidente e il contenuto nominale, e lo studio ti segnala le diciture che di solito vanno sul retro o sull'astuccio, come elenco INCI, periodo dopo l'apertura, lotto e persona responsabile. Per doccia e bagno l'etichetta richiede un materiale resistente all'acqua: si sceglie con UltraPixel prima della stampa. Dei testi rispondi tu.",
+    "faq": [
+     [
+      "Un'etichetta cosmetica può avere rilievo o vernice tattile?",
+      "Sì. Lo studio può proporre rilievo, stampa a caldo e vernice serigrafica tattile; UltraPixel le stampa e le nobilita a Trieste. Ogni foil e ogni rilievo richiedono un proprio cliché, quotato con la bozza definitiva."
+     ],
+     [
+      "Posso vedere l'etichetta sul mio flacone?",
+      "Sì. Ogni proposta è mostrata sul contenitore che descrivi o carichi, così valuti l'etichetta dove verrà usata."
+     ]
+    ]
+   }
+  },
+  "get": [
+   "Tre proposte di etichetta diverse sul tuo contenitore",
+   "Modifiche chieste a parole, finché ti piace",
+   "Forma della fustella, materiale e lavorazioni scelti per il tuo prodotto",
+   "Bozza di stampa definitiva e prezzo da UltraPixel entro un giorno lavorativo dalla scelta",
+   "Stampa e nobilitazione dalla stessa azienda, a Trieste"
+  ]
+ },
+ "fr": {
+  "name": "UltraPixel Studio",
+  "cta": "Dessinez votre étiquette",
+  "h1a": "Dessinez votre étiquette.",
+  "h1b": "Nous la préparons pour l'impression et l'imprimons.",
+  "homeEyebrow": "UltraPixel Studio / Création d'étiquettes",
+  "homeP": [
+   "Pas de graphiste, ou seulement un logo ou une ébauche ? Décrivez votre produit dans UltraPixel Studio et voyez en quelques minutes trois propositions d'étiquette sur votre bouteille ou votre pot.",
+   "Choisissez-en une : UltraPixel prépare le fichier d'impression, vous envoie le BAT définitif avec le prix et imprime les étiquettes. Les 2 premiers tours de propositions sont gratuits."
+  ],
+  "howLink": "Comment ça marche",
+  "imgAlt": "Proposition d'étiquette réalisée avec UltraPixel Studio, sur une bouteille de vin et à plat (concept illustratif)",
+  "imgCap": "Proposition réalisée avec UltraPixel Studio · Concept illustratif",
+  "sectorEyebrow": "Pas encore de graphisme ?",
+  "sectorH": "Dessinez votre étiquette avec UltraPixel Studio.",
+  "sectorP": "Décrivez le produit et voyez en quelques minutes trois propositions d'étiquette sur votre contenant. UltraPixel prépare ensuite le fichier d'impression et imprime les étiquettes. Les 2 premiers tours sont gratuits.",
+  "footStudio": "UltraPixel Studio · Dessinez votre étiquette",
+  "footPage": "Création d'étiquettes",
+  "entryEyebrow": "Création d'étiquettes",
+  "entryGetH": "Ce que vous recevez",
+  "entryPriceH": "Combien ça coûte",
+  "entryFaqH": "Questions fréquentes",
+  "entryOtherH": "Créer d'autres étiquettes",
+  "pages": {
+   "wine": {
+    "nav": "Étiquettes de vin",
+    "title": "Créez votre étiquette de vin en ligne | UltraPixel Studio",
+    "description": "Créez votre étiquette de vin en ligne : trois propositions sur votre bouteille en quelques minutes, puis UltraPixel prépare le fichier et l'imprime.",
+    "h1": "Créez votre étiquette de vin",
+    "answer": "UltraPixel Studio est le service en ligne de création d'étiquettes d'UltraPixel, imprimeur d'étiquettes italien : décrivez votre vin et voyez en quelques minutes trois propositions d'étiquette de vin sur votre bouteille. Choisissez-en une et UltraPixel prépare le fichier d'impression, vous envoie le BAT définitif avec le prix et imprime les étiquettes.",
+    "about": "Écrivez ce que vous diriez à un graphiste : le nom, l'appellation ou la catégorie, le millésime, la bouteille (bordelaise, bourguignonne, champenoise) et le style qui vous plaît. Ajoutez un logo, une photo de la bouteille ou une ébauche si vous en avez. Les propositions gardent l'appellation, le titre alcoométrique et le volume dans le même champ visuel, et le studio vous signale les mentions qui vont d'habitude sur la contre-étiquette, comme les allergènes, l'embouteilleur et l'e-label pour les ingrédients et la nutrition. Vous restez responsable des textes ; UltraPixel contrôle le fichier avant l'impression.",
+    "faq": [
+     [
+      "Puis-je créer une étiquette de vin sans graphiste ?",
+      "Oui. Vous décrivez le vin dans UltraPixel Studio et voyez en quelques minutes trois propositions d'étiquette sur votre bouteille. Vous pouvez partir de rien, d'un logo ou d'une ébauche."
+     ],
+     [
+      "L'étiquette de vin peut-elle avoir une dorure ou un gaufrage ?",
+      "Oui. Le studio peut proposer dorure à chaud, gaufrage et papiers texturés ; UltraPixel les imprime et les ennoblit à Trieste. Chaque dorure et chaque gaufrage demandent leur propre outil, chiffré avec le BAT définitif."
+     ]
+    ]
+   },
+   "beer": {
+    "nav": "Étiquettes de bière",
+    "title": "Créez votre étiquette de bière en ligne | UltraPixel Studio",
+    "description": "Créez votre étiquette de bière en ligne : trois propositions sur votre longneck, steinie ou canette en quelques minutes. UltraPixel prépare le fichier et imprime.",
+    "h1": "Créez votre étiquette de bière",
+    "answer": "UltraPixel Studio est le service en ligne de création d'étiquettes d'UltraPixel, imprimeur d'étiquettes italien : décrivez votre bière et voyez en quelques minutes trois propositions d'étiquette sur votre bouteille ou canette. Choisissez-en une et UltraPixel prépare le fichier d'impression, vous envoie le BAT définitif avec le prix et imprime les étiquettes.",
+    "about": "Indiquez au studio le nom de la bière, le style, le contenant (longneck, steinie ou canette) et l'effet que vous voulez en rayon. Ajoutez votre logo ou une ébauche si vous en avez, ou partez de rien. Les propositions gardent le nom de la bière, la quantité nette et le titre alcoométrique dans le même champ visuel, et le studio vous signale les mentions qui vont d'habitude au dos, comme les ingrédients avec allergènes, le producteur et le lot. Vous restez responsable des textes ; UltraPixel contrôle le fichier avant l'impression.",
+    "faq": [
+     [
+      "Puis-je créer une étiquette pour un petit brassin ?",
+      "Oui. UltraPixel imprime en numérique : les petites séries et une étiquette différente pour chaque bière de la gamme sont possibles. Le prix dépend du format, de la quantité, de la matière et des finitions et arrive avec le BAT définitif."
+     ],
+     [
+      "Faut-il un logo pour commencer ?",
+      "Non. Vous pouvez partir d'une simple description ; si vous avez un logo ou une ébauche, ajoutez-les et le studio les utilise dans les propositions."
+     ]
+    ]
+   },
+   "honey-jam": {
+    "nav": "Étiquettes pour pots de miel et de confiture",
+    "title": "Créez vos étiquettes de miel et de confiture | UltraPixel Studio",
+    "description": "Créez en ligne vos étiquettes pour pots de miel et de confiture : trois propositions sur votre pot en quelques minutes, puis UltraPixel imprime.",
+    "h1": "Créez vos étiquettes pour pots de miel et de confiture",
+    "answer": "UltraPixel Studio est le service en ligne de création d'étiquettes d'UltraPixel, imprimeur d'étiquettes italien : décrivez votre miel ou votre confiture et voyez en quelques minutes trois propositions d'étiquette sur votre pot. Choisissez-en une et UltraPixel prépare le fichier d'impression, vous envoie le BAT définitif avec le prix et imprime les étiquettes.",
+    "about": "Indiquez au studio ce que contient le pot, sa taille, le nom de votre exploitation ou de votre marque et le style qui vous plaît, de l'artisanal au moderne. Ajoutez un logo ou une photo du pot si vous en avez. Les propositions gardent la dénomination de la denrée et la quantité nette dans le même champ visuel, et le studio vous signale les mentions qu'une étiquette alimentaire demande, comme les ingrédients avec allergènes, la date de durabilité minimale, l'exploitant, le lot et l'origine lorsqu'elle est requise, comme pour le miel. Vous restez responsable des textes ; UltraPixel contrôle le fichier avant l'impression.",
+    "faq": [
+     [
+      "Puis-je avoir un seul graphisme pour toute une gamme de parfums ?",
+      "Oui. Demandez au studio un graphisme avec une couleur ou un nom différent pour chaque parfum ; UltraPixel imprime la gamme ensemble, en numérique."
+     ],
+     [
+      "Quelle forme fonctionne sur un pot rond ?",
+      "Le studio propose la forme de découpe et le format pour votre pot et vous montre l'étiquette posée, pour que vous la jugiez avant de demander le prix."
+     ]
+    ]
+   },
+   "olive-oil": {
+    "nav": "Étiquettes d'huile d'olive",
+    "title": "Créez votre étiquette d'huile d'olive | UltraPixel Studio",
+    "description": "Créez votre étiquette d'huile d'olive en ligne : trois propositions sur votre bouteille ou bidon en quelques minutes, puis UltraPixel imprime.",
+    "h1": "Créez votre étiquette d'huile d'olive",
+    "answer": "UltraPixel Studio est le service en ligne de création d'étiquettes d'UltraPixel, imprimeur d'étiquettes italien : décrivez votre huile d'olive et voyez en quelques minutes trois propositions d'étiquette sur votre bouteille. Choisissez-en une et UltraPixel prépare le fichier d'impression, vous envoie le BAT définitif avec le prix et imprime les étiquettes.",
+    "about": "Indiquez au studio le nom de l'huile, la catégorie, la bouteille et le style voulu, du domaine traditionnel au design contemporain. Ajoutez votre logo ou une photo de la bouteille si vous en avez. Les propositions gardent la dénomination et la quantité nette dans le même champ visuel, et le studio vous signale les mentions qu'une étiquette alimentaire demande, comme l'origine, les conditions de conservation, la date de durabilité minimale, l'exploitant et le lot. Les étiquettes d'huile demandent des matières qui résistent aux doigts gras et aux coulures : elles sont choisies avec UltraPixel avant l'impression. Vous restez responsable des textes.",
+    "faq": [
+     [
+      "L'étiquette résiste-t-elle à l'huile ?",
+      "UltraPixel choisit avec vous la matière et la finition de protection avant l'impression, pour que l'étiquette tienne face à l'huile sur la bouteille. Cela fait partie du BAT définitif et du prix."
+     ],
+     [
+      "Puis-je partir de mon étiquette actuelle ?",
+      "Oui. Ajoutez une photo de votre étiquette actuelle et dites au studio ce que vous voulez changer : il propose trois nouvelles directions sur votre bouteille."
+     ]
+    ]
+   },
+   "cosmetics": {
+    "nav": "Étiquettes cosmétiques",
+    "title": "Créez votre étiquette cosmétique en ligne | UltraPixel Studio",
+    "description": "Créez votre étiquette cosmétique en ligne : trois propositions sur votre flacon, pot ou tube en quelques minutes. UltraPixel prépare le fichier et imprime.",
+    "h1": "Créez votre étiquette cosmétique",
+    "answer": "UltraPixel Studio est le service en ligne de création d'étiquettes d'UltraPixel, imprimeur d'étiquettes italien : décrivez votre produit cosmétique et voyez en quelques minutes trois propositions d'étiquette sur votre flacon, pot ou tube. Choisissez-en une et UltraPixel prépare le fichier d'impression, vous envoie le BAT définitif avec le prix et imprime les étiquettes.",
+    "about": "Indiquez au studio le produit, le contenant et le style de votre marque, et ajoutez votre logo ou une photo de l'emballage si vous en avez. Les propositions montrent le nom, la fonction lorsqu'elle n'est pas évidente et le contenu nominal, et le studio vous signale les mentions qui vont d'habitude au dos ou sur l'étui, comme la liste INCI, la durée après ouverture, le lot et la personne responsable. Pour la douche et le bain, l'étiquette demande une matière résistante à l'eau : elle est choisie avec UltraPixel avant l'impression. Vous restez responsable des textes.",
+    "faq": [
+     [
+      "Une étiquette cosmétique peut-elle avoir un gaufrage ou un vernis tactile ?",
+      "Oui. Le studio peut proposer gaufrage, dorure à chaud et vernis sérigraphique tactile ; UltraPixel les imprime et les ennoblit à Trieste. Chaque dorure et chaque gaufrage demandent leur propre outil, chiffré avec le BAT définitif."
+     ],
+     [
+      "Puis-je voir l'étiquette sur mon propre flacon ?",
+      "Oui. Chaque proposition est montrée sur le contenant que vous décrivez ou ajoutez, pour juger l'étiquette là où elle sera utilisée."
+     ]
+    ]
+   }
+  },
+  "get": [
+   "Trois propositions d'étiquette différentes sur votre contenant",
+   "Des modifications demandées avec vos mots, jusqu'à ce qu'elle vous plaise",
+   "Forme de découpe, matière et finitions choisies pour votre produit",
+   "BAT définitif et prix d'UltraPixel sous un jour ouvré après votre choix",
+   "Impression et ennoblissement par la même entreprise, à Trieste"
+  ]
+ },
+ "de": {
+  "name": "UltraPixel Studio",
+  "cta": "Gestalten Sie Ihr Etikett",
+  "h1a": "Gestalten Sie Ihr Etikett.",
+  "h1b": "Wir machen es druckfertig und drucken es.",
+  "homeEyebrow": "UltraPixel Studio / Etikettengestaltung",
+  "homeP": [
+   "Kein Grafiker, oder nur ein Logo oder ein Entwurf? Beschreiben Sie Ihr Produkt in UltraPixel Studio und sehen Sie in wenigen Minuten drei Etikettenentwürfe auf Ihrer Flasche oder Ihrem Glas.",
+   "Wählen Sie einen aus: UltraPixel erstellt die Druckdatei, sendet Ihnen den endgültigen Proof mit Preis und druckt die Etiketten in Triest. Die ersten 2 Vorschlagsrunden sind kostenlos."
+  ],
+  "howLink": "So funktioniert es",
+  "imgAlt": "Etikettenvorschlag aus UltraPixel Studio auf einer Weinflasche und flach (illustratives Konzept)",
+  "imgCap": "Vorschlag aus UltraPixel Studio · Illustratives Konzept",
+  "sectorEyebrow": "Noch keine Gestaltung?",
+  "sectorH": "Gestalten Sie Ihr Etikett mit UltraPixel Studio.",
+  "sectorP": "Beschreiben Sie das Produkt und sehen Sie in wenigen Minuten drei Etikettenentwürfe auf Ihrem Behälter. Danach erstellt UltraPixel die Druckdatei und druckt die Etiketten. Die ersten 2 Runden sind kostenlos.",
+  "footStudio": "UltraPixel Studio · Gestalten Sie Ihr Etikett",
+  "footPage": "Etikettengestaltung",
+  "entryEyebrow": "Etikettengestaltung",
+  "entryGetH": "Was Sie bekommen",
+  "entryPriceH": "Was es kostet",
+  "entryFaqH": "Häufige Fragen",
+  "entryOtherH": "Weitere Etiketten gestalten",
+  "pages": {
+   "wine": {
+    "nav": "Weinetiketten",
+    "title": "Weinetikett online selbst gestalten | UltraPixel Studio",
+    "description": "Weinetikett online selbst gestalten: drei Entwürfe auf Ihrer Flasche in wenigen Minuten, danach erstellt UltraPixel die Druckdatei und druckt.",
+    "h1": "Gestalten Sie Ihr Weinetikett",
+    "answer": "UltraPixel Studio ist der Online-Service der italienischen Etikettendruckerei UltraPixel für die Gestaltung von Etiketten: Beschreiben Sie Ihren Wein und sehen Sie in wenigen Minuten drei Weinetikett-Entwürfe auf Ihrer Flasche. Wählen Sie einen aus, und UltraPixel erstellt die Druckdatei, sendet Ihnen den endgültigen Proof mit Preis und druckt die Etiketten.",
+    "about": "Schreiben Sie, was Sie einem Grafiker sagen würden: den Namen, die Bezeichnung oder Kategorie, den Jahrgang, die Flasche (Bordeaux, Burgunder, Sekt) und den Stil, der Ihnen gefällt. Laden Sie ein Logo, ein Foto der Flasche oder einen Entwurf hoch, falls vorhanden. Die Entwürfe halten Bezeichnung, Alkoholgehalt und Nennvolumen im selben Sichtfeld, und das Studio weist auf die Angaben hin, die meist auf das Rückenetikett gehören, wie Allergene, Abfüller und das E-Label für Zutaten und Nährwerte. Für die Texte bleiben Sie verantwortlich; UltraPixel prüft die Druckdatei vor dem Druck.",
+    "faq": [
+     [
+      "Kann ich ein Weinetikett ohne Grafiker gestalten?",
+      "Ja. Sie beschreiben den Wein in UltraPixel Studio und sehen in wenigen Minuten drei Etikettenentwürfe auf Ihrer Flasche. Sie können bei null anfangen, mit einem Logo oder mit einem Entwurf."
+     ],
+     [
+      "Kann das Weinetikett Goldfolie oder Prägung haben?",
+      "Ja. Das Studio kann Heißfolie, Prägung und Strukturpapiere vorschlagen; UltraPixel druckt und veredelt sie in Triest. Jede Folie und jede Prägung braucht ein eigenes Werkzeug, das mit dem endgültigen Proof angeboten wird."
+     ]
+    ]
+   },
+   "beer": {
+    "nav": "Bieretiketten",
+    "title": "Bieretikett online selbst gestalten | UltraPixel Studio",
+    "description": "Bieretikett online selbst gestalten: drei Entwürfe auf Ihrer Longneck, Steinie oder Dose in wenigen Minuten. UltraPixel erstellt die Druckdatei und druckt.",
+    "h1": "Gestalten Sie Ihr Bieretikett",
+    "answer": "UltraPixel Studio ist der Online-Service der italienischen Etikettendruckerei UltraPixel für die Gestaltung von Etiketten: Beschreiben Sie Ihr Bier und sehen Sie in wenigen Minuten drei Etikettenentwürfe auf Ihrer Flasche oder Dose. Wählen Sie einen aus, und UltraPixel erstellt die Druckdatei, sendet Ihnen den endgültigen Proof mit Preis und druckt die Etiketten.",
+    "about": "Nennen Sie dem Studio den Namen des Biers, den Stil, den Behälter (Longneck, Steinie oder Dose) und die Wirkung, die Sie im Regal wollen. Laden Sie Ihr Logo oder einen Entwurf hoch, falls vorhanden, oder fangen Sie bei null an. Die Entwürfe halten Namen des Biers, Nettofüllmenge und Alkoholgehalt im selben Sichtfeld, und das Studio weist auf die Angaben hin, die meist auf die Rückseite gehören, wie Zutaten mit Allergenen, Hersteller und Los. Für die Texte bleiben Sie verantwortlich; UltraPixel prüft die Druckdatei vor dem Druck.",
+    "faq": [
+     [
+      "Kann ich ein Etikett für einen kleinen Sud gestalten?",
+      "Ja. UltraPixel druckt digital, daher sind kleine Auflagen und ein eigenes Etikett für jedes Bier einer Reihe möglich. Der Preis hängt von Format, Menge, Material und Veredelungen ab und kommt mit dem endgültigen Proof."
+     ],
+     [
+      "Brauche ich ein Logo, um anzufangen?",
+      "Nein. Sie können mit einer Beschreibung beginnen; wenn Sie ein Logo oder einen Entwurf haben, laden Sie ihn hoch, und das Studio verwendet ihn in den Entwürfen."
+     ]
+    ]
+   },
+   "honey-jam": {
+    "nav": "Etiketten für Honig- und Marmeladengläser",
+    "title": "Etiketten für Honig und Marmelade gestalten | UltraPixel Studio",
+    "description": "Etiketten für Honig- und Marmeladengläser online gestalten: drei Entwürfe auf Ihrem Glas in wenigen Minuten, danach druckt UltraPixel. Kostenlos starten.",
+    "h1": "Gestalten Sie Etiketten für Ihre Honig- und Marmeladengläser",
+    "answer": "UltraPixel Studio ist der Online-Service der italienischen Etikettendruckerei UltraPixel für die Gestaltung von Etiketten: Beschreiben Sie Ihren Honig oder Ihre Marmelade und sehen Sie in wenigen Minuten drei Etikettenentwürfe auf Ihrem Glas. Wählen Sie einen aus, und UltraPixel erstellt die Druckdatei, sendet Ihnen den endgültigen Proof mit Preis und druckt die Etiketten.",
+    "about": "Sagen Sie dem Studio, was im Glas ist, wie groß das Glas ist, wie Ihr Hof oder Ihre Marke heißt und welcher Stil Ihnen gefällt, von handwerklich bis modern. Laden Sie ein Logo oder ein Foto des Glases hoch, falls vorhanden. Die Entwürfe halten Bezeichnung des Lebensmittels und Nettofüllmenge im selben Sichtfeld, und das Studio weist auf die Angaben hin, die ein Lebensmitteletikett braucht, wie Zutaten mit Allergenen, Mindesthaltbarkeitsdatum, Lebensmittelunternehmer, Los und Herkunft, wo sie vorgeschrieben ist, etwa bei Honig. Für die Texte bleiben Sie verantwortlich; UltraPixel prüft die Druckdatei vor dem Druck.",
+    "faq": [
+     [
+      "Kann ich eine Gestaltung für eine ganze Sortenreihe haben?",
+      "Ja. Bitten Sie das Studio um eine Gestaltung mit einer anderen Farbe oder einem anderen Namen für jede Sorte; UltraPixel druckt die Reihe gemeinsam, digital."
+     ],
+     [
+      "Welche Form passt auf ein rundes Glas?",
+      "Das Studio schlägt Stanzform und Format für Ihr Glas vor und zeigt das Etikett darauf, damit Sie es beurteilen, bevor Sie nach dem Preis fragen."
+     ]
+    ]
+   },
+   "olive-oil": {
+    "nav": "Olivenöl-Etiketten",
+    "title": "Olivenöl-Etikett online gestalten | UltraPixel Studio",
+    "description": "Olivenöl-Etikett online gestalten: drei Entwürfe auf Ihrer Flasche oder Kanne in wenigen Minuten, danach erstellt UltraPixel die Druckdatei und druckt.",
+    "h1": "Gestalten Sie Ihr Olivenöl-Etikett",
+    "answer": "UltraPixel Studio ist der Online-Service der italienischen Etikettendruckerei UltraPixel für die Gestaltung von Etiketten: Beschreiben Sie Ihr Olivenöl und sehen Sie in wenigen Minuten drei Etikettenentwürfe auf Ihrer Flasche. Wählen Sie einen aus, und UltraPixel erstellt die Druckdatei, sendet Ihnen den endgültigen Proof mit Preis und druckt die Etiketten.",
+    "about": "Nennen Sie dem Studio den Namen des Öls, die Kategorie, die Flasche und den gewünschten Stil, vom traditionellen Gut bis zum zeitgenössischen Design. Laden Sie Ihr Logo oder ein Foto der Flasche hoch, falls vorhanden. Die Entwürfe halten Bezeichnung und Nettofüllmenge im selben Sichtfeld, und das Studio weist auf die Angaben hin, die ein Lebensmitteletikett braucht, wie Herkunft, Aufbewahrungsbedingungen, Mindesthaltbarkeitsdatum, Lebensmittelunternehmer und Los. Etiketten für Öl brauchen Materialien, die fettigen Fingern und Tropfen standhalten: Sie werden vor dem Druck mit UltraPixel ausgewählt. Für die Texte bleiben Sie verantwortlich.",
+    "faq": [
+     [
+      "Hält das Etikett Öl stand?",
+      "UltraPixel wählt mit Ihnen vor dem Druck Material und Schutzveredelung aus, damit das Etikett Öl auf der Flasche standhält. Das ist Teil des endgültigen Proofs und des Preises."
+     ],
+     [
+      "Kann ich von meinem heutigen Etikett ausgehen?",
+      "Ja. Laden Sie ein Foto Ihres aktuellen Etiketts hoch und sagen Sie dem Studio, was Sie ändern möchten: Es schlägt drei neue Richtungen auf Ihrer Flasche vor."
+     ]
+    ]
+   },
+   "cosmetics": {
+    "nav": "Kosmetiketiketten",
+    "title": "Kosmetiketikett online gestalten | UltraPixel Studio",
+    "description": "Kosmetiketikett online gestalten: drei Entwürfe auf Ihrer Flasche, Ihrem Tiegel oder Ihrer Tube in wenigen Minuten. UltraPixel erstellt die Druckdatei und druckt.",
+    "h1": "Gestalten Sie Ihr Kosmetiketikett",
+    "answer": "UltraPixel Studio ist der Online-Service der italienischen Etikettendruckerei UltraPixel für die Gestaltung von Etiketten: Beschreiben Sie Ihr Kosmetikprodukt und sehen Sie in wenigen Minuten drei Etikettenentwürfe auf Ihrer Flasche, Ihrem Tiegel oder Ihrer Tube. Wählen Sie einen aus, und UltraPixel erstellt die Druckdatei, sendet Ihnen den endgültigen Proof mit Preis und druckt die Etiketten.",
+    "about": "Nennen Sie dem Studio das Produkt, den Behälter und den Stil Ihrer Marke, und laden Sie Ihr Logo oder ein Foto der Verpackung hoch, falls vorhanden. Die Entwürfe zeigen den Namen, die Funktion, wenn sie nicht offensichtlich ist, und den Nenninhalt, und das Studio weist auf die Angaben hin, die meist auf die Rückseite oder die Faltschachtel gehören, wie INCI-Liste, Verwendungsdauer nach dem Öffnen, Los und verantwortliche Person. Für Dusche und Bad braucht das Etikett ein wasserfestes Material: Es wird vor dem Druck mit UltraPixel ausgewählt. Für die Texte bleiben Sie verantwortlich.",
+    "faq": [
+     [
+      "Kann ein Kosmetiketikett Prägung oder taktilen Lack haben?",
+      "Ja. Das Studio kann Prägung, Heißfolie und taktilen Siebdrucklack vorschlagen; UltraPixel druckt und veredelt sie in Triest. Jede Folie und jede Prägung braucht ein eigenes Werkzeug, das mit dem endgültigen Proof angeboten wird."
+     ],
+     [
+      "Kann ich das Etikett auf meiner eigenen Flasche sehen?",
+      "Ja. Jeder Entwurf wird auf dem Behälter gezeigt, den Sie beschreiben oder hochladen, damit Sie das Etikett dort beurteilen, wo es verwendet wird."
+     ]
+    ]
+   }
+  },
+  "get": [
+   "Drei verschiedene Etikettenentwürfe auf Ihrem Behälter",
+   "Änderungen in eigenen Worten, bis es Ihnen gefällt",
+   "Stanzform, Material und Veredelungen passend zu Ihrem Produkt",
+   "Endgültiger Druckproof und Preis von UltraPixel innerhalb eines Werktags nach Ihrer Wahl",
+   "Druck und Veredelung aus einer Hand, in Triest"
+  ]
+ }
+}

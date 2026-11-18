@@ -710,7 +710,9 @@
       "/technologies/"
      ]
     ]
-   }
+   },
+   "sector": "wine-spirits",
+   "design": true
   },
   {
    "slug": "label-quote-specification-checklist",
@@ -1404,7 +1406,9 @@
       "/short-run-wine-labels/"
      ]
     ]
-   }
+   },
+   "sector": "food-labels",
+   "design": true
   },
   {
    "slug": "premium-label-finishes-compared",
@@ -1413,9 +1417,9 @@
    "image": "c-tactile.webp",
    "en": {
     "kicker": "Finishes",
-    "title": "Hot foil vs screen printing vs embossing: premium label finishes compared | UltraPixel",
+    "title": "Hot foil, screen printing or embossing: which premium label finish? | UltraPixel",
     "description": "Which premium label finish for which effect: hot foil, screen printing, embossing, debossing, tactile varnish, microtextures and die-cutting compared, with what each is best for and what to watch.",
-    "h1": "Hot foil, screen printing, embossing or tactile varnish: which premium label finish for which effect",
+    "h1": "Hot foil, screen printing, embossing or tactile varnish: which premium label finish for which effect?",
     "about": "Premium label finishing techniques",
     "keywords": [
      "hot foil labels",
@@ -1564,9 +1568,9 @@
    },
    "it": {
     "kicker": "Nobilitazioni",
-    "title": "Lamina a caldo, serigrafia, rilievo: le nobilitazioni per etichette a confronto | UltraPixel",
+    "title": "Lamina a caldo, serigrafia o rilievo: quale nobilitazione scegliere? | UltraPixel",
     "description": "Quale nobilitazione per quale effetto: lamina a caldo, serigrafia, rilievo, debossing, vernice tattile, microtexture e fustellatura sagomata a confronto, con a cosa servono e cosa tenere d'occhio.",
-    "h1": "Lamina a caldo, serigrafia, rilievo o vernice tattile: quale nobilitazione per quale effetto",
+    "h1": "Lamina a caldo, serigrafia, rilievo o vernice tattile: quale nobilitazione per quale effetto?",
     "about": "Tecniche di nobilitazione delle etichette",
     "keywords": [
      "etichette lamina a caldo",
@@ -1715,9 +1719,9 @@
    },
    "fr": {
     "kicker": "Finitions",
-    "title": "Dorure à chaud, sérigraphie, gaufrage : les finitions d'étiquettes premium comparées | UltraPixel",
+    "title": "Dorure, sérigraphie ou gaufrage : quelle finition d'étiquette choisir ? | UltraPixel",
     "description": "Quelle finition premium pour quel effet : dorure à chaud, sérigraphie, gaufrage, débossage, vernis tactile, microtextures et découpe de forme comparés, avec leurs usages et leurs points de vigilance.",
-    "h1": "Dorure à chaud, sérigraphie, gaufrage ou vernis tactile : quelle finition d'étiquette pour quel effet",
+    "h1": "Dorure à chaud, sérigraphie, gaufrage ou vernis tactile : quelle finition d'étiquette pour quel effet ?",
     "about": "Techniques d'ennoblissement des étiquettes",
     "keywords": [
      "étiquettes dorure à chaud",
@@ -1866,9 +1870,9 @@
    },
    "de": {
     "kicker": "Veredelungen",
-    "title": "Heißfolie, Siebdruck, Prägung: Premium-Etikettenveredelungen im Vergleich | UltraPixel",
+    "title": "Heißfolie, Siebdruck oder Prägung: welche Etikettenveredelung? | UltraPixel",
     "description": "Welche Premium-Veredelung für welchen Effekt: Heißfolie, Siebdruck, Prägung, Blindprägung, Tastlack, Mikrotexturen und Formstanzung im Vergleich, mit Einsatzgebieten und worauf zu achten ist.",
-    "h1": "Heißfolie, Siebdruck, Prägung oder Tastlack: welche Etikettenveredelung für welchen Effekt",
+    "h1": "Heißfolie, Siebdruck, Prägung oder Tastlack: welche Etikettenveredelung für welchen Effekt?",
     "about": "Veredelungstechniken für Etiketten",
     "keywords": [
      "Heißfolienetiketten",
@@ -2014,7 +2018,9 @@
       "/premium-labels/"
      ]
     ]
-   }
+   },
+   "sector": "wine-spirits",
+   "design": true
   },
   {
    "slug": "ice-bucket-labels",
@@ -2023,9 +2029,9 @@
    "image": "c-icebucket.webp",
    "en": {
     "kicker": "Wine & Spirits",
-    "title": "Ice-bucket labels: why wine labels fail in water and how to specify them | UltraPixel",
+    "title": "Why do wine labels fail in an ice bucket, and how to specify them? | UltraPixel",
     "description": "Why wine and spirits labels wrinkle, peel or lose their finish in ice buckets and fridges, and how to specify facestock, adhesive and protection so they survive. Includes a simple test protocol.",
-    "h1": "Labels for ice buckets and chilled bottles: why they fail and how to specify them",
+    "h1": "Why do labels fail in ice buckets and on chilled bottles, and how do you specify them?",
     "about": "Wine labels resistant to ice buckets and condensation",
     "keywords": [
      "ice bucket labels",
@@ -2165,9 +2171,9 @@
    },
    "it": {
     "kicker": "Vino e distillati",
-    "title": "Etichette da secchiello: perché le etichette del vino cedono in acqua e come specificarle | UltraPixel",
+    "title": "Perché le etichette del vino cedono nel secchiello e come specificarle? | UltraPixel",
     "description": "Perché le etichette di vino e distillati fanno grinze, si staccano o perdono le nobilitazioni nel secchiello e in frigo, e come specificare carta, adesivo e protezione perché resistano. Con un test semplice.",
-    "h1": "Etichette per secchiello e bottiglie refrigerate: perché cedono e come specificarle",
+    "h1": "Perché le etichette cedono nel secchiello e sulle bottiglie refrigerate, e come specificarle?",
     "about": "Etichette del vino resistenti al secchiello e alla condensa",
     "keywords": [
      "etichette resistenti al secchiello",
@@ -2307,9 +2313,9 @@
    },
    "fr": {
     "kicker": "Vins et spiritueux",
-    "title": "Étiquettes pour seau à glace : pourquoi elles cèdent et comment les spécifier | UltraPixel",
+    "title": "Pourquoi les étiquettes cèdent-elles dans le seau à glace ? | UltraPixel",
     "description": "Pourquoi les étiquettes de vins et spiritueux plissent, se décollent ou perdent leurs finitions dans le seau à glace et au réfrigérateur, et comment spécifier papier, adhésif et protection. Avec un protocole de test simple.",
-    "h1": "Étiquettes pour seau à glace et bouteilles réfrigérées : pourquoi elles cèdent et comment les spécifier",
+    "h1": "Pourquoi les étiquettes cèdent-elles dans le seau à glace et sur les bouteilles réfrigérées, et comment les spécifier ?",
     "about": "Étiquettes de vin résistantes au seau à glace et à la condensation",
     "keywords": [
      "étiquettes seau à glace",
@@ -2449,9 +2455,9 @@
    },
    "de": {
     "kicker": "Wein & Spirituosen",
-    "title": "Eiskübel-Etiketten: warum Weinetiketten im Wasser versagen und wie man sie spezifiziert | UltraPixel",
+    "title": "Warum versagen Weinetiketten im Eiskübel, und wie spezifiziert man sie? | UltraPixel",
     "description": "Warum Etiketten für Wein und Spirituosen im Eiskübel und Kühlschrank Falten werfen, sich lösen oder ihre Veredelung verlieren, und wie man Papier, Klebstoff und Schutz spezifiziert. Mit einfachem Testablauf.",
-    "h1": "Etiketten für Eiskübel und gekühlte Flaschen: warum sie versagen und wie man sie spezifiziert",
+    "h1": "Warum versagen Etiketten im Eiskübel und auf gekühlten Flaschen, und wie spezifiziert man sie?",
     "about": "Eiskübel- und kondenswasserbeständige Weinetiketten",
     "keywords": [
      "Eiskübel Etiketten",
@@ -2588,7 +2594,9 @@
       "/samples/"
      ]
     ]
-   }
+   },
+   "sector": "wine-spirits",
+   "design": false
   },
   {
    "slug": "ppwr-and-labels",
@@ -2598,9 +2606,9 @@
    "legal": true,
    "en": {
     "kicker": "Regulation",
-    "title": "PPWR and labels: what the EU Packaging Regulation means for self-adhesive labels | UltraPixel",
+    "title": "What does the PPWR mean for self-adhesive labels? | UltraPixel",
     "description": "What Regulation (EU) 2025/40 (PPWR) means for labels: key dates from August 2026 to 2030, harmonised sorting labels, compostable fruit stickers, recyclability, and what brand owners should ask their label printer.",
-    "h1": "PPWR and labels: what the EU Packaging Regulation means for self-adhesive labels (2026–2030)",
+    "h1": "What does the PPWR, the EU Packaging Regulation, mean for self-adhesive labels (2026–2030)?",
     "about": "EU Packaging and Packaging Waste Regulation (EU) 2025/40 and labels",
     "keywords": [
      "PPWR labels",
@@ -2750,9 +2758,9 @@
    },
    "it": {
     "kicker": "Normativa",
-    "title": "PPWR ed etichette: cosa cambia con il Regolamento UE imballaggi per le etichette adesive | UltraPixel",
+    "title": "Cosa cambia con il PPWR per le etichette adesive? | UltraPixel",
     "description": "Cosa significa il Regolamento (UE) 2025/40 (PPWR) per le etichette: date chiave da agosto 2026 al 2030, etichette armonizzate per la raccolta, bollini compostabili per frutta e verdura, riciclabilità e cosa chiedere all'etichettificio.",
-    "h1": "PPWR ed etichette: cosa cambia con il Regolamento UE sugli imballaggi per le etichette adesive (2026–2030)",
+    "h1": "Cosa cambia con il PPWR, il Regolamento UE sugli imballaggi, per le etichette adesive (2026–2030)?",
     "about": "Regolamento (UE) 2025/40 sugli imballaggi e i rifiuti di imballaggio ed etichette",
     "keywords": [
      "PPWR etichette",
@@ -2902,9 +2910,9 @@
    },
    "fr": {
     "kicker": "Réglementation",
-    "title": "PPWR et étiquettes : ce que change le règlement européen emballages pour les étiquettes adhésives | UltraPixel",
+    "title": "Que change le PPWR pour les étiquettes adhésives ? | UltraPixel",
     "description": "Ce que le règlement (UE) 2025/40 (PPWR) signifie pour les étiquettes : dates clés d'août 2026 à 2030, étiquetage harmonisé pour le tri, étiquettes compostables sur fruits et légumes, recyclabilité, et questions à poser à votre imprimeur.",
-    "h1": "PPWR et étiquettes : ce que change le règlement européen sur les emballages pour les étiquettes adhésives (2026–2030)",
+    "h1": "Que change le PPWR, le règlement européen sur les emballages, pour les étiquettes adhésives (2026–2030) ?",
     "about": "Règlement (UE) 2025/40 relatif aux emballages et aux déchets d'emballages et étiquettes",
     "keywords": [
      "PPWR étiquettes",
@@ -3054,9 +3062,9 @@
    },
    "de": {
     "kicker": "Vorschriften",
-    "title": "PPWR und Etiketten: was die EU-Verpackungsverordnung für Haftetiketten bedeutet | UltraPixel",
+    "title": "Was bedeutet die PPWR für Haftetiketten? | UltraPixel",
     "description": "Was die Verordnung (EU) 2025/40 (PPWR) für Etiketten bedeutet: Schlüsseldaten von August 2026 bis 2030, harmonisierte Sortierkennzeichnung, kompostierbare Obst- und Gemüseetiketten, Recyclingfähigkeit und Fragen an Ihre Druckerei.",
-    "h1": "PPWR und Etiketten: was die EU-Verpackungsverordnung für Haftetiketten bedeutet (2026–2030)",
+    "h1": "Was bedeutet die PPWR, die EU-Verpackungsverordnung, für Haftetiketten (2026–2030)?",
     "about": "Verordnung (EU) 2025/40 über Verpackungen und Verpackungsabfälle und Etiketten",
     "keywords": [
      "PPWR Etiketten",
@@ -3203,7 +3211,9 @@
       "/contact/?topic=specialist"
      ]
     ]
-   }
+   },
+   "sector": "food-labels",
+   "design": false
   },
   {
    "slug": "eu-wine-label-e-label-qr-code",
@@ -3213,9 +3223,9 @@
    "legal": true,
    "en": {
     "kicker": "Wine & Spirits",
-    "title": "EU wine labels: ingredients, nutrition and the e-label QR code | UltraPixel",
+    "title": "What must an EU wine label show? Ingredients, nutrition, e-label QR | UltraPixel",
     "description": "What EU wine labelling rules (Regulation (EU) 2021/2117) require on the physical label and what can go in an e-label via QR code, and how to print a QR code that scans on textured paper and foil.",
-    "h1": "EU wine labels: ingredients, nutrition and the e-label QR code (Regulation (EU) 2021/2117)",
+    "h1": "What must an EU wine label show? Ingredients, nutrition and the e-label QR code (Regulation (EU) 2021/2117)",
     "about": "EU wine labelling: ingredients, nutrition declaration and e-label",
     "keywords": [
      "EU wine label requirements",
@@ -3396,9 +3406,9 @@
    },
    "it": {
     "kicker": "Vino e distillati",
-    "title": "Etichette del vino UE: ingredienti, valori nutrizionali e QR code dell'e-label | UltraPixel",
+    "title": "Cosa deve riportare l'etichetta del vino UE? Ingredienti ed e-label | UltraPixel",
     "description": "Cosa richiedono le regole UE sull'etichettatura del vino (Regolamento (UE) 2021/2117) sull'etichetta fisica, cosa può andare nell'e-label tramite QR code, e come stampare un QR code leggibile su carta goffrata e lamina.",
-    "h1": "Etichette del vino UE: ingredienti, valori nutrizionali e QR code dell'e-label (Regolamento (UE) 2021/2117)",
+    "h1": "Cosa deve riportare l'etichetta del vino UE? Ingredienti, valori nutrizionali e QR code dell'e-label (Regolamento (UE) 2021/2117)",
     "about": "Etichettatura del vino UE: ingredienti, dichiarazione nutrizionale ed e-label",
     "keywords": [
      "etichetta vino ingredienti",
@@ -3579,9 +3589,9 @@
    },
    "fr": {
     "kicker": "Vins et spiritueux",
-    "title": "Étiquettes de vin UE : ingrédients, valeurs nutritionnelles et QR code e-label | UltraPixel",
+    "title": "Que doit indiquer une étiquette de vin UE ? Ingrédients et e-label | UltraPixel",
     "description": "Ce que les règles européennes d'étiquetage du vin (règlement (UE) 2021/2117) exigent sur l'étiquette physique, ce qui peut aller dans l'e-label via QR code, et comment imprimer un QR code lisible sur papier texturé et dorure.",
-    "h1": "Étiquettes de vin UE : ingrédients, valeurs nutritionnelles et QR code e-label (règlement (UE) 2021/2117)",
+    "h1": "Que doit indiquer une étiquette de vin UE ? Ingrédients, valeurs nutritionnelles et QR code e-label (règlement (UE) 2021/2117)",
     "about": "Étiquetage du vin dans l'UE : ingrédients, déclaration nutritionnelle et e-label",
     "keywords": [
      "étiquetage vin UE",
@@ -3762,9 +3772,9 @@
    },
    "de": {
     "kicker": "Wein & Spirituosen",
-    "title": "EU-Weinetiketten: Zutaten, Nährwerte und E-Label-QR-Code | UltraPixel",
+    "title": "Was muss ein EU-Weinetikett zeigen? Zutaten, Nährwerte, E-Label | UltraPixel",
     "description": "Was die EU-Regeln zur Weinetikettierung (Verordnung (EU) 2021/2117) auf dem physischen Etikett verlangen, was per QR-Code ins E-Label darf und wie man einen QR-Code druckt, der auf strukturiertem Papier und neben Folie lesbar ist.",
-    "h1": "EU-Weinetiketten: Zutaten, Nährwerte und der E-Label-QR-Code (Verordnung (EU) 2021/2117)",
+    "h1": "Was muss ein EU-Weinetikett zeigen? Zutaten, Nährwerte und der E-Label-QR-Code (Verordnung (EU) 2021/2117)",
     "about": "EU-Weinetikettierung: Zutatenverzeichnis, Nährwertdeklaration und E-Label",
     "keywords": [
      "EU Weinetikett Pflichtangaben",
@@ -3942,7 +3952,9 @@
       "/samples/"
      ]
     ]
-   }
+   },
+   "sector": "wine-spirits",
+   "design": true
   },
   {
    "slug": "label-roll-breaks-on-labelling-line",
@@ -4560,7 +4572,9 @@
       "/food-labels-cold-humidity/"
      ]
     ]
-   }
+   },
+   "sector": "wine-spirits",
+   "design": false
   },
   {
    "slug": "how-to-develop-a-new-label",
@@ -5250,7 +5264,9 @@
       "/contact/?topic=specialist"
      ]
     ]
-   }
+   },
+   "sector": "cosmetics-nutraceuticals",
+   "design": true
   },
   {
    "slug": "label-wrinkles-flagging-bubbles",
@@ -5259,9 +5275,9 @@
    "image": "c-bottle-scene.webp",
    "en": {
     "kicker": "Application",
-    "title": "Labels wrinkling, flagging or bubbling on bottles and jars: causes and fixes | UltraPixel",
+    "title": "Why do labels wrinkle, flag or bubble on bottles and jars? | UltraPixel",
     "description": "Why labels wrinkle on tapered bottles, lift at the edges on small diameters, or show bubbles and blisters on plastic containers, and what to change in material, adhesive, shape and application.",
-    "h1": "Labels wrinkling, flagging or bubbling: causes and fixes",
+    "h1": "Why do labels wrinkle, flag or bubble? Causes and fixes",
     "about": "Label application defects on bottles, jars and containers",
     "keywords": [
      "label wrinkles bottle",
@@ -5408,9 +5424,9 @@
    },
    "it": {
     "kicker": "Applicazione",
-    "title": "Etichette che fanno grinze, si sollevano o fanno bolle su bottiglie e vasetti: cause e rimedi | UltraPixel",
+    "title": "Perché le etichette fanno grinze, si sollevano o fanno bolle? | UltraPixel",
     "description": "Perché le etichette fanno grinze sulle bottiglie coniche, si sollevano ai bordi sui diametri piccoli o mostrano bolle sui contenitori in plastica, e cosa cambiare in materiale, adesivo, forma e applicazione.",
-    "h1": "Etichette che fanno grinze, si sollevano o fanno bolle: cause e rimedi",
+    "h1": "Perché le etichette fanno grinze, si sollevano o fanno bolle? Cause e rimedi",
     "about": "Difetti di applicazione delle etichette su bottiglie, vasetti e contenitori",
     "keywords": [
      "etichetta fa grinze bottiglia",
@@ -5557,9 +5573,9 @@
    },
    "fr": {
     "kicker": "Pose",
-    "title": "Étiquettes qui plissent, se soulèvent ou font des bulles sur bouteilles et pots : causes et solutions | UltraPixel",
+    "title": "Pourquoi les étiquettes plissent ou font des bulles ? | UltraPixel",
     "description": "Pourquoi les étiquettes plissent sur les bouteilles coniques, se soulèvent aux bords sur les petits diamètres ou font des bulles sur les contenants plastiques, et quoi changer en matière, adhésif, forme et pose.",
-    "h1": "Étiquettes qui plissent, se soulèvent ou font des bulles : causes et solutions",
+    "h1": "Pourquoi les étiquettes plissent, se soulèvent ou font des bulles ? Causes et solutions",
     "about": "Défauts de pose des étiquettes sur bouteilles, pots et contenants",
     "keywords": [
      "étiquette plisse bouteille",
@@ -5706,9 +5722,9 @@
    },
    "de": {
     "kicker": "Etikettierung",
-    "title": "Etiketten mit Falten, abstehenden Kanten oder Blasen auf Flaschen und Gläsern: Ursachen und Lösungen | UltraPixel",
+    "title": "Warum bekommen Etiketten Falten, abstehende Kanten oder Blasen? | UltraPixel",
     "description": "Warum Etiketten auf konischen Flaschen Falten werfen, auf kleinen Durchmessern an den Kanten abstehen oder auf Kunststoffgebinden Blasen bilden, und was an Material, Klebstoff, Form und Etikettierung zu ändern ist.",
-    "h1": "Etiketten mit Falten, abstehenden Kanten oder Blasen: Ursachen und Lösungen",
+    "h1": "Warum bekommen Etiketten Falten, abstehende Kanten oder Blasen? Ursachen und Lösungen",
     "about": "Etikettierfehler auf Flaschen, Gläsern und Gebinden",
     "keywords": [
      "Etikett wirft Falten Flasche",
@@ -5852,7 +5868,9 @@
       "/contact/?topic=specialist"
      ]
     ]
-   }
+   },
+   "sector": "cosmetics-nutraceuticals",
+   "design": false
   },
   {
    "slug": "label-colour-consistency",
@@ -6414,7 +6432,9 @@
       "/samples/"
      ]
     ]
-   }
+   },
+   "sector": "cosmetics-nutraceuticals",
+   "design": false
   },
   {
    "slug": "label-tender-for-multi-site-groups",
@@ -6423,9 +6443,9 @@
    "image": "c-range.webp",
    "en": {
     "kicker": "Procurement",
-    "title": "Running a label tender for a multi-site group: RFQ, qualification, KPIs and contract | UltraPixel",
+    "title": "How to run a label tender for a multi-site group | UltraPixel",
     "description": "A procurement guide for large groups sourcing self-adhesive labels across brands and plants: tender scope, specification pack, supplier qualification and line trials, quality agreement, KPIs, pricing structure, inventory models and dual sourcing.",
-    "h1": "Running a label tender for a multi-site group: from RFQ to contract",
+    "h1": "How to run a label tender for a multi-site group: from RFQ to contract",
     "about": "Label procurement and tendering for multi-site companies",
     "keywords": [
      "label tender",
@@ -6575,9 +6595,9 @@
    },
    "it": {
     "kicker": "Acquisti",
-    "title": "Gara per le etichette in un gruppo multi-stabilimento: RFQ, qualifica, KPI e contratto | UltraPixel",
+    "title": "Come fare una gara per le etichette in un gruppo multi-stabilimento | UltraPixel",
     "description": "Guida per gli uffici acquisti dei grandi gruppi che comprano etichette adesive per più brand e stabilimenti: perimetro della gara, pacchetto specifiche, qualifica dei fornitori e prove in linea, accordo qualità, KPI, struttura prezzi, modelli di scorta e doppia fonte.",
-    "h1": "Gara per le etichette in un gruppo multi-stabilimento: dalla RFQ al contratto",
+    "h1": "Come fare una gara per le etichette in un gruppo multi-stabilimento: dalla RFQ al contratto",
     "about": "Acquisto e gare per etichette in aziende con più stabilimenti",
     "keywords": [
      "gara etichette",
@@ -6727,9 +6747,9 @@
    },
    "fr": {
     "kicker": "Achats",
-    "title": "Appel d'offres étiquettes pour un groupe multi-sites : RFQ, qualification, KPI et contrat | UltraPixel",
+    "title": "Comment mener un appel d'offres étiquettes multi-sites ? | UltraPixel",
     "description": "Guide pour les services achats des grands groupes qui achètent des étiquettes adhésives pour plusieurs marques et usines : périmètre, dossier de spécifications, qualification fournisseurs et essais sur ligne, accord qualité, KPI, structure de prix, modèles de stock et double sourcing.",
-    "h1": "Appel d'offres étiquettes pour un groupe multi-sites : de la RFQ au contrat",
+    "h1": "Comment mener un appel d'offres étiquettes pour un groupe multi-sites : de la RFQ au contrat",
     "about": "Achats et appels d'offres d'étiquettes pour les entreprises multi-sites",
     "keywords": [
      "appel d'offres étiquettes",
@@ -6879,9 +6899,9 @@
    },
    "de": {
     "kicker": "Einkauf",
-    "title": "Etikettenausschreibung für Konzerne mit mehreren Werken: RFQ, Qualifizierung, KPIs und Vertrag | UltraPixel",
+    "title": "Wie führt man eine Etikettenausschreibung für mehrere Werke durch? | UltraPixel",
     "description": "Ein Einkaufsleitfaden für Konzerne, die Haftetiketten für mehrere Marken und Werke beschaffen: Umfang, Spezifikationspaket, Lieferantenqualifizierung und Linientests, Qualitätsvereinbarung, KPIs, Preisstruktur, Bestandsmodelle und Dual Sourcing.",
-    "h1": "Etikettenausschreibung für Konzerne mit mehreren Werken: von der RFQ zum Vertrag",
+    "h1": "Wie führt man eine Etikettenausschreibung für Konzerne mit mehreren Werken durch? Von der RFQ zum Vertrag",
     "about": "Etikettenbeschaffung und Ausschreibungen für Unternehmen mit mehreren Standorten",
     "keywords": [
      "Etiketten Ausschreibung",
@@ -7028,7 +7048,9 @@
       "/contact/?topic=quote"
      ]
     ]
-   }
+   },
+   "sector": "food-labels",
+   "design": false
   },
   {
    "slug": "reduce-label-costs",
@@ -7582,7 +7604,9 @@
       "/quote/"
      ]
     ]
-   }
+   },
+   "sector": "food-labels",
+   "design": false
   },
   {
    "slug": "how-to-store-label-rolls",
@@ -8112,7 +8136,9 @@
       "/contact/?topic=specialist"
      ]
     ]
-   }
+   },
+   "sector": "food-labels",
+   "design": false
   },
   {
    "slug": "digital-vs-flexo-label-printing",
@@ -8123,7 +8149,7 @@
     "kicker": "Process",
     "title": "Digital vs flexo label printing: which is right for your run? | UltraPixel",
     "description": "Digital and flexographic label printing compared for buyers: run length, number of versions, variable data, set-up, colour, finishes and lead time, with a decision table.",
-    "h1": "Digital vs flexo label printing: which process for which run",
+    "h1": "Digital vs flexo label printing: which process for which run?",
     "about": "Comparison of digital and flexographic label printing",
     "keywords": [
      "digital vs flexo labels",
@@ -8264,7 +8290,7 @@
     "kicker": "Processo",
     "title": "Stampa etichette digitale o flexo: quale scegliere per la tua tiratura? | UltraPixel",
     "description": "Stampa digitale e flessografica di etichette a confronto per i buyer: tiratura, numero di versioni, dati variabili, avviamento, colore, nobilitazioni e tempi, con una tabella per decidere.",
-    "h1": "Stampa etichette digitale o flexo: quale processo per quale tiratura",
+    "h1": "Stampa etichette digitale o flexo: quale processo per quale tiratura?",
     "about": "Confronto tra stampa digitale e flessografica di etichette",
     "keywords": [
      "stampa digitale o flexo etichette",
@@ -8405,7 +8431,7 @@
     "kicker": "Procédé",
     "title": "Impression d'étiquettes numérique ou flexo : laquelle choisir pour votre tirage ? | UltraPixel",
     "description": "Impression numérique et flexographique d'étiquettes comparées pour les acheteurs : longueur de tirage, nombre de versions, données variables, calage, couleur, finitions et délais, avec un tableau de décision.",
-    "h1": "Impression d'étiquettes numérique ou flexo : quel procédé pour quel tirage",
+    "h1": "Impression d'étiquettes numérique ou flexo : quel procédé pour quel tirage ?",
     "about": "Comparaison de l'impression numérique et flexographique d'étiquettes",
     "keywords": [
      "numérique ou flexo étiquettes",
@@ -8546,7 +8572,7 @@
     "kicker": "Verfahren",
     "title": "Digital- oder Flexodruck für Etiketten: was passt zu Ihrer Auflage? | UltraPixel",
     "description": "Digital- und Flexodruck für Etiketten im Vergleich für Einkäufer: Auflagenhöhe, Anzahl der Versionen, variable Daten, Einrichtung, Farbe, Veredelungen und Lieferzeit, mit Entscheidungstabelle.",
-    "h1": "Digital- oder Flexodruck für Etiketten: welches Verfahren für welche Auflage",
+    "h1": "Digital- oder Flexodruck für Etiketten: welches Verfahren für welche Auflage?",
     "about": "Vergleich von Digital- und Flexodruck für Etiketten",
     "keywords": [
      "Digitaldruck oder Flexodruck Etiketten",
@@ -8682,7 +8708,9 @@
       "/technologies/"
      ]
     ]
-   }
+   },
+   "sector": "wine-spirits",
+   "design": false
   },
   {
    "slug": "label-supplier-certifications",
@@ -9260,7 +9288,9 @@
       "https://eur-lex.europa.eu/eli/reg/2006/2023/oj"
      ]
     ]
-   }
+   },
+   "sector": "pharma-labels",
+   "design": false
   },
   {
    "slug": "eu-food-label-minimum-font-size",
@@ -9270,9 +9300,9 @@
    "legal": true,
    "en": {
     "kicker": "Regulation",
-    "title": "Minimum font size on EU food labels: 1.2 mm and 0.9 mm x-height explained | UltraPixel",
+    "title": "What is the minimum font size on EU food labels? | UltraPixel",
     "description": "What Regulation (EU) No 1169/2011 requires on food labels: 1.2 mm x-height, 0.9 mm on small packs, same field of vision, allergen emphasis, packs under 10 cm², languages, and how to fit everything on the label.",
-    "h1": "Minimum font size on EU food labels: the 1.2 mm and 0.9 mm x-height rule",
+    "h1": "What is the minimum font size on EU food labels? The 1.2 mm and 0.9 mm x-height rule",
     "about": "Legibility requirements of Regulation (EU) No 1169/2011 for food labels",
     "keywords": [
      "minimum font size food label EU",
@@ -9419,9 +9449,9 @@
    },
    "it": {
     "kicker": "Normativa",
-    "title": "Dimensione minima dei caratteri sulle etichette alimentari UE: 1,2 mm e 0,9 mm spiegati | UltraPixel",
+    "title": "Qual è la dimensione minima dei caratteri sulle etichette alimentari? | UltraPixel",
     "description": "Cosa richiede il Regolamento (UE) n. 1169/2011 sulle etichette alimentari: altezza della x di 1,2 mm, 0,9 mm sulle confezioni piccole, stesso campo visivo, evidenza degli allergeni, confezioni sotto i 10 cm², lingue e come far stare tutto in etichetta.",
-    "h1": "Dimensione minima dei caratteri sulle etichette alimentari UE: la regola della x da 1,2 e 0,9 mm",
+    "h1": "Qual è la dimensione minima dei caratteri sulle etichette alimentari UE? La regola della x da 1,2 e 0,9 mm",
     "about": "Requisiti di leggibilità del Regolamento (UE) n. 1169/2011 per le etichette alimentari",
     "keywords": [
      "dimensione minima caratteri etichetta alimentare",
@@ -9568,9 +9598,9 @@
    },
    "fr": {
     "kicker": "Réglementation",
-    "title": "Taille minimale des caractères sur les étiquettes alimentaires UE : 1,2 mm et 0,9 mm expliqués | UltraPixel",
+    "title": "Quelle taille minimale de caractères sur une étiquette alimentaire ? | UltraPixel",
     "description": "Ce qu'exige le règlement (UE) n° 1169/2011 sur les étiquettes alimentaires : hauteur de x de 1,2 mm, 0,9 mm sur les petits emballages, même champ visuel, mise en évidence des allergènes, emballages de moins de 10 cm², langues, et comment tout faire tenir sur l'étiquette.",
-    "h1": "Taille minimale des caractères sur les étiquettes alimentaires UE : la règle de la hauteur de x de 1,2 et 0,9 mm",
+    "h1": "Quelle taille minimale de caractères sur les étiquettes alimentaires UE ? La règle de la hauteur de x de 1,2 et 0,9 mm",
     "about": "Exigences de lisibilité du règlement (UE) n° 1169/2011 pour les étiquettes alimentaires",
     "keywords": [
      "taille minimale caractères étiquette alimentaire",
@@ -9717,9 +9747,9 @@
    },
    "de": {
     "kicker": "Vorschriften",
-    "title": "Mindestschriftgröße auf EU-Lebensmitteletiketten: 1,2 mm und 0,9 mm x-Höhe erklärt | UltraPixel",
+    "title": "Wie groß muss die Schrift auf EU-Lebensmitteletiketten sein? | UltraPixel",
     "description": "Was die Verordnung (EU) Nr. 1169/2011 (LMIV) auf Lebensmitteletiketten verlangt: x-Höhe 1,2 mm, 0,9 mm bei kleinen Packungen, gleiches Sichtfeld, Hervorhebung der Allergene, Packungen unter 10 cm², Sprachen, und wie alles aufs Etikett passt.",
-    "h1": "Mindestschriftgröße auf EU-Lebensmitteletiketten: die Regel der x-Höhe von 1,2 und 0,9 mm",
+    "h1": "Wie groß muss die Schrift auf EU-Lebensmitteletiketten mindestens sein? Die Regel der x-Höhe von 1,2 und 0,9 mm",
     "about": "Lesbarkeitsanforderungen der Verordnung (EU) Nr. 1169/2011 an Lebensmitteletiketten",
     "keywords": [
      "Mindestschriftgröße Lebensmitteletikett",
@@ -9863,7 +9893,9 @@
       "https://food.ec.europa.eu/food-safety/labelling-and-nutrition/food-information-consumers-legislation/language-and-presentation-food-information_en"
      ]
     ]
-   }
+   },
+   "sector": "food-labels",
+   "design": true
   }
  ]
 }

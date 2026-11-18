@@ -156,12 +156,12 @@
   },
   "home": {
     "meta": {
-      "title": "UltraPixel | Premium and technical self-adhesive labels",
+      "title": "Custom self-adhesive labels, premium and technical | UltraPixel",
       "description": "Self-adhesive labels engineered in Italy for brands across Europe: digital printing, hot foil, screen printing, embossing, die-cutting and colour control."
     },
     "hero": {
       "h1": "We make labels impossible to ignore.",
-      "sub": "Premium and technical labels engineered in Italy for brands across Europe.",
+      "sub": "Custom self-adhesive labels, premium and technical, engineered in Italy for brands across Europe.",
       "sectors": "Wine & Spirits · Food · Cosmetics · Nutraceuticals · Pharma · Industrial & Chemical",
       "tag": "Label / Material system 001",
       "chain": "Substrate / Digital / Screen / Foil / Relief / Cut",
@@ -436,7 +436,7 @@
         "Die-cutting"
       ],
       "meta": {
-        "title": "Wine and spirits labels | UltraPixel",
+        "title": "Custom wine and spirits labels | UltraPixel",
         "description": "Premium wine and spirits labels: textured papers, hot foil, embossing, tactile varnish, ice-bucket materials. Made in Italy, delivered across Europe."
       },
       "matter": "Paper fibre + foil"
@@ -461,7 +461,7 @@
         "Colour measurement and control"
       ],
       "meta": {
-        "title": "Food labels | UltraPixel",
+        "title": "Custom food labels | UltraPixel",
         "description": "Self-adhesive food labels for industrial production and automatic application, with materials selected for cold, humidity and oils. Made in Italy."
       },
       "matter": "Film + precision"
@@ -486,7 +486,7 @@
         "Reverse printing"
       ],
       "meta": {
-        "title": "Cosmetics and nutraceutical labels | UltraPixel",
+        "title": "Custom cosmetics and nutraceutical labels | UltraPixel",
         "description": "Cosmetics and nutraceutical labels on clear and premium materials, with opaque white, foil and tactile effects, also in small batches."
       },
       "matter": "Transparency + opaque white"
@@ -511,7 +511,7 @@
         "Colour measurement and control"
       ],
       "meta": {
-        "title": "Pharma labels | UltraPixel",
+        "title": "Custom pharma labels | UltraPixel",
         "description": "Self-adhesive pharma labels printed for precision and readability, with variable data, traceability and colour control."
       },
       "matter": "Grid + microtext + data"
@@ -536,7 +536,7 @@
         "Die-cutting"
       ],
       "meta": {
-        "title": "Industrial and chemical labels | UltraPixel",
+        "title": "Custom industrial and chemical labels | UltraPixel",
         "description": "Industrial and chemical labels on technical materials, with adhesives selected for difficult surfaces, variable data, QR codes and traceability."
       },
       "matter": "Structure + adhesion + codes"
@@ -2389,7 +2389,7 @@
   },
   "wine": {
     "meta": {
-      "title": "Wine and spirits labels | Premium label printing | UltraPixel",
+      "title": "Custom wine and spirits labels | UltraPixel",
       "description": "Premium wine and spirits labels printed and finished in Italy: textured papers, hot foil, embossing, tactile varnish and shaped die-cutting."
     },
     "hero": {
@@ -3296,7 +3296,7 @@
           "When you use the price page, the photo or file you upload and the values you enter (size, material, finishes and quantity) are sent to our server to read the label and calculate the price. The image is used only for this reading and is not stored. Nothing in this step identifies you, unless you then choose to send us a request. The reading of the image may be carried out by an external provider acting as data processor."
         ],
         [
-          "AI label designer",
+          "UltraPixel Studio (label design)",
           "On studio.ultrapixel.it you can describe your product and receive label proposals created with artificial intelligence. What you write and the images you upload (photos, logo, sketches) are sent to our server and processed, only to prepare the proposals, by artificial intelligence providers acting as data processors: Anthropic (conversation, brief and layout) and OpenAI (illustrations and realistic product photos). These providers are based in the United States; the transfer takes place under the safeguards provided by the GDPR. Conversations are deleted after 30 days, unless you send us a proposal: then it becomes a request and follows the rules above. Please do not upload personal data of other people."
         ],
         [
@@ -3334,7 +3334,7 @@
       "sections": [
         [
           "Your choice",
-          "When you first visit ultrapixel.it you can accept all cookies, reject them, or choose by category. Until you choose, and if you reject them, only the necessary cookies are used. Your choice applies to ultrapixel.it and to the label studio at studio.ultrapixel.it, and is kept for 6 months. You can change it at any time from “Cookie settings” at the bottom of every page."
+          "When you first visit ultrapixel.it you can accept all cookies, reject them, or choose by category. Until you choose, and if you reject them, only the necessary cookies are used. Your choice applies to ultrapixel.it and to UltraPixel Studio at studio.ultrapixel.it, and is kept for 6 months. You can change it at any time from “Cookie settings” at the bottom of every page."
         ],
         [
           "Necessary cookies",

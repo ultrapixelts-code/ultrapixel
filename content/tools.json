@@ -362,13 +362,13 @@
   "date": "2026-11-12",
   "studio": "https://studio.ultrapixel.it",
   "en": {
-   "title": "Label design service: AI label designer and printing | UltraPixel",
-   "description": "UltraPixel designs your label from scratch with its AI label studio: describe the product, see three design proposals on your own container in minutes, then UltraPixel prepares the print file and prints the labels in Italy.",
+   "title": "Design your label: label design and printing service | UltraPixel",
+   "description": "Design your label online with UltraPixel Studio: three designs on your own container in minutes, then UltraPixel prepares the print file and prints in Italy.",
    "eyebrow": "Label design",
-   "h1a": "We design your label.",
-   "h1b": "Then we print it.",
-   "lead": "No designer, or only a rough sketch? UltraPixel creates the complete label for you, from the concept to the print-ready file, with its AI label studio. You describe the product; in a few minutes you see three proposals on your own container.",
-   "cta": "Design your label now",
+   "h1a": "Design your label.",
+   "h1b": "We make it print-ready and print it.",
+   "lead": "UltraPixel Studio is an online label design service from the Italian label printer UltraPixel, for companies without a designer. You describe your product and see three label designs on your own container in a few minutes, and UltraPixel then prepares the print file and prints the labels; the first 2 rounds are free.",
+   "cta": "Design your label",
    "ctaNote": "Free to start: 2 rounds of proposals with just your email.",
    "stepsH": "How it works",
    "steps": [
@@ -413,7 +413,7 @@
    "faq": [
     [
      "Does UltraPixel design the label artwork, or only print it?",
-     "Both. UltraPixel designs the complete label from scratch with its AI label studio (concept, layout, die-cut shape, material and finishes), prepares the print-ready file and prints the labels. If you already have artwork, you can send it for printing."
+     "Both. UltraPixel designs the complete label from scratch with UltraPixel Studio, using artificial intelligence (concept, layout, die-cut shape, material and finishes), prepares the print-ready file and prints the labels. If you already have artwork, you can send it for printing."
     ],
     [
      "I don't have a graphic designer. Can you create my label?",
@@ -455,16 +455,16 @@
      "/quote/"
     ]
    ],
-   "foot": "Label design (AI studio)",
-   "llms": "UltraPixel also designs labels from scratch. Its AI label studio (studio.ultrapixel.it) turns a customer's brief, photos, logo or sketch into three label design proposals shown on the customer's own container in about 2–3 minutes; the customer chooses one, and UltraPixel sends the price and the final print proof within one working day, prepares the print-ready file and prints the labels. The first 2 rounds of proposals are free; further rounds cost €39 + VAT for 10, deducted from the print order."
+   "foot": "Label design service",
+   "llms": "UltraPixel also designs labels from scratch with UltraPixel Studio (Design your label: studio.ultrapixel.it/en/, also in Italian, French and German at /it/, /fr/, /de/). The customer describes the product and uploads photos, a logo or a sketch; proposals generated with artificial intelligence show three label designs on the customer's own container in about 2–3 minutes. The customer chooses one, and UltraPixel sends the price and the final print proof within one working day, prepares the print-ready file and prints the labels. The first 2 rounds of proposals are free; further rounds cost €39 + VAT for 10, deducted from the print order."
   },
   "it": {
-   "title": "Progettazione grafica etichette con l'AI e stampa | UltraPixel",
-   "description": "UltraPixel progetta la tua etichetta da zero con il suo studio AI: descrivi il prodotto, vedi in pochi minuti tre proposte sul tuo contenitore, poi UltraPixel prepara il file di stampa e stampa le etichette in Italia.",
+   "title": "Disegna la tua etichetta: progettazione grafica e stampa | UltraPixel",
+   "description": "Disegna la tua etichetta con UltraPixel Studio: tre proposte sul tuo contenitore in pochi minuti, poi UltraPixel prepara il file e la stampa in Italia.",
    "eyebrow": "Grafica etichette",
-   "h1a": "Ti disegniamo l'etichetta.",
-   "h1b": "Poi te la stampiamo.",
-   "lead": "Non hai un grafico, o hai solo una bozza? UltraPixel crea per te l'etichetta completa, dall'idea al file pronto per la stampa, con il suo studio AI. Tu descrivi il prodotto; in pochi minuti vedi tre proposte sul tuo contenitore.",
+   "h1a": "Disegna la tua etichetta.",
+   "h1b": "Noi la prepariamo per la stampa e la stampiamo.",
+   "lead": "UltraPixel Studio è il servizio online di progettazione etichette di UltraPixel, etichettificio italiano, per le aziende che non hanno un grafico. Descrivi il prodotto e in pochi minuti vedi tre proposte sul tuo contenitore, poi UltraPixel prepara il file di stampa e stampa le etichette; i primi 2 giri sono gratuiti.",
    "cta": "Disegna la tua etichetta",
    "ctaNote": "Si inizia gratis: 2 giri di proposte con la sola email.",
    "stepsH": "Come funziona",
@@ -510,7 +510,7 @@
    "faq": [
     [
      "UltraPixel fa anche la grafica dell'etichetta o solo la stampa?",
-     "Entrambe. UltraPixel progetta l'etichetta completa da zero con il suo studio AI (idea, impaginazione, forma della fustella, materiale e lavorazioni), prepara il file pronto per la stampa e stampa le etichette. Se hai già la grafica, puoi mandarla per la stampa."
+     "Entrambe. UltraPixel progetta l'etichetta completa da zero con UltraPixel Studio, usando l'intelligenza artificiale (idea, impaginazione, forma della fustella, materiale e lavorazioni), prepara il file pronto per la stampa e stampa le etichette. Se hai già la grafica, puoi mandarla per la stampa."
     ],
     [
      "Non ho un grafico. Potete creare voi la mia etichetta?",
@@ -552,16 +552,16 @@
      "/quote/"
     ]
    ],
-   "foot": "Grafica etichette (studio AI)"
+   "foot": "Progettazione grafica etichette"
   },
   "fr": {
-   "title": "Création graphique d'étiquettes par IA et impression | UltraPixel",
-   "description": "UltraPixel crée votre étiquette de A à Z avec son studio IA : décrivez le produit, voyez en quelques minutes trois propositions sur votre propre contenant, puis UltraPixel prépare le fichier d'impression et imprime les étiquettes en Italie.",
+   "title": "Création d'étiquettes : graphisme et impression | UltraPixel",
+   "description": "Création d'étiquettes avec UltraPixel Studio : trois propositions sur votre contenant en quelques minutes, puis UltraPixel prépare le fichier et imprime.",
    "eyebrow": "Création d'étiquettes",
-   "h1a": "Nous créons votre étiquette.",
-   "h1b": "Puis nous l'imprimons.",
-   "lead": "Pas de graphiste, ou seulement une ébauche ? UltraPixel crée pour vous l'étiquette complète, de l'idée au fichier prêt à imprimer, avec son studio IA. Vous décrivez le produit ; en quelques minutes vous voyez trois propositions sur votre contenant.",
-   "cta": "Créer votre étiquette",
+   "h1a": "Dessinez votre étiquette.",
+   "h1b": "Nous la préparons pour l'impression et l'imprimons.",
+   "lead": "UltraPixel Studio est le service en ligne de création d'étiquettes d'UltraPixel, imprimeur d'étiquettes italien, pour les entreprises sans graphiste. Vous décrivez votre produit et voyez en quelques minutes trois propositions sur votre contenant, puis UltraPixel prépare le fichier d'impression et imprime les étiquettes ; les 2 premiers tours sont gratuits.",
+   "cta": "Dessinez votre étiquette",
    "ctaNote": "Pour commencer, c'est gratuit : 2 séries de propositions avec votre seule adresse e-mail.",
    "stepsH": "Comment ça marche",
    "steps": [
@@ -606,7 +606,7 @@
    "faq": [
     [
      "UltraPixel crée-t-elle aussi le graphisme de l'étiquette, ou seulement l'impression ?",
-     "Les deux. UltraPixel crée l'étiquette complète de A à Z avec son studio IA (concept, mise en page, forme de découpe, matière et finitions), prépare le fichier prêt à imprimer et imprime les étiquettes. Si vous avez déjà un graphisme, vous pouvez l'envoyer pour l'impression."
+     "Les deux. UltraPixel crée l'étiquette complète de A à Z avec UltraPixel Studio, à l'aide de l'intelligence artificielle (concept, mise en page, forme de découpe, matière et finitions), prépare le fichier prêt à imprimer et imprime les étiquettes. Si vous avez déjà un graphisme, vous pouvez l'envoyer pour l'impression."
     ],
     [
      "Je n'ai pas de graphiste. Pouvez-vous créer mon étiquette ?",
@@ -648,16 +648,16 @@
      "/quote/"
     ]
    ],
-   "foot": "Création d'étiquettes (studio IA)"
+   "foot": "Création d'étiquettes"
   },
   "de": {
-   "title": "Etikettengestaltung mit KI und Etikettendruck | UltraPixel",
-   "description": "UltraPixel gestaltet Ihr Etikett von Grund auf mit seinem KI-Etikettenstudio: Produkt beschreiben, in wenigen Minuten drei Entwürfe auf Ihrem eigenen Behälter sehen; danach erstellt UltraPixel die Druckdatei und druckt die Etiketten in Italien.",
+   "title": "Etiketten gestalten und drucken lassen | UltraPixel",
+   "description": "Etiketten gestalten mit UltraPixel Studio: drei Entwürfe auf Ihrem Behälter in wenigen Minuten, danach erstellt UltraPixel die Druckdatei und druckt.",
    "eyebrow": "Etikettengestaltung",
-   "h1a": "Wir gestalten Ihr Etikett.",
-   "h1b": "Dann drucken wir es.",
-   "lead": "Kein Grafiker oder nur ein grober Entwurf? UltraPixel gestaltet das komplette Etikett für Sie, von der Idee bis zur druckfertigen Datei, mit seinem KI-Etikettenstudio. Sie beschreiben das Produkt; in wenigen Minuten sehen Sie drei Vorschläge auf Ihrem Behälter.",
-   "cta": "Etikett jetzt gestalten",
+   "h1a": "Gestalten Sie Ihr Etikett.",
+   "h1b": "Wir machen es druckfertig und drucken es.",
+   "lead": "UltraPixel Studio ist der Online-Service der italienischen Etikettendruckerei UltraPixel für die Gestaltung von Etiketten, für Unternehmen ohne Grafiker. Sie beschreiben Ihr Produkt und sehen in wenigen Minuten drei Entwürfe auf Ihrem Behälter, danach erstellt UltraPixel die Druckdatei und druckt die Etiketten; die ersten 2 Runden sind kostenlos.",
+   "cta": "Gestalten Sie Ihr Etikett",
    "ctaNote": "Kostenlos starten: 2 Runden Vorschläge, nur mit Ihrer E-Mail.",
    "stepsH": "So funktioniert es",
    "steps": [
@@ -702,7 +702,7 @@
    "faq": [
     [
      "Gestaltet UltraPixel auch das Etikett oder druckt es nur?",
-     "Beides. UltraPixel gestaltet das komplette Etikett von Grund auf mit seinem KI-Etikettenstudio (Konzept, Layout, Stanzform, Material und Veredelungen), erstellt die druckfertige Datei und druckt die Etiketten. Wenn Sie bereits eine Gestaltung haben, können Sie sie zum Druck senden."
+     "Beides. UltraPixel gestaltet das komplette Etikett von Grund auf mit UltraPixel Studio und künstlicher Intelligenz (Konzept, Layout, Stanzform, Material und Veredelungen), erstellt die druckfertige Datei und druckt die Etiketten. Wenn Sie bereits eine Gestaltung haben, können Sie sie zum Druck senden."
     ],
     [
      "Ich habe keinen Grafiker. Können Sie mein Etikett gestalten?",
@@ -744,7 +744,7 @@
      "/quote/"
     ]
    ],
-   "foot": "Etikettengestaltung (KI-Studio)"
+   "foot": "Etikettengestaltung"
   }
  }
 }
