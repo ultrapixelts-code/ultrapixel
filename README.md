@@ -33,8 +33,8 @@ Set `site.formEndpoint` to POST the same fields as JSON to a backend.
 
 ## Google Tag Manager and cookie banner
 
-- `site.gtmId` (GTM-WM2TGCDL) is added to every page of builds whose root language is in `site.trackingHomes` (`it` = ultrapixel.it).
-  ultrapixel.fr (`--home=fr`) gets no tag, no banner and keeps the cookie-free policy (`legal.cookiesBasic`).
+- `site.gtmId` (GTM-WM2TGCDL) is added to every page of builds whose root language is in `site.trackingHomes` (`it` = ultrapixel.it, `fr` = ultrapixel.fr).
+  A build without tracking keeps the cookie-free policy (`legal.cookiesBasic`). ultrapixel.fr is a separate domain: its banner asks on its own.
 - Top of `<head>`: Consent Mode v2 defaults (all denied), the stored choice (cookie `up_consent`), then the standard Tag Manager snippet.
 - `assets/tag.js`: banner (texts in `consent`), footer "Cookie settings" link, `up_gclid` (90 days, only with marketing consent),
   `phone_click`, `whatsapp_click`, `email_click`, `studio_click`. Withdrawing consent deletes `_ga*`, `_gcl_*` and `up_gclid`.

@@ -8,7 +8,7 @@
   var q=new URLSearchParams(location.search),a=get(K);
   var ext=d.referrer&&d.referrer.indexOf(location.origin)!==0?d.referrer:'';if(!ext){try{ext=sessionStorage.getItem('up_ref')||''}catch(e){}}
   if(!a||q.get('utm_source')){a={landing_page:location.pathname,referrer:ext||(a&&a.referrer)||'',utm_source:q.get('utm_source')||'',utm_medium:q.get('utm_medium')||'',utm_campaign:q.get('utm_campaign')||''};put(K,a)}
-  /* Google Tag Manager (ultrapixel.it only): one conversion per request the server has accepted. The event depends on
+  /* Google Tag Manager (ultrapixel.it, ultrapixel.fr): one conversion per request the server has accepted. The event depends on
      "I would like to", not on the page. The email goes to the dataLayer only, trimmed and lowercased; Tag Manager hashes it. */
   var EV={quote:'quote_request',specialist:'quote_request',samples:'sample_request',partner:'partner_request'};
   function conversion(data,hasFile){

@@ -67,7 +67,8 @@
     "studioUrl": "https://studio.ultrapixel.it",
     "gtmId": "GTM-WM2TGCDL",
     "trackingHomes": [
-      "it"
+      "it",
+      "fr"
     ]
   },
   "ui": {
@@ -3334,11 +3335,11 @@
       "sections": [
         [
           "Your choice",
-          "When you first visit ultrapixel.it you can accept all cookies, reject them, or choose by category. Until you choose, and if you reject them, only the necessary cookies are used. Your choice applies to ultrapixel.it and to the label studio at studio.ultrapixel.it, and is kept for 6 months. You can change it at any time from “Cookie settings” at the bottom of every page."
+          "When you first visit this website you can accept all cookies, reject them, or choose by category. Until you choose, and if you reject them, only the necessary cookies are used. Your choice is kept for 6 months; on ultrapixel.it it also applies to the label studio at studio.ultrapixel.it. You can change it at any time from “Cookie settings” at the bottom of every page."
         ],
         [
           "Necessary cookies",
-          "up_consent remembers your cookie choice (6 months, shared with studio.ultrapixel.it). The studio also uses a technical cookie to keep you signed in to your account. These cookies do not need consent and are not used for statistics or advertising."
+          "up_consent remembers your cookie choice (6 months; on ultrapixel.it it is shared with studio.ultrapixel.it). The studio also uses a technical cookie to keep you signed in to your account. These cookies do not need consent and are not used for statistics or advertising."
         ],
         [
           "Analytics cookies (only with your consent)",

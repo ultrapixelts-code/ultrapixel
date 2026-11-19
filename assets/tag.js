@@ -1,11 +1,11 @@
 /* UltraPixel — cookie banner (Google Consent Mode v2), Google click ID and click events for Google Tag Manager.
-   Loaded only on sites that carry Tag Manager (ultrapixel.it). The defaults (everything denied) and the stored choice
+   Loaded on the sites that carry Tag Manager (ultrapixel.it, ultrapixel.fr). The defaults (everything denied) and the stored choice
    are applied inline at the top of <head>, before Tag Manager; this file shows the banner and records the visitor's choice.
-   Choice: cookie up_consent, 6 months, Domain=.ultrapixel.it so that studio.ultrapixel.it reads the same choice. */
+   Choice: cookie up_consent, 6 months, on the site's own domain (.ultrapixel.it is shared with studio.ultrapixel.it; ultrapixel.fr asks separately). */
 (function(){
   var d=document,w=window,B=d.getElementById('ckb');
   w.dataLayer=w.dataLayer||[];if(typeof w.gtag!=='function'){w.gtag=function(){w.dataLayer.push(arguments)}}
-  var host=location.hostname,dom=/(^|\.)ultrapixel\.it$/.test(host)?'; Domain=.ultrapixel.it':'',sec=location.protocol==='https:'?'; Secure':'';
+  var host=location.hostname,root=(host.match(/(^|\.)(ultrapixel\.(it|fr))$/)||[])[2]||'',dom=root?'; Domain=.'+root:'',sec=location.protocol==='https:'?'; Secure':'';
   function setc(n,v,age){d.cookie=n+'='+v+'; Max-Age='+age+'; Path=/'+dom+'; SameSite=Lax'+sec}
   function getc(n){var m=d.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):''}
   function read(){var v=getc('up_consent');if(!v)return null;try{var c=JSON.parse(v);return typeof c==='object'&&c?c:null}catch(e){return null}}
@@ -18,7 +18,7 @@
   function wipe(c){
     var names=d.cookie.split('; ').map(function(x){return x.split('=')[0]}),dead=[];
     names.forEach(function(n){if((!c.analytics&&/^_ga(_|$)/.test(n))||(!c.marketing&&(/^_gcl_/.test(n)||n==='up_gclid')))dead.push(n)});
-    var ds=['',/(^|\.)ultrapixel\.it$/.test(host)?'.ultrapixel.it':'','.'+host];
+    var ds=['',root?'.'+root:'','.'+host];
     dead.forEach(function(n){ds.forEach(function(x){d.cookie=n+'=; Max-Age=0; Path=/'+(x?'; Domain='+x:'')})});
   }
   function saveConsent(analytics,marketing){

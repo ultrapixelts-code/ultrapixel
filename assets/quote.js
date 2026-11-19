@@ -98,7 +98,7 @@
     tween(first?0:from,j.total,first?1300:700,function(v){$('q-total').textContent=eur(Math.round(v))});
     if(first&&!S.classList.contains('mouse')){try{P.scrollIntoView({behavior:rm?'auto':'smooth',block:'start'})}catch(e){}}
     window.upTrack&&upTrack('quote_price',{qty:j.config.qty,material:j.config.material,total:j.total});
-    /* Google Tag Manager (ultrapixel.it only): once per calculation; a new quantity or size with a new price fires again */
+    /* Google Tag Manager (ultrapixel.it, ultrapixel.fr): once per calculation; a new quantity or size with a new price fires again */
     var key=[j.config.qty,j.config.w,j.config.h,j.config.material,j.config.varnish,j.config.foil,j.config.relief].join('|');
     if(window.upTag&&key!==st.ev){st.ev=key;(window.dataLayer=window.dataLayer||[]).push({event:'price_shown',quantity:j.config.qty,label_size:j.config.w+'x'+j.config.h,has_upload:!!st.file,page_language:lang})}
   }

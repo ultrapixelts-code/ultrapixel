@@ -219,7 +219,7 @@ def lhref(l, path, P, langs=None):
 
 
 def tracking(C):
-    """Tag Manager + cookie banner: only on builds whose root language is in site.trackingHomes (ultrapixel.it, not ultrapixel.fr)."""
+    """Tag Manager + cookie banner: on builds whose root language is in site.trackingHomes (it = ultrapixel.it, fr = ultrapixel.fr)."""
     s = C["site"]
     return bool(s.get("gtmId")) and HOME in s.get("trackingHomes", [])
 
